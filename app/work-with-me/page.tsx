@@ -1,0 +1,139 @@
+import { Eyebrow } from "@/components/brand/Eyebrow";
+import { WineButton } from "@/components/brand/WineButton";
+import { GhostButton } from "@/components/brand/GhostButton";
+import { buildMetadata } from "@/lib/metadata";
+
+export const metadata = buildMetadata({
+  title: "Work With Me",
+  description:
+    "Apply for a private consultation with Martina Rink. Two programmes: the Sober Muse Method and Female Empowerment & Leadership.",
+  path: "/work-with-me",
+});
+
+export default function WorkWithMePage() {
+  return (
+    <>
+      <section className="bg-cream pt-32 md:pt-40 pb-16">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <Eyebrow className="justify-center" withLine>
+            Work with me
+          </Eyebrow>
+          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
+            There are two ways to begin.
+          </h1>
+          <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
+            A private consultation is the right starting point for both
+            programmes. It is 45 minutes. €450, applied to the programme if
+            you proceed. Not a sales call — a focused conversation to establish
+            whether the work is the right fit.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-bone section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <h2 className="font-[family-name:var(--font-display)] italic text-[28px] text-ink">
+            Before you apply, ask yourself:
+          </h2>
+          <div className="mt-10 space-y-6">
+            {[
+              "Am I doing this because I want to — not because I feel I should?",
+              "Am I willing to be honest, even when what's honest is inconvenient?",
+              "Am I at a point where I want a real conversation, not a framework?",
+              "Am I prepared to do the work, rather than just talk about doing it?",
+            ].map((q) => (
+              <p
+                key={q}
+                className="font-[family-name:var(--font-display)] italic text-[20px] text-ink"
+              >
+                {q}
+              </p>
+            ))}
+          </div>
+          <p className="mt-12 text-[15px] text-ink-quiet">
+            If the answer to each of those is yes, we should speak.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-ink section-pad">
+        <div className="container-content max-w-5xl mx-auto">
+          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-cream text-center">
+            The two programmes.
+          </h2>
+
+          <div className="mt-16 grid md:grid-cols-2 gap-12 md:divide-x divide-wine-deep">
+            <div className="md:pr-12">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
+                Sober Muse Method
+              </p>
+              <p className="mt-4 font-[family-name:var(--font-display)] italic text-[22px] text-cream">
+                For the woman re-examining alcohol.
+              </p>
+              <ul className="mt-6 space-y-2 text-[15px] text-cream/85">
+                <li>· 90 days</li>
+                <li>· 3 private sessions per month</li>
+                <li>· Written prompts between sessions</li>
+                <li>· Ongoing correspondence</li>
+              </ul>
+              <p className="mt-8 font-[family-name:var(--font-display)] text-[28px] text-cream">
+                from €5,000
+              </p>
+              <a
+                href="/sober-muse"
+                className="mt-4 inline-block text-[14px] text-pink underline decoration-pink decoration-1 underline-offset-[6px]"
+              >
+                Learn more →
+              </a>
+            </div>
+
+            <div className="md:pl-12">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
+                Female Empowerment &amp; Leadership
+              </p>
+              <p className="mt-4 font-[family-name:var(--font-display)] italic text-[22px] text-cream">
+                For the woman navigating what comes next.
+              </p>
+              <ul className="mt-6 space-y-2 text-[15px] text-cream/85">
+                <li>· 6–12 months (open-ended)</li>
+                <li>· 2 private sessions per month</li>
+                <li>· Between-session correspondence</li>
+                <li>· Quarterly review sessions</li>
+              </ul>
+              <p className="mt-8 font-[family-name:var(--font-display)] text-[28px] text-cream">
+                from €7,500
+              </p>
+              <a
+                href="/empowerment"
+                className="mt-4 inline-block text-[14px] text-pink underline decoration-pink decoration-1 underline-offset-[6px]"
+              >
+                Learn more →
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-16 text-center text-[14px] text-cream/60">
+            Private consultation: €450 · Applied to programme fee upon
+            enrolment.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-cream section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
+            Not sure which applies to you?
+          </h2>
+          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
+            The assessment will help. Seven questions. Four minutes. A clearer
+            sense of which conversation — if either — is the right fit.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <WineButton href="/assessment">Begin the assessment</WineButton>
+            <GhostButton href="/book">Or book a consultation</GhostButton>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

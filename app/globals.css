@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MARTINA RINK — DESIGN TOKENS (Tailwind 4 CSS-first config)
+   ============================================================ */
+
+@theme {
+  /* ── BRAND COLORS ────────────────────────────────────────── */
+  --color-cream:        #F7F3EE;
+  --color-bone:         #EDE8E0;
+  --color-blush:        #F5E8EC;
+  --color-ink:          #1E1B17;
+  --color-ink-soft:     #4A3728;
+  --color-ink-quiet:    #8A7F72;
+  --color-sand:         #C8B8A2;
+  --color-wine:         #6B2737;
+  --color-wine-deep:    #521E2B;
+  --color-pink:         #F942AA;
+  --color-pink-soft:    #FDBFE2;
+  --color-mint:         #C9EADE;
+  --color-gold:         #C9A84C;
+  --color-navy:         #1A1A2E;
+
+  /* ── FONT FAMILIES (set via next/font in layout.tsx) ─────── */
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-body:    var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+  --font-script:  var(--font-dancing-script), "Brush Script MT", cursive;
+
+  /* ── TYPE SCALE ──────────────────────────────────────────── */
+  --text-display-xl:      5.125rem;
+  --text-display-xl--line-height: 0.95;
+  --text-display-xl--letter-spacing: -0.02em;
+
+  --text-display-lg:      3.5rem;
+  --text-display-lg--line-height: 1.05;
+  --text-display-lg--letter-spacing: -0.015em;
+
+  --text-display-md:      2.5rem;
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.01em;
+
+  --text-h3:              1.5rem;
+  --text-h3--line-height: 1.3;
+
+  --text-body-lg:         1.1875rem;
+  --text-body-lg--line-height: 1.65;
+
+  --text-body-base:       1.0625rem;
+  --text-body-base--line-height: 1.7;
+
+  --text-body-sm:         0.9375rem;
+  --text-body-sm--line-height: 1.6;
+
+  --text-caption:         0.8125rem;
+  --text-caption--line-height: 1.4;
+
+  --text-overline:        0.6875rem;
+  --text-overline--line-height: 1;
+  --text-overline--letter-spacing: 0.22em;
+
+  --text-btn:             0.75rem;
+  --text-btn--line-height: 1;
+  --text-btn--letter-spacing: 0.18em;
+
+  /* ── LAYOUT ──────────────────────────────────────────────── */
+  --container-content: 1280px;
+  --container-read:    680px;
+
+  /* ── ANIMATIONS ──────────────────────────────────────────── */
+  --animate-fade-up: fadeUp 0.7s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+
+@layer base {
+  html {
+    background-color: var(--color-cream);
+    color-scheme: light;
+  }
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: var(--color-pink-soft);
+    color: var(--color-ink);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .container-content {
+    max-width: var(--container-content);
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .container-content { padding-inline: 3rem; }
+  }
+  .container-read {
+    max-width: var(--container-read);
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  .section-pad {
+    padding-block: 6rem;
+  }
+  @media (min-width: 768px) {
+    .section-pad { padding-block: 10rem; }
+  }
+}

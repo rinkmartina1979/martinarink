@@ -1,0 +1,225 @@
+import { Eyebrow } from "@/components/brand/Eyebrow";
+import { WineButton } from "@/components/brand/WineButton";
+import { GhostButton } from "@/components/brand/GhostButton";
+import { ScriptAccent } from "@/components/brand/ScriptAccent";
+import { TestimonialCard } from "@/components/brand/TestimonialCard";
+import { buildMetadata, faqSchema } from "@/lib/metadata";
+
+const FAQS = [
+  {
+    q: "Is this coaching?",
+    a: "It is mentoring — a distinction that matters. I do not use coaching frameworks, tools, or methodologies. I use my own intelligence and a careful process I have developed over a decade of private work.",
+  },
+  {
+    q: "What kinds of women do you work with?",
+    a: "Founders, senior executives, creative directors, partners at professional services firms, women at significant personal inflection points. The common thread is not their role — it is a particular quality of intelligence about themselves.",
+  },
+  {
+    q: "How long does the work last?",
+    a: "It varies significantly. Some women work with me for six months. Some for two years or more. I do not operate on a fixed timeline. The work runs until it is done.",
+  },
+  {
+    q: "Is it confidential?",
+    a: "Completely. I have never discussed client work with anyone, and I never will. The confidentiality is absolute.",
+  },
+  {
+    q: "Do you work with men?",
+    a: "No. My practice is exclusively for women.",
+  },
+  {
+    q: "I'm not sure I'm ready. What should I do?",
+    a: "Take the assessment. It is a private exercise designed to give you a clearer sense of where you are. It is not a funnel — it is a genuine attempt at understanding before we speak.",
+  },
+];
+
+export const metadata = buildMetadata({
+  title: "Female Empowerment & Leadership",
+  description:
+    "Private engagement for senior women navigating identity, leadership, and what comes next. From €7,500. English-speaking, internationally based.",
+  path: "/empowerment",
+});
+
+export default function EmpowermentPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(FAQS)) }}
+      />
+
+      {/* HERO */}
+      <section className="bg-cream pt-32 md:pt-40 pb-16 md:pb-24">
+        <div className="container-content max-w-3xl">
+          <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
+          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-[1.05] text-ink">
+            You have done everything right. It no longer feels like yours.
+          </h1>
+          <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[560px]">
+            This is the work for the woman who has arrived — and finds herself
+            wondering, with some quiet urgency, what she was actually arriving
+            for.
+          </p>
+          <div className="mt-10">
+            <WineButton href="/assessment">Begin here</WineButton>
+          </div>
+        </div>
+      </section>
+
+      {/* WHO THIS IS FOR */}
+      <section className="bg-bone section-pad">
+        <div className="container-content max-w-3xl mx-auto text-center">
+          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
+            You might recognise this.
+          </h2>
+          <div className="mt-10 space-y-6 text-[17px] leading-[1.75] text-ink-soft text-left">
+            <p>
+              You are senior. You are accomplished. You have the title, the
+              team, the life that other people describe as impressive.
+            </p>
+            <p>
+              And somewhere inside that impressive life, there is a gap. Between
+              who you appear to be and who you actually are. Between what you
+              have built and what you actually wanted. Between the woman who
+              learned to be excellent and the woman who is quietly, persistently
+              asking whether excellence was ever the point.
+            </p>
+            <p>
+              The container — director, partner, founder, mother, expert — has
+              stopped being the same size as you are.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* THE WORK — 2 column */}
+      <section className="bg-cream section-pad">
+        <div className="container-content grid md:grid-cols-2 gap-12 md:gap-20">
+          <div>
+            <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
+              What we examine.
+            </h2>
+            <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+              {[
+                "The identity you built under pressure, and whether it still serves",
+                "The gap between how you lead others and how you occupy your own life",
+                "What you were told to want, versus what you actually want",
+                "The version of yourself constructed for someone else's room",
+                "What authority looks like when it comes from a place you've chosen",
+              ].map((i) => (
+                <li key={i} className="flex gap-3">
+                  <span className="text-pink mt-2 select-none">—</span>
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
+              What you build.
+            </h2>
+            <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+              {[
+                "A version of yourself you have actually chosen",
+                "Clarity about what the next chapter is actually for",
+                "A way of leading that comes from your own position",
+                "The aesthetic of a life you have deliberately designed",
+                "Less editing. More precision.",
+              ].map((i) => (
+                <li key={i} className="flex gap-3">
+                  <span className="text-pink mt-2 select-none">—</span>
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS — DARK */}
+      <section className="bg-ink section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-cream">
+            An open-ended private engagement.
+          </h2>
+          <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-cream/85">
+            <p>
+              This work does not operate on a fixed timeline. It runs until the
+              work is done — usually somewhere between six months and two years.
+            </p>
+            <p>
+              We meet twice a month by private video or phone. Between sessions,
+              there is correspondence — sometimes a question I leave you with,
+              sometimes something you bring. The work is cumulative.
+            </p>
+            <p>
+              Investment: from €7,500 for the open-ended engagement. A private
+              consultation — €450, applied to the programme if you proceed — is
+              the right place to begin.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* MINT CTA SECTION — the one mint section per page */}
+      <section className="bg-mint section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
+            come home to yourself
+          </ScriptAccent>
+          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-ink">
+            When you&rsquo;re ready.
+          </h2>
+          <p className="mt-6 text-[17px] text-ink-soft">
+            The conversation begins with a request. I read every application
+            personally and respond within three working days.
+          </p>
+          <div className="mt-10">
+            <WineButton href="/book">Request a conversation</WineButton>
+          </div>
+          <p className="mt-6 italic text-[18px] text-ink-soft">
+            <ScriptAccent className="text-[28px] text-ink-soft">
+              it&rsquo;s about time, darling.
+            </ScriptAccent>
+          </p>
+        </div>
+      </section>
+
+      {/* TESTIMONIAL */}
+      <section className="bg-cream py-16">
+        <div className="container-content">
+          <TestimonialCard
+            quote="What Martina does is different — it's more like being read than being advised. Within the first month she named something I had never managed to say out loud."
+            attribution="Senior Director · Vienna"
+            nda
+          />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-bone section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <h2 className="font-[family-name:var(--font-display)] text-[36px] text-ink">
+            Common questions.
+          </h2>
+          <dl className="mt-12 divide-y divide-sand/60">
+            {FAQS.map((faq) => (
+              <details key={faq.q} className="group py-6">
+                <summary className="flex items-start justify-between gap-6 cursor-pointer list-none">
+                  <dt className="font-[family-name:var(--font-display)] text-[20px] md:text-[22px] text-ink">
+                    {faq.q}
+                  </dt>
+                  <span className="text-wine text-2xl mt-1 group-open:rotate-45 transition-transform duration-200">
+                    +
+                  </span>
+                </summary>
+                <dd className="mt-4 text-[16px] leading-[1.75] text-ink-soft pr-12">
+                  {faq.a}
+                </dd>
+              </details>
+            ))}
+          </dl>
+        </div>
+      </section>
+    </>
+  );
+}
