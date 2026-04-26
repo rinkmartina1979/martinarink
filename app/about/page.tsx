@@ -98,16 +98,18 @@ export default function AboutPage() {
               The work before the work.
             </h3>
             <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
-              I am a Spiegel Bestseller author. I co-created People of
-              Deutschland — a documentary book covered extensively in national
-              media. I have been written about in major publications and spoken
-              on platforms across Europe.
+              I have published three books: <em>Isabella Blow</em> (a Spiegel
+              Bestseller, written from unique proximity as her personal
+              assistant), <em>People of Deutschland</em> (a documentary
+              portrait of contemporary Germany, covered extensively in national
+              media), and <em>Fashion Germany</em>.
             </p>
             <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
               I mention this not as a credential list, but because context
-              matters: the women I work with are at a level where what they need
-              is someone who has operated in complex, high-visibility
-              environments and understands what that requires.
+              matters: the women I work with are at a level where they need
+              someone who has operated in complex, high-visibility environments
+              — and who has written, publicly and carefully, about what those
+              environments cost.
             </p>
           </div>
           <div>
@@ -131,29 +133,47 @@ export default function AboutPage() {
 
       {/* PERSONAL ORIGIN — DARK */}
       <section className="bg-ink section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <Eyebrow className="justify-center">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>
             <span className="text-pink-soft">Where this started</span>
           </Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] text-[42px] md:text-[52px] leading-tight text-cream">
-            The reason I built this.
+            I have always known what it is to inhabit a life that was not quite
+            built around you.
           </h2>
-          <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-cream/85">
-            <p>
-              My own re-examination of alcohol began not from a crisis but from
-              a question. I was, by all external measures, doing well. I had a
-              life, a body of work, a set of relationships I valued.
-            </p>
-            <p>
-              What I had, in addition, was a persistent sense that something at
-              the level of my actual experience — not my achievements, my
-              circumstances, my relationships, but the quality of my daily
-              interior life — was not quite what it could be.
-            </p>
-            <p>
-              I did not need a programme. I needed a conversation. I did not
-              find one that was right for me. So eventually, I built it.
-            </p>
+          <div className="mt-10 grid md:grid-cols-2 gap-10">
+            <div className="space-y-5 text-[17px] leading-[1.75] text-cream/85">
+              <p>
+                I was born in Persia and adopted by German parents shortly after
+                birth. I grew up in Germany and London, and attended boarding
+                school — an education that, alongside the academic curriculum,
+                offered a thorough introduction to what people use when the
+                interior becomes too much.
+              </p>
+              <p>
+                I have lived, from the beginning, with a particular kind of
+                question: who am I, underneath the circumstances I was placed
+                in? It is a question that does not have a final answer, but
+                which can be lived in a great deal more consciously than most of
+                us manage.
+              </p>
+            </div>
+            <div className="space-y-5 text-[17px] leading-[1.75] text-cream/85">
+              <p>
+                My own re-examination of alcohol began not from a crisis but
+                from a question. I was, by all external measures, doing well. I
+                had a life, a body of published work, a set of relationships I
+                valued, and a daily glass of wine that had quietly become a
+                different thing from what it started as.
+              </p>
+              <p>
+                I did not need a programme. I needed a conversation — precise,
+                private, conducted between equals. I did not find one that was
+                right for me. So eventually, I built it. Six years later, I am
+                still building it. For women who are, in one way or another,
+                asking the same question I was.
+              </p>
+            </div>
           </div>
         </div>
       </section>

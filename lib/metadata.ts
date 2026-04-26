@@ -56,7 +56,12 @@ export function personSchema() {
     name: "Martina Rink",
     jobTitle: "Private Mentor · Author · Sober Conscious Coach",
     url: SITE.url,
-    sameAs: [SITE.social.linkedin, SITE.social.instagram],
+    sameAs: [
+      SITE.social.linkedin,
+      SITE.social.instagram,
+      SITE.social.facebook,
+      SITE.social.xing,
+    ],
     worksFor: {
       "@type": "Organization",
       name: "The Sober Muse Method",

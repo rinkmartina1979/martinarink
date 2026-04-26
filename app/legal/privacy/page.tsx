@@ -26,7 +26,7 @@ export default function PrivacyPage() {
               When you complete the private assessment, your written responses
               are collected via Tally.so. Your email address is collected via
               the assessment, the newsletter, or any contact form, and used to
-              send correspondence. Booking information is collected via Cal.com
+              send correspondence. Booking information is collected via Calendly
               when you book a consultation. Payment information is processed
               securely by Stripe.
             </p>
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
               <li>Sanity — content management</li>
               <li>Kit — email correspondence</li>
               <li>Tally.so — assessment forms</li>
-              <li>Cal.com — booking calendar</li>
+              <li>Calendly — booking calendar</li>
               <li>Stripe — payment processing</li>
               <li>Resend — transactional email</li>
               <li>Google Analytics 4 — anonymised analytics</li>

@@ -10,10 +10,12 @@ export const SITE = {
   url: "https://martinarink.com",
   description:
     "Private mentoring for high-achieving women at the intersection of identity, leadership, and the examined life. The Sober Muse Method and Female Empowerment & Leadership. By application, from €5,000.",
-  email: "hello@martinarink.com",
+  email: "contact@martinarink.com",
   social: {
     linkedin: "https://www.linkedin.com/in/martinarink/",
     instagram: "https://www.instagram.com/martinarink_/",
+    facebook: "https://www.facebook.com/martinarink",
+    xing: "https://www.xing.com/profile/Martina_Rink",
   },
   pricing: {
     consultation: "€450",

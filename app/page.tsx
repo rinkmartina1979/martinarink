@@ -145,14 +145,16 @@ export default function HomePage() {
             </h2>
             <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
               <p>
-                Before I built this practice, I worked as personal assistant to
-                Isabella Blow in London. I co-created People of Deutschland. I
-                wrote a book that became a Spiegel Bestseller.
+                Born in Persia. Adopted by German parents. Educated in Germany
+                and London. I have lived, from the beginning, with the question
+                of who I am underneath the circumstances I was placed in.
               </p>
               <p>
-                None of that is the work. The work is what I do now: sit with
-                women who are accomplished enough to know that accomplishment is
-                not the answer, and precise enough to want a real conversation.
+                Before this practice: personal assistant to Isabella Blow in
+                London. Three published books, including a Spiegel Bestseller.
+                Six years sober. None of that is the work — it is simply why I
+                can sit with women who are accomplished enough to know that
+                accomplishment is not the answer.
               </p>
             </div>
             <div className="mt-8 flex items-center gap-6">
@@ -200,22 +202,48 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIAL ─────────────────────────────────────── */}
+      {/* ─── TESTIMONIALS ────────────────────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content">
-          <div className="max-w-3xl mx-auto text-center">
-            <Eyebrow className="justify-center">
-              Women who have done this work
-            </Eyebrow>
-            <span className="block mt-8 text-pink text-[14px]">✦ ✦</span>
-            <blockquote className="mt-6 font-[family-name:var(--font-display)] italic text-[28px] md:text-[34px] leading-[1.3] text-ink">
-              I stopped being surprised by myself. The work wasn&rsquo;t a
-              rebuild — it was the return of a woman I&rsquo;d quietly stopped
-              expecting.
-            </blockquote>
-            <p className="mt-8 text-[12px] uppercase tracking-[0.22em] text-ink-quiet">
-              — Clara · Founder · London
-            </p>
+          <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
+
+            {/* Testimonial 1 — Armina */}
+            <div className="bg-blush p-10">
+              <span
+                aria-hidden
+                className="block font-[family-name:var(--font-display)] italic text-wine/30 text-[60px] leading-none -mt-2 mb-2"
+              >
+                "
+              </span>
+              <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.4] text-ink">
+                She helped me gain clarity about my life path and clearly define
+                my goals. What I thought was a problem with discipline turned
+                out to be a problem with direction.
+              </blockquote>
+              <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
+                — Armina · Patent Engineer
+              </p>
+            </div>
+
+            {/* Testimonial 2 — Clara */}
+            <div className="bg-bone p-10">
+              <span
+                aria-hidden
+                className="block font-[family-name:var(--font-display)] italic text-pink/30 text-[60px] leading-none -mt-2 mb-2"
+              >
+                "
+              </span>
+              <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.4] text-ink">
+                I stopped being surprised by myself. The work wasn&rsquo;t a
+                rebuild — it was the return of a woman I&rsquo;d quietly stopped
+                expecting.
+              </blockquote>
+              <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
+                — Clara · Founder · London
+              </p>
+            </div>
+
           </div>
         </div>
       </section>

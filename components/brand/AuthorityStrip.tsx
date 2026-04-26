@@ -1,8 +1,8 @@
 const ITEMS = [
-  { label: "AUTHOR", credit: "Spiegel Bestseller" },
-  { label: "CO-CREATOR", credit: "People of Deutschland" },
-  { label: "FORMER PA", credit: "Isabella Blow" },
-  { label: "CLINICAL PARTNER", credit: "Dr. Ruta Nürnberger · My Way Betty Ford" },
+  { label: "AUTHOR", credit: "Three books · Spiegel Bestseller" },
+  { label: "FORMER PA", credit: "Isabella Blow · London" },
+  { label: "SIX YEARS SOBER", credit: "Mentor · not coach · lived experience" },
+  { label: "CLINICAL PARTNER", credit: "Dr. Nürnberger · My Way Betty Ford" },
 ];
 
 export function AuthorityStrip() {

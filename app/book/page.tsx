@@ -1,37 +1,19 @@
-"use client";
-
-import { useEffect } from "react";
-import Cal, { getCalApi } from "@calcom/embed-react";
 import { Eyebrow } from "@/components/brand/Eyebrow";
+import { buildMetadata } from "@/lib/metadata";
+
+export const metadata = buildMetadata({
+  title: "Book a Consultation",
+  noIndex: true,
+});
+
+const CALENDLY_URL =
+  process.env.NEXT_PUBLIC_CALENDLY_URL ||
+  "https://calendly.com/martinarink/let-s-make-a-change";
 
 export default function BookPage() {
-  useEffect(() => {
-    (async () => {
-      const cal = await getCalApi({ namespace: "martinarink" });
-      const brandVars = {
-        "cal-brand": "#6B2737",
-        "cal-brand-emphasis": "#521E2B",
-        "cal-text-emphasis": "#1E1B17",
-        "cal-text": "#4A3728",
-        "cal-border": "#C8B8A2",
-        "cal-text-subtle": "#8A7F72",
-        "cal-bg": "#F7F3EE",
-        "cal-bg-subtle": "#EDE8E0",
-        "cal-bg-emphasis": "#1E1B17",
-      };
-      cal("ui", {
-        theme: "light",
-        cssVarsPerTheme: { light: brandVars, dark: brandVars },
-        hideEventTypeDetails: false,
-      });
-    })();
-  }, []);
-
-  const calLink =
-    process.env.NEXT_PUBLIC_CAL_LINK || "martinarink/private-consultation";
-
   return (
     <>
+      {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="bg-cream pt-32 md:pt-40 pb-12">
         <div className="container-content max-w-2xl mx-auto text-center">
           <Eyebrow className="justify-center" withLine>
@@ -52,14 +34,17 @@ export default function BookPage() {
         </div>
       </section>
 
+      {/* ── CALENDLY EMBED ───────────────────────────────────── */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
           <div className="bg-bone p-2">
-            <Cal
-              namespace="martinarink"
-              calLink={calLink}
-              style={{ width: "100%", height: "100%", minHeight: "650px" }}
-              config={{ layout: "month_view" }}
+            <iframe
+              src={`${CALENDLY_URL}?hide_event_type_details=0&hide_gdpr_banner=1&primary_color=6B2737&text_color=1E1B17&background_color=F7F3EE`}
+              title="Book a private consultation with Martina Rink"
+              width="100%"
+              style={{ minHeight: "700px", border: "none", display: "block" }}
+              loading="lazy"
+              allow="payment"
             />
           </div>
           <p className="mt-8 text-center text-[14px] text-ink-quiet leading-relaxed">

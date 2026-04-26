@@ -51,10 +51,22 @@ export default function AssessmentPage() {
               />
             </div>
           ) : (
-            <div className="bg-bone p-12 text-center">
-              <p className="text-[14px] uppercase tracking-[0.18em] text-ink-quiet">
-                Assessment placeholder — connect Tally form ID via{" "}
-                <code>NEXT_PUBLIC_TALLY_FORM_ID</code> to activate
+            <div className="bg-bone p-12 md:p-16 text-center">
+              <p className="font-[family-name:var(--font-display)] italic text-[24px] text-ink leading-snug">
+                The assessment opens shortly.
+              </p>
+              <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft max-w-md mx-auto">
+                In the meantime, you may request a private consultation
+                directly. We will begin there.
+              </p>
+              <a
+                href="/book"
+                className="mt-10 inline-flex items-center justify-center bg-wine text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-10 py-4 rounded-[1px] hover:bg-wine-deep transition-colors duration-200"
+              >
+                Request a conversation
+              </a>
+              <p className="mt-8 text-[13px] text-ink-quiet">
+                €450 · Applied to the programme if you proceed.
               </p>
             </div>
           )}

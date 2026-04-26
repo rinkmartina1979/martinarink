@@ -43,12 +43,17 @@ export default function ContactPage() {
             to me at:
           </p>
           <a
-            href="mailto:hello@martinarink.com"
+            href="mailto:contact@martinarink.com"
             className="mt-4 block font-[family-name:var(--font-display)] italic text-[24px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
           >
-            hello@martinarink.com
+            contact@martinarink.com
           </a>
-          <p className="mt-12 text-[14px] uppercase tracking-[0.18em] text-ink-quiet">
+          <p className="mt-8 text-[15px] leading-[1.75] text-ink-soft">
+            Martina Rink — UG (haftungsbeschränkt)
+            <br />
+            Steinkreuzstr. 26b, 76228 Karlsruhe, Germany
+          </p>
+          <p className="mt-8 text-[14px] uppercase tracking-[0.18em] text-ink-quiet">
             Ibiza · Berlin · Munich
           </p>
         </div>

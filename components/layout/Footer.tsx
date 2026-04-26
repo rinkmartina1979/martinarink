@@ -110,6 +110,8 @@ export function Footer() {
                 <a
                   href={SITE.social.instagram}
                   className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Instagram
                 </a>
@@ -118,8 +120,30 @@ export function Footer() {
                 <a
                   href={SITE.social.linkedin}
                   className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.social.facebook}
+                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.social.xing}
+                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Xing
                 </a>
               </li>
               <li>
