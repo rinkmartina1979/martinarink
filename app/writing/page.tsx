@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { buildMetadata } from "@/lib/metadata";
+import { getAllPosts, type PostListItem } from "@/sanity/lib/queries";
 
 export const metadata = buildMetadata({
   title: "Writing",
@@ -10,32 +11,49 @@ export const metadata = buildMetadata({
   path: "/writing",
 });
 
-// Placeholder articles — to be replaced by Sanity fetch
-const ARTICLES = [
+/* ── Hardcoded fallback articles (shown when Sanity is not yet connected) */
+const FALLBACK_ARTICLES: PostListItem[] = [
   {
+    _id: "1",
     slug: "what-high-functioning-women-use-alcohol-for",
     title: "What High-Functioning Women Use Alcohol For",
     excerpt:
       "The women I work with are not in crisis. They are in the much quieter problem — the one that arrives after everything has gone according to plan.",
-    date: "April 2026",
+    publishedAt: "2026-04-01T00:00:00Z",
+    coverImage: null,
   },
   {
+    _id: "2",
     slug: "the-identity-underneath-the-title",
     title: "The Identity Underneath the Title",
     excerpt:
       "When a woman has spent two decades building a career, she often discovers that the title was never the destination — it was a container.",
-    date: "April 2026",
+    publishedAt: "2026-04-08T00:00:00Z",
+    coverImage: null,
   },
   {
+    _id: "3",
     slug: "on-elegance-and-edges-isabella-blow",
     title: "On Elegance and Edges — What Isabella Blow Understood About Being Fully Alive",
     excerpt:
       "Isabella Blow wore hats that could clear a room. Not to be noticed. To exist. There is a distinction.",
-    date: "April 2026",
+    publishedAt: "2026-04-15T00:00:00Z",
+    coverImage: null,
   },
 ];
 
-export default function WritingPage() {
+function formatDate(iso: string | null): string {
+  if (!iso) return "";
+  return new Date(iso).toLocaleDateString("en-GB", {
+    month: "long",
+    year: "numeric",
+  });
+}
+
+export default async function WritingPage() {
+  const sanityArticles = await getAllPosts();
+  const articles = sanityArticles ?? FALLBACK_ARTICLES;
+
   return (
     <>
       <section className="bg-cream pt-32 md:pt-40 pb-16">
@@ -53,29 +71,37 @@ export default function WritingPage() {
 
       <section className="bg-cream py-12 md:py-16">
         <div className="container-content">
-          <div className="grid md:grid-cols-3 gap-8">
-            {ARTICLES.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/writing/${article.slug}`}
-                className="group block"
-              >
-                <div className="aspect-[3/2] bg-bone mb-5 group-hover:bg-blush transition-colors duration-300" />
-                <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
-                  {article.date}
-                </p>
-                <h2 className="mt-3 font-[family-name:var(--font-display)] text-[24px] leading-tight text-ink group-hover:text-wine transition-colors">
-                  {article.title}
-                </h2>
-                <p className="mt-3 text-[15px] leading-[1.7] text-ink-soft line-clamp-3">
-                  {article.excerpt}
-                </p>
-                <span className="mt-4 inline-block text-[13px] text-wine">
-                  Read →
-                </span>
-              </Link>
-            ))}
-          </div>
+          {articles.length === 0 ? (
+            <p className="text-[16px] text-ink-quiet text-center py-16">
+              New writing coming soon.
+            </p>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              {articles.map((article) => (
+                <Link
+                  key={article._id}
+                  href={`/writing/${article.slug}`}
+                  className="group block"
+                >
+                  <div className="aspect-[3/2] bg-bone mb-5 group-hover:bg-blush transition-colors duration-300" />
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
+                    {formatDate(article.publishedAt)}
+                  </p>
+                  <h2 className="mt-3 font-[family-name:var(--font-display)] text-[24px] leading-tight text-ink group-hover:text-wine transition-colors">
+                    {article.title}
+                  </h2>
+                  {article.excerpt && (
+                    <p className="mt-3 text-[15px] leading-[1.7] text-ink-soft line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                  )}
+                  <span className="mt-4 inline-block text-[13px] text-wine">
+                    Read →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

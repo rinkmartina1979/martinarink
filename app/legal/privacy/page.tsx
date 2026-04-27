@@ -57,7 +57,7 @@ export default function PrivacyPage() {
             <p>
               You have the right to access, correct, delete, or export your
               data, and to object to processing. Write to{" "}
-              <a href="mailto:hello@martinarink.com" className="text-wine underline">
+              <a href="mailto:contact@martinarink.com" className="text-wine underline">
                 hello@martinarink.com
               </a>
               . We respond within 30 days.

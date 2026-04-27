@@ -43,6 +43,11 @@ export function buildMetadata({
       description: desc,
       images: [ogImage],
     },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.png",
+      apple: "/apple-touch-icon.png",
+    },
     robots: noIndex
       ? { index: false, follow: false }
       : { index: true, follow: true, googleBot: { index: true, follow: true } },
