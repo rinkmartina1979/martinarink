@@ -114,3 +114,38 @@ export async function getFeaturedTestimonials(): Promise<Testimonial[] | null> {
     return null
   }
 }
+
+/* ─── Assessment Result ────────────────────────────────────── */
+export interface SanityAssessmentResult {
+  archetype: string
+  name: string
+  tagline: string
+  opening: string
+  bodyParagraphs: string[]
+  closing: string
+}
+
+const ASSESSMENT_RESULT_QUERY = `
+  *[_type == "assessmentResult" && archetype == $archetype][0] {
+    archetype,
+    name,
+    tagline,
+    opening,
+    bodyParagraphs,
+    closing
+  }
+`
+
+export async function getAssessmentResult(
+  archetype: string
+): Promise<SanityAssessmentResult | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<SanityAssessmentResult | null>(
+      ASSESSMENT_RESULT_QUERY,
+      { archetype }
+    )
+  } catch {
+    return null
+  }
+}

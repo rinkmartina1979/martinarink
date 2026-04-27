@@ -1,0 +1,110 @@
+/**
+ * POST /api/apply
+ *
+ * Receives application form submissions for both programmes.
+ * Sends internal notification via Resend.
+ * Optionally subscribes applicant to Kit with application tag.
+ */
+
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
+const ApplySchema = z.object({
+  firstName: z.string().min(1),
+  email: z.string().email(),
+  q1: z.string().min(10),
+  q2: z.string().min(10),
+  q3: z.string().min(1),
+  q4: z.string().min(10),
+  consent: z.literal(true),
+  programme: z.enum(["sober-muse", "empowerment"]),
+});
+
+export async function POST(req: NextRequest) {
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const parsed = ApplySchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", issues: parsed.error.flatten().fieldErrors },
+      { status: 422 }
+    );
+  }
+
+  const { firstName, email, q1, q2, q3, q4, programme } = parsed.data;
+
+  const programmeLabels: Record<string, string> = {
+    "sober-muse": "The Sober Muse Method",
+    empowerment: "Female Empowerment & Leadership",
+  };
+  const programmeLabel = programmeLabels[programme];
+
+  // ── Resend internal notification ──────────────────────────
+  const resendKey = process.env.RESEND_API_KEY;
+  const notifyEmail = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO;
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "hello@martinarink.com";
+
+  if (resendKey && notifyEmail) {
+    const html = `
+      <div style="font-family: Georgia, serif; max-width: 600px; color: #1E1B17;">
+        <h2 style="font-size: 20px; font-weight: normal;">New application — ${programmeLabel}</h2>
+        <p style="color: #8A7F72; font-size: 13px;">${new Date().toISOString()}</p>
+        <hr style="border: none; border-top: 1px solid #C8B8A2; margin: 20px 0;" />
+        <p><strong>Name:</strong> ${firstName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <hr style="border: none; border-top: 1px solid #C8B8A2; margin: 20px 0;" />
+        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What brought you here?</h3>
+        <p style="white-space: pre-wrap;">${q1}</p>
+        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What have you tried before?</h3>
+        <p style="white-space: pre-wrap;">${q2}</p>
+        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">Current situation</h3>
+        <p>${q3}</p>
+        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What success looks like</h3>
+        <p style="white-space: pre-wrap;">${q4}</p>
+      </div>
+    `;
+
+    fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${resendKey}`,
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: [notifyEmail],
+        reply_to: email,
+        subject: `[Application] ${firstName} — ${programmeLabel}`,
+        html,
+      }),
+    }).catch((err) => console.error("[Apply] Resend failed:", err));
+  } else {
+    console.warn("[Apply] RESEND_API_KEY or RESEND_NOTIFY_EMAIL not configured — notification skipped.");
+  }
+
+  // ── Optional Kit tag for applicants ──────────────────────
+  const kitKey = process.env.KIT_API_KEY;
+  const kitFormId = process.env.KIT_FORM_ID_ASSESSMENT;
+  const kitApplicantTag =
+    programme === "sober-muse"
+      ? process.env.KIT_TAG_APPLICANT_SOBER_MUSE
+      : process.env.KIT_TAG_APPLICANT_EMPOWERMENT;
+
+  if (kitKey && kitFormId && kitApplicantTag) {
+    const { subscribeToKit } = await import("@/lib/kit");
+    subscribeToKit({
+      email,
+      firstName,
+      formId: kitFormId,
+      tags: [kitApplicantTag],
+      fields: { source: "application", programme },
+    }).catch((err) => console.error("[Apply] Kit failed:", err));
+  }
+
+  return NextResponse.json({ success: true });
+}

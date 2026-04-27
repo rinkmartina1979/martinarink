@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/metadata";
 import { ARCHETYPE_RESULTS } from "@/lib/assessment/result-copy";
 import { deriveRouting } from "@/lib/assessment/scoring";
+import { verifyAndDecodeResultId } from "@/lib/assessment/resultId";
+import { getAssessmentResult } from "@/sanity/lib/queries";
 import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed } from "@/lib/assessment/types";
 import type { Metadata } from "next";
 
@@ -12,37 +14,19 @@ interface DecodedResult {
   privacyNeed: PrivacyNeed;
 }
 
-function decodeResultId(resultId: string): DecodedResult | null {
-  try {
-    const underscoreIndex = resultId.indexOf("_");
-    if (underscoreIndex === -1) return null;
-    const encoded = resultId.slice(underscoreIndex + 1);
-    const decoded = JSON.parse(Buffer.from(encoded, "base64url").toString("utf-8"));
-    if (
-      !decoded.archetype ||
-      !decoded.serviceIntent ||
-      !decoded.readinessLevel ||
-      !decoded.privacyNeed
-    )
-      return null;
-    return decoded as DecodedResult;
-  } catch {
-    return null;
-  }
-}
-
 interface Props {
   params: Promise<{ resultId: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { resultId } = await params;
-  const decoded = decodeResultId(resultId);
+  const decoded = verifyAndDecodeResultId(resultId);
   const archetype = decoded?.archetype;
-  const name = archetype ? ARCHETYPE_RESULTS[archetype]?.name : null;
+  const fallback = archetype ? ARCHETYPE_RESULTS[archetype] : null;
+  const name = fallback?.name ?? "Your Assessment Result";
 
   return buildMetadata({
-    title: name ? `Your result: ${name}` : "Your Assessment Result",
+    title: `Your result: ${name}`,
     description:
       "A private letter — written specifically for where you are right now.",
     path: `/assessment/result/${resultId}`,
@@ -52,15 +36,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function AssessmentResultPage({ params }: Props) {
   const { resultId } = await params;
-  const decoded = decodeResultId(resultId);
 
+  // Verify HMAC signature — returns null if tampered or malformed
+  const decoded = verifyAndDecodeResultId(resultId) as DecodedResult | null;
   if (!decoded) notFound();
 
   const { archetype, serviceIntent, readinessLevel, privacyNeed } = decoded;
-  const copy = ARCHETYPE_RESULTS[archetype];
-  if (!copy) notFound();
 
-  // Adjust CTA hrefs based on serviceIntent
+  // Try Sanity first, fall back to hardcoded copy
+  const sanityCopy = await getAssessmentResult(archetype).catch(() => null);
+  const fallbackCopy = ARCHETYPE_RESULTS[archetype];
+  if (!fallbackCopy) notFound();
+
+  const name = sanityCopy?.name ?? fallbackCopy.name;
+  const tagline = sanityCopy?.tagline ?? fallbackCopy.tagline;
+  const opening = sanityCopy?.opening ?? fallbackCopy.opening;
+  const bodyParagraphs = sanityCopy?.bodyParagraphs ?? fallbackCopy.bodyParagraphs;
+  const closing = sanityCopy?.closing ?? fallbackCopy.closing;
+
   const routing = deriveRouting({
     archetype,
     scores: { reckoning: 0, threshold: 0, return: 0 },
@@ -69,6 +62,9 @@ export default async function AssessmentResultPage({ params }: Props) {
     privacyNeed,
   });
 
+  const isPrivacyHigh = privacyNeed === "high";
+  const isHighReadiness = readinessLevel === "high";
+
   return (
     <>
       {/* ── RESULT HEADER ────────────────────────────────────────── */}
@@ -76,7 +72,6 @@ export default async function AssessmentResultPage({ params }: Props) {
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-pink/30 to-transparent" />
 
         <div className="container-content max-w-2xl mx-auto px-6">
-          {/* Archetype label */}
           <div className="flex items-center gap-4 mb-8">
             <div className="h-[1px] w-6 bg-pink" />
             <span className="text-[11px] tracking-[0.22em] uppercase text-pink-soft/80 font-[family-name:var(--font-body)]">
@@ -84,14 +79,12 @@ export default async function AssessmentResultPage({ params }: Props) {
             </span>
           </div>
 
-          {/* Archetype name */}
           <h1 className="font-[family-name:var(--font-display)] text-[38px] md:text-[52px] leading-[1.08] text-cream">
-            {copy.name}
+            {name}
           </h1>
 
-          {/* Tagline */}
           <p className="mt-5 text-[17px] md:text-[19px] leading-[1.65] text-cream/75 max-w-lg">
-            {copy.tagline}
+            {tagline}
           </p>
         </div>
       </section>
@@ -99,26 +92,34 @@ export default async function AssessmentResultPage({ params }: Props) {
       {/* ── LETTER BODY ──────────────────────────────────────────── */}
       <section className="bg-cream py-16 md:py-24">
         <div className="container-content max-w-[640px] mx-auto px-6">
-          {/* Opening */}
+          {/* Opening — italic pull-quote */}
           <p className="font-[family-name:var(--font-display)] italic text-[22px] md:text-[26px] leading-[1.45] text-ink border-l-2 border-pink pl-6 mb-12">
-            {copy.opening}
+            {opening}
           </p>
 
           {/* Body paragraphs */}
           <div className="space-y-7">
-            {copy.bodyParagraphs.map((para, i) => (
-              <p
-                key={i}
-                className="text-[17px] leading-[1.8] text-ink-soft"
-              >
+            {bodyParagraphs.map((para, i) => (
+              <p key={i} className="text-[17px] leading-[1.8] text-ink-soft">
                 {para}
               </p>
             ))}
           </div>
 
+          {/* Privacy high — extra reassurance block */}
+          {isPrivacyHigh && (
+            <div className="mt-12 pt-8 border-t border-sand">
+              <p className="text-[14px] leading-[1.7] text-ink-quiet italic">
+                A note on privacy: there is no group, no shared room, no public record.
+                What we do together is entirely between us. A non-disclosure agreement
+                is available on request. The conversation, if we have one, stays private.
+              </p>
+            </div>
+          )}
+
           {/* Closing */}
           <p className="mt-10 text-[17px] leading-[1.7] text-ink font-medium">
-            {copy.closing}
+            {closing}
           </p>
 
           {/* Signature */}
@@ -156,11 +157,29 @@ export default async function AssessmentResultPage({ params }: Props) {
             )}
           </div>
 
-          {/* Reassurance */}
-          <p className="mt-8 text-[13px] leading-[1.65] text-ink-quiet max-w-sm">
-            There is no pressure here. Come back to this letter when you are
-            ready. It will wait.
-          </p>
+          {/* High-intent extra reassurance */}
+          {isHighReadiness && (
+            <p className="mt-6 text-[14px] leading-[1.7] text-ink-soft max-w-sm">
+              The private consultation is €450, applied in full to the programme
+              if you proceed. I hold four each week.
+            </p>
+          )}
+
+          {/* Privacy high CTA reassurance */}
+          {isPrivacyHigh && isHighReadiness && (
+            <p className="mt-4 text-[13px] leading-[1.65] text-ink-quiet max-w-sm">
+              No group room. No public record. A private conversation, if and
+              when it is right.
+            </p>
+          )}
+
+          {/* Standard reassurance */}
+          {!isHighReadiness && (
+            <p className="mt-8 text-[13px] leading-[1.65] text-ink-quiet max-w-sm">
+              There is no pressure here. Come back to this letter when you are
+              ready. It will wait.
+            </p>
+          )}
         </div>
       </section>
 

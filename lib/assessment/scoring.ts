@@ -1,8 +1,7 @@
 /**
  * Points of Departure — Server-Side Scoring Engine
  *
- * NEVER run this on the client. The result must be computed server-side
- * so answers cannot be manipulated to game the archetype.
+ * NEVER run on the client. Result computed server-side only.
  */
 
 import { QUESTIONS } from "./questions";
@@ -42,6 +41,7 @@ export function computeResult(answers: AnswerMap): ScoringResult {
     scores.threshold += s.threshold ?? 0;
     scores.return += s.return ?? 0;
 
+    // First definitive signal wins (most specific question takes precedence)
     if (s.serviceIntent && !hasServiceIntent) {
       serviceIntent = s.serviceIntent;
       hasServiceIntent = true;
@@ -56,11 +56,10 @@ export function computeResult(answers: AnswerMap): ScoringResult {
     }
   }
 
-  // Determine winning archetype
-  const archetype = (Object.entries(scores) as [Archetype, number][]).reduce(
-    (best, [arch, score]) => (score > scores[best] ? arch : best),
-    "reckoning" as Archetype
-  );
+  // Tie-breaker: return > threshold > reckoning (high readiness wins ties)
+  const TIEBREAK_ORDER: Archetype[] = ["return", "threshold", "reckoning"];
+  const maxScore = Math.max(scores.reckoning, scores.threshold, scores.return);
+  const archetype = TIEBREAK_ORDER.find((a) => scores[a] === maxScore) ?? "reckoning";
 
   return {
     archetype,
@@ -71,7 +70,7 @@ export function computeResult(answers: AnswerMap): ScoringResult {
   };
 }
 
-/** Derive CTA routing from scoring result */
+/** Derive CTA routing from scoring result — spec-compliant labels */
 export function deriveRouting(result: ScoringResult): {
   primaryHref: string;
   primaryLabel: string;
@@ -81,36 +80,42 @@ export function deriveRouting(result: ScoringResult): {
   const { readinessLevel, serviceIntent } = result;
 
   if (readinessLevel === "high") {
-    // Ready to begin → direct application or consultation
-    const programmeHref =
+    const applyHref =
       serviceIntent === "empowerment"
         ? "/apply/empowerment"
+        : serviceIntent === "both"
+        ? "/work-with-me"
         : "/apply/sober-muse";
+
     return {
-      primaryHref: programmeHref,
-      primaryLabel: "Begin the application",
+      primaryHref: applyHref,
+      primaryLabel: "REQUEST A PRIVATE CONSULTATION",
       secondaryHref: "/book",
-      secondaryLabel: "Request a private consultation first",
+      secondaryLabel: "BOOK A CONSULTATION DIRECTLY",
     };
   }
 
   if (readinessLevel === "medium") {
-    // Exploring → programme pages
     const programmeHref =
-      serviceIntent === "empowerment" ? "/empowerment" : "/sober-muse";
+      serviceIntent === "empowerment"
+        ? "/empowerment"
+        : serviceIntent === "both"
+        ? "/work-with-me"
+        : "/sober-muse";
+
     return {
       primaryHref: programmeHref,
-      primaryLabel: "Read about the programme",
-      secondaryHref: "/book",
-      secondaryLabel: "Or request a private consultation",
+      primaryLabel: "EXPLORE THE PRIVATE WORK",
+      secondaryHref: "/writing",
+      secondaryLabel: "READ THE WRITING",
     };
   }
 
-  // Low readiness → newsletter
+  // Low readiness → build trust first
   return {
     primaryHref: "/newsletter",
-    primaryLabel: "Receive the private letters",
+    primaryLabel: "RECEIVE THE PRIVATE LETTERS",
     secondaryHref: "/writing",
-    secondaryLabel: "Read the writing first",
+    secondaryLabel: "READ THE WRITING",
   };
 }

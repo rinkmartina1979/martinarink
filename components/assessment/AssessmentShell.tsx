@@ -8,6 +8,7 @@ import { AssessmentQuestion } from "./AssessmentQuestion";
 import { AssessmentEmailGate } from "./AssessmentEmailGate";
 import { AssessmentProgress } from "./AssessmentProgress";
 import { AssessmentLoading } from "./AssessmentLoading";
+import { trackAssessment } from "@/lib/analytics/events";
 import type { AnswerMap } from "@/lib/assessment/types";
 
 type Stage =
@@ -42,6 +43,7 @@ export function AssessmentShell() {
   // ── HANDLERS ─────────────────────────────────────────────────
 
   const handleBegin = useCallback(() => {
+    trackAssessment("assessment_started");
     setStage({ kind: "question", questionIndex: 0 });
   }, []);
 
@@ -53,6 +55,7 @@ export function AssessmentShell() {
       const newAnswers = { ...answers, [question.id]: optionIndex };
       setAnswers(newAnswers);
       setPendingIndex(optionIndex);
+      trackAssessment("assessment_question_answered", { questionIndex });
 
       // Brief delay so the selected state animates before advancing
       setTimeout(() => {
@@ -81,6 +84,7 @@ export function AssessmentShell() {
 
   const handleEmailContinue = useCallback(
     (collectedEmail: string, collectedFirstName?: string) => {
+      trackAssessment("assessment_email_submitted");
       setEmail(collectedEmail);
       setFirstName(collectedFirstName);
 
@@ -118,6 +122,11 @@ export function AssessmentShell() {
         }
 
         const data = await res.json();
+        trackAssessment("assessment_completed", {
+          archetype: data.archetype,
+          serviceIntent: data.serviceIntent,
+          readinessLevel: data.readinessLevel,
+        });
         router.push(`/assessment/result/${data.resultId}`);
       } catch (err: unknown) {
         const message =

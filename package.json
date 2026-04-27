@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build --no-lint",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'No test runner configured. See docs/ASSESSMENT_SYSTEM.md#testing' && exit 0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
