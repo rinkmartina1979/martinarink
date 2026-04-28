@@ -65,7 +65,7 @@ export const ARCHETYPE_RESULTS: Record<string, ArchetypeResult> = {
       "The next step is a conversation. A private consultation — €450, credited to the programme if you proceed. In that hour, I will tell you exactly what I see, and we will decide together whether this is the right fit.",
     ],
     closing:
-      "You've waited long enough. Begin the application, or request a consultation.",
+      "You know what you want. The next step is a private conversation — to confirm it is the right fit, and to begin.",
     ctaLabel: "Begin the application",
     ctaHref: "/apply/sober-muse",
     secondaryCta: {

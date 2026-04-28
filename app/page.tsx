@@ -1,15 +1,102 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
-import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata } from "@/lib/metadata";
+import { getHomePage, getFeaturedTestimonials, getPartnerLogos, type Testimonial } from "@/sanity/lib/queries";
 
-export const metadata = buildMetadata();
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getHomePage();
+  if (data?.seo?.seoTitle) {
+    return buildMetadata({
+      title: data.seo.seoTitle,
+      description: data.seo.seoDescription ?? undefined,
+      path: "/",
+    });
+  }
+  return buildMetadata({
+    path: "/",
+  });
+}
 
-export default function HomePage() {
+// Hardcoded fallback testimonials — used when Sanity is not configured
+const FALLBACK_TESTIMONIALS: Omit<Testimonial, "_id" | "portrait" | "programme" | "featured" | "order">[] = [
+  {
+    name: "Armina",
+    role: "Patent Engineer",
+    quote:
+      "She helped me gain clarity about my life path and clearly define my goals. What I thought was a problem with discipline turned out to be a problem with direction.",
+    nda: false,
+  },
+  {
+    name: "Clara",
+    role: "Founder · London",
+    quote:
+      "I stopped being surprised by myself. The work wasn't a rebuild — it was the return of a woman I'd quietly stopped expecting.",
+    nda: false,
+  },
+];
+
+function TestimonialBlock({
+  testimonial,
+  bg,
+  accentColor,
+}: {
+  testimonial: { name: string; role: string | null; quote: string; nda: boolean };
+  bg: string;
+  accentColor: string;
+}) {
+  const displayName = testimonial.nda ? testimonial.role : `${testimonial.name}${testimonial.role ? ` · ${testimonial.role}` : ""}`;
+  return (
+    <div className={`${bg} p-10`}>
+      <span
+        aria-hidden
+        className={`block font-[family-name:var(--font-display)] italic ${accentColor} text-[60px] leading-none -mt-2 mb-2`}
+      >
+        &ldquo;
+      </span>
+      <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.4] text-ink">
+        {testimonial.quote}
+      </blockquote>
+      <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
+        — {displayName}
+      </p>
+    </div>
+  );
+}
+
+export default async function HomePage() {
+  const [pageData, testimonialData, partnerData] = await Promise.all([
+    getHomePage(),
+    getFeaturedTestimonials(),
+    getPartnerLogos(),
+  ]);
+
+  // Use Sanity testimonials if available and non-empty, else fallback
+  const testimonials =
+    testimonialData && testimonialData.length > 0
+      ? testimonialData.slice(0, 2)
+      : FALLBACK_TESTIMONIALS;
+
+  const heroSubheadline =
+    pageData?.heroSubheadline ??
+    "The career. The recognition. The particular kind of life that, on paper, resolves. And somewhere — quietly, between the Sunday afternoons and the 4am recalibrations — something has stopped feeling like yours. I work with a small number of women at a time. Privately.";
+
+  const heroCta = pageData?.heroCta?.label ?? "Begin the assessment";
+  const heroCtaUrl = pageData?.heroCta?.url ?? "/assessment";
+  const heroSecondaryLabel = pageData?.heroSecondaryLabel ?? "Or explore the work →";
+  const heroSecondaryUrl = pageData?.heroSecondaryUrl ?? "/work-with-me";
+
+  const assessmentCtaHeadline =
+    pageData?.assessmentCtaHeadline ?? "Which of two patterns is most alive in your life right now?";
+  const assessmentCtaCopy =
+    pageData?.assessmentCtaCopy ??
+    "Seven questions. About four minutes. At the end, a letter — written specifically for where you are. Not a quiz. Not a quadrant. A beginning.";
+  const assessmentCtaLabel = pageData?.assessmentCtaLabel ?? "Begin the assessment";
+
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────────────── */}
@@ -28,20 +115,16 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-8 max-w-[520px] text-[19px] leading-[1.65] text-ink-soft">
-              The career. The recognition. The particular kind of life that, on
-              paper, resolves. And somewhere — quietly, between the Sunday
-              afternoons and the 4am recalibrations — something has stopped
-              feeling like yours. I work with a small number of women at a time.
-              Privately.
+              {heroSubheadline}
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:items-center">
-              <WineButton href="/assessment">Begin the assessment</WineButton>
+              <WineButton href={heroCtaUrl}>{heroCta}</WineButton>
               <Link
-                href="/work-with-me"
+                href={heroSecondaryUrl}
                 className="text-[15px] text-ink underline decoration-pink decoration-1 underline-offset-[6px] hover:text-pink transition-colors"
               >
-                Or explore the work →
+                {heroSecondaryLabel}
               </Link>
             </div>
           </div>
@@ -65,6 +148,30 @@ export default function HomePage() {
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
       <AuthorityStrip />
+
+      {/* ─── THE PRIVATE COST ────────────────────────────────── */}
+      <section className="bg-cream section-pad">
+        <div className="container-content max-w-3xl">
+          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] tracking-[-0.015em] text-ink">
+            The outside life is not the whole story.
+          </h2>
+          <div className="mt-10 space-y-6 text-[17px] leading-[1.75] text-ink-soft max-w-[600px]">
+            <p>
+              You may be functioning. You may be loved. You may be respected —
+              even admired. And still, something in you may know: this version
+              of your life is costing more than anyone can see.
+            </p>
+            <p>
+              Not because anything has gone dramatically wrong. Because
+              something has shifted — quietly, privately, in the space between
+              who you appear to be and who you actually are.
+            </p>
+            <p>
+              That shift is what I work with.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ─── TWO WAYS IN ─────────────────────────────────────── */}
       <section className="bg-cream section-pad">
@@ -117,11 +224,83 @@ export default function HomePage() {
                   {card.meta}
                 </p>
                 <p className="mt-6 text-[14px] text-wine font-medium group-hover:text-pink transition-colors">
-                  Explore →
+                  Read more →
                 </p>
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ─── CULTURAL WORK TEASER ────────────────────────────── */}
+      <section className="bg-bone section-pad">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-5">
+            <div className="aspect-[4/5] bg-sand/30 flex items-center justify-center text-ink-quiet text-[12px] uppercase tracking-[0.18em]">
+              Book covers
+            </div>
+          </div>
+          <div className="md:col-span-7">
+            <Eyebrow>Creative Work</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[42px] leading-[1.15] text-ink">
+              Before this work became private, it was cultural.
+            </h2>
+            <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[520px]">
+              <p>
+                Three published books. A Spiegel Bestseller. Years inside the
+                fashion world at the highest level. Co-creator of People of
+                Deutschland. Personal assistant to Isabella Blow in London.
+              </p>
+              <p>
+                This is not the biography of a coach. It is the foundation of
+                a very particular kind of understanding.
+              </p>
+            </div>
+            <Link
+              href="/creative-work"
+              className="mt-8 inline-block text-[14px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
+            >
+              View the creative work →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PARTNER LOGOS ───────────────────────────────────── */}
+      <section className="bg-bone border-t border-sand/30 py-14">
+        <div className="container-content">
+          <p className="text-center text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-10">
+            Selected Partners &amp; Collaborators
+          </p>
+          {partnerData && partnerData.length > 0 ? (
+            <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6">
+              {partnerData.map((p) => (
+                <span
+                  key={p._id}
+                  className="text-[13px] uppercase tracking-[0.15em] text-ink/50 font-medium"
+                >
+                  {p.name}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6">
+              {[
+                "Otto", "MCM", "Vogue Germany", "H&M", "Meta",
+                "About You", "Henkel", "Beiersdorf", "Telekom", "Prestel",
+              ].map((name) => (
+                <span
+                  key={name}
+                  className="text-[13px] uppercase tracking-[0.15em] text-ink/50 font-medium"
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
+          )}
+          <p className="mt-8 text-center text-[11px] text-ink-quiet/60">
+            Corporate clients and project partners · 2009–2022
+          </p>
         </div>
       </section>
 
@@ -145,9 +324,8 @@ export default function HomePage() {
             </h2>
             <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
               <p>
-                Born in Persia. Adopted by German parents. Educated in Germany
-                and London. I have lived, from the beginning, with the question
-                of who I am underneath the circumstances I was placed in.
+                {pageData?.aboutTeaser ||
+                  "Born in Persia. Adopted by German parents. Educated in Germany and London. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
               </p>
               <p>
                 Before this practice: personal assistant to Isabella Blow in
@@ -184,16 +362,14 @@ export default function HomePage() {
             <span className="text-pink-soft">A private assessment</span>
           </Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[56px] leading-[1.05] text-cream">
-            Which of two patterns is most alive in your life right now?
+            {assessmentCtaHeadline}
           </h2>
           <p className="mt-8 text-[19px] leading-[1.65] text-cream/80 max-w-[520px] mx-auto">
-            Seven questions. About four minutes. At the end, a letter — written
-            specifically for where you are. Not a quiz. Not a quadrant. A
-            beginning.
+            {assessmentCtaCopy}
           </p>
           <div className="mt-10">
             <GhostButton variant="light" href="/assessment">
-              Begin the assessment
+              {assessmentCtaLabel}
             </GhostButton>
           </div>
           <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-cream/50">
@@ -207,43 +383,14 @@ export default function HomePage() {
         <div className="container-content">
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
-
-            {/* Testimonial 1 — Armina */}
-            <div className="bg-blush p-10">
-              <span
-                aria-hidden
-                className="block font-[family-name:var(--font-display)] italic text-wine/30 text-[60px] leading-none -mt-2 mb-2"
-              >
-                "
-              </span>
-              <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.4] text-ink">
-                She helped me gain clarity about my life path and clearly define
-                my goals. What I thought was a problem with discipline turned
-                out to be a problem with direction.
-              </blockquote>
-              <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
-                — Armina · Patent Engineer
-              </p>
-            </div>
-
-            {/* Testimonial 2 — Clara */}
-            <div className="bg-bone p-10">
-              <span
-                aria-hidden
-                className="block font-[family-name:var(--font-display)] italic text-pink/30 text-[60px] leading-none -mt-2 mb-2"
-              >
-                "
-              </span>
-              <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.4] text-ink">
-                I stopped being surprised by myself. The work wasn&rsquo;t a
-                rebuild — it was the return of a woman I&rsquo;d quietly stopped
-                expecting.
-              </blockquote>
-              <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
-                — Clara · Founder · London
-              </p>
-            </div>
-
+            {testimonials.map((t, i) => (
+              <TestimonialBlock
+                key={"_id" in t ? (t as Testimonial)._id : (t as { name: string }).name + String(i)}
+                testimonial={t}
+                bg={i === 0 ? "bg-blush" : "bg-bone"}
+                accentColor={i === 0 ? "text-wine/30" : "text-pink/30"}
+              />
+            ))}
           </div>
         </div>
       </section>

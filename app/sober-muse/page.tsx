@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
+import { getSoberMusePage } from "@/sanity/lib/queries";
 
 const FAQS = [
   {
@@ -31,14 +33,35 @@ const FAQS = [
   },
 ];
 
-export const metadata = buildMetadata({
-  title: "The Sober Muse Method",
-  description:
-    "A 90-day private engagement for executive women re-examining their relationship with alcohol. No recovery language. No group settings. From €5,000.",
-  path: "/sober-muse",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getSoberMusePage();
+  if (data?.seo?.seoTitle) {
+    return buildMetadata({
+      title: data.seo.seoTitle,
+      description: data.seo.seoDescription ?? undefined,
+      path: "/sober-muse",
+    });
+  }
+  return buildMetadata({
+    title: "The Sober Muse Method",
+    description:
+      "A 90-day private engagement for executive women re-examining their relationship with alcohol. No recovery language. No group settings. From €5,000.",
+    path: "/sober-muse",
+  });
+}
 
-export default function SoberMusePage() {
+export default async function SoberMusePage() {
+  const data = await getSoberMusePage();
+
+  const heroHeadline =
+    data?.heroHeadline ?? "This is not about what you’re giving up.";
+  const heroCopy =
+    data?.heroCopy ??
+    "It is about what you are finally able to see clearly, once the management strategy has been set aside.";
+  const ctaLabel = data?.ctaLabel ?? "Request a private consultation";
+  const ctaUrl = data?.ctaUrl ?? "/book";
+  const investmentText = data?.investmentText ?? null;
+
   return (
     <>
       <script
@@ -51,14 +74,13 @@ export default function SoberMusePage() {
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>The Sober Muse Method</Eyebrow>
           <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
-            This is not about what you&rsquo;re giving up.
+            {heroHeadline}
           </h1>
           <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[560px]">
-            It is about what you are finally able to see clearly, once the
-            management strategy has been set aside.
+            {heroCopy}
           </p>
           <div className="mt-10">
-            <WineButton href="/book">Apply for a consultation</WineButton>
+            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
           </div>
         </div>
       </section>
@@ -70,41 +92,57 @@ export default function SoberMusePage() {
             <h2 className="font-[family-name:var(--font-display)] italic text-[32px] text-ink">
               What this is not.
             </h2>
-            <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
-              {[
-                "A recovery programme",
-                "Group sessions or peer support",
-                "An identity as a “sober person”",
-                "A curriculum, a workbook, or a content library",
-                "Something you need to have hit a bottom to access",
-                "Labelled, categorised, or filed under any clinical framework",
-              ].map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="text-pink mt-2 select-none">—</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            {data?.whatThisIsNotCopy ? (
+              <div className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {data.whatThisIsNotCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            ) : (
+              <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {[
+                  "A recovery programme",
+                  "Group sessions or peer support",
+                  "An identity as a “sober person”",
+                  "A curriculum, a workbook, or a content library",
+                  "Something you need to have hit a bottom to access",
+                  "Labelled, categorised, or filed under any clinical framework",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="text-pink mt-2 select-none">—</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div>
             <h2 className="font-[family-name:var(--font-display)] italic text-[32px] text-ink">
               What this is.
             </h2>
-            <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
-              {[
-                "A 90-day private mentoring engagement",
-                "One woman, one mentor, no group dynamic",
-                "Work that begins with the original question, not the symptom",
-                "Precise, confidential, and calibrated to where you actually are",
-                "Available in English, internationally",
-                "For women who are, by every external measure, doing well",
-              ].map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="text-pink mt-2 select-none">—</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            {data?.forWhomCopy ? (
+              <div className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {data.forWhomCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            ) : (
+              <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {[
+                  "A 90-day private mentoring engagement",
+                  "One woman, one mentor, no group dynamic",
+                  "Work that begins with the original question, not the symptom",
+                  "Precise, confidential, and calibrated to where you actually are",
+                  "Available in English, internationally",
+                  "For women who are, by every external measure, doing well",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="text-pink mt-2 select-none">—</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </section>
@@ -117,6 +155,13 @@ export default function SoberMusePage() {
             <h2 className="mt-5 font-[family-name:var(--font-display)] text-[40px] md:text-[48px] leading-tight text-ink">
               Three phases. Ninety days.
             </h2>
+            {data?.methodCopy && (
+              <div className="mt-6 space-y-4 text-[17px] leading-[1.75] text-ink-soft text-left">
+                {data.methodCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="mt-16 grid md:grid-cols-3 gap-8">
@@ -160,7 +205,7 @@ export default function SoberMusePage() {
             aria-hidden
             className="block font-[family-name:var(--font-display)] italic text-wine-deep text-[80px] leading-none"
           >
-            “
+            &ldquo;
           </span>
           <blockquote className="mt-2 font-[family-name:var(--font-display)] italic text-[24px] md:text-[28px] leading-snug text-cream">
             I came in thinking I had a drinking problem. I left understanding I
@@ -182,21 +227,31 @@ export default function SoberMusePage() {
           <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-ink-soft">
             <p>
               The Sober Muse Method is offered at{" "}
-              <strong className="text-ink">from €5,000</strong> for the 90-day
-              engagement.
+              <strong className="text-ink">
+                {investmentText ?? "from €5,000"}
+              </strong>{" "}
+              for the 90-day engagement.
             </p>
-            <p>
-              This includes three private sessions per month, written prompts
-              between sessions, ongoing correspondence, and a final integration
-              session. Payment by instalment is available.
-            </p>
-            <p>
-              A private consultation — €450, applied toward the programme if you
-              enrol — is the correct place to begin.
-            </p>
+            {data?.privacyCopy ? (
+              data.privacyCopy.split("\n").filter(Boolean).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))
+            ) : (
+              <>
+                <p>
+                  This includes three private sessions per month, written prompts
+                  between sessions, ongoing correspondence, and a final integration
+                  session. Payment by instalment is available.
+                </p>
+                <p>
+                  A private consultation — €450, applied toward the programme if you
+                  enrol — is the correct place to begin.
+                </p>
+              </>
+            )}
           </div>
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <WineButton href="/book">Apply for a consultation</WineButton>
+            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
             <GhostButton href="/assessment">Begin the assessment</GhostButton>
           </div>
         </div>

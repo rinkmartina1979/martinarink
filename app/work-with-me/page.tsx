@@ -1,16 +1,37 @@
+import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
+import { getWorkWithMePage } from "@/sanity/lib/queries";
 
-export const metadata = buildMetadata({
-  title: "Work With Me",
-  description:
-    "Apply for a private consultation with Martina Rink. Two programmes: the Sober Muse Method and Female Empowerment & Leadership.",
-  path: "/work-with-me",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getWorkWithMePage();
+  if (data?.seo?.seoTitle) {
+    return buildMetadata({
+      title: data.seo.seoTitle,
+      description: data.seo.seoDescription ?? undefined,
+      path: "/work-with-me",
+    });
+  }
+  return buildMetadata({
+    title: "Work With Me",
+    description:
+      "Apply for a private consultation with Martina Rink. Two programmes: the Sober Muse Method and Female Empowerment & Leadership.",
+    path: "/work-with-me",
+  });
+}
 
-export default function WorkWithMePage() {
+export default async function WorkWithMePage() {
+  const data = await getWorkWithMePage();
+
+  const heroHeadline = data?.heroHeadline ?? "There are two ways to begin.";
+  const heroCopy =
+    data?.heroCopy ??
+    "A private consultation is the right starting point for both programmes. It is 45 minutes. €450, applied to the programme if you proceed. Not a sales call — a focused conversation to establish whether the work is the right fit.";
+  const ctaLabel = data?.ctaLabel ?? "Begin the assessment";
+  const ctaUrl = data?.ctaUrl ?? "/assessment";
+
   return (
     <>
       <section className="bg-cream pt-32 md:pt-40 pb-16">
@@ -19,39 +40,10 @@ export default function WorkWithMePage() {
             Work with me
           </Eyebrow>
           <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
-            There are two ways to begin.
+            {heroHeadline}
           </h1>
           <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
-            A private consultation is the right starting point for both
-            programmes. It is 45 minutes. €450, applied to the programme if
-            you proceed. Not a sales call — a focused conversation to establish
-            whether the work is the right fit.
-          </p>
-        </div>
-      </section>
-
-      <section className="bg-bone section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <h2 className="font-[family-name:var(--font-display)] italic text-[28px] text-ink">
-            Before you apply, ask yourself:
-          </h2>
-          <div className="mt-10 space-y-6">
-            {[
-              "Am I doing this because I want to — not because I feel I should?",
-              "Am I willing to be honest, even when what's honest is inconvenient?",
-              "Am I at a point where I want a real conversation, not a framework?",
-              "Am I prepared to do the work, rather than just talk about doing it?",
-            ].map((q) => (
-              <p
-                key={q}
-                className="font-[family-name:var(--font-display)] italic text-[20px] text-ink"
-              >
-                {q}
-              </p>
-            ))}
-          </div>
-          <p className="mt-12 text-[15px] text-ink-quiet">
-            If the answer to each of those is yes, we should speak.
+            {heroCopy}
           </p>
         </div>
       </section>
@@ -129,9 +121,41 @@ export default function WorkWithMePage() {
             sense of which conversation — if either — is the right fit.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <WineButton href="/assessment">Begin the assessment</WineButton>
-            <GhostButton href="/book">Or book a consultation</GhostButton>
+            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            <GhostButton href="/book">Reserve a consultation — €450</GhostButton>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-bone section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <h2 className="font-[family-name:var(--font-display)] italic text-[28px] text-ink">
+            Before you apply, ask yourself:
+          </h2>
+          <div className="mt-10 space-y-6">
+            {[
+              "Am I doing this because I want to — not because I feel I should?",
+              "Am I willing to be honest, even when what's honest is inconvenient?",
+              "Am I at a point where I want a real conversation, not a framework?",
+              "Am I prepared to do the work, rather than just talk about doing it?",
+            ].map((q) => (
+              <p
+                key={q}
+                className="font-[family-name:var(--font-display)] italic text-[20px] text-ink"
+              >
+                {q}
+              </p>
+            ))}
+          </div>
+          <p className="mt-12 text-[15px] text-ink-quiet">
+            If the answer to each of those is yes, we should speak.
+          </p>
+          <div className="mt-10">
+            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+          </div>
+          <p className="mt-5 text-[13px] text-ink-quiet">
+            Private consultation: €450 · Applied in full to programme investment upon enrolment.
+          </p>
         </div>
       </section>
     </>
