@@ -19,8 +19,8 @@ export interface SubmissionRecord {
   serviceIntent: ServiceIntent;
   readinessLevel: ReadinessLevel;
   privacyNeed: PrivacyNeed;
-  kitStatus: "pending" | "success" | "skipped" | "failed";
-  kitError?: string;
+  emailStatus: "pending" | "success" | "skipped" | "failed";
+  emailError?: string;
   sourcePage: string;
   userAgent?: string;
   referrer?: string;
@@ -55,8 +55,8 @@ export async function storeSubmission(
       serviceIntent: record.serviceIntent,
       readinessLevel: record.readinessLevel,
       privacyNeed: record.privacyNeed,
-      kitStatus: record.kitStatus,
-      kitError: record.kitError ?? null,
+      emailStatus: record.emailStatus,
+      emailError: record.emailError ?? null,
       sourcePage: record.sourcePage,
       userAgent: record.userAgent ?? null,
       referrer: record.referrer ?? null,

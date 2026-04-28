@@ -3,11 +3,12 @@
  *
  * Receives application form submissions for both programmes.
  * Sends internal notification via Resend.
- * Optionally subscribes applicant to Kit with application tag.
+ * Adds applicant to Brevo Assessment Leads list with APPLICATION_STATUS attribute.
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { addBrevoContact } from "@/lib/brevo";
 
 const ApplySchema = z.object({
   firstName: z.string().min(1),
@@ -87,23 +88,19 @@ export async function POST(req: NextRequest) {
     console.warn("[Apply] RESEND_API_KEY or RESEND_NOTIFY_EMAIL not configured — notification skipped.");
   }
 
-  // ── Optional Kit tag for applicants ──────────────────────
-  const kitKey = process.env.KIT_API_KEY;
-  const kitFormId = process.env.KIT_FORM_ID_ASSESSMENT;
-  const kitApplicantTag =
-    programme === "sober-muse"
-      ? process.env.KIT_TAG_APPLICANT_SOBER_MUSE
-      : process.env.KIT_TAG_APPLICANT_EMPOWERMENT;
-
-  if (kitKey && kitFormId && kitApplicantTag) {
-    const { subscribeToKit } = await import("@/lib/kit");
-    subscribeToKit({
+  // ── Brevo: add applicant to Assessment Leads list ────────
+  const listIdRaw = process.env.BREVO_LIST_ID_ASSESSMENT;
+  if (listIdRaw) {
+    addBrevoContact({
       email,
       firstName,
-      formId: kitFormId,
-      tags: [kitApplicantTag],
-      fields: { source: "application", programme },
-    }).catch((err) => console.error("[Apply] Kit failed:", err));
+      listIds: [parseInt(listIdRaw, 10)],
+      attributes: {
+        SOURCE: "application",
+        APPLICATION_PROGRAMME: programme,
+        APPLICATION_STATUS: "submitted",
+      },
+    }).catch((err) => console.error("[Apply] Brevo failed:", err));
   }
 
   return NextResponse.json({ success: true });
