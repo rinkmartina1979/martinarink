@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
@@ -129,15 +130,22 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Portrait placeholder — replace with editorial image */}
+          {/* Hero portrait */}
           <div className="md:col-span-5 lg:col-span-5 relative">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center text-ink-quiet text-[12px] uppercase tracking-[0.18em]">
-                Editorial Portrait
-              </div>
+              <Image
+                src="/images/portraits/martina-hero.jpg"
+                alt="Martina Rink — private mentor and author"
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover object-top"
+                priority
+                fetchPriority="high"
+              />
+              {/* Script overlay — sits on top of photo */}
               <ScriptAccent
                 as="div"
-                className="absolute -bottom-2 -right-2 md:bottom-4 md:right-4 text-[28px] md:text-[32px] -rotate-2"
+                className="absolute -bottom-2 -right-2 md:bottom-4 md:right-4 text-[28px] md:text-[32px] -rotate-2 drop-shadow-sm"
               >
                 welcome home, love
               </ScriptAccent>
@@ -308,8 +316,14 @@ export default async function HomePage() {
       <section className="bg-bone section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-5">
-            <div className="aspect-[4/5] bg-sand/30 flex items-center justify-center text-ink-quiet text-[12px] uppercase tracking-[0.18em]">
-              Editorial Portrait
+            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
+              <Image
+                src="/images/portraits/martina-hero.jpg"
+                alt="Martina Rink"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-top"
+              />
             </div>
           </div>
           <div className="md:col-span-7">
