@@ -45,13 +45,13 @@ export default async function ContactPage() {
         <div className="mt-6 space-y-3">
           <Link
             href="/assessment"
-            className="block text-[17px] text-wine font-[family-name:var(--font-display)] italic underline decoration-pink underline-offset-4"
+            className="block text-[17px] text-plum font-[family-name:var(--font-display)] italic underline decoration-pink underline-offset-4"
           >
             → Take the assessment
           </Link>
           <Link
             href="/book"
-            className="block text-[17px] text-wine font-[family-name:var(--font-display)] italic underline decoration-pink underline-offset-4"
+            className="block text-[17px] text-plum font-[family-name:var(--font-display)] italic underline decoration-pink underline-offset-4"
           >
             → Request a private consultation
           </Link>
@@ -63,7 +63,7 @@ export default async function ContactPage() {
           </p>
           <a
             href="mailto:contact@martinarink.com"
-            className="mt-4 block font-[family-name:var(--font-display)] italic text-[24px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
+            className="mt-4 block font-[family-name:var(--font-display)] italic text-[24px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
           >
             contact@martinarink.com
           </a>

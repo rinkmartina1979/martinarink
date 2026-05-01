@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
@@ -120,7 +120,7 @@ export default async function HomePage() {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:items-center">
-              <WineButton href={heroCtaUrl}>{heroCta}</WineButton>
+              <PlumButton href={heroCtaUrl}>{heroCta}</PlumButton>
               <Link
                 href={heroSecondaryUrl}
                 className="text-[15px] text-ink underline decoration-pink decoration-1 underline-offset-[6px] hover:text-pink transition-colors"
@@ -150,6 +150,27 @@ export default async function HomePage() {
                 welcome home, love
               </ScriptAccent>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── AS FEATURED IN — press logos above fold ─────────── */}
+      <section className="bg-cream border-t border-sand/40 py-8">
+        <div className="container-content">
+          <p className="text-center text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-5">
+            As featured in
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-3">
+            {["Der Spiegel", "Brigitte", "STERN", "Vogue Germany", "Die Zeit"].map(
+              (outlet) => (
+                <span
+                  key={outlet}
+                  className="font-[family-name:var(--font-display)] text-[15px] md:text-[17px] text-ink/55 tracking-[0.04em]"
+                >
+                  {outlet}
+                </span>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -231,7 +252,7 @@ export default async function HomePage() {
                 <p className="mt-8 text-[12px] uppercase tracking-[0.15em] text-ink-quiet">
                   {card.meta}
                 </p>
-                <p className="mt-6 text-[14px] text-wine font-medium group-hover:text-pink transition-colors">
+                <p className="mt-6 text-[14px] text-plum font-medium group-hover:text-pink transition-colors">
                   Read more →
                 </p>
               </Link>
@@ -272,7 +293,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/creative-work"
-              className="mt-8 inline-block text-[14px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
+              className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
             >
               View the creative work →
             </Link>
@@ -363,7 +384,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/about"
-              className="mt-8 inline-block text-[14px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
+              className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
             >
               Read the longer version →
             </Link>
@@ -408,7 +429,7 @@ export default async function HomePage() {
                 key={"_id" in t ? (t as Testimonial)._id : (t as { name: string }).name + String(i)}
                 testimonial={t}
                 bg={i === 0 ? "bg-blush" : "bg-bone"}
-                accentColor={i === 0 ? "text-wine/30" : "text-pink/30"}
+                accentColor={i === 0 ? "text-plum/30" : "text-pink/30"}
               />
             ))}
           </div>

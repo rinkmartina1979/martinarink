@@ -105,7 +105,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
               <Link
                 href="/assessment"
                 onClick={close}
-                className="mt-4 inline-flex items-center justify-center bg-wine text-cream uppercase tracking-[0.18em] text-[11px] font-medium px-10 py-4 rounded-[1px] w-full max-w-xs text-center"
+                className="mt-4 inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[11px] font-medium px-10 py-4 rounded-[1px] w-full max-w-xs text-center"
               >
                 Begin the Assessment
               </Link>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
@@ -81,7 +81,7 @@ export default async function EmpowermentPage() {
               {heroCopy}
             </p>
             <div className="mt-10">
-              <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+              <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             </div>
           </div>
           <div className="md:col-span-5">
@@ -254,7 +254,7 @@ export default async function EmpowermentPage() {
             personally and respond within three working days.
           </p>
           <div className="mt-10">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
           </div>
           <p className="mt-6 italic text-[18px] text-ink-soft">
             <ScriptAccent className="text-[28px] text-ink-soft">
@@ -275,6 +275,34 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
+      {/* WHO THIS IS NOT FOR — premium qualifier */}
+      <section className="bg-violet-soft section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>An honest filter</Eyebrow>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
+            Who this is not for.
+          </h2>
+          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
+            This work is precise. It is not the right fit for every woman, and
+            saying so honestly is part of how I begin.
+          </p>
+          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
+            {[
+              "The woman who wants frameworks, formulas, or productivity systems. There are none here.",
+              "The woman in early career. This work assumes you have already arrived somewhere — and are now reckoning with what that arrival means.",
+              "The woman who wants someone to validate her current direction. The work begins with the questions she has been avoiding.",
+              "The woman who is not ready to be honest with herself about what she actually wants. That honesty is the work.",
+              "The woman looking for a fixed timeline. This is open-ended. It runs until it is done — usually six months to two years.",
+            ].map((item) => (
+              <li key={item} className="flex gap-4">
+                <span className="text-plum mt-2 select-none">—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="bg-bone section-pad">
         <div className="container-content max-w-3xl mx-auto">
@@ -288,7 +316,7 @@ export default async function EmpowermentPage() {
                   <dt className="font-[family-name:var(--font-display)] text-[20px] md:text-[22px] text-ink">
                     {faq.q}
                   </dt>
-                  <span className="text-wine text-2xl mt-1 group-open:rotate-45 transition-transform duration-200">
+                  <span className="text-plum text-2xl mt-1 group-open:rotate-45 transition-transform duration-200">
                     +
                   </span>
                 </summary>

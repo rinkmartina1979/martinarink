@@ -52,7 +52,7 @@ export default async function ImprintPage() {
                 E-Mail:{" "}
                 <a
                   href="mailto:contact@martinarink.com"
-                  className="text-wine underline underline-offset-4"
+                  className="text-plum underline underline-offset-4"
                 >
                   contact@martinarink.com
                 </a>
@@ -87,7 +87,7 @@ export default async function ImprintPage() {
                 E-Mail:{" "}
                 <a
                   href="mailto:info@elisabeth-ruge-agentur.de"
-                  className="text-wine underline underline-offset-4"
+                  className="text-plum underline underline-offset-4"
                 >
                   info@elisabeth-ruge-agentur.de
                 </a>
@@ -105,7 +105,7 @@ export default async function ImprintPage() {
                 Online-Streitbeilegung bereit:{" "}
                 <a
                   href="https://ec.europa.eu/consumers/odr/"
-                  className="text-wine underline underline-offset-4"
+                  className="text-plum underline underline-offset-4"
                   rel="noopener noreferrer"
                   target="_blank"
                 >

@@ -14,6 +14,8 @@ const baseSchema = z.object({
   q2: z.string().min(20, "Please tell us a little more — at least a sentence."),
   q3: z.string().min(1, "Please make a selection."),
   q4: z.string().min(10, "Please share a little more."),
+  // Budget readiness — qualifies fit before the call. Honest filter, not gatekeeping.
+  q5: z.string().min(1, "Please make a selection."),
   consent: z.literal(true, {
     error: "Please confirm you have read the privacy note.",
   }),
@@ -96,7 +98,7 @@ function ApplicationFormShell({
           >
             {field.label}
             {field.required !== false && (
-              <span className="text-wine ml-1">*</span>
+              <span className="text-plum ml-1">*</span>
             )}
           </label>
 
@@ -108,7 +110,7 @@ function ApplicationFormShell({
               className={[
                 "w-full px-4 py-3 bg-cream border text-ink placeholder-ink-quiet/50 text-[15px] leading-[1.7] focus:outline-none rounded-[1px] transition-colors resize-y",
                 errors[field.id]
-                  ? "border-wine"
+                  ? "border-plum"
                   : "border-sand focus:border-ink-soft",
               ].join(" ")}
               {...register(field.id)}
@@ -123,7 +125,7 @@ function ApplicationFormShell({
               className={[
                 "w-full px-4 py-3 bg-cream border text-ink placeholder-ink-quiet/50 text-[15px] focus:outline-none rounded-[1px] transition-colors",
                 errors[field.id]
-                  ? "border-wine"
+                  ? "border-plum"
                   : "border-sand focus:border-ink-soft",
               ].join(" ")}
               {...register(field.id)}
@@ -139,7 +141,7 @@ function ApplicationFormShell({
               className={[
                 "w-full px-4 py-3 bg-cream border text-ink placeholder-ink-quiet/50 text-[15px] focus:outline-none rounded-[1px] transition-colors",
                 errors[field.id]
-                  ? "border-wine"
+                  ? "border-plum"
                   : "border-sand focus:border-ink-soft",
               ].join(" ")}
               {...register(field.id)}
@@ -152,7 +154,7 @@ function ApplicationFormShell({
               className={[
                 "w-full px-4 py-3 bg-cream border text-ink text-[15px] focus:outline-none rounded-[1px] transition-colors",
                 errors[field.id]
-                  ? "border-wine"
+                  ? "border-plum"
                   : "border-sand focus:border-ink-soft",
               ].join(" ")}
               {...register(field.id)}
@@ -171,7 +173,7 @@ function ApplicationFormShell({
               <input
                 id={`field-${field.id}`}
                 type="checkbox"
-                className="mt-1 w-4 h-4 accent-wine"
+                className="mt-1 w-4 h-4 accent-plum"
                 {...register(field.id)}
               />
               <span className="text-[13px] leading-[1.6] text-ink-soft">
@@ -185,7 +187,7 @@ function ApplicationFormShell({
             <p
               role="alert"
               aria-live="polite"
-              className="mt-2 text-[13px] text-wine"
+              className="mt-2 text-[13px] text-plum"
             >
               {errors[field.id]?.message as string}
             </p>
@@ -194,7 +196,7 @@ function ApplicationFormShell({
       ))}
 
       {serverError && (
-        <p role="alert" aria-live="polite" className="text-[14px] text-wine">
+        <p role="alert" aria-live="polite" className="text-[14px] text-plum">
           {serverError}
         </p>
       )}
@@ -202,7 +204,7 @@ function ApplicationFormShell({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex items-center justify-center bg-wine text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-12 py-4 rounded-[1px] hover:bg-wine-deep transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-12 py-4 rounded-[1px] hover:bg-plum-deep transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Sending…" : submitLabel}
       </button>
@@ -248,6 +250,16 @@ const SOBER_MUSE_FIELDS: FormField[] = [
       "Not in outcomes or metrics. What does it feel like to be her?",
   },
   {
+    id: "q5",
+    label: "Investment readiness",
+    type: "select",
+    options: [
+      "Yes — I'm ready to invest €5,000–€7,500 in the next 60 days",
+      "Yes, with a payment plan",
+      "Not at this time — I'd like to begin with the newsletter",
+    ],
+  },
+  {
     id: "consent",
     label: "",
     type: "checkbox",
@@ -290,6 +302,16 @@ const EMPOWERMENT_FIELDS: FormField[] = [
     label: "What does success look like for you — 12 months from now?",
     type: "textarea",
     placeholder: "Not the LinkedIn version. The honest version.",
+  },
+  {
+    id: "q5",
+    label: "Investment readiness",
+    type: "select",
+    options: [
+      "Yes — I'm ready to invest €7,500–€15,000 in the next 60 days",
+      "Yes, with a payment plan",
+      "Not at this time — I'd like to begin with the newsletter",
+    ],
   },
   {
     id: "consent",

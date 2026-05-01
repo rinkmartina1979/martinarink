@@ -221,6 +221,25 @@ export default async function PressPage() {
                 </span>
               ))}
             </div>
+
+            {/* Above-the-fold press strip */}
+            <div className="mt-10 pt-6 border-t border-sand/60">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">
+                As featured in
+              </p>
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
+                {["Der Spiegel", "Brigitte", "STERN", "Vogue Germany", "Die Zeit"].map(
+                  (outlet) => (
+                    <span
+                      key={outlet}
+                      className="font-[family-name:var(--font-display)] text-[15px] text-ink/55 tracking-[0.04em]"
+                    >
+                      {outlet}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
           </div>
           <div className="md:col-span-5">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
@@ -289,7 +308,7 @@ export default async function PressPage() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[13px] text-wine underline underline-offset-4 shrink-0"
+                      className="text-[13px] text-plum underline underline-offset-4 shrink-0"
                     >
                       Read →
                     </a>
@@ -505,7 +524,7 @@ export default async function PressPage() {
                 E-Mail:{" "}
                 <a
                   href="mailto:info@elisabeth-ruge-agentur.de"
-                  className="text-wine underline underline-offset-4"
+                  className="text-plum underline underline-offset-4"
                 >
                   info@elisabeth-ruge-agentur.de
                 </a>
@@ -517,7 +536,7 @@ export default async function PressPage() {
       </section>
 
       {/* ── 9. Press CTA ─────────────────────────────────────── */}
-      <section className="bg-wine section-pad">
+      <section className="bg-plum section-pad">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-cream/60 mb-6">
             Press &amp; speaking enquiries

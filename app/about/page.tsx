@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata } from "@/lib/metadata";
@@ -144,6 +144,27 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* ── PULL QUOTE — Isabella Blow specific authority ─────── */}
+      <section className="bg-violet-soft py-20">
+        <div className="container-content max-w-3xl mx-auto text-center">
+          <span
+            aria-hidden
+            className="block font-[family-name:var(--font-display)] italic text-plum/40 text-[80px] leading-none"
+          >
+            &ldquo;
+          </span>
+          <blockquote className="-mt-4 font-[family-name:var(--font-display)] italic text-[26px] md:text-[34px] leading-[1.25] text-ink">
+            Isabella collected people the way she collected hats — with absolute
+            precision, and an instinct for who could carry weight. She placed
+            McQueen, Treacy, the entire generation. What I learned was not how
+            to be like her. It was how to read a room the way she read it.
+          </blockquote>
+          <p className="mt-10 text-[12px] uppercase tracking-[0.22em] text-ink-quiet">
+            — Martina, on her years at Isabella Blow&rsquo;s side, London 2003–2007
+          </p>
+        </div>
+      </section>
+
       {/* CREDENTIALS — TWO COLUMN */}
       <section className="bg-cream section-pad">
         <div className="container-content grid md:grid-cols-2 gap-12 md:gap-16">
@@ -241,7 +262,7 @@ export default async function AboutPage() {
                     My own re-examination of alcohol began not from a crisis but
                     from a question. I was, by all external measures, doing well. I
                     had a life, a body of published work, a set of relationships I
-                    valued, and a daily glass of wine that had quietly become a
+                    valued, and a daily glass of plum that had quietly become a
                     different thing from what it started as.
                   </p>
                   <p>
@@ -271,11 +292,11 @@ export default async function AboutPage() {
               who are ready for it.
             </h2>
           )}
-          <ScriptAccent className="block mt-10 text-[48px] text-wine">
+          <ScriptAccent className="block mt-10 text-[48px] text-plum">
             Martina
           </ScriptAccent>
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             <GhostButton href="/sober-muse">Explore the work</GhostButton>
           </div>
         </div>

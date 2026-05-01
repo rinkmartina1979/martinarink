@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 
 export function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -50,7 +50,7 @@ export function NewsletterForm() {
           placeholder="First name (optional)"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          className="w-full bg-bone border border-sand px-4 py-3 text-[16px] text-ink placeholder:text-ink-quiet/70 focus:outline-none focus:border-wine"
+          className="w-full bg-bone border border-sand px-4 py-3 text-[16px] text-ink placeholder:text-ink-quiet/70 focus:outline-none focus:border-plum"
         />
         <input
           type="email"
@@ -58,16 +58,16 @@ export function NewsletterForm() {
           placeholder="Your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-bone border border-sand px-4 py-3 text-[16px] text-ink placeholder:text-ink-quiet/70 focus:outline-none focus:border-wine"
+          className="w-full bg-bone border border-sand px-4 py-3 text-[16px] text-ink placeholder:text-ink-quiet/70 focus:outline-none focus:border-plum"
         />
       </div>
       <div className="mt-5">
-        <WineButton type="submit" className="w-full" disabled={status === "loading"}>
+        <PlumButton type="submit" className="w-full" disabled={status === "loading"}>
           {status === "loading" ? "Sending..." : "Receive the letters"}
-        </WineButton>
+        </PlumButton>
       </div>
       {status === "err" && (
-        <p className="mt-3 text-[13px] text-wine">{errorMsg}</p>
+        <p className="mt-3 text-[13px] text-plum">{errorMsg}</p>
       )}
       <p className="mt-4 text-[12px] text-ink-quiet text-center">
         Your email. Nothing else required. Unsubscribing is one click.

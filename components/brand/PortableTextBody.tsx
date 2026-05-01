@@ -45,7 +45,7 @@ const components: PortableTextComponents = {
     link: ({ value, children }) => (
       <a
         href={value?.href}
-        className="text-wine underline underline-offset-4 hover:text-wine-deep transition-colors"
+        className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
         target={value?.href?.startsWith("http") ? "_blank" : undefined}
         rel={value?.href?.startsWith("http") ? "noopener noreferrer" : undefined}
       >

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { MobileMenu } from "./MobileMenu";
 import { NavDropdown } from "./NavDropdown";
 import { cn } from "@/lib/utils";
@@ -54,9 +54,9 @@ export function Nav() {
             </Link>
           ))}
           <NavDropdown />
-          <WineButton href="/assessment" className="!px-6 !py-3 !text-[11px] !tracking-[0.18em]">
+          <PlumButton href="/assessment" className="!px-6 !py-3 !text-[11px] !tracking-[0.18em]">
             Begin the Assessment
-          </WineButton>
+          </PlumButton>
         </nav>
 
         {/* Mobile */}

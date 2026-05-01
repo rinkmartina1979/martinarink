@@ -79,7 +79,7 @@ export function NavDropdown() {
                 <span className="mt-2 block text-[12px] text-ink-quiet tracking-wide">
                   90 days · private · from €5,000
                 </span>
-                <span className="mt-5 block text-[12px] text-wine group-hover:text-pink transition-colors">
+                <span className="mt-5 block text-[12px] text-plum group-hover:text-pink transition-colors">
                   Explore →
                 </span>
               </Link>
@@ -100,7 +100,7 @@ export function NavDropdown() {
                 <span className="mt-2 block text-[12px] text-ink-quiet tracking-wide">
                   6–12 months · private · from €7,500
                 </span>
-                <span className="mt-5 block text-[12px] text-wine group-hover:text-pink transition-colors">
+                <span className="mt-5 block text-[12px] text-plum group-hover:text-pink transition-colors">
                   Explore →
                 </span>
               </Link>
@@ -114,7 +114,7 @@ export function NavDropdown() {
               <Link
                 href="/assessment"
                 onClick={() => setOpen(false)}
-                className="text-[11px] uppercase tracking-[0.14em] text-wine hover:text-pink transition-colors"
+                className="text-[11px] uppercase tracking-[0.14em] text-plum hover:text-pink transition-colors"
               >
                 Begin the assessment →
               </Link>

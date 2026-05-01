@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
 import { getCreativeWorkPage } from "@/sanity/lib/queries";
@@ -259,9 +259,9 @@ export default async function CreativeWorkPage() {
               "All of this — the photography, the fashion, the years with Isabella — was preparation. Not for a portfolio, but for a way of seeing. That seeing is now the practice."}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <WineButton href={closing?.primaryCtaUrl ?? "/about"}>
+            <PlumButton href={closing?.primaryCtaUrl ?? "/about"}>
               {closing?.primaryCtaLabel ?? "Read the full story"}
-            </WineButton>
+            </PlumButton>
             <GhostButton href={closing?.secondaryCtaUrl ?? "/work-with-me"}>
               {closing?.secondaryCtaLabel ?? "Work with me"}
             </GhostButton>
