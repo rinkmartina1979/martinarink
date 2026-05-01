@@ -75,8 +75,8 @@ export default async function AboutPage() {
             {/* Portrait */}
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
-                src="/images/portraits/martina-hero.jpg"
-                alt="Martina Rink"
+                src="/images/portraits/martina-portrait-pink-blouse.jpg"
+                alt="Martina Rink — private mentor and author"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
                 className="object-cover object-top"
@@ -101,8 +101,8 @@ export default async function AboutPage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-hero.jpg"
-                alt="Martina Rink"
+                src="/images/portraits/martina-gallery-leopard.jpg"
+                alt="Martina Rink — formative years"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
                 className="object-cover object-center"

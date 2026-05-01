@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
@@ -70,16 +71,30 @@ export default async function EmpowermentPage() {
 
       {/* HERO */}
       <section className="bg-cream pt-32 md:pt-40 pb-16 md:pb-24">
-        <div className="container-content max-w-3xl">
-          <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-[1.05] text-ink">
-            {heroHeadline}
-          </h1>
-          <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[560px]">
-            {heroCopy}
-          </p>
-          <div className="mt-10">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-[1.05] text-ink">
+              {heroHeadline}
+            </h1>
+            <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[520px]">
+              {heroCopy}
+            </p>
+            <div className="mt-10">
+              <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            </div>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-floral-dress.jpg"
+                alt="Martina Rink — Female Empowerment & Leadership"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -208,6 +223,20 @@ export default async function EmpowermentPage() {
               </>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* LEOPARD EDITORIAL STRIP */}
+      <section className="bg-bone py-0 overflow-hidden">
+        <div className="relative h-64 md:h-80">
+          <Image
+            src="/images/portraits/martina-leopard-lounge.jpg"
+            alt="Martina Rink"
+            fill
+            sizes="100vw"
+            className="object-cover object-[center_20%]"
+          />
+          <div className="absolute inset-0 bg-ink/40" />
         </div>
       </section>
 

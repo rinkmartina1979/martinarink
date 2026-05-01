@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
 import { GhostButton } from "@/components/brand/GhostButton";
@@ -35,16 +36,28 @@ export default async function WorkWithMePage() {
   return (
     <>
       <section className="bg-cream pt-32 md:pt-40 pb-16">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <Eyebrow className="justify-center" withLine>
-            Work with me
-          </Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
-            {heroHeadline}
-          </h1>
-          <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
-            {heroCopy}
-          </p>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>Work with me</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
+              {heroHeadline}
+            </h1>
+            <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft max-w-[520px]">
+              {heroCopy}
+            </p>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-portrait-studio.jpg"
+                alt="Martina Rink — private mentor"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-top"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </section>
 

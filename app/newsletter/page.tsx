@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { buildMetadata } from "@/lib/metadata";
@@ -32,44 +33,55 @@ export default async function NewsletterPage() {
   return (
     <>
       <section className="bg-cream pt-32 md:pt-40 pb-16">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <Eyebrow className="justify-center" withLine>
-            The Sober Muse Letter
-          </Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
-            {headline}
-          </h1>
-          {subheadline && (
-            <p className="mt-6 text-[18px] leading-[1.75] text-ink-soft">
-              {subheadline}
-            </p>
-          )}
-          <div className="mt-10 space-y-5 text-[17px] leading-[1.75] text-ink-soft text-left">
-            {data?.bodyCopy ? (
-              data.bodyCopy.split("\n").filter(Boolean).map((para, i) => (
-                <p key={i}>{para}</p>
-              ))
-            ) : (
-              <>
-                <p>
-                  I write about identity, leadership, and the examined life. About
-                  what high-achieving women use alcohol for — and what they discover
-                  when they stop. About the particular loneliness of external
-                  success. About coming home to yourself.
-                </p>
-                <p>
-                  It is not a newsletter. It is a correspondence. It goes to a small
-                  number of women. It never tries to sell you anything until the
-                  moment it makes sense to.
-                </p>
-              </>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-start">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>The Sober Muse Letter</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[56px] leading-tight text-ink">
+              {headline}
+            </h1>
+            {subheadline && (
+              <p className="mt-6 text-[18px] leading-[1.75] text-ink-soft">
+                {subheadline}
+              </p>
+            )}
+            <div className="mt-10 space-y-5 text-[17px] leading-[1.75] text-ink-soft">
+              {data?.bodyCopy ? (
+                data.bodyCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))
+              ) : (
+                <>
+                  <p>
+                    I write about identity, leadership, and the examined life. About
+                    what high-achieving women use alcohol for — and what they discover
+                    when they stop. About the particular loneliness of external
+                    success. About coming home to yourself.
+                  </p>
+                  <p>
+                    It is not a newsletter. It is a correspondence. It goes to a small
+                    number of women. It never tries to sell you anything until the
+                    moment it makes sense to.
+                  </p>
+                </>
+              )}
+            </div>
+            {trustNote && (
+              <p className="mt-6 text-[14px] text-ink-quiet">
+                {trustNote}
+              </p>
             )}
           </div>
-          {trustNote && (
-            <p className="mt-6 text-[14px] text-ink-quiet text-center">
-              {trustNote}
-            </p>
-          )}
+          <div className="md:col-span-5 md:sticky md:top-32">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-garden-pink.jpg"
+                alt="Martina Rink — The Sober Muse Letter"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

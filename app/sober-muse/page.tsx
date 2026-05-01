@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
 import { GhostButton } from "@/components/brand/GhostButton";
@@ -71,16 +72,30 @@ export default async function SoberMusePage() {
 
       {/* HERO */}
       <section className="bg-cream pt-32 md:pt-40 pb-16 md:pb-24">
-        <div className="container-content max-w-3xl">
-          <Eyebrow withLine>The Sober Muse Method</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
-            {heroHeadline}
-          </h1>
-          <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[560px]">
-            {heroCopy}
-          </p>
-          <div className="mt-10">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>The Sober Muse Method</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
+              {heroHeadline}
+            </h1>
+            <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[520px]">
+              {heroCopy}
+            </p>
+            <div className="mt-10">
+              <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            </div>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-ibiza-working.jpg"
+                alt="Martina Rink — Sober Muse Method"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -220,7 +235,20 @@ export default async function SoberMusePage() {
 
       {/* INVESTMENT */}
       <section className="bg-cream section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-4">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-cozy-portrait.jpg"
+                alt="Martina Rink"
+                fill
+                sizes="(max-width: 768px) 100vw, 28vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-8">
+        <div className="max-w-2xl text-center mx-auto">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
             The investment.
           </h2>
@@ -253,6 +281,8 @@ export default async function SoberMusePage() {
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
             <GhostButton href="/assessment">Begin the assessment</GhostButton>
+          </div>
+        </div>
           </div>
         </div>
       </section>

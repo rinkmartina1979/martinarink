@@ -244,8 +244,14 @@ export default async function HomePage() {
       <section className="bg-bone section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-5">
-            <div className="aspect-[4/5] bg-sand/30 flex items-center justify-center text-ink-quiet text-[12px] uppercase tracking-[0.18em]">
-              Book covers
+            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
+              <Image
+                src="/images/portraits/martina-cafe-editorial.jpg"
+                alt="Martina Rink — author and cultural observer"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+              />
             </div>
           </div>
           <div className="md:col-span-7">
@@ -318,8 +324,8 @@ export default async function HomePage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-hero.jpg"
-                alt="Martina Rink"
+                src="/images/portraits/martina-portrait-studio.jpg"
+                alt="Martina Rink — private mentor"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
                 className="object-cover object-top"
