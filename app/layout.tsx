@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "@sanity/visual-editing/react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { playfair, dmSans, dancingScript } from "@/lib/fonts";
@@ -10,9 +12,11 @@ import "./globals.css";
 // PREVIEW MODE — noindex until client approves. Set noIndex: false for launch.
 export const metadata: Metadata = buildMetadata({ noIndex: true });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const { isEnabled: isDraftMode } = await draftMode();
+
   return (
     <html
       lang="en"
@@ -26,6 +30,8 @@ export default function RootLayout({
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
+        {/* Click-to-edit overlay — only loads when previewing inside Sanity Studio */}
+        {isDraftMode && <VisualEditing portal={true} />}
         <Analytics />
         <SpeedInsights />
       </body>

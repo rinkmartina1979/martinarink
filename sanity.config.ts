@@ -1,5 +1,6 @@
 import { defineConfig } from 'sanity'
 import { structureTool, type StructureBuilder } from 'sanity/structure'
+import { presentationTool } from 'sanity/presentation'
 import { visionTool } from '@sanity/vision'
 import {
   DocumentTextIcon,
@@ -197,6 +198,16 @@ export default defineConfig({
                   ]),
               ),
           ]),
+    }),
+    // Visual Editing: see the live site inside Studio and click any text/image to edit
+    presentationTool({
+      previewUrl: {
+        origin:
+          typeof window === 'undefined'
+            ? process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+            : window.location.origin,
+        previewMode: { enable: '/api/draft-mode/enable' },
+      },
     }),
     visionTool({ defaultApiVersion: '2026-02-01' }),
   ],
