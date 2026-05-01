@@ -21,7 +21,7 @@ export function buildMetadata({
     : `${SITE.name} — Private Mentoring for High-Achieving Women`;
   const desc = description ?? SITE.description;
   const url = `${SITE.url}${path}`;
-  const ogImage = image ?? `${SITE.url}/og-default.jpg`;
+  const ogImage = image ?? `${SITE.url}/opengraph-image`;
 
   return {
     title: fullTitle,
@@ -64,8 +64,6 @@ export function personSchema() {
     sameAs: [
       SITE.social.linkedin,
       SITE.social.instagram,
-      SITE.social.facebook,
-      SITE.social.xing,
     ],
     worksFor: {
       "@type": "Organization",

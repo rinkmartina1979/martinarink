@@ -4,12 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { WineButton } from "@/components/brand/WineButton";
 import { MobileMenu } from "./MobileMenu";
+import { NavDropdown } from "./NavDropdown";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { label: "About", href: "/about" },
-  { label: "Sober Muse", href: "/sober-muse" },
-  { label: "Empowerment", href: "/empowerment" },
   { label: "Writing", href: "/writing" },
   { label: "Press", href: "/press" },
 ];
@@ -34,6 +33,7 @@ export function Nav() {
       )}
     >
       <div className="container-content flex items-center justify-between h-[72px]">
+        {/* Logo */}
         <Link
           href="/"
           className="font-[family-name:var(--font-display)] text-[20px] tracking-[0.06em] text-ink"
@@ -42,6 +42,7 @@ export function Nav() {
           MARTINA RINK<span className="text-pink">.</span>
         </Link>
 
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">
           {NAV_LINKS.map((link) => (
             <Link
@@ -52,11 +53,13 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
-          <WineButton href="/work-with-me" className="!px-6 !py-3">
-            Apply
+          <NavDropdown />
+          <WineButton href="/assessment" className="!px-6 !py-3 !text-[11px] !tracking-[0.18em]">
+            Begin the Assessment
           </WineButton>
         </nav>
 
+        {/* Mobile */}
         <MobileMenu links={NAV_LINKS} />
       </div>
     </header>

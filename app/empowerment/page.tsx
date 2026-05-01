@@ -1,9 +1,10 @@
+import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { WineButton } from "@/components/brand/WineButton";
-import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
+import { getEmpowermentPage } from "@/sanity/lib/queries";
 
 const FAQS = [
   {
@@ -32,14 +33,34 @@ const FAQS = [
   },
 ];
 
-export const metadata = buildMetadata({
-  title: "Female Empowerment & Leadership",
-  description:
-    "Private engagement for senior women navigating identity, leadership, and what comes next. From €7,500. English-speaking, internationally based.",
-  path: "/empowerment",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getEmpowermentPage();
+  if (data?.seo?.seoTitle) {
+    return buildMetadata({
+      title: data.seo.seoTitle,
+      description: data.seo.seoDescription ?? undefined,
+      path: "/empowerment",
+    });
+  }
+  return buildMetadata({
+    title: "Female Empowerment & Leadership",
+    description:
+      "Private engagement for senior women navigating identity, leadership, and what comes next. From €7,500. English-speaking, internationally based.",
+    path: "/empowerment",
+  });
+}
 
-export default function EmpowermentPage() {
+export default async function EmpowermentPage() {
+  const data = await getEmpowermentPage();
+
+  const heroHeadline =
+    data?.heroHeadline ?? "You have done everything right. It no longer feels like yours.";
+  const heroCopy =
+    data?.heroCopy ??
+    "This is the work for the woman who has arrived — and finds herself wondering, with some quiet urgency, what she was actually arriving for.";
+  const ctaLabel = data?.ctaLabel ?? "Begin here";
+  const ctaUrl = data?.ctaUrl ?? "/assessment";
+
   return (
     <>
       <script
@@ -52,15 +73,13 @@ export default function EmpowermentPage() {
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
           <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-[1.05] text-ink">
-            You have done everything right. It no longer feels like yours.
+            {heroHeadline}
           </h1>
           <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[560px]">
-            This is the work for the woman who has arrived — and finds herself
-            wondering, with some quiet urgency, what she was actually arriving
-            for.
+            {heroCopy}
           </p>
           <div className="mt-10">
-            <WineButton href="/assessment">Begin here</WineButton>
+            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
           </div>
         </div>
       </section>
@@ -72,21 +91,29 @@ export default function EmpowermentPage() {
             You might recognise this.
           </h2>
           <div className="mt-10 space-y-6 text-[17px] leading-[1.75] text-ink-soft text-left">
-            <p>
-              You are senior. You are accomplished. You have the title, the
-              team, the life that other people describe as impressive.
-            </p>
-            <p>
-              And somewhere inside that impressive life, there is a gap. Between
-              who you appear to be and who you actually are. Between what you
-              have built and what you actually wanted. Between the woman who
-              learned to be excellent and the woman who is quietly, persistently
-              asking whether excellence was ever the point.
-            </p>
-            <p>
-              The container — director, partner, founder, mother, expert — has
-              stopped being the same size as you are.
-            </p>
+            {data?.forWhomCopy ? (
+              data.forWhomCopy.split("\n").filter(Boolean).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))
+            ) : (
+              <>
+                <p>
+                  You are senior. You are accomplished. You have the title, the
+                  team, the life that other people describe as impressive.
+                </p>
+                <p>
+                  And somewhere inside that impressive life, there is a gap. Between
+                  who you appear to be and who you actually are. Between what you
+                  have built and what you actually wanted. Between the woman who
+                  learned to be excellent and the woman who is quietly, persistently
+                  asking whether excellence was ever the point.
+                </p>
+                <p>
+                  The container — director, partner, founder, mother, expert — has
+                  stopped being the same size as you are.
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -98,39 +125,55 @@ export default function EmpowermentPage() {
             <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
               What we examine.
             </h2>
-            <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
-              {[
-                "The identity you built under pressure, and whether it still serves",
-                "The gap between how you lead others and how you occupy your own life",
-                "What you were told to want, versus what you actually want",
-                "The version of yourself constructed for someone else's room",
-                "What authority looks like when it comes from a place you've chosen",
-              ].map((i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="text-pink mt-2 select-none">—</span>
-                  <span>{i}</span>
-                </li>
-              ))}
-            </ul>
+            {data?.whatThisIsNotCopy ? (
+              <div className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {data.whatThisIsNotCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            ) : (
+              <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {[
+                  "The identity you built under pressure, and whether it still serves",
+                  "The gap between how you lead others and how you occupy your own life",
+                  "What you were told to want, versus what you actually want",
+                  "The version of yourself constructed for someone else's room",
+                  "What authority looks like when it comes from a place you've chosen",
+                ].map((i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-pink mt-2 select-none">—</span>
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div>
             <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
               What you build.
             </h2>
-            <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
-              {[
-                "A version of yourself you have actually chosen",
-                "Clarity about what the next chapter is actually for",
-                "A way of leading that comes from your own position",
-                "The aesthetic of a life you have deliberately designed",
-                "Less editing. More precision.",
-              ].map((i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="text-pink mt-2 select-none">—</span>
-                  <span>{i}</span>
-                </li>
-              ))}
-            </ul>
+            {data?.methodCopy ? (
+              <div className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {data.methodCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            ) : (
+              <ul className="mt-8 space-y-4 text-[16px] leading-[1.7] text-ink-soft">
+                {[
+                  "A version of yourself you have actually chosen",
+                  "Clarity about what the next chapter is actually for",
+                  "A way of leading that comes from your own position",
+                  "The aesthetic of a life you have deliberately designed",
+                  "Less editing. More precision.",
+                ].map((i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-pink mt-2 select-none">—</span>
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </section>
@@ -142,25 +185,33 @@ export default function EmpowermentPage() {
             An open-ended private engagement.
           </h2>
           <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-cream/85">
-            <p>
-              This work does not operate on a fixed timeline. It runs until the
-              work is done — usually somewhere between six months and two years.
-            </p>
-            <p>
-              We meet twice a month by private video or phone. Between sessions,
-              there is correspondence — sometimes a question I leave you with,
-              sometimes something you bring. The work is cumulative.
-            </p>
-            <p>
-              Investment: from €7,500 for the open-ended engagement. A private
-              consultation — €450, applied to the programme if you proceed — is
-              the right place to begin.
-            </p>
+            {data?.privacyCopy ? (
+              data.privacyCopy.split("\n").filter(Boolean).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))
+            ) : (
+              <>
+                <p>
+                  This work does not operate on a fixed timeline. It runs until the
+                  work is done — usually somewhere between six months and two years.
+                </p>
+                <p>
+                  We meet twice a month by private video or phone. Between sessions,
+                  there is correspondence — sometimes a question I leave you with,
+                  sometimes something you bring. The work is cumulative.
+                </p>
+                <p>
+                  {data?.investmentText
+                    ? data.investmentText
+                    : "Investment: from €7,500 for the open-ended engagement. A private consultation — €450, applied to the programme if you proceed — is the right place to begin."}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {/* MINT CTA SECTION — the one mint section per page */}
+      {/* MINT CTA SECTION */}
       <section className="bg-mint section-pad">
         <div className="container-content max-w-2xl mx-auto text-center">
           <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
@@ -174,7 +225,7 @@ export default function EmpowermentPage() {
             personally and respond within three working days.
           </p>
           <div className="mt-10">
-            <WineButton href="/book">Request a conversation</WineButton>
+            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
           </div>
           <p className="mt-6 italic text-[18px] text-ink-soft">
             <ScriptAccent className="text-[28px] text-ink-soft">
