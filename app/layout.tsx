@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
-import { VisualEditing } from "@sanity/visual-editing/react";
+import { VisualEditingClient } from "@/components/sanity/VisualEditingClient";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { playfair, dmSans, dancingScript } from "@/lib/fonts";
@@ -31,7 +31,7 @@ export default async function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         {/* Click-to-edit overlay — only loads when previewing inside Sanity Studio */}
-        {isDraftMode && <VisualEditing portal={true} />}
+        {isDraftMode && <VisualEditingClient />}
         <Analytics />
         <SpeedInsights />
       </body>
