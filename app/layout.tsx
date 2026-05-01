@@ -7,7 +7,8 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-export const metadata: Metadata = buildMetadata();
+// PREVIEW MODE — noindex until client approves. Set noIndex: false for launch.
+export const metadata: Metadata = buildMetadata({ noIndex: true });
 
 export default function RootLayout({
   children,
