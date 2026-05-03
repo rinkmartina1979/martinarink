@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
 import { getWorkWithMePage } from "@/sanity/lib/queries";
@@ -35,16 +36,35 @@ export default async function WorkWithMePage() {
   return (
     <>
       <section className="bg-cream pt-32 md:pt-40 pb-16">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <Eyebrow className="justify-center" withLine>
-            Work with me
-          </Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
-            {heroHeadline}
-          </h1>
-          <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
-            {heroCopy}
-          </p>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>Work with me</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
+              {heroHeadline}
+            </h1>
+            <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft max-w-[520px]">
+              {heroCopy}
+            </p>
+            {/* Intake scarcity — soft, true, premium signal */}
+            <div className="mt-8 inline-flex items-center gap-3 px-4 py-2 bg-violet-soft border border-violet-mid">
+              <span className="block w-1.5 h-1.5 rounded-full bg-plum animate-pulse" />
+              <span className="text-[12px] uppercase tracking-[0.18em] text-plum-deep">
+                Currently accepting two new clients · next intake
+              </span>
+            </div>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-portrait-studio.jpg"
+                alt="Martina Rink — private mentor"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-top"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -54,7 +74,7 @@ export default async function WorkWithMePage() {
             The two programmes.
           </h2>
 
-          <div className="mt-16 grid md:grid-cols-2 gap-12 md:divide-x divide-wine-deep">
+          <div className="mt-16 grid md:grid-cols-2 gap-12 md:divide-x divide-plum-deep">
             <div className="md:pr-12">
               <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
                 Sober Muse Method
@@ -121,7 +141,7 @@ export default async function WorkWithMePage() {
             sense of which conversation — if either — is the right fit.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             <GhostButton href="/book">Reserve a consultation — €450</GhostButton>
           </div>
         </div>
@@ -151,7 +171,7 @@ export default async function WorkWithMePage() {
             If the answer to each of those is yes, we should speak.
           </p>
           <div className="mt-10">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
           </div>
           <p className="mt-5 text-[13px] text-ink-quiet">
             Private consultation: €450 · Applied in full to programme investment upon enrolment.

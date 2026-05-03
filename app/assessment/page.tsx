@@ -1,19 +1,40 @@
+import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/metadata";
 import { AssessmentShell } from "@/components/assessment/AssessmentShell";
+import { getAssessmentPage } from "@/sanity/lib/queries";
 
-export const metadata = buildMetadata({
-  title: "Points of Departure — A Private Assessment",
-  description:
-    "Seven questions. About four minutes. At the end, a letter — written specifically for where you are. Not a quiz. A beginning.",
-  path: "/assessment",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getAssessmentPage();
+  if (data?.seoTitle) {
+    return buildMetadata({
+      title: data.seoTitle,
+      description: data.seoDescription ?? undefined,
+      path: "/assessment",
+    });
+  }
+  return buildMetadata({
+    title: "Points of Departure — A Private Assessment",
+    description:
+      "Seven questions. About four minutes. At the end, a letter — written specifically for where you are. Not a quiz. A beginning.",
+    path: "/assessment",
+  });
+}
 
-export default function AssessmentPage() {
+export default async function AssessmentPage() {
+  const data = await getAssessmentPage();
+
+  const headline = data?.headline ?? "Points of";
+  const subheadline =
+    data?.subheadline ??
+    "A private diagnostic for the woman who knows something has shifted — and wants to understand exactly where she stands.";
+  const privacyNote =
+    data?.privacyNote ??
+    "Your answers are private and used only to personalise your result. Submitting your email adds you to Martina’s private list. You can unsubscribe at any time — one click, no friction.";
+
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="bg-ink pt-32 md:pt-44 pb-20 md:pb-28 relative overflow-hidden">
-        {/* Subtle texture line */}
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-pink/30 to-transparent" />
 
         <div className="container-content max-w-2xl mx-auto px-6">
@@ -27,7 +48,7 @@ export default function AssessmentPage() {
 
           {/* Title */}
           <h1 className="font-[family-name:var(--font-display)] text-[42px] md:text-[58px] leading-[1.05] text-cream">
-            Points of{" "}
+            {headline}{" "}
             <span className="font-[family-name:var(--font-script)] text-[1.1em] text-pink leading-none">
               Departure
             </span>
@@ -35,8 +56,7 @@ export default function AssessmentPage() {
 
           {/* Tagline */}
           <p className="mt-6 text-[17px] md:text-[19px] leading-[1.7] text-cream/80 max-w-lg">
-            A private diagnostic for the woman who knows something has shifted —
-            and wants to understand exactly where she stands.
+            {subheadline}
           </p>
 
           {/* Divider */}
@@ -61,9 +81,7 @@ export default function AssessmentPage() {
       <section className="bg-bone py-12 border-t border-sand">
         <div className="container-content max-w-2xl mx-auto px-6 text-center">
           <p className="text-[13px] leading-[1.7] text-ink-quiet max-w-md mx-auto">
-            Your answers are private and used only to personalise your result.
-            Submitting your email adds you to Martina&rsquo;s private list.
-            You can unsubscribe at any time — one click, no friction.
+            {privacyNote}
           </p>
         </div>
       </section>

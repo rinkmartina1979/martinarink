@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
@@ -71,16 +72,30 @@ export default async function SoberMusePage() {
 
       {/* HERO */}
       <section className="bg-cream pt-32 md:pt-40 pb-16 md:pb-24">
-        <div className="container-content max-w-3xl">
-          <Eyebrow withLine>The Sober Muse Method</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
-            {heroHeadline}
-          </h1>
-          <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[560px]">
-            {heroCopy}
-          </p>
-          <div className="mt-10">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>The Sober Muse Method</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
+              {heroHeadline}
+            </h1>
+            <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[520px]">
+              {heroCopy}
+            </p>
+            <div className="mt-10">
+              <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
+            </div>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-ibiza-working.jpg"
+                alt="Martina Rink — Sober Muse Method"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -203,7 +218,7 @@ export default async function SoberMusePage() {
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
-            className="block font-[family-name:var(--font-display)] italic text-wine-deep text-[80px] leading-none"
+            className="block font-[family-name:var(--font-display)] italic text-plum-deep text-[80px] leading-none"
           >
             &ldquo;
           </span>
@@ -220,7 +235,20 @@ export default async function SoberMusePage() {
 
       {/* INVESTMENT */}
       <section className="bg-cream section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-4">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-cozy-portrait.jpg"
+                alt="Martina Rink"
+                fill
+                sizes="(max-width: 768px) 100vw, 28vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-8">
+        <div className="max-w-2xl text-center mx-auto">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
             The investment.
           </h2>
@@ -251,9 +279,40 @@ export default async function SoberMusePage() {
             )}
           </div>
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <WineButton href={ctaUrl}>{ctaLabel}</WineButton>
+            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             <GhostButton href="/assessment">Begin the assessment</GhostButton>
           </div>
+        </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHO THIS IS NOT FOR — premium qualifier */}
+      <section className="bg-violet-soft section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>An honest filter</Eyebrow>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
+            Who this is not for.
+          </h2>
+          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
+            I would rather be specific than universal. The Sober Muse Method is
+            not the right work for every woman, and naming who it is not for is
+            part of how I respect your time.
+          </p>
+          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
+            {[
+              "The woman in active crisis. If your situation is medically dangerous, you need clinical care first. I will say so, kindly, in our consultation.",
+              "The woman looking for a programme to graduate from. This is not certification, and you are not a project.",
+              "The woman who wants to be told what to do. The work begins with your own thinking — not mine.",
+              "The woman who is not yet ready to invest financially. The investment matters; pretending otherwise is unkind to both of us.",
+              "The woman who wants group support. There is none here. If group is what you need, I will recommend where to find it.",
+            ].map((item) => (
+              <li key={item} className="flex gap-4">
+                <span className="text-plum mt-2 select-none">—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -270,7 +329,7 @@ export default async function SoberMusePage() {
                   <dt className="font-[family-name:var(--font-display)] text-[20px] md:text-[22px] text-ink">
                     {faq.q}
                   </dt>
-                  <span className="text-wine text-2xl mt-1 group-open:rotate-45 transition-transform duration-200">
+                  <span className="text-plum text-2xl mt-1 group-open:rotate-45 transition-transform duration-200">
                     +
                   </span>
                 </summary>

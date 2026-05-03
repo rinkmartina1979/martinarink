@@ -74,17 +74,17 @@ export function AssessmentEmailGate({ onContinue }: Props) {
               placeholder="you@example.com"
               className={[
                 "w-full px-4 py-3 bg-cream border text-ink placeholder-ink-quiet/60 text-[15px] focus:outline-none rounded-[1px] transition-colors",
-                error ? "border-wine" : "border-sand focus:border-ink-soft",
+                error ? "border-plum" : "border-sand focus:border-ink-soft",
               ].join(" ")}
             />
             {error && (
-              <p className="mt-2 text-[13px] text-wine">{error}</p>
+              <p className="mt-2 text-[13px] text-plum">{error}</p>
             )}
           </div>
 
           <button
             type="submit"
-            className="mt-2 inline-flex items-center justify-center bg-wine text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-10 py-4 rounded-[1px] hover:bg-wine-deep transition-colors duration-200 self-start"
+            className="mt-2 inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-10 py-4 rounded-[1px] hover:bg-plum-deep transition-colors duration-200 self-start"
           >
             Continue the assessment
           </button>

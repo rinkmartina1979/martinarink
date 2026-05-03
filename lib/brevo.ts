@@ -1,95 +1,125 @@
 /**
- * Brevo (Sendinblue) v3 contacts API helpers.
- *
- * Two exported functions:
- *   - addBrevoContact: low-level; pass any attributes + listIds.
- *   - subscribeAssessmentLead: high-level; for the assessment funnel.
- *
- * Both upsert (updateEnabled: true) so re-submissions don't 400.
- * Both return { success: boolean, error?: string } and never throw.
- *
- * Auth: Brevo expects `api-key` header (NOT `Authorization: Bearer`).
+ * Brevo (formerly Sendinblue) API client
+ * Replaces Kit for newsletter subscription and assessment lead capture.
+ * API docs: https://developers.brevo.com/reference/createcontact
  */
 
-const BREVO_ENDPOINT = "https://api.brevo.com/v3/contacts";
+const BREVO_API_BASE = "https://api.brevo.com/v3";
 
-type BrevoResult = { success: true } | { success: false; error: string };
-
-type Attributes = Record<string, string | number | boolean | undefined | null>;
-
-interface AddBrevoContactInput {
+interface BrevoContactOptions {
   email: string;
   firstName?: string;
-  lastName?: string;
+  /** Brevo list IDs to add the contact to (numeric) */
   listIds?: number[];
-  attributes?: Attributes;
+  /** Custom contact attributes — keys must match your Brevo attribute names */
+  attributes?: Record<string, string | boolean | number>;
+  /** If true, update the contact if it already exists */
+  updateEnabled?: boolean;
 }
 
-/**
- * Low-level: create or update a Brevo contact.
- * Strips undefined/null values from attributes before sending.
- */
-export async function addBrevoContact(
-  input: AddBrevoContactInput
-): Promise<BrevoResult> {
+interface BrevoResult {
+  success: boolean;
+  error?: string;
+  contactId?: number;
+}
+
+export async function addBrevoContact({
+  email,
+  firstName,
+  listIds = [],
+  attributes = {},
+  updateEnabled = true,
+}: BrevoContactOptions): Promise<BrevoResult> {
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) {
+    console.warn("[Brevo] BREVO_API_KEY not set — skipping contact creation");
     return { success: false, error: "BREVO_API_KEY not configured" };
   }
 
-  const cleanAttrs: Record<string, string | number | boolean> = {};
-  if (input.firstName) cleanAttrs.FIRSTNAME = input.firstName;
-  if (input.lastName) cleanAttrs.LASTNAME = input.lastName;
-  if (input.attributes) {
-    for (const [k, v] of Object.entries(input.attributes)) {
-      if (v !== undefined && v !== null && v !== "") {
-        cleanAttrs[k] = v;
-      }
-    }
+  const payload: Record<string, unknown> = {
+    email,
+    updateEnabled,
+  };
+
+  // Build attributes — FIRSTNAME is a built-in Brevo attribute
+  const allAttributes: Record<string, string | boolean | number> = {
+    ...attributes,
+  };
+  if (firstName) allAttributes["FIRSTNAME"] = firstName;
+  if (Object.keys(allAttributes).length > 0) {
+    payload.attributes = allAttributes;
   }
 
-  const payload: Record<string, unknown> = {
-    email: input.email,
-    updateEnabled: true,
-    attributes: cleanAttrs,
-  };
-  if (input.listIds && input.listIds.length > 0) {
-    payload.listIds = input.listIds;
+  if (listIds.length > 0) {
+    payload.listIds = listIds;
   }
 
   try {
-    const res = await fetch(BREVO_ENDPOINT, {
+    const res = await fetch(`${BREVO_API_BASE}/contacts`, {
       method: "POST",
       headers: {
-        "api-key": apiKey,
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "api-key": apiKey,
       },
       body: JSON.stringify(payload),
     });
 
-    if (res.ok || res.status === 204) {
-      return { success: true };
+    // 201 = created, 204 = updated (when updateEnabled)
+    if (res.status === 201 || res.status === 204) {
+      let contactId: number | undefined;
+      try {
+        const data = await res.json();
+        contactId = data.id;
+      } catch {
+        // 204 returns no body — that's fine
+      }
+      return { success: true, contactId };
     }
 
-    // Brevo returns 400 with code "duplicate_parameter" if contact exists
-    // and updateEnabled wasn't honored — read the body for diagnostics.
-    let detail = `${res.status} ${res.statusText}`;
-    try {
-      const data = await res.json();
-      detail = `${detail}: ${JSON.stringify(data)}`;
-    } catch {
-      // ignore body parse errors
-    }
-    return { success: false, error: detail };
+    const errorBody = await res.text();
+    console.error("[Brevo] API error:", res.status, errorBody);
+    return { success: false, error: `HTTP ${res.status}: ${errorBody}` };
   } catch (err) {
-    return { success: false, error: String(err) };
+    console.error("[Brevo] Network error:", err);
+    return { success: false, error: "Network error" };
   }
 }
 
-// ── Assessment funnel helper ──────────────────────────────────
+/**
+ * Convenience: subscribe a newsletter signup to the newsletter list.
+ */
+export async function subscribeNewsletter({
+  email,
+  firstName,
+}: {
+  email: string;
+  firstName?: string;
+}): Promise<BrevoResult> {
+  const listIdRaw = process.env.BREVO_LIST_ID_NEWSLETTER;
+  const listIds = listIdRaw ? [parseInt(listIdRaw, 10)] : [];
 
-interface SubscribeAssessmentLeadInput {
+  return addBrevoContact({
+    email,
+    firstName,
+    listIds,
+    attributes: {
+      SOURCE: "newsletter-form",
+    },
+  });
+}
+
+/**
+ * Convenience: add an assessment lead with archetype data.
+ */
+export async function subscribeAssessmentLead({
+  email,
+  firstName,
+  archetype,
+  serviceIntent,
+  readinessLevel,
+  privacyNeed,
+  completedAt,
+}: {
   email: string;
   firstName?: string;
   archetype: string;
@@ -97,66 +127,22 @@ interface SubscribeAssessmentLeadInput {
   readinessLevel: string;
   privacyNeed: string;
   completedAt: string;
-}
-
-/**
- * High-level: subscribe an assessment completer to the Assessment Leads list.
- * Uses BREVO_LIST_ID_ASSESSMENT env var.
- */
-export async function subscribeAssessmentLead(
-  input: SubscribeAssessmentLeadInput
-): Promise<BrevoResult> {
+}): Promise<BrevoResult> {
   const listIdRaw = process.env.BREVO_LIST_ID_ASSESSMENT;
-  if (!listIdRaw) {
-    return { success: false, error: "BREVO_LIST_ID_ASSESSMENT not configured" };
-  }
-  const listId = parseInt(listIdRaw, 10);
-  if (Number.isNaN(listId)) {
-    return { success: false, error: "BREVO_LIST_ID_ASSESSMENT is not a number" };
-  }
+  const listIds = listIdRaw ? [parseInt(listIdRaw, 10)] : [];
 
   return addBrevoContact({
-    email: input.email,
-    firstName: input.firstName,
-    listIds: [listId],
+    email,
+    firstName,
+    listIds,
     attributes: {
-      ARCHETYPE: input.archetype,
-      SERVICE_INTENT: input.serviceIntent,
-      READINESS: input.readinessLevel,
-      PRIVACY_NEED: input.privacyNeed,
       SOURCE: "assessment",
+      ARCHETYPE: archetype,
+      SERVICE_INTENT: serviceIntent,
+      READINESS: readinessLevel,
+      PRIVACY_NEED: privacyNeed,
       ASSESSMENT_COMPLETED: true,
-      COMPLETED_AT: input.completedAt,
+      COMPLETED_AT: completedAt,
     },
-  });
-}
-
-// ── Newsletter helper ─────────────────────────────────────────
-
-interface SubscribeNewsletterInput {
-  email: string;
-  firstName?: string;
-}
-
-/**
- * Subscribe to the Newsletter list. Uses BREVO_LIST_ID_NEWSLETTER.
- */
-export async function subscribeNewsletter(
-  input: SubscribeNewsletterInput
-): Promise<BrevoResult> {
-  const listIdRaw = process.env.BREVO_LIST_ID_NEWSLETTER;
-  if (!listIdRaw) {
-    return { success: false, error: "BREVO_LIST_ID_NEWSLETTER not configured" };
-  }
-  const listId = parseInt(listIdRaw, 10);
-  if (Number.isNaN(listId)) {
-    return { success: false, error: "BREVO_LIST_ID_NEWSLETTER is not a number" };
-  }
-
-  return addBrevoContact({
-    email: input.email,
-    firstName: input.firstName,
-    listIds: [listId],
-    attributes: { SOURCE: "newsletter" },
   });
 }

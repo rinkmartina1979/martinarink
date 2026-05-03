@@ -27,10 +27,12 @@
 - `ink-soft #4A3728` — body, subheads
 - `ink-quiet #8A7F72` — captions, eyebrow labels
 - `sand #C8B8A2` — hairlines
-- `wine #6B2737` — PRIMARY CTA FILLS ONLY (never text/headings)
-- `wine-deep #521E2B` — button hover only
+- `plum #5C2D8E` — PRIMARY CTA FILLS ONLY (Deep Amethyst — Vogue 2026 editorial purple, replaces wine; never text/headings)
+- `plum-deep #451F6B` — button hover only
 - `pink #F942AA` — script accent + 1px hairlines (<5% of page)
 - `pink-soft #FDBFE2` — soft tints
+- `violet-soft #F3EBF5` — section surfaces (from CI Farbe 3)
+- `violet-mid #E6C7EB` — testimonial cards, soft highlights (from CI Farbe 3)
 - `mint #C9EADE` — ONE section per page max
 - `gold #C9A84C` — dark sections only
 - `navy #1A1A2E` — dark section bg

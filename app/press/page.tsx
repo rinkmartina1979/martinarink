@@ -1,15 +1,36 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { GhostButton } from "@/components/brand/GhostButton";
 import Link from "next/link";
+import {
+  getPressPage,
+  getPublications,
+  getPressItems,
+  getPartnerLogos,
+  type SanityPublication,
+  type SanityPressItem,
+  type SanityPartnerLogo,
+} from "@/sanity/lib/queries";
 
-export const metadata = buildMetadata({
-  title: "Press & Speaking",
-  description:
-    "Press information, biography, speaking topics, and media kit for Martina Rink — Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women in transition.",
-  path: "/press",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getPressPage();
+  if (data?.seo?.seoTitle) {
+    return buildMetadata({
+      title: data.seo.seoTitle,
+      description: data.seo.seoDescription ?? undefined,
+      path: "/press",
+    });
+  }
+  return buildMetadata({
+    title: "Press & Speaking",
+    description:
+      "Press information, biography, speaking topics, and media kit for Martina Rink — Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women in transition.",
+    path: "/press",
+  });
+}
 
 /* ─── Structured data ─────────────────────────────────────── */
 function pressSchema() {
@@ -21,12 +42,7 @@ function pressSchema() {
         "@id": `${SITE.url}/#person`,
         name: "Martina Rink",
         url: SITE.url,
-        jobTitle: [
-          "Author",
-          "Private Mentor",
-          "Keynote Speaker",
-          "Sober Conscious Coach",
-        ],
+        jobTitle: ["Author", "Private Mentor", "Keynote Speaker", "Sober Conscious Coach"],
         description:
           "Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to high-achieving women navigating identity, sobriety, and the second chapter of a serious career.",
         address: {
@@ -38,12 +54,7 @@ function pressSchema() {
         },
         email: SITE.email,
         telephone: "+49-172-174-1499",
-        sameAs: [
-          SITE.social.linkedin,
-          SITE.social.instagram,
-          SITE.social.facebook,
-          SITE.social.xing,
-        ],
+        sameAs: [SITE.social.linkedin, SITE.social.instagram],
         knowsAbout: [
           "Women's identity and leadership",
           "Conscious sobriety",
@@ -57,8 +68,7 @@ function pressSchema() {
         "@id": `${SITE.url}/#book-people-of-deutschland`,
         name: "People of Deutschland",
         author: { "@id": `${SITE.url}/#person` },
-        description:
-          "A documentary portrait of contemporary Germany — its people, contradictions, and quiet grandeur. Featured in national media upon publication.",
+        description: "A documentary portrait of contemporary Germany — its people, contradictions, and quiet grandeur.",
         inLanguage: "de",
         genre: "Documentary Photography / Non-fiction",
       },
@@ -67,8 +77,7 @@ function pressSchema() {
         "@id": `${SITE.url}/#book-fashion-germany`,
         name: "Fashion Germany",
         author: { "@id": `${SITE.url}/#person` },
-        description:
-          "A portrait of German fashion — its designers, codes, and the culture that shaped one of Europe's most underestimated style capitals.",
+        description: "A portrait of German fashion — its designers, codes, and the culture that shaped one of Europe's most underestimated style capitals.",
         inLanguage: "de",
         genre: "Fashion / Photography / Non-fiction",
       },
@@ -77,20 +86,16 @@ function pressSchema() {
         "@id": `${SITE.url}/#book-isabella-blow`,
         name: "Isabella Blow",
         author: { "@id": `${SITE.url}/#person` },
-        description:
-          "A biography of Isabella Blow written from unique proximity — Rink served as Blow's personal assistant and confidante. A Spiegel Bestseller.",
+        description: "A biography of Isabella Blow written from unique proximity. A Spiegel Bestseller.",
         inLanguage: "de",
         genre: "Biography / Fashion",
-        isPartOf: {
-          "@type": "BookSeries",
-          name: "Spiegel Bestseller",
-        },
+        isPartOf: { "@type": "BookSeries", name: "Spiegel Bestseller" },
       },
     ],
   };
 }
 
-/* ─── Speaking topics ────────────────────────────────────── */
+/* ─── Fallbacks ────────────────────────────────────────────── */
 const SPEAKING_TOPICS = [
   {
     title: "The intelligent woman's guide to re-examining alcohol",
@@ -110,7 +115,6 @@ const SPEAKING_TOPICS = [
   },
 ];
 
-/* ─── Press biography lengths ────────────────────────────── */
 const BIOS = [
   {
     length: "25 words",
@@ -126,20 +130,62 @@ const BIOS = [
   },
 ];
 
-/* ─── Media outlet list ──────────────────────────────────── */
 const MEDIA_OUTLETS = [
-  "Der Spiegel",
-  "Brigitte",
-  "STERN",
-  "Vogue Germany",
-  "ELLE Germany",
-  "Die Zeit",
-  "Süddeutsche Zeitung",
-  "Manager Magazin",
+  "Der Spiegel", "Brigitte", "STERN", "Vogue Germany",
+  "ELLE Germany", "Die Zeit", "Süddeutsche Zeitung", "Manager Magazin",
 ];
 
+/* ─── Helpers ─────────────────────────────────────────────── */
+function BookCard({ pub }: { pub: SanityPublication }) {
+  return (
+    <article>
+      <div className={`aspect-[3/4] flex items-end p-6 mb-5 ${pub.isBestseller ? "bg-ink" : "bg-bone"}`}>
+        <div>
+          {pub.isBestseller && (
+            <p className="text-[10px] uppercase tracking-[0.2em] text-sand/60 mb-2">
+              Spiegel Bestseller · Biography
+            </p>
+          )}
+          {pub.subtitle && (
+            <p className="text-[10px] uppercase tracking-[0.2em] mb-2 text-ink-quiet">
+              {pub.subtitle}
+            </p>
+          )}
+          <p className={`font-[family-name:var(--font-display)] text-[22px] leading-tight ${pub.isBestseller ? "text-cream" : "text-ink"}`}>
+            {pub.title}
+          </p>
+        </div>
+      </div>
+      {pub.description && (
+        <p className="text-[14px] leading-[1.75] text-ink-soft">{pub.description}</p>
+      )}
+    </article>
+  );
+}
+
 /* ─── Page ───────────────────────────────────────────────── */
-export default function PressPage() {
+export default async function PressPage() {
+  const [pressData, publications, pressItems, partnerLogos] = await Promise.all([
+    getPressPage(),
+    getPublications(),
+    getPressItems(),
+    getPartnerLogos(),
+  ]);
+
+  const heroCopy =
+    pressData?.bioCopy ??
+    "Martina Rink is a Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women at the inflection points of a serious career. She is available for press interviews, podcast conversations, panel discussions, and keynote engagements.";
+
+  const ctaLabel = pressData?.ctaLabel ?? null;
+  const ctaUrl = pressData?.ctaUrl ?? null;
+
+  // Use Sanity publications if available, else show hardcoded books
+  const hasSanityPublications = publications && publications.length > 0;
+  // Use Sanity partner logos for media bar if available
+  const hasSanityLogos = partnerLogos && partnerLogos.length > 0;
+  // Use featured Sanity press items if available
+  const featuredPressItems = pressItems?.filter((p: SanityPressItem) => p.featured) ?? [];
+
   return (
     <>
       <script
@@ -149,35 +195,63 @@ export default function PressPage() {
 
       {/* ── 1. Hero ─────────────────────────────────────────── */}
       <section className="bg-cream pt-32 md:pt-44 pb-20">
-        <div className="container-content max-w-3xl">
-          <Eyebrow withLine>Press &amp; Speaking</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[58px] leading-[1.08] text-ink">
-            A voice at the intersection of identity, culture, and the examined
-            life.
-          </h1>
-          <p className="mt-8 text-[18px] leading-[1.8] text-ink-soft max-w-2xl">
-            Martina Rink is a Spiegel Bestseller author, former personal
-            assistant to Isabella Blow, and private mentor to senior women at
-            the inflection points of a serious career. She is available for
-            press interviews, podcast conversations, panel discussions, and
-            keynote engagements.
-          </p>
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-7">
+            <Eyebrow withLine>Press &amp; Speaking</Eyebrow>
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[58px] leading-[1.08] text-ink">
+              A voice at the intersection of identity, culture, and the examined
+              life.
+            </h1>
+            <p className="mt-8 text-[18px] leading-[1.8] text-ink-soft max-w-2xl">
+              {heroCopy}
+            </p>
+            {/* Credential pills */}
+            <div className="mt-10 flex flex-wrap gap-3">
+              {[
+                "Spiegel Bestseller author",
+                "Former PA to Isabella Blow",
+                "Keynote speaker",
+                "Private mentor · by application",
+              ].map((cred) => (
+                <span
+                  key={cred}
+                  className="px-4 py-2 border border-sand text-[12px] uppercase tracking-[0.16em] text-ink-quiet"
+                >
+                  {cred}
+                </span>
+              ))}
+            </div>
 
-          {/* Credential pills */}
-          <div className="mt-10 flex flex-wrap gap-3">
-            {[
-              "Spiegel Bestseller author",
-              "Former PA to Isabella Blow",
-              "Keynote speaker",
-              "Private mentor · by application",
-            ].map((cred) => (
-              <span
-                key={cred}
-                className="px-4 py-2 border border-sand text-[12px] uppercase tracking-[0.16em] text-ink-quiet"
-              >
-                {cred}
-              </span>
-            ))}
+            {/* Above-the-fold press strip */}
+            <div className="mt-10 pt-6 border-t border-sand/60">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">
+                As featured in
+              </p>
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
+                {["Der Spiegel", "Brigitte", "STERN", "Vogue Germany", "Die Zeit"].map(
+                  (outlet) => (
+                    <span
+                      key={outlet}
+                      className="font-[family-name:var(--font-display)] text-[15px] text-ink/55 tracking-[0.04em]"
+                    >
+                      {outlet}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+              <Image
+                src="/images/portraits/martina-podcast-studio.jpg"
+                alt="Martina Rink — speaker and author"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -186,22 +260,67 @@ export default function PressPage() {
       <section className="bg-bone border-t border-b border-sand/60 py-10">
         <div className="container-content">
           <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet text-center mb-8">
-            Featured in
+            {hasSanityLogos ? "Partners & affiliates" : "Featured in"}
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
-            {MEDIA_OUTLETS.map((outlet) => (
-              <span
-                key={outlet}
-                className="font-[family-name:var(--font-display)] text-[16px] text-ink/40 tracking-[0.04em]"
-              >
-                {outlet}
-              </span>
-            ))}
+            {hasSanityLogos
+              ? (partnerLogos as SanityPartnerLogo[]).map((logo) => (
+                  <span
+                    key={logo._id}
+                    className="font-[family-name:var(--font-display)] text-[16px] text-ink/40 tracking-[0.04em]"
+                  >
+                    {logo.name}
+                  </span>
+                ))
+              : MEDIA_OUTLETS.map((outlet) => (
+                  <span
+                    key={outlet}
+                    className="font-[family-name:var(--font-display)] text-[16px] text-ink/40 tracking-[0.04em]"
+                  >
+                    {outlet}
+                  </span>
+                ))}
           </div>
         </div>
       </section>
 
-      {/* ── 3. Books ─────────────────────────────────────────── */}
+      {/* ── 3. Featured press items from Sanity (if any) ─────── */}
+      {featuredPressItems.length > 0 && (
+        <section className="bg-cream section-pad">
+          <div className="container-content max-w-4xl">
+            <Eyebrow withLine>Press appearances</Eyebrow>
+            <div className="mt-10 space-y-4">
+              {featuredPressItems.map((item: SanityPressItem) => (
+                <div key={item._id} className="flex items-start gap-6 py-4 border-b border-sand/40">
+                  <div className="flex-1">
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet mb-1">
+                      {item.publication}
+                      {item.type && ` · ${item.type}`}
+                    </p>
+                    {item.headline && (
+                      <p className="font-[family-name:var(--font-display)] text-[18px] text-ink">
+                        {item.headline}
+                      </p>
+                    )}
+                  </div>
+                  {item.url && (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[13px] text-plum underline underline-offset-4 shrink-0"
+                    >
+                      Read →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── 4. Books ─────────────────────────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content max-w-5xl">
           <Eyebrow withLine>Books</Eyebrow>
@@ -210,68 +329,71 @@ export default function PressPage() {
           </h2>
 
           <div className="mt-14 grid md:grid-cols-3 gap-10">
-            {/* Book 1 */}
-            <article>
-              <div className="aspect-[3/4] bg-bone flex items-end p-6 mb-5">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-2">
-                    Documentary · Non-fiction
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-ink">
-                    People of Deutschland
-                  </p>
-                </div>
-              </div>
-              <p className="text-[14px] leading-[1.75] text-ink-soft">
-                A documentary portrait of contemporary Germany — its people,
-                contradictions, and quiet grandeur. National media coverage upon
-                publication.
-              </p>
-            </article>
-
-            {/* Book 2 */}
-            <article>
-              <div className="aspect-[3/4] bg-sand/30 flex items-end p-6 mb-5">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-2">
-                    Non-fiction · Photography
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-ink">
-                    Fashion Germany
-                  </p>
-                </div>
-              </div>
-              <p className="text-[14px] leading-[1.75] text-ink-soft">
-                A portrait of German fashion — its designers, its codes, and the
-                culture that shaped one of Europe&rsquo;s most underestimated
-                style capitals.
-              </p>
-            </article>
-
-            {/* Book 3 */}
-            <article>
-              <div className="aspect-[3/4] bg-ink flex items-end p-6 mb-5">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-sand/60 mb-2">
-                    Spiegel Bestseller · Biography
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-cream">
-                    Isabella Blow
-                  </p>
-                </div>
-              </div>
-              <p className="text-[14px] leading-[1.75] text-ink-soft">
-                Written from a position of unique proximity — Rink served as
-                Blow&rsquo;s personal assistant and confidante. A Spiegel
-                Bestseller. Literary representation via Elisabeth Ruge Agentur
-                GmbH, Berlin.
-              </p>
-            </article>
+            {hasSanityPublications
+              ? (publications as SanityPublication[]).map((pub) => (
+                  <BookCard key={pub._id} pub={pub} />
+                ))
+              : (
+                <>
+                  <article>
+                    <div className="aspect-[3/4] bg-bone flex items-end p-6 mb-5">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-2">
+                          Documentary · Non-fiction
+                        </p>
+                        <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-ink">
+                          People of Deutschland
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[14px] leading-[1.75] text-ink-soft">
+                      A documentary portrait of contemporary Germany — its people,
+                      contradictions, and quiet grandeur. National media coverage upon
+                      publication.
+                    </p>
+                  </article>
+                  <article>
+                    <div className="aspect-[3/4] bg-sand/30 flex items-end p-6 mb-5">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-2">
+                          Non-fiction · Photography
+                        </p>
+                        <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-ink">
+                          Fashion Germany
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[14px] leading-[1.75] text-ink-soft">
+                      A portrait of German fashion — its designers, its codes, and the
+                      culture that shaped one of Europe&rsquo;s most underestimated
+                      style capitals.
+                    </p>
+                  </article>
+                  <article>
+                    <div className="aspect-[3/4] bg-ink flex items-end p-6 mb-5">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-sand/60 mb-2">
+                          Spiegel Bestseller · Biography
+                        </p>
+                        <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-cream">
+                          Isabella Blow
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[14px] leading-[1.75] text-ink-soft">
+                      Written from a position of unique proximity — Rink served as
+                      Blow&rsquo;s personal assistant and confidante. A Spiegel
+                      Bestseller. Literary representation via Elisabeth Ruge Agentur
+                      GmbH, Berlin.
+                    </p>
+                  </article>
+                </>
+              )}
           </div>
         </div>
       </section>
 
-      {/* ── 4. Isabella Blow — the signature credential ──────── */}
+      {/* ── 5. Isabella Blow — signature credential ──────────── */}
       <section className="bg-ink section-pad">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-sand/50 mb-8">
@@ -297,7 +419,7 @@ export default function PressPage() {
         </div>
       </section>
 
-      {/* ── 5. Speaking ──────────────────────────────────────── */}
+      {/* ── 6. Speaking ──────────────────────────────────────── */}
       <section id="speaking" className="bg-cream section-pad">
         <div className="container-content max-w-4xl">
           <Eyebrow withLine>Speaking</Eyebrow>
@@ -347,7 +469,7 @@ export default function PressPage() {
         </div>
       </section>
 
-      {/* ── 6. Press biographies ─────────────────────────────── */}
+      {/* ── 7. Press biographies ─────────────────────────────── */}
       <section className="bg-bone section-pad">
         <div className="container-content max-w-4xl">
           <Eyebrow withLine>Press materials</Eyebrow>
@@ -379,7 +501,7 @@ export default function PressPage() {
         </div>
       </section>
 
-      {/* ── 7. Literary representation ───────────────────────── */}
+      {/* ── 8. Literary representation ───────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>Literary representation</Eyebrow>
@@ -402,7 +524,7 @@ export default function PressPage() {
                 E-Mail:{" "}
                 <a
                   href="mailto:info@elisabeth-ruge-agentur.de"
-                  className="text-wine underline underline-offset-4"
+                  className="text-plum underline underline-offset-4"
                 >
                   info@elisabeth-ruge-agentur.de
                 </a>
@@ -413,22 +535,21 @@ export default function PressPage() {
         </div>
       </section>
 
-      {/* ── 8. Press CTA ─────────────────────────────────────── */}
-      <section className="bg-wine section-pad">
+      {/* ── 9. Press CTA ─────────────────────────────────────── */}
+      <section className="bg-plum section-pad">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-cream/60 mb-6">
             Press &amp; speaking enquiries
           </p>
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-cream">
-            For press interviews, podcast conversations, and speaking
-            engagements.
+            {ctaLabel ?? "For press interviews, podcast conversations, and speaking engagements."}
           </h2>
           <p className="mt-6 text-[17px] leading-[1.75] text-cream/80">
             Write directly to Martina. She responds to press and speaking
             requests personally.
           </p>
           <a
-            href={`mailto:${SITE.email}`}
+            href={ctaUrl ?? `mailto:${SITE.email}`}
             className="mt-8 inline-block font-[family-name:var(--font-display)] italic text-[24px] text-cream underline decoration-cream/40 decoration-1 underline-offset-[6px] hover:decoration-cream transition-colors"
           >
             {SITE.email}
@@ -442,7 +563,7 @@ export default function PressPage() {
         </div>
       </section>
 
-      {/* ── 9. Reassurance footer ────────────────────────────── */}
+      {/* ── 10. Reassurance footer ───────────────────────────── */}
       <section className="bg-cream py-16">
         <div className="container-content max-w-3xl">
           <div className="border-t border-sand/60 pt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -450,24 +571,9 @@ export default function PressPage() {
               Martina Rink — UG (haftungsbeschränkt), Karlsruhe
             </p>
             <div className="flex gap-6 text-[14px]">
-              <Link
-                href="/about"
-                className="text-ink-quiet hover:text-ink transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/writing"
-                className="text-ink-quiet hover:text-ink transition-colors"
-              >
-                Writing
-              </Link>
-              <Link
-                href="/work-with-me"
-                className="text-ink-quiet hover:text-ink transition-colors"
-              >
-                Work with me
-              </Link>
+              <Link href="/about" className="text-ink-quiet hover:text-ink transition-colors">About</Link>
+              <Link href="/writing" className="text-ink-quiet hover:text-ink transition-colors">Writing</Link>
+              <Link href="/work-with-me" className="text-ink-quiet hover:text-ink transition-colors">Work with me</Link>
             </div>
           </div>
         </div>

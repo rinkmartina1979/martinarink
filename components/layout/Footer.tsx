@@ -53,7 +53,7 @@ export function Footer() {
                   href="/work-with-me"
                   className="text-[14px] text-cream/85 hover:text-pink transition-colors"
                 >
-                  Apply
+                  Work With Me
                 </Link>
               </li>
             </ul>
@@ -124,26 +124,6 @@ export function Footer() {
                   rel="noopener noreferrer"
                 >
                   LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href={SITE.social.facebook}
-                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a
-                  href={SITE.social.xing}
-                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Xing
                 </a>
               </li>
               <li>

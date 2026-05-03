@@ -39,7 +39,7 @@ const HARDCODED_BODY: Record<string, string[]> = {
   "what-high-functioning-women-use-alcohol-for": [
     "The women I work with are not in crisis.",
     "They are not at rock bottom. They have not lost a job, a relationship, or their health to alcohol. They are, by every external measure, doing extremely well.",
-    "What they have, instead, is a quiet, accumulating awareness. The glass of wine that started as one and became two, and then became the thing they think about on the drive home. The drink that takes the edge off — but the edge is always back the next morning, and slightly sharper.",
+    "What they have, instead, is a quiet, accumulating awareness. The glass of plum that started as one and became two, and then became the thing they think about on the drive home. The drink that takes the edge off — but the edge is always back the next morning, and slightly sharper.",
     "Here is what I have learned, working privately with high-achieving women over a decade: alcohol is almost never the problem. It is the solution. The problem — the thing the drink is managing — is something else entirely. And it is usually something that the woman in question is quite good at not looking at directly.",
     "The question I ask every woman I work with is not \"why are you drinking?\" It is \"what does the drink let you not-quite-notice?\" The answer is always more interesting than the drink itself.",
   ],
@@ -95,7 +95,7 @@ const ptComponents = {
     }) => (
       <a
         href={value?.href}
-        className="text-wine underline decoration-pink underline-offset-4"
+        className="text-plum underline decoration-pink underline-offset-4"
         target={value?.href?.startsWith("http") ? "_blank" : undefined}
         rel={value?.href?.startsWith("http") ? "noopener noreferrer" : undefined}
       >
@@ -186,7 +186,7 @@ export default async function ArticlePage({
                 If something in this landed —{" "}
                 <Link
                   href="/assessment"
-                  className="text-wine underline decoration-pink underline-offset-4"
+                  className="text-plum underline decoration-pink underline-offset-4"
                 >
                   the assessment is here
                 </Link>
@@ -226,7 +226,7 @@ export default async function ArticlePage({
               If something in this landed —{" "}
               <Link
                 href="/assessment"
-                className="text-wine underline decoration-pink underline-offset-4"
+                className="text-plum underline decoration-pink underline-offset-4"
               >
                 the assessment is here
               </Link>

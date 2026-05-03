@@ -80,22 +80,38 @@ export function deriveRouting(result: ScoringResult): {
   const { readinessLevel, serviceIntent } = result;
 
   if (readinessLevel === "high") {
-    const applyHref =
-      serviceIntent === "empowerment"
-        ? "/apply/empowerment"
-        : serviceIntent === "both"
-        ? "/work-with-me"
-        : "/apply/sober-muse";
+    // Direct programme-specific application — labels match the offer.
+    const isEmpowerment = serviceIntent === "empowerment";
+    const isBoth = serviceIntent === "both";
+
+    const applyHref = isEmpowerment
+      ? "/apply/empowerment"
+      : isBoth
+      ? "/work-with-me"
+      : "/apply/sober-muse";
+
+    const applyLabel = isEmpowerment
+      ? "APPLY — EMPOWERMENT & LEADERSHIP"
+      : isBoth
+      ? "EXPLORE BOTH PROGRAMMES"
+      : "APPLY — THE SOBER MUSE METHOD";
+
+    const exploreHref = isEmpowerment
+      ? "/empowerment"
+      : isBoth
+      ? "/work-with-me"
+      : "/sober-muse";
 
     return {
       primaryHref: applyHref,
-      primaryLabel: "REQUEST A PRIVATE CONSULTATION",
-      secondaryHref: "/book",
-      secondaryLabel: "BOOK A CONSULTATION DIRECTLY",
+      primaryLabel: applyLabel,
+      secondaryHref: exploreHref,
+      secondaryLabel: "READ THE PROGRAMME PAGE",
     };
   }
 
   if (readinessLevel === "medium") {
+    // Not yet ready to apply — point to programme page + newsletter as soft warm-up.
     const programmeHref =
       serviceIntent === "empowerment"
         ? "/empowerment"
@@ -105,13 +121,13 @@ export function deriveRouting(result: ScoringResult): {
 
     return {
       primaryHref: programmeHref,
-      primaryLabel: "EXPLORE THE PRIVATE WORK",
-      secondaryHref: "/writing",
-      secondaryLabel: "READ THE WRITING",
+      primaryLabel: "READ ABOUT THE WORK",
+      secondaryHref: "/newsletter",
+      secondaryLabel: "RECEIVE THE PRIVATE LETTERS",
     };
   }
 
-  // Low readiness → build trust first
+  // Low readiness → build trust through writing first.
   return {
     primaryHref: "/newsletter",
     primaryLabel: "RECEIVE THE PRIVATE LETTERS",

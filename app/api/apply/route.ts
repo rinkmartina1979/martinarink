@@ -17,6 +17,7 @@ const ApplySchema = z.object({
   q2: z.string().min(10),
   q3: z.string().min(1),
   q4: z.string().min(10),
+  q5: z.string().min(1),
   consent: z.literal(true),
   programme: z.enum(["sober-muse", "empowerment"]),
 });
@@ -37,7 +38,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { firstName, email, q1, q2, q3, q4, programme } = parsed.data;
+  const { firstName, email, q1, q2, q3, q4, q5, programme } = parsed.data;
+
+  // Derive a quick-glance budget tag for the notification
+  const budgetTag = q5.startsWith("Yes —")
+    ? "READY"
+    : q5.startsWith("Yes, with")
+    ? "READY-PAYMENT-PLAN"
+    : "NOT-YET";
 
   const programmeLabels: Record<string, string> = {
     "sober-muse": "The Sober Muse Method",
@@ -67,6 +75,8 @@ export async function POST(req: NextRequest) {
         <p>${q3}</p>
         <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What success looks like</h3>
         <p style="white-space: pre-wrap;">${q4}</p>
+        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">Investment readiness</h3>
+        <p><strong style="color: ${budgetTag === "READY" ? "#5C2D8E" : budgetTag === "READY-PAYMENT-PLAN" ? "#4A3728" : "#8A7F72"};">${budgetTag}</strong> — ${q5}</p>
       </div>
     `;
 
@@ -99,6 +109,7 @@ export async function POST(req: NextRequest) {
         SOURCE: "application",
         APPLICATION_PROGRAMME: programme,
         APPLICATION_STATUS: "submitted",
+        BUDGET_READINESS: budgetTag,
       },
     }).catch((err) => console.error("[Apply] Brevo failed:", err));
   }

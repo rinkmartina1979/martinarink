@@ -2,11 +2,18 @@ import type { NextConfig } from "next";
 import path from "node:path";
 
 const nextConfig: NextConfig = {
-  // Pin tracing root to this project so module paths don't get mangled
-  // by the parent folder name "martinarink-next" (the "-next" suffix
-  // triggers a path-stripping bug in Next.js's webpack output on Windows).
-  outputFileTracingRoot: path.resolve(__dirname),
-  transpilePackages: ["sanity", "next-sanity"],
+  transpilePackages: ['sanity', 'next-sanity'],
+  async redirects() {
+    return [
+      // Canonicalise to www — ensures martinarink.com always redirects to www.martinarink.com
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'martinarink.com' }],
+        destination: 'https://www.martinarink.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

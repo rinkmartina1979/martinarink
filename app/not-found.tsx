@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 
 export default function NotFound() {
@@ -21,7 +21,7 @@ export default function NotFound() {
           Either way — you have arrived somewhere.
         </p>
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <WineButton href="/assessment">Begin the assessment</WineButton>
+          <PlumButton href="/assessment">Begin the assessment</PlumButton>
           <GhostButton href="/">Return home</GhostButton>
         </div>
         <div className="mt-16 pt-8 border-t border-sand/40">

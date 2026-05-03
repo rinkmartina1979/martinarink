@@ -87,7 +87,7 @@ export default async function WritingPage() {
                   <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
                     {formatDate(article.publishedAt)}
                   </p>
-                  <h2 className="mt-3 font-[family-name:var(--font-display)] text-[24px] leading-tight text-ink group-hover:text-wine transition-colors">
+                  <h2 className="mt-3 font-[family-name:var(--font-display)] text-[24px] leading-tight text-ink group-hover:text-plum transition-colors">
                     {article.title}
                   </h2>
                   {article.excerpt && (
@@ -95,7 +95,7 @@ export default async function WritingPage() {
                       {article.excerpt}
                     </p>
                   )}
-                  <span className="mt-4 inline-block text-[13px] text-wine">
+                  <span className="mt-4 inline-block text-[13px] text-plum">
                     Read →
                   </span>
                 </Link>

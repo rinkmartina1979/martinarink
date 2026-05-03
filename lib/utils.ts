@@ -14,8 +14,6 @@ export const SITE = {
   social: {
     linkedin: "https://www.linkedin.com/in/martinarink/",
     instagram: "https://www.instagram.com/martinarink_/",
-    facebook: "https://www.facebook.com/martinarink",
-    xing: "https://www.xing.com/profile/Martina_Rink",
   },
   pricing: {
     consultation: "€450",

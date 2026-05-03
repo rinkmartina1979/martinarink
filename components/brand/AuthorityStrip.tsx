@@ -1,7 +1,7 @@
 const ITEMS = [
-  { label: "AUTHOR", credit: "Three books · Spiegel Bestseller" },
-  { label: "FORMER PA", credit: "Isabella Blow · London" },
-  { label: "SIX YEARS SOBER", credit: "Mentor · not coach · lived experience" },
+  { label: "AUTHOR", credit: "Three Books · Spiegel Bestseller" },
+  { label: "CULTURAL WORK", credit: "Isabella Blow · London" },
+  { label: "LIVED EXPERIENCE", credit: "Six Years Sober" },
   { label: "CLINICAL PARTNER", credit: "Dr. Nürnberger · My Way Betty Ford" },
 ];
 

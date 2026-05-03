@@ -19,7 +19,7 @@ export function AssessmentOption({ label, selected, onSelect, index }: Props) {
         "group w-full text-left px-6 py-5 transition-all duration-200 rounded-[1px]",
         "flex items-start gap-5 border",
         selected
-          ? "bg-wine border-wine text-cream"
+          ? "bg-plum border-plum text-cream"
           : "bg-cream border-sand hover:border-ink-quiet hover:bg-bone text-ink-soft",
       ].join(" ")}
     >

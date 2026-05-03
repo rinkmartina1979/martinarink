@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { WineButton } from "@/components/brand/WineButton";
+import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
@@ -120,7 +120,7 @@ export default async function HomePage() {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:items-center">
-              <WineButton href={heroCtaUrl}>{heroCta}</WineButton>
+              <PlumButton href={heroCtaUrl}>{heroCta}</PlumButton>
               <Link
                 href={heroSecondaryUrl}
                 className="text-[15px] text-ink underline decoration-pink decoration-1 underline-offset-[6px] hover:text-pink transition-colors"
@@ -134,7 +134,7 @@ export default async function HomePage() {
           <div className="md:col-span-5 lg:col-span-5 relative">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
-                src="/images/portraits/martina-hero.jpg"
+                src="/images/portraits/martina-glam-portrait.jpg"
                 alt="Martina Rink — private mentor and author"
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
@@ -150,6 +150,27 @@ export default async function HomePage() {
                 welcome home, love
               </ScriptAccent>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── AS FEATURED IN — press logos above fold ─────────── */}
+      <section className="bg-cream border-t border-sand/40 py-8">
+        <div className="container-content">
+          <p className="text-center text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-5">
+            As featured in
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-3">
+            {["Der Spiegel", "Brigitte", "STERN", "Vogue Germany", "Die Zeit"].map(
+              (outlet) => (
+                <span
+                  key={outlet}
+                  className="font-[family-name:var(--font-display)] text-[15px] md:text-[17px] text-ink/55 tracking-[0.04em]"
+                >
+                  {outlet}
+                </span>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -231,7 +252,7 @@ export default async function HomePage() {
                 <p className="mt-8 text-[12px] uppercase tracking-[0.15em] text-ink-quiet">
                   {card.meta}
                 </p>
-                <p className="mt-6 text-[14px] text-wine font-medium group-hover:text-pink transition-colors">
+                <p className="mt-6 text-[14px] text-plum font-medium group-hover:text-pink transition-colors">
                   Read more →
                 </p>
               </Link>
@@ -244,8 +265,14 @@ export default async function HomePage() {
       <section className="bg-bone section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-5">
-            <div className="aspect-[4/5] bg-sand/30 flex items-center justify-center text-ink-quiet text-[12px] uppercase tracking-[0.18em]">
-              Book covers
+            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
+              <Image
+                src="/images/portraits/martina-cafe-editorial.jpg"
+                alt="Martina Rink — author and cultural observer"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-center"
+              />
             </div>
           </div>
           <div className="md:col-span-7">
@@ -266,7 +293,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/creative-work"
-              className="mt-8 inline-block text-[14px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
+              className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
             >
               View the creative work →
             </Link>
@@ -318,8 +345,8 @@ export default async function HomePage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-hero.jpg"
-                alt="Martina Rink"
+                src="/images/portraits/martina-portrait-studio.jpg"
+                alt="Martina Rink — private mentor"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
                 className="object-cover object-top"
@@ -357,7 +384,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/about"
-              className="mt-8 inline-block text-[14px] text-wine underline decoration-pink decoration-1 underline-offset-[6px]"
+              className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
             >
               Read the longer version →
             </Link>
@@ -402,7 +429,7 @@ export default async function HomePage() {
                 key={"_id" in t ? (t as Testimonial)._id : (t as { name: string }).name + String(i)}
                 testimonial={t}
                 bg={i === 0 ? "bg-blush" : "bg-bone"}
-                accentColor={i === 0 ? "text-wine/30" : "text-pink/30"}
+                accentColor={i === 0 ? "text-plum/30" : "text-pink/30"}
               />
             ))}
           </div>

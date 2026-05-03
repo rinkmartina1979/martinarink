@@ -1,191 +1,143 @@
 # Production Launch Checklist
 
-## Status key: ✅ Done | ⏳ Needs action | 🔴 Blocking
+Assessment code: **READY** — build passes, QA passed, all routes confirmed.
+This checklist covers everything outside the code that must be done before launch.
 
 ---
 
-## 1. Vercel Environment Variables
+## REQUIRED BEFORE LAUNCH
+*The site will not function correctly without these items.*
 
-Add ALL of these in Vercel dashboard > Project > Settings > Environment Variables:
+### Security (BLOCKING)
+- [ ] Generate `ASSESSMENT_RESULT_SECRET` — run `openssl rand -hex 32`, add to Vercel
+  → **Without this: `/api/assessment` returns 503. No assessment is possible.**
 
-| Variable | Status | Notes |
-|----------|--------|-------|
-| NEXT_PUBLIC_SITE_URL | ⏳ | Set to https://martinarink.com |
-| ASSESSMENT_RESULT_SECRET | 🔴 | Run: openssl rand -hex 32 |
-| NEXT_PUBLIC_SANITY_PROJECT_ID | ⏳ | From sanity.io/manage |
-| NEXT_PUBLIC_SANITY_DATASET | ⏳ | production |
-| SANITY_WRITE_TOKEN | ⏳ | Editor token from Sanity > API |
-| KIT_API_KEY | ⏳ | From Kit developer settings |
-| KIT_FORM_ID_ASSESSMENT | ⏳ | Numeric ID from Kit Forms |
-| KIT_FORM_ID_NEWSLETTER | ⏳ | Numeric ID from Kit Forms |
-| KIT_TAG_ASSESSMENT_COMPLETED | ⏳ | Numeric tag ID |
-| KIT_TAG_SOURCE_ASSESSMENT | ⏳ | Numeric tag ID |
-| KIT_TAG_SEQUENCE_ASSESSMENT | ⏳ | Numeric tag ID |
-| KIT_TAG_ARCHETYPE_RECKONING | ⏳ | Numeric tag ID |
-| KIT_TAG_ARCHETYPE_THRESHOLD | ⏳ | Numeric tag ID |
-| KIT_TAG_ARCHETYPE_RETURN | ⏳ | Numeric tag ID |
-| KIT_TAG_INTENT_SOBER_MUSE | ⏳ | Numeric tag ID |
-| KIT_TAG_INTENT_EMPOWERMENT | ⏳ | Numeric tag ID |
-| KIT_TAG_INTENT_BOTH | ⏳ | Numeric tag ID |
-| KIT_TAG_READINESS_LOW | ⏳ | Numeric tag ID |
-| KIT_TAG_READINESS_MEDIUM | ⏳ | Numeric tag ID |
-| KIT_TAG_READINESS_HIGH | ⏳ | Numeric tag ID |
-| KIT_TAG_PRIVACY_HIGH | ⏳ | Numeric tag ID |
-| KIT_TAG_APPLICANT_SOBER_MUSE | ⏳ | Numeric tag ID |
-| KIT_TAG_APPLICANT_EMPOWERMENT | ⏳ | Numeric tag ID |
-| RESEND_API_KEY | ⏳ | From resend.com |
-| RESEND_FROM_EMAIL | ⏳ | hello@martinarink.com |
-| RESEND_NOTIFY_EMAIL | ⏳ | martina@martinarink.com |
-| NEXT_PUBLIC_CALENDLY_URL | ⏳ | Your Calendly booking URL |
+### Vercel
+- [ ] All environment variables added — see `docs/VERCEL_ENV_SETUP.md` for full table
+- [ ] Redeployed after adding variables (Vercel → Deployments → Redeploy)
+- [ ] `NEXT_PUBLIC_SITE_URL=https://martinarink.com` set
 
-**Minimum viable set (assessment works without Kit/Resend):**
-- ASSESSMENT_RESULT_SECRET — BLOCKING. Site 503s in production without this.
+### Domain
+- [ ] `martinarink.com` connected in Vercel → Project → Domains
+- [ ] DNS records updated at registrar (Vercel provides the exact records)
+- [ ] HTTPS certificate confirmed (Vercel provisions automatically)
+- [ ] `www` redirect configured
+
+### Kit — minimum for funnel to tag leads
+- [ ] Kit account created at app.kit.com
+- [ ] Assessment form created → `KIT_FORM_ID_ASSESSMENT` added to Vercel
+- [ ] Newsletter form created → `KIT_FORM_ID_NEWSLETTER` added to Vercel
+- [ ] 7 custom fields created with exact keys — see `docs/KIT_SETUP_GUIDE.md` §3
+- [ ] All 16 tags created with exact names → IDs added as `KIT_TAG_*` vars — see §4
+- [ ] `KIT_API_KEY` added to Vercel
+- [ ] 3 email sequences created (Quiet Reckoning / Threshold / The Return) — see §5
+- [ ] 3 automation rules created (archetype tag → sequence trigger) — see §6
+
+### Legal
+- [ ] Privacy policy at `/legal/privacy` is accurate and live
+- [ ] Imprint at `/legal/imprint` updated with real USt-IdNr
+- [ ] Terms at `/legal/terms` are live
+- [ ] Privacy policy mentions Kit/ConvertKit as data processor
+- [ ] Unsubscribe link in all Kit sequence emails (set in Kit sequence settings)
 
 ---
 
-## 2. Sanity Setup
+## REQUIRED BEFORE PAID TRAFFIC
+*Without these, leads may be lost and Martina won't know high-intent visitors arrived.*
 
-| Task | Status |
-|------|--------|
-| Create Sanity account and project | ⏳ |
-| Get project ID → NEXT_PUBLIC_SANITY_PROJECT_ID | ⏳ |
-| Create Editor API token → SANITY_WRITE_TOKEN | ⏳ |
-| Run `npx sanity deploy` to deploy Studio | ⏳ |
-| Open /admin on live site and verify Studio loads | ⏳ |
-| Create 3 Assessment Result documents (reckoning, threshold, return) | ⏳ |
-| Verify result pages fetch from Sanity (not just fallback) | ⏳ |
+### Lead backup (Sanity)
+- [ ] Sanity project created at sanity.io/manage
+- [ ] `NEXT_PUBLIC_SANITY_PROJECT_ID` added to Vercel
+- [ ] `NEXT_PUBLIC_SANITY_DATASET=production` added to Vercel
+- [ ] Write token created (Editor role) → `SANITY_WRITE_TOKEN` added to Vercel
+- [ ] Test submission verified in Sanity Studio
+- [ ] See `docs/SANITY_LEAD_BACKUP_GUIDE.md`
 
----
+### Internal notifications (Resend)
+- [ ] Resend account created, API key added → `RESEND_API_KEY`
+- [ ] Domain `martinarink.com` verified in Resend (DNS records added)
+- [ ] `RESEND_FROM_EMAIL=hello@martinarink.com` added to Vercel
+- [ ] `RESEND_NOTIFY_EMAIL=martina@martinarink.com` added to Vercel
+- [ ] Test: submit assessment with high-readiness answers → notification received
+- [ ] See `docs/RESEND_NOTIFICATION_GUIDE.md`
 
-## 3. Kit Setup
+### End-to-end funnel smoke test
+- [ ] Submit assessment with real email — result page loads
+- [ ] Kit subscriber appears within 30 seconds
+- [ ] Correct archetype tag on subscriber
+- [ ] Correct intent tag on subscriber
+- [ ] Correct readiness tag on subscriber
+- [ ] `archetype`, `service_intent`, `readiness_level`, `privacy_need`, `completed_at` fields populated
+- [ ] Sequence email 1 received in test inbox
+- [ ] For high-readiness submission: internal notification received
+- [ ] Sanity backup document visible in Studio
+- [ ] Submit `/apply/sober-muse` → application notification received in inbox
+- [ ] `/book` loads with Calendly iframe working
 
-| Task | Status |
-|------|--------|
-| Create Kit account (kit.com) | ⏳ |
-| Create assessment form → KIT_FORM_ID_ASSESSMENT | ⏳ |
-| Create newsletter form → KIT_FORM_ID_NEWSLETTER | ⏳ |
-| Create all 16 tags listed in FUNNEL_SETUP.md | ⏳ |
-| Create all 8 custom fields listed in FUNNEL_SETUP.md | ⏳ |
-| Create 3 email sequences (Reckoning / Threshold / Return) | ⏳ |
-| Set up automation triggers for each archetype tag | ⏳ |
-| Test: submit assessment → verify subscriber + tags in Kit | ⏳ |
-| Test: verify sequence email 1 arrives | ⏳ |
-
----
-
-## 4. Domain
-
-| Task | Status |
-|------|--------|
-| Add martinarink.com in Vercel > Domains | ⏳ |
-| Update DNS at registrar (Vercel provides exact records) | ⏳ |
-| Verify SSL certificate issued | ⏳ |
-| Verify www redirect to non-www (or vice versa) | ⏳ |
+### Cal.com / Calendly
+- [ ] Booking page created
+- [ ] `NEXT_PUBLIC_CALENDLY_URL` set to correct URL
+- [ ] Tested in `/book` — iframe loads and booking completes
 
 ---
 
-## 5. SEO Checks
+## OPTIONAL — AFTER LAUNCH
+*Not required for the funnel to function. Add when ready.*
 
-| Task | Status |
-|------|--------|
-| /assessment is indexable (sitemap.ts includes it) | ✅ |
-| /assessment/result/* is noindexed | ✅ |
-| /apply/* is noindexed (robots.ts disallows /apply) | ✅ |
-| /book is noindexed | ✅ |
-| OG image exists at /og-default.jpg | ⏳ Create this image |
-| Verify sitemap.xml loads at /sitemap.xml | ✅ |
-| Verify robots.txt loads at /robots.txt | ✅ |
-| Person schema in layout.tsx | ✅ |
+### Analytics
+- [ ] Google Analytics 4 property created → `NEXT_PUBLIC_GA4_MEASUREMENT_ID`
+- [ ] `assessment_started` / `assessment_completed` / `assessment_result_viewed` verified in GA4 DebugView
+- [ ] Meta Pixel (if running Meta ads) → `NEXT_PUBLIC_META_PIXEL_ID`
+- [ ] Microsoft Clarity (session recordings) → `NEXT_PUBLIC_CLARITY_PROJECT_ID`
+- [ ] Cookie consent banner added if any of the above analytics are active
 
----
+### Sanity CMS content
+- [ ] Result copy for all 3 archetypes entered in Sanity Studio
+  - Quiet Reckoning: opening letter, body paragraphs, what this means, what becomes possible, closing
+  - Threshold: same structure
+  - The Return: same structure
+- [ ] Writing/blog posts entered (fallback state shows without them)
+- [ ] Site settings (site name, OG image) filled in Sanity
 
-## 6. Legal / GDPR
+### Email sequences — full copy
+- [ ] All 5 emails written and active for Quiet Reckoning sequence
+- [ ] All 5 emails written and active for Threshold sequence
+- [ ] All 5 emails written and active for The Return sequence
+- [ ] Liquid personalisation tested: `service_intent` field drives CTA links correctly
 
-| Task | Status |
-|------|--------|
-| Privacy policy exists at /legal/privacy | ✅ |
-| Terms exist at /legal/terms | ✅ |
-| Imprint exists at /legal/imprint | ✅ |
-| Update imprint with real USt-IdNr | ⏳ |
-| Privacy policy mentions Kit/ConvertKit data processing | ⏳ |
-| Privacy policy mentions Resend email | ⏳ |
-| Assessment consent text is accurate | ✅ |
-| Unsubscribe link in all Kit emails | ⏳ Set in Kit sequence settings |
-| Cookie consent banner (if analytics enabled) | ⏳ |
+### SEO
+- [ ] Submit `/sitemap.xml` to Google Search Console
+- [ ] Confirm `martinarink.com` (not Vercel subdomain) is the verified property
+- [ ] OG image created and placed at `/public/og-default.jpg`
+- [ ] Run Lighthouse on `/`, `/assessment`, `/sober-muse` — LCP < 2.5s
 
----
-
-## 7. Analytics
-
-| Task | Status |
-|------|--------|
-| @vercel/analytics installed and active | ✅ |
-| Custom assessment events fire | ✅ |
-| GA4 tracking (optional) — set NEXT_PUBLIC_GA4_MEASUREMENT_ID | ⏳ |
-| No PII sent to analytics | ✅ |
+### Stripe
+- [ ] Stripe keys added to Vercel when payment routes are wired
+- [ ] Currently installed but not connected to live routes — no action needed at launch
 
 ---
 
-## 8. Mobile QA
-
-| Task | Status |
-|------|--------|
-| /assessment loads correctly on iPhone | ⏳ Test |
-| Answer options have large tap targets (min 44px) | ✅ |
-| Email gate form is usable on mobile | ✅ |
-| Result page is readable on iPhone | ⏳ Test |
-| /apply/* forms are usable on mobile | ⏳ Test |
-| Navigation works on mobile | ⏳ Test |
-
----
-
-## 9. Funnel QA
-
-| Task | Status |
-|------|--------|
-| Complete assessment from start to result | ⏳ |
-| Result page shows correct archetype | ⏳ |
-| CTA on result page links to correct route | ⏳ |
-| /apply/sober-muse loads | ✅ |
-| /apply/empowerment loads | ✅ |
-| Application form submits and shows success | ⏳ |
-| Application notification arrives in Martina's inbox | ⏳ |
-| Kit subscriber created with correct tags | ⏳ |
-| Sanity submission record created | ⏳ |
-| High-intent Resend notification works | ⏳ |
-
----
-
-## 10. Final Smoke Test (run before announcing launch)
-
-```
-1. Visit https://martinarink.com
-2. Visit https://martinarink.com/assessment
-3. Answer all 7 questions
-4. Submit email at gate
-5. Verify redirect to /assessment/result/[resultId]
-6. Verify result letter is correct for answers given
-7. Click primary CTA — verify it does not 404
-8. Visit https://martinarink.com/apply/sober-muse
-9. Submit application form — verify notification arrives
-10. Visit https://martinarink.com/book — verify Calendly loads
-11. Visit https://martinarink.com/sitemap.xml — verify it renders
-12. Visit https://martinarink.com/robots.txt — verify /apply and /book are disallowed
-13. Check Vercel deployment logs — verify no errors
-14. Check Kit — verify test subscriber has correct tags
-15. Check Sanity Studio /admin — verify submission record exists
-```
-
----
-
-## Remaining Risks
+## Remaining risks
 
 | Risk | Severity | Mitigation |
-|------|----------|-----------|
-| ASSESSMENT_RESULT_SECRET not set | BLOCKING | Checked at runtime — returns 503 |
-| Kit form ID not set | High | Kit skipped gracefully, lead stored in Sanity |
-| Sanity write token not set | Medium | Warning logged, Kit still runs |
-| Resend not configured | Medium | Notification skipped, does not affect user |
-| OG image missing | Low | Default text fallback |
-| Real photography missing | Low | Placeholder images work — UX slightly weaker |
-| No automated test suite | Medium | Manual test paths documented above |
+|------|----------|------------|
+| `ASSESSMENT_RESULT_SECRET` not set in production | **CRITICAL** | 503 on all assessment submissions — set this first |
+| Kit form/tag IDs not set | High | Kit tagging skipped; Sanity backup captures lead |
+| Sanity write token not set | Medium | Warn logged; Kit still runs as primary |
+| Resend domain not verified | Medium | Notifications silently fail; leads still in Kit |
+| No automated test suite | Medium | Manual test paths in §10 of this doc |
+| OG image missing | Low | Text fallback in place |
+| Calendly URL not set | Low | `/book` shows blank iframe |
+
+---
+
+## Reference docs
+
+| Task | Guide |
+|------|-------|
+| Vercel environment variables | `docs/VERCEL_ENV_SETUP.md` |
+| Kit forms, tags, sequences, automations | `docs/KIT_SETUP_GUIDE.md` |
+| Sanity lead backup | `docs/SANITY_LEAD_BACKUP_GUIDE.md` |
+| Resend notifications | `docs/RESEND_NOTIFICATION_GUIDE.md` |
+| Assessment system internals | `docs/ASSESSMENT_SYSTEM.md` |
+| Full funnel reference | `docs/FUNNEL_SETUP.md` |

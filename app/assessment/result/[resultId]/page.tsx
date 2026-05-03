@@ -142,7 +142,7 @@ export default async function AssessmentResultPage({ params }: Props) {
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <a
               href={routing.primaryHref}
-              className="inline-flex items-center justify-center bg-wine text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-10 py-4 rounded-[1px] hover:bg-wine-deep transition-colors duration-200"
+              className="inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-10 py-4 rounded-[1px] hover:bg-plum-deep transition-colors duration-200"
             >
               {routing.primaryLabel}
             </a>

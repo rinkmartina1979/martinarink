@@ -30,7 +30,12 @@ export async function POST(req: NextRequest) {
   });
 
   if (!result.success) {
-    return NextResponse.json({ error: result.error }, { status: 502 });
+    // Don't expose internal errors to the client
+    console.error("[Newsletter] Subscribe failed:", result.error);
+    return NextResponse.json(
+      { error: "Could not subscribe at this time. Please try again." },
+      { status: 502 }
+    );
   }
 
   return NextResponse.json({ success: true });

@@ -25,7 +25,7 @@ export default function ThankYouPage() {
         </p>
         <Link
           href="/writing"
-          className="mt-12 inline-block text-[14px] text-wine underline decoration-pink underline-offset-4"
+          className="mt-12 inline-block text-[14px] text-plum underline decoration-pink underline-offset-4"
         >
           Return to the journal →
         </Link>

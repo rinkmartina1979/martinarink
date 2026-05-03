@@ -211,7 +211,7 @@ export function AssessmentShell() {
               onClick={() =>
                 setStage({ kind: "question", questionIndex: QUESTIONS.length - 1 })
               }
-              className="inline-flex items-center justify-center bg-wine text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-8 py-3 rounded-[1px] hover:bg-wine-deep transition-colors duration-200"
+              className="inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-8 py-3 rounded-[1px] hover:bg-plum-deep transition-colors duration-200"
             >
               Try again
             </button>
