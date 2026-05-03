@@ -32,13 +32,32 @@ export default async function ImprintPage() {
                 Angaben gemäß § 5 TMG
               </h2>
               <p>
-                Martina Rink — UG (haftungsbeschränkt)
+                Martina Rink UG (haftungsbeschränkt)
                 <br />
+                <span className="text-ink-quiet text-[14px]">auch bekannt als: Concept Studio Martina Rink</span>
+                <br /><br />
                 Steinkreuzstr. 26b
                 <br />
                 76228 Karlsruhe
                 <br />
                 Germany
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-[13px] uppercase tracking-[0.18em] text-ink-quiet mb-3">
+                Registereintrag / Commercial Register
+              </h2>
+              <p>
+                Handelsregister: HRB 21885
+                <br />
+                Registergericht: Amtsgericht Traunstein
+                <br /><br />
+                USt-IdNr. (VAT): DE 283558251
+                <br />
+                Steuernummer: 34/411/11000
+                <br />
+                Finanzamt Karlsruhe
               </p>
             </section>
 

@@ -6,6 +6,7 @@ import { GhostButton } from "@/components/brand/GhostButton";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
 import { getSoberMusePage } from "@/sanity/lib/queries";
+import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 
 const FAQS = [
   {
@@ -350,6 +351,13 @@ export default async function SoberMusePage() {
             attribution="Founder · London"
             nda
           />
+        </div>
+      </section>
+
+      {/* Legal disclaimer — required for mentoring/sobriety services */}
+      <section className="bg-cream pb-16">
+        <div className="container-content">
+          <CoachingDisclaimer />
         </div>
       </section>
     </>

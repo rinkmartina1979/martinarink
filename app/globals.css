@@ -76,12 +76,18 @@
   --container-read:    680px;
 
   /* ── ANIMATIONS ──────────────────────────────────────────── */
-  --animate-fade-up: fadeUp 0.7s ease-out both;
+  --animate-fade-up:  fadeUp 0.7s ease-out both;
+  --animate-marquee:  marquee 28s linear infinite;
 }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 /* ============================================================

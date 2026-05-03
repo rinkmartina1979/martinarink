@@ -6,6 +6,7 @@ import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
 import { getEmpowermentPage } from "@/sanity/lib/queries";
+import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 
 const FAQS = [
   {
@@ -326,6 +327,13 @@ export default async function EmpowermentPage() {
               </details>
             ))}
           </dl>
+        </div>
+      </section>
+
+      {/* Legal disclaimer — required for mentoring services */}
+      <section className="bg-cream pb-16">
+        <div className="container-content">
+          <CoachingDisclaimer />
         </div>
       </section>
     </>

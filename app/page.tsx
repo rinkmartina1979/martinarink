@@ -6,6 +6,7 @@ import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
+import { PressMarquee } from "@/components/brand/PressMarquee";
 import { buildMetadata } from "@/lib/metadata";
 import { getHomePage, getFeaturedTestimonials, getPartnerLogos, type Testimonial } from "@/sanity/lib/queries";
 
@@ -165,26 +166,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── AS FEATURED IN — press logos above fold ─────────── */}
-      <section className="bg-cream border-t border-sand/40 py-8">
-        <div className="container-content">
-          <p className="text-center text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-5">
-            As featured in
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-3">
-            {["Der Spiegel", "Brigitte", "STERN", "Vogue Germany", "Die Zeit"].map(
-              (outlet) => (
-                <span
-                  key={outlet}
-                  className="font-[family-name:var(--font-display)] text-[15px] md:text-[17px] text-ink/55 tracking-[0.04em]"
-                >
-                  {outlet}
-                </span>
-              )
-            )}
-          </div>
-        </div>
-      </section>
+      {/* ─── AS FEATURED IN — infinite press marquee ─────────── */}
+      <PressMarquee />
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
       <AuthorityStrip />
