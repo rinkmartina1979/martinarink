@@ -101,33 +101,43 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ─── HERO ─────────────────────────────────────────────── */}
-      <section className="relative pt-32 md:pt-40 pb-20 md:pb-28 bg-cream overflow-hidden">
+      {/* ─── HERO — dark aubergine, fluid H1, 2026 editorial ───── */}
+      <section className="relative pt-32 md:pt-40 pb-20 md:pb-28 bg-plum overflow-hidden">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-7 lg:col-span-7">
-            <Eyebrow withLine>For the woman who already has it all</Eyebrow>
+            <Eyebrow withLine variant="light">
+              For the woman who already has it all
+            </Eyebrow>
 
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] sm:text-[56px] md:text-[72px] lg:text-[82px] leading-[0.95] tracking-[-0.02em] text-ink">
+            {/* Fluid H1 — clamp scales from 44px (mobile) to 82px (desktop) */}
+            <h1
+              className="mt-6 font-[family-name:var(--font-display)] leading-[0.95] tracking-[-0.02em] text-cream"
+              style={{ fontSize: "clamp(2.75rem, 5.5vw + 0.5rem, 5.125rem)" }}
+            >
               You&rsquo;ve built a life that looks{" "}
               <em className="italic">extraordinary</em> from the outside
               <br className="hidden md:inline" />
-              <ScriptAccent className="block mt-2 text-[0.7em] leading-none">
+              {/* TODO: "— and yet." script accent — homepage hero only, keep here */}
+              <ScriptAccent className="block mt-2 text-[0.7em] leading-none text-pink">
                 — and yet.
               </ScriptAccent>
             </h1>
 
-            <p className="mt-8 max-w-[520px] text-[19px] leading-[1.65] text-ink-soft">
+            <p className="mt-8 max-w-[520px] text-[19px] leading-[1.65] text-cream/75">
               {heroSubheadline}
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:items-center">
-              <PlumButton href={heroCtaUrl}>{heroCta}</PlumButton>
-              <Link
-                href={heroSecondaryUrl}
-                className="text-[15px] text-ink underline decoration-pink decoration-1 underline-offset-[6px] hover:text-pink transition-colors"
+              {/* Cream-fill primary button on dark plum background */}
+              <PlumButton
+                href={heroCtaUrl}
+                className="!bg-cream !text-plum hover:!bg-bone"
               >
+                {heroCta}
+              </PlumButton>
+              <GhostButton href={heroSecondaryUrl} variant="light">
                 {heroSecondaryLabel}
-              </Link>
+              </GhostButton>
             </div>
           </div>
 
@@ -143,10 +153,10 @@ export default async function HomePage() {
                 priority
                 fetchPriority="high"
               />
-              {/* Script overlay — sits on top of photo */}
+              {/* TODO: "welcome home, love" — keep; awaiting Martina copy review */}
               <ScriptAccent
                 as="div"
-                className="absolute -bottom-2 -right-2 md:bottom-4 md:right-4 text-[28px] md:text-[32px] -rotate-2 drop-shadow-sm"
+                className="absolute -bottom-2 -right-2 md:bottom-4 md:right-4 text-[28px] md:text-[32px] -rotate-2 drop-shadow-sm text-cream"
               >
                 welcome home, love
               </ScriptAccent>
