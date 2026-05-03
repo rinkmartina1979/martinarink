@@ -7,6 +7,7 @@ import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema } from "@/lib/metadata";
 import { getSoberMusePage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
+import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
 
 const FAQS = [
   {
@@ -66,6 +67,7 @@ export default async function SoberMusePage() {
 
   return (
     <>
+      <ReadingProgressBar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(FAQS)) }}
@@ -198,11 +200,14 @@ export default async function SoberMusePage() {
                 body: "The final phase is about building. Not a new identity, not a story about yourself. A return to a version of yourself that has its own position — its own preferences, its own way of occupying space — that doesn't need to be softened before it can be tolerated.",
               },
             ].map((p) => (
-              <div key={p.title} className="bg-bone p-8 md:p-10">
+              <div
+                key={p.title}
+                className="bg-bone p-8 md:p-10 border-b-2 border-transparent hover:border-pink transition-colors duration-300 group"
+              >
                 <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet">
                   {p.phase}
                 </p>
-                <h3 className="mt-4 font-[family-name:var(--font-display)] italic text-[28px] text-ink">
+                <h3 className="mt-4 font-[family-name:var(--font-display)] italic text-[28px] text-ink group-hover:text-plum transition-colors duration-300">
                   {p.title}
                 </h3>
                 <p className="mt-5 text-[15px] leading-[1.7] text-ink-soft">
@@ -214,12 +219,12 @@ export default async function SoberMusePage() {
         </div>
       </section>
 
-      {/* TESTIMONIAL — DARK */}
-      <section className="bg-ink section-pad">
+      {/* TESTIMONIAL — DARK PLUM */}
+      <section className="bg-plum section-pad">
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
-            className="block font-[family-name:var(--font-display)] italic text-plum-deep text-[80px] leading-none"
+            className="block font-[family-name:var(--font-display)] italic text-pink text-[80px] leading-none"
           >
             &ldquo;
           </span>
