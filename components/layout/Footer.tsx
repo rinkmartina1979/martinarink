@@ -127,6 +127,17 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                {/* TODO P3: update with real Spotify show URL from Martina */}
+                <a
+                  href={SITE.social.spotify}
+                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Spotify
+                </a>
+              </li>
+              <li>
                 <a
                   href={`mailto:${SITE.email}`}
                   className="text-[14px] text-cream/85 hover:text-pink transition-colors"
@@ -140,7 +151,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-sand/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="text-[12px] text-cream/50">
-            © 2026 Martina Rink &middot; Ibiza · Berlin · Munich
+            © 2026 Martina Rink &middot; Working worldwide
           </div>
           <div className="flex flex-wrap gap-6 text-[12px] uppercase tracking-[0.15em]">
             <Link href="/legal/privacy" className="text-cream/50 hover:text-cream">

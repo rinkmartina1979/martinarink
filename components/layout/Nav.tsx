@@ -7,10 +7,11 @@ import { MobileMenu } from "./MobileMenu";
 import { NavDropdown } from "./NavDropdown";
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
-  { label: "About", href: "/about" },
+// Order: About → Work With Me (dropdown) → Press → Writing
+const NAV_LINKS_LEFT  = [{ label: "About", href: "/about" }];
+const NAV_LINKS_RIGHT = [
+  { label: "Press",   href: "/press" },
   { label: "Writing", href: "/writing" },
-  { label: "Press", href: "/press" },
 ];
 
 export function Nav() {
@@ -44,7 +45,7 @@ export function Nav() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS_LEFT.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -54,13 +55,22 @@ export function Nav() {
             </Link>
           ))}
           <NavDropdown />
+          {NAV_LINKS_RIGHT.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-[13px] uppercase tracking-[0.12em] font-medium text-ink hover:text-pink transition-colors duration-200"
+            >
+              {link.label}
+            </Link>
+          ))}
           <PlumButton href="/assessment" className="!px-6 !py-3 !text-[11px] !tracking-[0.18em]">
             Begin the Assessment
           </PlumButton>
         </nav>
 
         {/* Mobile */}
-        <MobileMenu links={NAV_LINKS} />
+        <MobileMenu links={[...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT]} />
       </div>
     </header>
   );

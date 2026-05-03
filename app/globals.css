@@ -13,14 +13,14 @@
   --color-ink-soft:     #4A3728;
   --color-ink-quiet:    #8A7F72;
   --color-sand:         #C8B8A2;
-  /* Plum (Deep Amethyst) — replaces wine. 2026 Vogue editorial purple.
-     Maps to CI Farbe 3 (lavender family). Premium, intellectual, feminine. */
-  --color-plum:         #5C2D8E;
-  --color-plum-deep:    #451F6B;
+  /* Plum (Dark Aubergine) — client-approved 2026 brand purple.
+     Deep, rich, editorial. Maps to CI Farbe 3. Premium, intellectual, feminine. */
+  --color-plum:         #231728;
+  --color-plum-deep:    #180F1C;
   /* Legacy aliases — kept so any cached/external CSS still resolves.
      Do NOT use in new code. */
-  --color-wine:         #5C2D8E;
-  --color-wine-deep:    #451F6B;
+  --color-wine:         #231728;
+  --color-wine-deep:    #180F1C;
   --color-pink:         #F942AA;
   --color-pink-soft:    #FDBFE2;
   /* Violet tints — from CI doc Farbe 3. Use for soft surfaces, dividers. */

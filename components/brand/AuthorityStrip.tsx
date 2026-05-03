@@ -1,8 +1,10 @@
+// TODO: NURNBERGER_APPROVED — written permission from Mrs. Nürnberger required before launch.
+// Remove this comment once written consent is on file.
 const ITEMS = [
   { label: "AUTHOR", credit: "Three Books · Spiegel Bestseller" },
   { label: "CULTURAL WORK", credit: "Isabella Blow · London" },
   { label: "LIVED EXPERIENCE", credit: "Six Years Sober" },
-  { label: "CLINICAL PARTNER", credit: "Dr. Nürnberger · My Way Betty Ford" },
+  { label: "CLINICAL PARTNER", credit: "Mrs. Nürnberger · My Way Betty Ford" },
 ];
 
 export function AuthorityStrip() {

@@ -23,7 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-// Hardcoded fallback testimonials — used when Sanity is not configured
+// Hardcoded fallback testimonials — used when Sanity is not configured.
+// TODO: replace with real client testimonial once received from Martina.
 const FALLBACK_TESTIMONIALS: Omit<Testimonial, "_id" | "portrait" | "programme" | "featured" | "order">[] = [
   {
     name: "Armina",
@@ -33,11 +34,11 @@ const FALLBACK_TESTIMONIALS: Omit<Testimonial, "_id" | "portrait" | "programme" 
     nda: false,
   },
   {
-    name: "Clara",
-    role: "Founder · London",
+    name: "",
+    role: "Senior Director · Vienna",
     quote:
-      "I stopped being surprised by myself. The work wasn't a rebuild — it was the return of a woman I'd quietly stopped expecting.",
-    nda: false,
+      "What Martina does is different — it is more like being read than being advised. Within the first month she named something I had never managed to say out loud.",
+    nda: true,
   },
 ];
 
