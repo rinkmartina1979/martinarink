@@ -211,6 +211,7 @@ export default async function PressPage() {
                 "Spiegel Bestseller author",
                 "Former PA to Isabella Blow",
                 "Keynote speaker",
+                "Panel guest",
                 "Private mentor · by application",
               ].map((cred) => (
                 <span
@@ -334,18 +335,46 @@ export default async function PressPage() {
                   <BookCard key={pub._id} pub={pub} />
                 ))
               : (
+                /* Book order: Isabella Blow first (flagship credential), then People of Deutschland, then Fashion Germany */
                 <>
                   <article>
-                    <div className="aspect-[3/4] bg-bone flex items-end p-6 mb-5">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-2">
-                          Documentary · Non-fiction
-                        </p>
-                        <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-ink">
-                          People of Deutschland
+                    <div className="relative aspect-[3/4] bg-ink overflow-hidden mb-5">
+                      <Image
+                        src="/images/books/isabella-blow-cover.png"
+                        alt="Isabella Blow — book cover by Martina Rink"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 28vw"
+                        className="object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-ink/80 to-transparent">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-sand/70 mb-1">
+                          Spiegel Bestseller · Biography
                         </p>
                       </div>
                     </div>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-2">
+                      Isabella Blow
+                    </h3>
+                    <p className="text-[14px] leading-[1.75] text-ink-soft">
+                      Written from a position of unique proximity — Rink served as
+                      Blow&rsquo;s personal assistant and confidante. A Spiegel
+                      Bestseller. Literary representation via Elisabeth Ruge Agentur
+                      GmbH, Berlin.
+                    </p>
+                  </article>
+                  <article>
+                    <div className="relative aspect-[3/4] bg-bone overflow-hidden mb-5">
+                      <Image
+                        src="/images/books/people-of-deutschland-cover.png"
+                        alt="People of Deutschland — book cover by Martina Rink"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 28vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-2">
+                      People of Deutschland
+                    </h3>
                     <p className="text-[14px] leading-[1.75] text-ink-soft">
                       A documentary portrait of contemporary Germany — its people,
                       contradictions, and quiet grandeur. National media coverage upon
@@ -353,38 +382,22 @@ export default async function PressPage() {
                     </p>
                   </article>
                   <article>
-                    <div className="aspect-[3/4] bg-sand/30 flex items-end p-6 mb-5">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-2">
-                          Non-fiction · Photography
-                        </p>
-                        <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-ink">
-                          Fashion Germany
-                        </p>
-                      </div>
+                    <div className="relative aspect-[3/4] bg-sand/20 overflow-hidden mb-5">
+                      <Image
+                        src="/images/books/fashion-germany-cover.png"
+                        alt="Fashion Germany — book cover by Martina Rink"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 28vw"
+                        className="object-cover"
+                      />
                     </div>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-2">
+                      Fashion Germany
+                    </h3>
                     <p className="text-[14px] leading-[1.75] text-ink-soft">
                       A portrait of German fashion — its designers, its codes, and the
                       culture that shaped one of Europe&rsquo;s most underestimated
                       style capitals.
-                    </p>
-                  </article>
-                  <article>
-                    <div className="aspect-[3/4] bg-ink flex items-end p-6 mb-5">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-sand/60 mb-2">
-                          Spiegel Bestseller · Biography
-                        </p>
-                        <p className="font-[family-name:var(--font-display)] text-[22px] leading-tight text-cream">
-                          Isabella Blow
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-[14px] leading-[1.75] text-ink-soft">
-                      Written from a position of unique proximity — Rink served as
-                      Blow&rsquo;s personal assistant and confidante. A Spiegel
-                      Bestseller. Literary representation via Elisabeth Ruge Agentur
-                      GmbH, Berlin.
                     </p>
                   </article>
                 </>
