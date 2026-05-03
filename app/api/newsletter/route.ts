@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { subscribeToKit } from "@/lib/kit";
+import { subscribeNewsletter } from "@/lib/brevo";
 
 const NewsletterSchema = z.object({
   email: z.string().email(),
@@ -24,18 +24,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const formId = process.env.KIT_FORM_ID_NEWSLETTER;
-  if (!formId) {
-    return NextResponse.json(
-      { error: "Newsletter not configured" },
-      { status: 503 }
-    );
-  }
-
-  const result = await subscribeToKit({
+  const result = await subscribeNewsletter({
     email: parsed.data.email,
     firstName: parsed.data.firstName,
-    formId,
   });
 
   if (!result.success) {

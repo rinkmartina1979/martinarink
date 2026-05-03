@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vercel *)",
+      "Bash(nslookup martinarink.com)",
+      "Bash(nslookup www.martinarink.com)"
+    ]
+  }
+}
