@@ -1,17 +1,22 @@
-// TODO: NURNBERGER_APPROVED — written permission from Mrs. Nürnberger required before launch.
-// Remove this comment once written consent is on file.
+// NURNBERGER_APPROVED — flip to true only when written permission from Mrs. Nürnberger is on file.
+// Until then, the clinical partner credential is hidden. Strip renders 3 items (2-col grid).
+const NURNBERGER_APPROVED = false;
+
 const ITEMS = [
   { label: "AUTHOR", credit: "Three Books · Spiegel Bestseller" },
   { label: "CULTURAL WORK", credit: "Isabella Blow · London" },
   { label: "LIVED EXPERIENCE", credit: "Six Years Sober" },
-  { label: "CLINICAL PARTNER", credit: "Mrs. Nürnberger · My Way Betty Ford" },
+  ...(NURNBERGER_APPROVED
+    ? [{ label: "CLINICAL PARTNER", credit: "Mrs. Nürnberger · My Way Betty Ford" }]
+    : []),
 ];
 
 export function AuthorityStrip() {
+  const cols = ITEMS.length === 4 ? "md:grid-cols-4" : "md:grid-cols-3";
   return (
     <section className="bg-bone border-y border-sand/40">
       <div className="container-content py-8 md:py-10">
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-y-6 md:gap-y-0 md:divide-x divide-sand/60">
+        <ul className={`grid grid-cols-2 ${cols} gap-y-6 md:gap-y-0 md:divide-x divide-sand/60`}>
           {ITEMS.map((item) => (
             <li
               key={item.label}

@@ -3,7 +3,7 @@ import { SITE } from "./utils";
 
 // PREVIEW MODE — blocks all crawlers site-wide. Flip false for launch.
 // Single source of truth — affects EVERY page's robots metadata.
-const PREVIEW_MODE = true;
+const PREVIEW_MODE = false;
 
 interface BuildMetadataOpts {
   title?: string;

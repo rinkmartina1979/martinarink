@@ -62,10 +62,10 @@ export default async function ContactPage() {
             {pressInquiryCopy}
           </p>
           <a
-            href="mailto:contact@martinarink.com"
+            href="mailto:coaching@martinarink.com"
             className="mt-4 block font-[family-name:var(--font-display)] italic text-[24px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
           >
-            contact@martinarink.com
+            coaching@martinarink.com
           </a>
           <p className="mt-8 text-[15px] leading-[1.75] text-ink-soft">
             Martina Rink — UG (haftungsbeschränkt)

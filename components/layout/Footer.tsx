@@ -151,7 +151,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-sand/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="text-[12px] text-cream/50">
-            © 2026 Martina Rink &middot; Working worldwide
+            © 2026 Martina Rink UG (haftungsbeschränkt) &middot; Working worldwide
           </div>
           <div className="flex flex-wrap gap-6 text-[12px] uppercase tracking-[0.15em]">
             <Link href="/legal/privacy" className="text-cream/50 hover:text-cream">

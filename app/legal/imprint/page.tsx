@@ -70,10 +70,10 @@ export default async function ImprintPage() {
                 <br />
                 E-Mail:{" "}
                 <a
-                  href="mailto:contact@martinarink.com"
+                  href="mailto:coaching@martinarink.com"
                   className="text-plum underline underline-offset-4"
                 >
-                  contact@martinarink.com
+                  coaching@martinarink.com
                 </a>
               </p>
             </section>

@@ -68,8 +68,8 @@ export default async function PrivacyPage() {
               <p>
                 You have the right to access, correct, delete, or export your
                 data, and to object to processing. Write to{" "}
-                <a href="mailto:contact@martinarink.com" className="text-plum underline">
-                  contact@martinarink.com
+                <a href="mailto:coaching@martinarink.com" className="text-plum underline">
+                  coaching@martinarink.com
                 </a>
                 . We respond within 30 days.
               </p>

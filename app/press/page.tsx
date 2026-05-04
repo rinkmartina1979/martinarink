@@ -42,7 +42,7 @@ function pressSchema() {
         "@id": `${SITE.url}/#person`,
         name: "Martina Rink",
         url: SITE.url,
-        jobTitle: ["Author", "Private Mentor", "Keynote Speaker", "Sober Conscious Coach"],
+        jobTitle: ["Author", "Private Mentor", "Panel Speaker", "Sober Conscious Coach"],
         description:
           "Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to high-achieving women navigating identity, sobriety, and the second chapter of a serious career.",
         address: {
@@ -126,7 +126,7 @@ const BIOS = [
   },
   {
     length: "200 words",
-    text: "Martina Rink is a private mentor, author, and keynote speaker whose work addresses the interior life of women at the height of their careers. Her two programmes — The Sober Muse Method and Female Empowerment & Leadership — work with a small number of senior women each year on the questions that do not appear on any competency framework: who am I, now that I have become this? What do I actually want, given that I can no longer pretend I haven't thought about it?\n\nRink spent several years as personal assistant to Isabella Blow — the legendary British fashion editor, stylist, and talent spotter whose influence shaped a generation of designers including Alexander McQueen and Philip Treacy. That proximity to radical vision, eccentricity, and the cost of brilliance left a permanent mark on her thinking.\n\nShe is the author of People of Deutschland, a documentary portrait of contemporary Germany, and a Spiegel Bestseller. Her writing on women, identity, and culture appears in her online journal and regular letters to subscribers.\n\nRink is represented for literary rights by Elisabeth Ruge Agentur GmbH, Berlin. She is based across Ibiza, Berlin, and Munich.",
+    text: "Martina Rink is a private mentor, author, and panel speaker whose work addresses the interior life of women at the height of their careers. Her two programmes — The Sober Muse Method and Female Empowerment & Leadership — work with a small number of senior women each year on the questions that do not appear on any competency framework: who am I, now that I have become this? What do I actually want, given that I can no longer pretend I haven't thought about it?\n\nRink spent several years as personal assistant to Isabella Blow — the legendary British fashion editor, stylist, and talent spotter whose influence shaped a generation of designers including Alexander McQueen and Philip Treacy. That proximity to radical vision, eccentricity, and the cost of brilliance left a permanent mark on her thinking.\n\nShe is the author of People of Deutschland, a documentary portrait of contemporary Germany, and a Spiegel Bestseller. Her writing on women, identity, and culture appears in her online journal and regular letters to subscribers.\n\nRink is represented for literary rights by Elisabeth Ruge Agentur GmbH, Berlin. She is based across Ibiza, Berlin, and Munich.",
   },
 ];
 
@@ -174,7 +174,7 @@ export default async function PressPage() {
 
   const heroCopy =
     pressData?.bioCopy ??
-    "Martina Rink is a Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women at the inflection points of a serious career. She is available for press interviews, podcast conversations, panel discussions, and keynote engagements.";
+    "Martina Rink is a Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women at the inflection points of a serious career. She is available for press interviews, podcast conversations, and panel discussions.";
 
   const ctaLabel = pressData?.ctaLabel ?? null;
   const ctaUrl = pressData?.ctaUrl ?? null;
@@ -210,7 +210,6 @@ export default async function PressPage() {
               {[
                 "Spiegel Bestseller author",
                 "Former PA to Isabella Blow",
-                "Keynote speaker",
                 "Panel guest",
                 "Private mentor · by application",
               ].map((cred) => (
@@ -465,7 +464,7 @@ export default async function PressPage() {
                   Formats
                 </p>
                 <p className="text-[16px] text-ink-soft">
-                  Keynote · Panel chair · Intimate fireside conversation ·
+                  Panel chair · Panel guest · Intimate fireside conversation ·
                   Podcast guest
                 </p>
               </div>

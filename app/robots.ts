@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/utils";
 
-// NOINDEX MODE — site is under client review. Switch back to production rules before launch.
-const PREVIEW_MODE = true
+// LIVE MODE — crawlers allowed. Set true to re-enter preview/noindex for redesigns.
+const PREVIEW_MODE = false
 
 export default function robots(): MetadataRoute.Robots {
   if (PREVIEW_MODE) {

@@ -3,7 +3,32 @@
     "allow": [
       "Bash(npx vercel *)",
       "Bash(nslookup martinarink.com)",
-      "Bash(nslookup www.martinarink.com)"
+      "Bash(nslookup www.martinarink.com)",
+      "Bash(npx tsc *)",
+      "Bash(git add *)",
+      "Bash(dir \"D:\\\\WEBSITE DESIGN\\\\martinarink-next\\\\components\\\\brand\" /b)",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__tabs_create_mcp",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); p=[x for x in d if x.get\\('name'\\)=='martinarink']; print\\(json.dumps\\(p[0] if p else {}, indent=2\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3)",
+      "Read(//root/**)",
+      "Bash(node -e \"const os=require\\('os'\\); const path=require\\('path'\\); console.log\\(path.join\\(os.homedir\\(\\),'.vercel'\\)\\);\")",
+      "Bash(ls \"C:\\\\\\\\Users\\\\\\\\Light-Tech\\\\\\\\.vercel\\\\\\\\\")",
+      "Read(//mnt/c/Users/Light-Tech/**)",
+      "Read(//mnt/c/Users/Light-Tech/.vercel/**)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s https://api.vercel.com/v2/teams -H 'Authorization: Bearer vca_0q3GhWlGh8qeTzpX2jhm99VmpXAXelfxCNmz1JHxdaK63qBecb3gmvhr')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(t['id'], t['slug'], t.get\\('name',''\\)\\) for t in d.get\\('teams',[]\\)]\")",
+      "Bash(curl -s https://api.vercel.com/v2/user -H 'Authorization: Bearer vca_0q3GhWlGh8qeTzpX2jhm99VmpXAXelfxCNmz1JHxdaK63qBecb3gmvhr')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(p['id'], p['name'], p.get\\('link',{}\\).get\\('org',''\\)\\) for p in d.get\\('projects',[]\\)]\")",
+      "Bash(curl -s https://api.github.com/repos/rinkmartina1979/martinarink -H 'Authorization: token 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')",
+      "WebFetch(domain:www.martinarink.com)",
+      "Bash(npm run *)",
+      "Bash(npx next *)"
     ]
   }
 }

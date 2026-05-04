@@ -204,10 +204,10 @@ export default async function AboutPage() {
             <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
               For clients in the Sober Muse Method who benefit from clinical
               support alongside our private work, I maintain a partnership with
-              Dr. Ruta Nürnberger at the My Way Betty Ford Clinic.
+              Mrs. Ruta Nürnberger at the My Way Betty Ford Clinic.
             </p>
             <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
-              Dr. Nürnberger works with high-functioning individuals for whom
+              Mrs. Nürnberger works with high-functioning individuals for whom
               standard treatment frameworks are not appropriate. The partnership
               is discreet, high-calibre, and available when relevant — not
               mandatory, and not foregrounded.
