@@ -161,7 +161,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
         <div className="container-content max-w-3xl mx-auto">
           <div className="bg-bone p-2">
             <iframe
-              src={`${CALENDLY_URL}?hide_event_type_details=0&hide_gdpr_banner=1&primary_color=5C2D8E&text_color=1E1B17&background_color=F7F3EE`}
+              src={`${CALENDLY_URL}?hide_event_type_details=0&hide_gdpr_banner=1&primary_color=231728&text_color=1E1B17&background_color=F7F3EE`}
               title="Book a private consultation with Martina Rink"
               width="100%"
               style={{ minHeight: "700px", border: "none", display: "block" }}
