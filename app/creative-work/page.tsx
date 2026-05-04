@@ -58,60 +58,6 @@ export default async function CreativeWorkPage() {
         </div>
       </section>
 
-      {/* ─── PEOPLE OF DEUTSCHLAND ───────────────────────────── */}
-      <section className="bg-bone section-pad">
-        <div className="container-content">
-          <div className="max-w-2xl">
-            <Eyebrow>
-              {pod?.heading ?? "People of Deutschland"}
-            </Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] text-ink">
-              {pod?.heading ?? "People of Deutschland"}
-            </h2>
-            {pod?.body && (
-              <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft">
-                {pod.body.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-            )}
-            {!pod?.body && (
-              <p className="mt-8 text-[17px] leading-[1.7] text-ink-soft">
-                A photographic portrait series documenting contemporary German identity — the faces, the postures, the particular quiet of a country still becoming itself.
-              </p>
-            )}
-          </div>
-
-          {/* Gallery placeholder or images */}
-          {pod?.imageGallery && pod.imageGallery.length > 0 ? (
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {pod.imageGallery.map((img, i) => (
-                <div key={i} className="aspect-[3/4] bg-sand/30 overflow-hidden">
-                  {/* Images will render via next/image when Sanity is live */}
-                  <div className="w-full h-full flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                    {img.alt || "Image"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="aspect-[3/4] bg-sand/20 flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                  Photo {i + 1}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {pod?.photoCredit && (
-            <p className="mt-6 text-[12px] text-ink-quiet uppercase tracking-[0.15em]">
-              {pod.photoCredit}
-            </p>
-          )}
-        </div>
-      </section>
-
       {/* ─── ISABELLA BLOW ────────────────────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content">
@@ -181,6 +127,60 @@ export default async function CreativeWorkPage() {
               )}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─── PEOPLE OF DEUTSCHLAND ───────────────────────────── */}
+      <section className="bg-bone section-pad">
+        <div className="container-content">
+          <div className="max-w-2xl">
+            <Eyebrow>
+              {pod?.heading ?? "People of Deutschland"}
+            </Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] text-ink">
+              {pod?.heading ?? "People of Deutschland"}
+            </h2>
+            {pod?.body && (
+              <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft">
+                {pod.body.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            )}
+            {!pod?.body && (
+              <p className="mt-8 text-[17px] leading-[1.7] text-ink-soft">
+                A photographic portrait series documenting contemporary German identity — the faces, the postures, the particular quiet of a country still becoming itself.
+              </p>
+            )}
+          </div>
+
+          {/* Gallery placeholder or images */}
+          {pod?.imageGallery && pod.imageGallery.length > 0 ? (
+            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
+              {pod.imageGallery.map((img, i) => (
+                <div key={i} className="aspect-[3/4] bg-sand/30 overflow-hidden">
+                  {/* Images will render via next/image when Sanity is live */}
+                  <div className="w-full h-full flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
+                    {img.alt || "Image"}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="aspect-[3/4] bg-sand/20 flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
+                  Photo {i + 1}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {pod?.photoCredit && (
+            <p className="mt-6 text-[12px] text-ink-quiet uppercase tracking-[0.15em]">
+              {pod.photoCredit}
+            </p>
+          )}
         </div>
       </section>
 
