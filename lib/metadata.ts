@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { SITE } from "./utils";
 
+// PREVIEW MODE — blocks all crawlers site-wide. Flip false for launch.
+// Single source of truth — affects EVERY page's robots metadata.
+const PREVIEW_MODE = true;
+
 interface BuildMetadataOpts {
   title?: string;
   description?: string;
@@ -48,7 +52,7 @@ export function buildMetadata({
       shortcut: "/favicon.png",
       apple: "/apple-touch-icon.png",
     },
-    robots: noIndex
+    robots: (PREVIEW_MODE || noIndex)
       ? { index: false, follow: false }
       : { index: true, follow: true, googleBot: { index: true, follow: true } },
   };

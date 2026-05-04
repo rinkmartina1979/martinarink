@@ -19,9 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
       path: "/",
     });
   }
-  return buildMetadata({
-    path: "/",
-  });
+  return buildMetadata({ path: "/" });
 }
 
 // Hardcoded fallback testimonials — used when Sanity is not configured.
