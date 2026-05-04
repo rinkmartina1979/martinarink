@@ -5,11 +5,11 @@ const nextConfig: NextConfig = {
   transpilePackages: ['sanity', 'next-sanity'],
   async redirects() {
     return [
-      // Canonicalise to www — ensures martinarink.com always redirects to www.martinarink.com
+      // Canonicalise to apex — www.martinarink.com always redirects to martinarink.com
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'martinarink.com' }],
-        destination: 'https://www.martinarink.com/:path*',
+        has: [{ type: 'host', value: 'www.martinarink.com' }],
+        destination: 'https://martinarink.com/:path*',
         permanent: true,
       },
     ];
