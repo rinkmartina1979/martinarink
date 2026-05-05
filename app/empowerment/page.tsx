@@ -231,11 +231,11 @@ export default async function EmpowermentPage() {
       <section className="bg-bone py-0 overflow-hidden">
         <div className="relative h-64 md:h-80">
           <Image
-            src="/images/portraits/martina-leopard-lounge.jpg"
+            src="/images/portraits/martina-night-sky.jpg"
             alt="Martina Rink"
             fill
             sizes="100vw"
-            className="object-cover object-[center_20%]"
+            className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-ink/40" />
         </div>
