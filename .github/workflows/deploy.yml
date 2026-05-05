@@ -25,4 +25,7 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          # Explicitly clear GitHub's auto-injected token so Vercel CLI
+          # does not attempt GitHub integration validation
+          GITHUB_TOKEN: ""
         run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
