@@ -245,7 +245,7 @@ export default async function SoberMusePage() {
           <div className="md:col-span-4">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
-                src="/images/portraits/martina-cozy-portrait.jpg"
+                src="/images/portraits/martina-event-plum.png"
                 alt="Martina Rink"
                 fill
                 sizes="(max-width: 768px) 100vw, 28vw"
