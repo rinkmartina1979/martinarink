@@ -88,11 +88,11 @@ export default async function EmpowermentPage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
-                src="/images/portraits/martina-floral-dress.jpg"
+                src="/images/portraits/martina-ibiza-sunset.jpg"
                 alt="Martina Rink — Female Empowerment & Leadership"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-center"
+                className="object-cover object-top"
                 priority
               />
             </div>
