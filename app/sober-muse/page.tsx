@@ -91,11 +91,11 @@ export default async function SoberMusePage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
-                src="/images/portraits/martina-ibiza-working.jpg"
+                src="/images/portraits/martina-bw-studio.jpg"
                 alt="Martina Rink — Sober Muse Method"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-center"
+                className="object-cover object-top"
                 priority
               />
             </div>
