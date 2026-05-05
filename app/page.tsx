@@ -259,11 +259,11 @@ export default async function HomePage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-cafe-editorial.jpg"
+                src="/images/portraits/martina-library-pink.jpg"
                 alt="Martina Rink — author and cultural observer"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-center"
+                className="object-cover object-top"
               />
             </div>
           </div>
