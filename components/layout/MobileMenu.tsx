@@ -35,7 +35,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
             className="fixed inset-0 z-[100] bg-ink flex flex-col overflow-y-auto"
           >
             {/* Header */}
-            <div className="container-content flex items-center justify-between h-[72px] shrink-0">
+            <div className="container-content flex items-center justify-between h-[88px] shrink-0">
               <span className="font-[family-name:var(--font-display)] text-[20px] tracking-[0.06em] text-cream">
                 MARTINA RINK<span className="text-pink">.</span>
               </span>

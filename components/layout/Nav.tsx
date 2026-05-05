@@ -18,7 +18,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 32);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
@@ -27,17 +27,18 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        // Always cream — visible on every page, every scroll position
+        "fixed top-0 left-0 right-0 z-50 bg-cream transition-all duration-300",
         scrolled
-          ? "bg-cream/90 backdrop-blur-md border-b border-sand/40"
-          : "bg-transparent",
+          ? "border-b border-sand/60 shadow-[0_2px_24px_0_rgba(30,27,23,0.07)]"
+          : "border-b border-sand/30",
       )}
     >
-      <div className="container-content flex items-center justify-between h-[72px]">
+      <div className="container-content flex items-center justify-between h-[88px]">
         {/* Logo */}
         <Link
           href="/"
-          className="font-[family-name:var(--font-display)] text-[20px] tracking-[0.06em] text-ink"
+          className="font-[family-name:var(--font-display)] text-[22px] tracking-[0.06em] text-ink"
           aria-label="Martina Rink home"
         >
           MARTINA RINK<span className="text-pink">.</span>
@@ -64,7 +65,7 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
-          <PlumButton href="/assessment" className="!px-6 !py-3 !text-[11px] !tracking-[0.18em]">
+          <PlumButton href="/assessment" className="!px-7 !py-[14px] !text-[11px] !tracking-[0.18em]">
             Begin the Assessment
           </PlumButton>
         </nav>
