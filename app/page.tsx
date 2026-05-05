@@ -337,7 +337,7 @@ export default async function HomePage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-portrait-studio.jpg"
+                src="/images/portraits/martina-salon-ibiza.jpg"
                 alt="Martina Rink — private mentor"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
