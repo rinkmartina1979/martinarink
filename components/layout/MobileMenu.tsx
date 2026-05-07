@@ -18,7 +18,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
         type="button"
         aria-label="Open menu"
         onClick={() => setOpen(true)}
-        className="md:hidden flex flex-col gap-[5px] p-2 -mr-2"
+        className="md:hidden flex flex-col items-center justify-center gap-[5px] p-2 -mr-2 min-h-[44px] min-w-[44px]"
       >
         <span className="block h-px w-6 bg-ink" />
         <span className="block h-px w-6 bg-ink" />
@@ -43,7 +43,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
                 type="button"
                 aria-label="Close menu"
                 onClick={close}
-                className="text-cream text-2xl w-10 h-10 flex items-center justify-center"
+                className="text-cream text-2xl min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
                 ×
               </button>

@@ -13,7 +13,7 @@ interface PlumButtonProps {
 const baseClasses =
   "inline-flex items-center justify-center rounded-[1px] " +
   "bg-plum text-cream uppercase tracking-[0.18em] font-medium text-[0.75rem] " +
-  "px-7 py-4 md:px-10 md:py-[18px] " +
+  "px-7 py-4 md:px-10 md:py-[18px] min-h-[44px] min-w-[44px] " +
   "transition-colors duration-300 ease-out hover:bg-plum-deep " +
   "disabled:opacity-50 disabled:cursor-not-allowed";
 
