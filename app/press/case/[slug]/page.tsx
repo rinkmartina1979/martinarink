@@ -71,6 +71,36 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             </ol>
           </nav>
 
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Press & Speaking",
+                    item: "https://martinarink.com/press",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Selected work",
+                    item: "https://martinarink.com/press#selected-work",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 3,
+                    name: study.pseudonym,
+                    item: `https://martinarink.com/press/case/${slug}`,
+                  },
+                ],
+              }),
+            }}
+          />
+
           {/* Programme eyebrow */}
           <Eyebrow className="mb-5">{programmeName}</Eyebrow>
 
