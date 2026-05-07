@@ -3,6 +3,7 @@ import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
+import { CalendlyEmbed } from "@/components/book/CalendlyEmbed";
 
 export const metadata = buildMetadata({
   title: "Book a Consultation",
@@ -160,14 +161,9 @@ export default async function BookPage({ searchParams }: BookPageProps) {
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
           <div className="bg-bone p-2">
-            <iframe
-              src={`${CALENDLY_URL}?hide_event_type_details=0&hide_gdpr_banner=1&primary_color=231728&text_color=1E1B17&background_color=F7F3EE`}
-              title="Book a private consultation with Martina Rink"
-              width="100%"
-              style={{ minHeight: "700px", border: "none", display: "block" }}
-              loading="lazy"
-              allow="payment"
-            />
+            {/* CalendlyEmbed listens for the embed postMessage event and
+                notifies our backend when a booking completes — free-tier safe */}
+            <CalendlyEmbed url={CALENDLY_URL} />
           </div>
           <p className="mt-8 text-center text-[14px] text-ink-quiet leading-relaxed">
             If, after our conversation, the timing doesn&rsquo;t feel right —

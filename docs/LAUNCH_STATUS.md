@@ -48,32 +48,33 @@
 
 ## 🚨 Blocked — requires Martina action
 
-### 1. Calendly Standard plan upgrade ($10/mo) — REQUIRED for booking automation
+### 1. ~~Calendly Standard plan upgrade~~ — **RESOLVED WITHOUT UPGRADE**
 
-**Status:** Free plan does not include webhooks. The `/api/webhooks/calendly` endpoint is built and signed, but Calendly's API returns:
+**Status:** ✅ Free-tier workaround deployed. No $10/mo plan required.
 
-```
-HTTP 403 — Permission Denied
-"Please upgrade your Calendly account to Standard"
-```
+**How it works:** Calendly's embed widget fires a `window.postMessage` event
+(`calendly.event_scheduled`) to the parent page whenever a booking completes.
+This works on **all plans including Free**. Our `/book` page now listens for
+this event and POSTs to `/api/webhooks/calendly-embed`, which:
 
-**Why this matters:** Without the webhook, every consultation booking is silent. Martina has to manually check Calendly, manually email confirmation, manually tag the lead in Brevo. With it, the entire chain runs automatically:
+1. Fetches the full invitee object from Calendly's REST API (using the PAT
+   already stored as `CALENDLY_PERSONAL_ACCESS_TOKEN` in Vercel)
+2. Fires the Brevo `consultation_booked` event — so the confirmation
+   automation runs exactly as designed
+3. Emails Martina via Resend with all booking details
 
-- Brevo `consultation_booked` event fires → confirmation email auto-sends
-- Martina gets a Resend notification with the booking details
-- Brevo automation can run "prep questions" email 24h before the call
-- `consultation_canceled` and `consultation_no_show` fire recovery emails
+**What the server-side webhook adds that this doesn't:**
+- `consultation_canceled` events (cancellation happens outside our iframe)
+- `consultation_no_show` events (Calendly fires these server-side only)
 
-**To unlock:**
-1. Go to **calendly.com/account/billing**
-2. Upgrade to **Standard** ($10/mo or $96/year)
-3. Tell me — I'll re-run the webhook setup script (token already on file) in 30 seconds
+For cancellation/no-show handling, Martina can optionally upgrade to Standard
+when monthly revenue justifies it. The booking confirmation chain is fully
+operational for free.
 
-**Cost/value read:** $10/mo to recover even one missed booking pays for itself many times over. This is not premature SaaS spend — Calendly is already core infrastructure.
+### 2. ~~Add `CALENDLY_WEBHOOK_SIGNING_KEY` to Vercel env vars~~ — **No longer needed**
 
-### 2. Add `CALENDLY_WEBHOOK_SIGNING_KEY` to Vercel env vars
-
-Once the upgrade is done, Calendly returns a signing key when we register the webhook. I'll handle it via the Vercel API — but you'll need to paste me a Vercel CLI token if the current one has expired again.
+The embed approach does not use a signing key. The PAT
+(`CALENDLY_PERSONAL_ACCESS_TOKEN`) is already in Vercel.
 
 ### 3. Configure Brevo automations in the UI
 
