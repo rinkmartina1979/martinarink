@@ -22,22 +22,46 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({ path: "/" });
 }
 
-// Hardcoded fallback testimonials — used when Sanity is not configured.
-// TODO: replace with real client testimonial once received from Martina.
-const FALLBACK_TESTIMONIALS: Omit<Testimonial, "_id" | "portrait" | "programme" | "featured" | "order">[] = [
+// Real client testimonials — with verified portrait photos.
+interface FallbackTestimonial {
+  name: string;
+  role: string | null;
+  quote: string;
+  nda: boolean;
+  photoPath?: string; // path to /images/portraits/
+}
+
+const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
   {
-    name: "Armina",
-    role: "Patent Engineer",
+    name: "Rebecca",
+    role: "Travel Agent & Entrepreneur",
     quote:
-      "She helped me gain clarity about my life path and clearly define my goals. What I thought was a problem with discipline turned out to be a problem with direction.",
+      "A dear friend introduced me to Martina's Dry January Challenge. What began as an experiment quickly became one of the most significant months of my life. With Martina's support I not only completed the challenge but gained a much deeper understanding of my relationship with myself. Challenge accomplished.",
     nda: false,
+    photoPath: "/images/portraits/portrait-rebecca.avif",
   },
   {
-    name: "",
-    role: "Senior Director · Vienna",
+    name: "Harita",
+    role: "Manager · Automotive industry",
     quote:
-      "What Martina does is different — it is more like being read than being advised. Within the first month she named something I had never managed to say out loud.",
-    nda: true,
+      "I've had a few conversations with Martina, and her energy is truly special. The topics we discuss resonate so deeply with my own thoughts — as if taken directly from my own mind. She speaks from experience and conveys profound depth. Every interaction is simply inspiring.",
+    nda: false,
+    photoPath: "/images/portraits/portrait-harita.avif",
+  },
+  {
+    name: "Lu",
+    role: "Patent Attorney",
+    quote:
+      "Martina has so many wonderful attributes that it is very difficult to describe the full impact in a few sentences. She is warm, supportive, constructive and very professional — with great expertise to guide people in finding their way. Highly recommended for anyone seeking serious personal development.",
+    nda: false,
+    photoPath: "/images/portraits/portrait-lu.avif",
+  },
+  {
+    name: "Anja",
+    role: "Founder & Digital Business Consultant",
+    quote:
+      "The session with Martina was a thoroughly enriching experience. It was inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself — in a remarkably short time.",
+    nda: false,
   },
 ];
 
@@ -46,25 +70,49 @@ function TestimonialBlock({
   bg,
   accentColor,
 }: {
-  testimonial: { name: string; role: string | null; quote: string; nda: boolean };
+  testimonial: { name: string; role: string | null; quote: string; nda: boolean; photoPath?: string };
   bg: string;
   accentColor: string;
 }) {
-  const displayName = testimonial.nda ? testimonial.role : `${testimonial.name}${testimonial.role ? ` · ${testimonial.role}` : ""}`;
+  const displayName = testimonial.nda ? testimonial.role : testimonial.name;
+  const role = testimonial.nda ? null : testimonial.role;
   return (
-    <div className={`${bg} p-10`}>
+    <div className={`${bg} p-10 flex flex-col`}>
       <span
         aria-hidden
         className={`block font-[family-name:var(--font-display)] italic ${accentColor} text-[60px] leading-none -mt-2 mb-2`}
       >
         &ldquo;
       </span>
-      <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.4] text-ink">
+      <blockquote className="font-[family-name:var(--font-display)] italic text-[20px] leading-[1.5] text-ink flex-1">
         {testimonial.quote}
       </blockquote>
-      <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
-        — {displayName}
-      </p>
+      {/* Portrait + attribution */}
+      <div className="mt-8 flex items-center gap-4">
+        {testimonial.photoPath && (
+          <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-sand/60">
+            <Image
+              src={testimonial.photoPath}
+              alt={displayName ?? "Client"}
+              fill
+              sizes="48px"
+              className="object-cover object-top"
+            />
+          </div>
+        )}
+        <div>
+          {displayName && (
+            <p className="text-[12px] uppercase tracking-[0.18em] text-ink font-medium">
+              {displayName}
+            </p>
+          )}
+          {role && (
+            <p className="text-[11px] uppercase tracking-[0.14em] text-ink-quiet mt-0.5">
+              {role}
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -76,10 +124,10 @@ export default async function HomePage() {
     getPartnerLogos(),
   ]);
 
-  // Use Sanity testimonials if available and non-empty, else fallback
+  // Use Sanity testimonials if available and non-empty, else use hardcoded real testimonials
   const testimonials =
     testimonialData && testimonialData.length > 0
-      ? testimonialData.slice(0, 2)
+      ? testimonialData.slice(0, 4)
       : FALLBACK_TESTIMONIALS;
 
   const heroSubheadline =
@@ -140,25 +188,18 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Hero portrait */}
+          {/* Hero portrait — full-length editorial */}
           <div className="md:col-span-5 lg:col-span-5 relative">
-            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+            <div className="relative aspect-[3/5] bg-bone overflow-hidden">
               <Image
                 src="/images/portraits/martina-portrait-studio.jpg"
                 alt="Martina Rink — private mentor and author"
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
-                className="object-cover object-top"
+                className="object-cover object-[center_10%]"
                 priority
                 fetchPriority="high"
               />
-              {/* TODO: "welcome home, love" — keep; awaiting Martina copy review */}
-              <ScriptAccent
-                as="div"
-                className="absolute -bottom-2 -right-2 md:bottom-4 md:right-4 text-[28px] md:text-[32px] -rotate-2 drop-shadow-sm text-cream"
-              >
-                welcome home, love
-              </ScriptAccent>
             </div>
           </div>
         </div>
@@ -416,14 +457,26 @@ export default async function HomePage() {
         <div className="container-content">
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
-            {testimonials.map((t, i) => (
-              <TestimonialBlock
-                key={"_id" in t ? (t as Testimonial)._id : (t as { name: string }).name + String(i)}
-                testimonial={t}
-                bg={i === 0 ? "bg-blush" : "bg-bone"}
-                accentColor={i === 0 ? "text-plum/30" : "text-pink/30"}
-              />
-            ))}
+            {testimonials.map((t, i) => {
+              const bgMap = ["bg-blush", "bg-bone", "bg-violet-soft", "bg-bone"];
+              const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25"];
+              const isSanity = "_id" in t;
+              const item = {
+                name: t.name,
+                role: t.role ?? null,
+                quote: t.quote,
+                nda: t.nda,
+                photoPath: isSanity ? undefined : (t as FallbackTestimonial).photoPath,
+              };
+              return (
+                <TestimonialBlock
+                  key={isSanity ? (t as Testimonial)._id : t.name + String(i)}
+                  testimonial={item}
+                  bg={bgMap[i % bgMap.length]}
+                  accentColor={accentMap[i % accentMap.length]}
+                />
+              );
+            })}
           </div>
         </div>
       </section>

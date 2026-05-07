@@ -34,14 +34,14 @@ export function Nav() {
           : "border-b border-sand/30",
       )}
     >
-      <div className="container-content flex items-center justify-between h-[88px]">
-        {/* Logo */}
+      <div className="container-content flex items-center justify-between h-[96px]">
+        {/* Logo — editorial wordmark, display font */}
         <Link
           href="/"
-          className="font-[family-name:var(--font-display)] text-[22px] tracking-[0.06em] text-ink"
+          className="font-[family-name:var(--font-display)] text-[28px] md:text-[32px] tracking-[0.10em] text-ink hover:text-ink/80 transition-colors duration-200"
           aria-label="Martina Rink home"
         >
-          MARTINA RINK<span className="text-pink">.</span>
+          MARTINA RINK<span className="text-pink text-[1.1em] leading-none">.</span>
         </Link>
 
         {/* Desktop nav */}
