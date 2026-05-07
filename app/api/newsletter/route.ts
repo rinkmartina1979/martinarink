@@ -6,6 +6,9 @@ const NewsletterSchema = z.object({
   email: z.string().email(),
   firstName: z.string().optional(),
   consent: z.boolean().optional(),
+  // Where the signup came from — "newsletter-form" (default), "popup",
+  // "footer", "blog-post", etc. Surfaces in Brevo as the SOURCE attribute.
+  source: z.string().max(40).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -27,6 +30,7 @@ export async function POST(req: NextRequest) {
   const result = await subscribeNewsletter({
     email: parsed.data.email,
     firstName: parsed.data.firstName,
+    source: parsed.data.source,
   });
 
   if (!result.success) {
