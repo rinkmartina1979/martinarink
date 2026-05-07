@@ -135,9 +135,23 @@
     padding-inline: 1.5rem;
   }
   .section-pad {
-    padding-block: 6rem;
+    padding-block: 5rem;
   }
   @media (min-width: 768px) {
-    .section-pad { padding-block: 10rem; }
+    .section-pad { padding-block: 7rem; }
   }
+}
+
+/* ── Section spacing variants ──────────────────── */
+.section-tight {
+  padding-block: 3.5rem;
+}
+@media (min-width: 768px) {
+  .section-tight { padding-block: 5rem; }
+}
+.section-wide {
+  padding-block: 7rem;
+}
+@media (min-width: 768px) {
+  .section-wide { padding-block: 11rem; }
 }

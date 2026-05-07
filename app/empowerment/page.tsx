@@ -71,9 +71,9 @@ export default async function EmpowermentPage() {
       />
 
       {/* HERO */}
-      <section className="bg-cream pt-32 md:pt-40 pb-16 md:pb-24">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-7">
+      <section className="bg-cream pt-32 md:pt-40 pb-0">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
+          <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
             <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
             <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-[1.05] text-ink">
               {heroHeadline}
@@ -85,17 +85,15 @@ export default async function EmpowermentPage() {
               <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             </div>
           </div>
-          <div className="md:col-span-5">
-            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
-              <Image
-                src="/images/portraits/martina-ibiza-sunset.jpg"
-                alt="Martina Rink — Female Empowerment & Leadership"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
-                priority
-              />
-            </div>
+          <div className="md:col-span-5 relative min-h-[420px] md:min-h-0 bg-bone overflow-hidden">
+            <Image
+              src="/images/portraits/martina-ibiza-sunset.jpg"
+              alt="Martina Rink — Female Empowerment & Leadership"
+              fill
+              sizes="(max-width: 768px) 100vw, 35vw"
+              className="object-cover object-[50%_8%]"
+              priority
+            />
           </div>
         </div>
       </section>

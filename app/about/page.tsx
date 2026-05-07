@@ -37,7 +37,7 @@ export default async function AboutPage() {
   return (
     <>
       {/* HERO */}
-      <section className="bg-cream pt-32 md:pt-40 pb-16">
+      <section className="bg-cream pt-32 md:pt-40 pb-12">
         <div className="container-content max-w-4xl">
           <Eyebrow withLine>About Martina Rink</Eyebrow>
           <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
@@ -46,10 +46,10 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* OPENING */}
-      <section className="bg-cream py-16 md:py-24">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-start">
-          <div className="md:col-span-7 space-y-6 text-[17px] leading-[1.75] text-ink-soft">
+      {/* OPENING — flows from hero, no top padding */}
+      <section className="bg-cream pb-16 md:pb-24">
+        <div className="container-content grid md:grid-cols-12 gap-0 md:gap-16 items-start">
+          <div className="md:col-span-7 pt-10 md:pt-0 space-y-6 text-[17px] leading-[1.75] text-ink-soft">
             {data?.heroCopy ? (
               data.heroCopy.split("\n").filter(Boolean).map((para, i) => (
                 <p key={i}>{para}</p>
@@ -71,45 +71,43 @@ export default async function AboutPage() {
               </>
             )}
           </div>
-          <aside className="md:col-span-5 space-y-8">
-            {/* Portrait */}
+          <aside className="md:col-span-5 md:sticky md:top-24 md:self-start pt-10 md:pt-0">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
                 src="/images/portraits/martina-portrait-pink-blouse.jpg"
-                alt="Martina Rink — private mentor and author"
+                alt="Martina Rink"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
+                className="object-cover object-[50%_8%]"
               />
             </div>
-            {/* Pull quote below image */}
-            <blockquote className="border-l-2 border-pink pl-6 font-[family-name:var(--font-display)] italic text-[22px] leading-snug text-ink">
-              The most interesting questions available to accomplished women are
-              the ones they don&rsquo;t yet have the private space to ask
-              properly.
-            </blockquote>
-            <p className="pl-6 text-[13px] uppercase tracking-[0.15em] text-ink-quiet">
-              — Martina Rink
-            </p>
           </aside>
+        </div>
+        {/* Pull quote — full-width editorial, below the grid */}
+        <div className="container-content mt-16 md:mt-20 max-w-3xl">
+          <blockquote className="border-l-2 border-pink pl-8 font-[family-name:var(--font-display)] italic text-[24px] md:text-[28px] leading-snug text-ink">
+            The most interesting questions available to accomplished women are
+            the ones they don&rsquo;t yet have the private space to ask properly.
+          </blockquote>
+          <p className="pl-8 mt-4 text-[12px] uppercase tracking-[0.18em] text-ink-quiet">— Martina Rink</p>
         </div>
       </section>
 
-      {/* ISABELLA BLOW / ORIGIN */}
-      <section className="bg-bone section-pad">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-5">
-            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
-              <Image
-                src="/images/portraits/martina-gallery-leopard.jpg"
-                alt="Martina Rink — formative years"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-center"
-              />
-            </div>
+      {/* ISABELLA BLOW / ORIGIN — full-bleed 50/50 editorial split */}
+      <section className="bg-bone overflow-hidden">
+        <div className="grid md:grid-cols-2">
+          {/* Left — full-bleed image, no container constraint */}
+          <div className="relative h-[420px] md:h-auto md:min-h-[580px] bg-sand/30">
+            <Image
+              src="/images/portraits/martina-gallery-leopard.jpg"
+              alt="Martina Rink — formative years"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
+            />
           </div>
-          <div className="md:col-span-7 space-y-6">
+          {/* Right — text with internal padding */}
+          <div className="px-8 py-16 md:px-16 md:py-20 lg:px-20 space-y-6">
             <Eyebrow>The years before</Eyebrow>
             <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
               Before the practice.
@@ -144,8 +142,8 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* ── PULL QUOTE — Isabella Blow specific authority ─────── */}
-      <section className="bg-violet-soft py-20">
+      {/* PULL QUOTE — Isabella Blow specific authority */}
+      <section className="bg-violet-soft py-14 md:py-20">
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
@@ -166,7 +164,7 @@ export default async function AboutPage() {
       </section>
 
       {/* CREDENTIALS — TWO COLUMN */}
-      <section className="bg-cream section-pad">
+      <section className="bg-cream py-16 md:py-20">
         <div className="container-content grid md:grid-cols-2 gap-12 md:gap-16">
           <div>
             <h3 className="font-[family-name:var(--font-display)] text-[28px] text-ink">
@@ -217,7 +215,7 @@ export default async function AboutPage() {
       </section>
 
       {/* PERSONAL ORIGIN — DARK */}
-      <section className="bg-ink section-pad">
+      <section className="bg-ink py-16 md:py-24">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>
             <span className="text-pink-soft">Where this started</span>
@@ -280,7 +278,7 @@ export default async function AboutPage() {
       </section>
 
       {/* CLOSING + CTA */}
-      <section className="bg-cream section-pad">
+      <section className="bg-cream py-16 md:py-20">
         <div className="container-content max-w-2xl mx-auto text-center">
           {data?.storyWhy ? (
             <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
