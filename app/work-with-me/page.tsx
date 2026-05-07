@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
-import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
 import { getWorkWithMePage } from "@/sanity/lib/queries";
 
@@ -35,47 +34,48 @@ export default async function WorkWithMePage() {
 
   return (
     <>
-      <section className="bg-cream pt-32 md:pt-40 pb-16">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-7">
+      <section className="bg-cream pt-32 md:pt-40 pb-0">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
+          {/* Text — 7/12 */}
+          <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
             <Eyebrow withLine>Work with me</Eyebrow>
             <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
               {heroHeadline}
             </h1>
-            <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft max-w-[520px]">
+            <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft max-w-[480px]">
               {heroCopy}
             </p>
-            {/* Intake scarcity — soft, true, premium signal */}
-            <div className="mt-8 inline-flex items-center gap-3 px-4 py-2 bg-violet-soft border border-violet-mid">
+            {/* Scarcity signal */}
+            <div className="mt-8 inline-flex items-center gap-3 px-4 py-2 bg-violet-soft border border-violet-mid self-start">
               <span className="block w-1.5 h-1.5 rounded-full bg-plum animate-pulse" />
               <span className="text-[12px] uppercase tracking-[0.18em] text-plum-deep">
                 Currently accepting two new clients · next intake
               </span>
             </div>
           </div>
-          <div className="md:col-span-5">
-            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
-              <Image
-                src="/images/portraits/martina-portrait-studio.jpg"
-                alt="Martina Rink — private mentor"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
-                priority
-              />
-            </div>
+          {/* Portrait — 5/12, full height, bleeds to edge */}
+          <div className="md:col-span-5 relative min-h-[480px] md:min-h-0 bg-bone overflow-hidden">
+            <Image
+              src="/images/portraits/martina-portrait-studio.jpg"
+              alt="Martina Rink — private mentor"
+              fill
+              sizes="(max-width: 768px) 100vw, 38vw"
+              className="object-cover object-[50%_8%]"
+              priority
+            />
           </div>
         </div>
       </section>
 
-      <section className="bg-ink section-pad">
+      <section className="bg-ink py-16 md:py-24">
         <div className="container-content max-w-5xl mx-auto">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-cream text-center">
             The two programmes.
           </h2>
 
-          <div className="mt-16 grid md:grid-cols-2 gap-12 md:divide-x divide-plum-deep">
-            <div className="md:pr-12">
+          <div className="mt-16 grid md:grid-cols-12 gap-0 md:divide-x divide-plum-deep/40">
+            {/* Sober Muse — 5/12 cols */}
+            <div className="md:col-span-5 md:pr-14 py-4 md:py-0 space-y-4">
               <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
                 Sober Muse Method
               </p>
@@ -99,7 +99,8 @@ export default async function WorkWithMePage() {
               </a>
             </div>
 
-            <div className="md:pl-12">
+            {/* Empowerment — 7/12 cols */}
+            <div className="md:col-span-7 md:pl-14 pt-10 md:pt-0 space-y-4">
               <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
                 Female Empowerment &amp; Leadership
               </p>
@@ -131,7 +132,7 @@ export default async function WorkWithMePage() {
         </div>
       </section>
 
-      <section className="bg-cream section-pad">
+      <section className="bg-cream py-14 md:py-20">
         <div className="container-content max-w-2xl mx-auto text-center">
           <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
             Not sure which applies to you?
@@ -142,12 +143,11 @@ export default async function WorkWithMePage() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-            <GhostButton href="/book">Reserve a consultation — €450</GhostButton>
           </div>
         </div>
       </section>
 
-      <section className="bg-bone section-pad">
+      <section className="bg-bone py-14 md:py-20">
         <div className="container-content max-w-2xl mx-auto text-center">
           <h2 className="font-[family-name:var(--font-display)] italic text-[28px] text-ink">
             Before you apply, ask yourself:
