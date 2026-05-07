@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const SITE = {
   name: "Martina Rink",
-  url: "https://martinarink.com",
+  url: "https://www.martinarink.com",
   description:
     "Private mentoring for high-achieving women at the intersection of identity, leadership, and the examined life. The Sober Muse Method and Female Empowerment & Leadership. By application, from €5,000.",
   email: "coaching@martinarink.com",
