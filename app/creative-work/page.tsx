@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
@@ -114,14 +115,29 @@ export default async function CreativeWorkPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="col-span-2 aspect-[16/9] bg-sand/20 flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                    Main image
+                  {/* Book cover — primary */}
+                  <div className="col-span-2 relative aspect-[16/9] bg-bone overflow-hidden">
+                    <Image
+                      src="/images/portraits/martina-gallery-leopard.jpg"
+                      alt="Martina Rink with Isabella Blow — London editorial"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover object-[50%_25%]"
+                    />
                   </div>
-                  <div className="aspect-square bg-sand/20 flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                    Detail
+                  <div className="relative aspect-square bg-bone overflow-hidden">
+                    <Image
+                      src="/images/books/isabella-blow-cover.png"
+                      alt="Isabella Blow — published biography"
+                      fill
+                      sizes="25vw"
+                      className="object-contain p-4"
+                    />
                   </div>
-                  <div className="aspect-square bg-sand/20 flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                    Detail
+                  <div className="relative aspect-square bg-bone overflow-hidden flex items-end p-4">
+                    <p className="text-[13px] text-ink-soft leading-snug italic font-[family-name:var(--font-display)]">
+                      &ldquo;She wore hats that could clear a room. Not to be noticed. To exist.&rdquo;
+                    </p>
                   </div>
                 </div>
               )}
@@ -168,9 +184,22 @@ export default async function CreativeWorkPage() {
             </div>
           ) : (
             <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="aspect-[3/4] bg-sand/20 flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                  Photo {i + 1}
+              {[
+                { src: "/images/portraits/martina-event-editorial.jpg", label: "Berlin, 2018" },
+                { src: "/images/portraits/martina-cafe-editorial.jpg", label: "Hamburg, 2018" },
+                { src: "/images/portraits/martina-portrait-pink-blouse.jpg", label: "Munich, 2019" },
+                { src: "/images/books/people-of-deutschland-cover.png", label: "Cover" },
+                { src: "/images/portraits/martina-home-working.jpg", label: "Frankfurt, 2018" },
+                { src: "/images/portraits/martina-event-plum.png", label: "Cologne, 2019" },
+              ].map((item, i) => (
+                <div key={i} className="relative aspect-[3/4] bg-sand/20 overflow-hidden">
+                  <Image
+                    src={item.src}
+                    alt={item.label}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="object-cover object-center"
+                  />
                 </div>
               ))}
             </div>
@@ -219,9 +248,24 @@ export default async function CreativeWorkPage() {
             </div>
           ) : (
             <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="aspect-[2/3] bg-ink-soft/20 flex items-center justify-center text-cream/30 text-[11px] uppercase tracking-[0.15em]">
-                  Photo {i + 1}
+              {[
+                "/images/portraits/martina-glam-portrait.jpg",
+                "/images/portraits/martina-floral-dress.jpg",
+                "/images/portraits/martina-leopard-lounge.jpg",
+                "/images/books/fashion-germany-cover.png",
+                "/images/portraits/martina-bw-studio.jpg",
+                "/images/portraits/martina-library-pink.jpg",
+                "/images/portraits/martina-salon-ibiza.jpg",
+                "/images/portraits/martina-night-sky.jpg",
+              ].map((src, i) => (
+                <div key={i} className="relative aspect-[2/3] bg-ink-soft/30 overflow-hidden">
+                  <Image
+                    src={src}
+                    alt="Fashion Germany — editorial"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover object-center"
+                  />
                 </div>
               ))}
             </div>

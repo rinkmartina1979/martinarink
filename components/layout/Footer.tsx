@@ -97,6 +97,14 @@ export function Footer() {
                   Speaking
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/creative-work"
+                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                >
+                  Creative Work
+                </Link>
+              </li>
             </ul>
           </div>
 
