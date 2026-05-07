@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
@@ -11,8 +12,11 @@ export const metadata = buildMetadata({
   path: "/writing",
 });
 
+/* ── Extended type for cards that have a local image path ─────── */
+type ArticleCard = PostListItem & { localImage?: string };
+
 /* ── Hardcoded fallback articles (shown when Sanity is not yet connected) */
-const FALLBACK_ARTICLES: PostListItem[] = [
+const FALLBACK_ARTICLES: ArticleCard[] = [
   {
     _id: "1",
     slug: "what-high-functioning-women-use-alcohol-for",
@@ -21,6 +25,7 @@ const FALLBACK_ARTICLES: PostListItem[] = [
       "The women I work with are not in crisis. They are in the much quieter problem — the one that arrives after everything has gone according to plan.",
     publishedAt: "2026-04-01T00:00:00Z",
     coverImage: null,
+    localImage: "/images/portraits/martina-ibiza-working.jpg",
   },
   {
     _id: "2",
@@ -30,6 +35,7 @@ const FALLBACK_ARTICLES: PostListItem[] = [
       "When a woman has spent two decades building a career, she often discovers that the title was never the destination — it was a container.",
     publishedAt: "2026-04-08T00:00:00Z",
     coverImage: null,
+    localImage: "/images/portraits/martina-portrait-studio.jpg",
   },
   {
     _id: "3",
@@ -39,6 +45,7 @@ const FALLBACK_ARTICLES: PostListItem[] = [
       "Isabella Blow wore hats that could clear a room. Not to be noticed. To exist. There is a distinction.",
     publishedAt: "2026-04-15T00:00:00Z",
     coverImage: null,
+    localImage: "/images/portraits/martina-gallery-leopard.jpg",
   },
 ];
 
@@ -52,7 +59,7 @@ function formatDate(iso: string | null): string {
 
 export default async function WritingPage() {
   const sanityArticles = await getAllPosts();
-  const articles = sanityArticles ?? FALLBACK_ARTICLES;
+  const articles: ArticleCard[] = sanityArticles ?? FALLBACK_ARTICLES;
 
   return (
     <>
@@ -83,7 +90,19 @@ export default async function WritingPage() {
                   href={`/writing/${article.slug}`}
                   className="group block"
                 >
-                  <div className="aspect-[3/2] bg-bone mb-5 group-hover:bg-blush transition-colors duration-300" />
+                  <div className="relative aspect-[3/2] mb-5 overflow-hidden bg-bone">
+                    {(article as ArticleCard).localImage ? (
+                      <Image
+                        src={(article as ArticleCard).localImage!}
+                        alt={article.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-bone group-hover:bg-blush transition-colors duration-300" />
+                    )}
+                  </div>
                   <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
                     {formatDate(article.publishedAt)}
                   </p>
