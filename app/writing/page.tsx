@@ -59,7 +59,8 @@ function formatDate(iso: string | null): string {
 
 export default async function WritingPage() {
   const sanityArticles = await getAllPosts();
-  const articles: ArticleCard[] = sanityArticles ?? FALLBACK_ARTICLES;
+  const articles: ArticleCard[] =
+    sanityArticles && sanityArticles.length > 0 ? sanityArticles : FALLBACK_ARTICLES;
 
   return (
     <>
