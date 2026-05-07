@@ -63,6 +63,17 @@ const POST_SLUGS_QUERY = `
   *[_type == "post"] { "slug": slug.current }
 `
 
+const RELATED_POSTS_QUERY = `
+  *[_type == "post" && slug.current != $slug] | order(publishedAt desc) [0...$limit] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    publishedAt,
+    coverImage { asset, alt }
+  }
+`
+
 const FEATURED_TESTIMONIALS_QUERY = `
   *[_type == "testimonial" && featured == true] | order(order asc) {
     _id,
@@ -101,6 +112,21 @@ export async function getPost(slug: string): Promise<PostFull | null> {
   if (!IS_SANITY_CONFIGURED) return null
   try {
     return await client.fetch<PostFull>(POST_QUERY, { slug })
+  } catch {
+    return null
+  }
+}
+
+export async function getRelatedPosts(
+  slug: string,
+  limit = 2,
+): Promise<PostListItem[] | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<PostListItem[]>(RELATED_POSTS_QUERY, {
+      slug,
+      limit,
+    })
   } catch {
     return null
   }

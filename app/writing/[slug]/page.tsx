@@ -4,10 +4,14 @@ import { PortableText } from "@portabletext/react";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { buildMetadata } from "@/lib/metadata";
+import { calcReadingTime, articleSchema } from "@/lib/posts";
+import { SITE } from "@/lib/utils";
 import {
   getAllPostSlugs,
   getPost,
+  getRelatedPosts,
   type PostFull,
+  type PostListItem,
 } from "@/sanity/lib/queries";
 
 /* ── Hardcoded fallback articles ───────────────────────────── */
@@ -165,11 +169,32 @@ export default async function ArticlePage({
   const sanityPost = await getPost(slug);
 
   if (sanityPost) {
+    const readingMinutes = calcReadingTime(sanityPost.body);
+    const articleUrl = `${SITE.url}/writing/${slug}`;
+    const description =
+      sanityPost.seoDescription ?? sanityPost.excerpt ?? sanityPost.title;
+    const related = await getRelatedPosts(slug, 2);
+
     return (
       <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              articleSchema({
+                title: sanityPost.title,
+                description,
+                url: articleUrl,
+                publishedAt: sanityPost.publishedAt,
+              }),
+            ),
+          }}
+        />
         <article className="bg-cream pt-32 md:pt-40 pb-16">
           <div className="container-read">
-            <Eyebrow>{formatDate(sanityPost.publishedAt)}</Eyebrow>
+            <Eyebrow>
+              {formatDate(sanityPost.publishedAt)} · {readingMinutes} min read
+            </Eyebrow>
             <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[56px] leading-tight text-ink">
               {sanityPost.title}
             </h1>
@@ -195,6 +220,7 @@ export default async function ArticlePage({
             </div>
           </div>
         </article>
+        <RelatedArticles posts={related} currentSlug={slug} />
         <NewsletterSection />
       </>
     );
@@ -205,12 +231,42 @@ export default async function ArticlePage({
   if (!hardcoded) notFound();
 
   const paragraphs = HARDCODED_BODY[slug] ?? [];
+  const readingMinutes = calcReadingTime(paragraphs);
+  const articleUrl = `${SITE.url}/writing/${slug}`;
+
+  // For hardcoded posts, "related" = the other 2 hardcoded slugs.
+  const otherHardcoded: PostListItem[] = Object.entries(HARDCODED)
+    .filter(([s]) => s !== slug)
+    .slice(0, 2)
+    .map(([s, p]) => ({
+      _id: s,
+      title: p.title,
+      slug: s,
+      excerpt: p.excerpt,
+      publishedAt: p.publishedAt,
+      coverImage: null,
+    }));
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            articleSchema({
+              title: hardcoded.title,
+              description: hardcoded.excerpt ?? hardcoded.title,
+              url: articleUrl,
+              publishedAt: hardcoded.publishedAt,
+            }),
+          ),
+        }}
+      />
       <article className="bg-cream pt-32 md:pt-40 pb-16">
         <div className="container-read">
-          <Eyebrow>{formatDate(hardcoded.publishedAt)}</Eyebrow>
+          <Eyebrow>
+            {formatDate(hardcoded.publishedAt)} · {readingMinutes} min read
+          </Eyebrow>
           <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[56px] leading-tight text-ink">
             {hardcoded.title}
           </h1>
@@ -235,8 +291,51 @@ export default async function ArticlePage({
           </div>
         </div>
       </article>
+      <RelatedArticles posts={otherHardcoded} currentSlug={slug} />
       <NewsletterSection />
     </>
+  );
+}
+
+function RelatedArticles({
+  posts,
+  currentSlug,
+}: {
+  posts: PostListItem[] | null;
+  currentSlug: string;
+}) {
+  const filtered = (posts ?? []).filter((p) => p.slug !== currentSlug);
+  if (filtered.length === 0) return null;
+  return (
+    <section className="bg-cream pb-16 border-t border-sand/30 pt-16">
+      <div className="container-read">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-8">
+          Read next
+        </p>
+        <div className="grid md:grid-cols-2 gap-8">
+          {filtered.map((p) => (
+            <Link
+              key={p._id}
+              href={`/writing/${p.slug}`}
+              className="group block"
+            >
+              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+                {formatDate(p.publishedAt)}
+              </p>
+              <h3 className="mt-3 font-[family-name:var(--font-display)] text-[26px] leading-[1.2] text-ink group-hover:text-plum transition-colors duration-200">
+                {p.title}
+              </h3>
+              {p.excerpt && (
+                <p className="mt-3 text-[15px] leading-[1.7] text-ink-soft">
+                  {p.excerpt}
+                </p>
+              )}
+              <p className="mt-4 text-[13px] text-plum">Read →</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
