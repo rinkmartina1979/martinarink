@@ -4,7 +4,7 @@ import { VisualEditingClient } from "@/components/sanity/VisualEditingClient";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { playfair, dmSans, dancingScript } from "@/lib/fonts";
-import { buildMetadata, personSchema } from "@/lib/metadata";
+import { buildMetadata, personSchema, organizationSchema } from "@/lib/metadata";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { NewsletterPopup } from "@/components/brand/NewsletterPopup";
@@ -24,12 +24,24 @@ export default async function RootLayout({
       className={`${playfair.variable} ${dmSans.variable} ${dancingScript.variable} antialiased`}
     >
       <body className="bg-cream text-ink min-h-screen flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-plum focus:text-cream focus:rounded-[1px] focus:text-[13px] focus:uppercase focus:tracking-[0.18em]"
+        >
+          Skip to main content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema()) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
+        />
         <Nav />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
+          {children}
+        </main>
         <Footer />
         {/* Editorial newsletter popup — self-suppresses on /assessment, /apply,
             /book, /thank-you, /admin, and stays away for 30 days after dismissal. */}

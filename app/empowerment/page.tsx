@@ -4,7 +4,7 @@ import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
-import { buildMetadata, faqSchema } from "@/lib/metadata";
+import { buildMetadata, faqSchema, serviceSchema } from "@/lib/metadata";
 import { getEmpowermentPage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 
@@ -68,6 +68,21 @@ export default async function EmpowermentPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(FAQS)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            serviceSchema({
+              name: "Female Empowerment & Leadership",
+              description:
+                "Long-form private mentoring for senior women — six to twelve months, by application, from €7,500.",
+              path: "/empowerment",
+              priceFrom: 7500,
+              duration: "P6M",
+            }),
+          ),
+        }}
       />
 
       {/* HERO */}

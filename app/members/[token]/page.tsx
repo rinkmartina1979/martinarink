@@ -37,6 +37,39 @@ function formatDuration(seconds: number | null): string {
   return `${m} min`;
 }
 
+/* ── Private beta state — shown when env not configured ───────── */
+function PrivateBetaPage() {
+  return (
+    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
+      <div className="max-w-lg text-center">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6">
+          Members portal
+        </p>
+        <p className="font-[family-name:var(--font-script)] text-[40px] text-ink leading-none mb-6">
+          In private beta.
+        </p>
+        <p className="text-[17px] leading-[1.75] text-ink-soft mb-8">
+          The members area is opening to current clients in the coming weeks.
+          If you are working with Martina and expected access, write to her at{" "}
+          <a
+            href="mailto:coaching@martinarink.com"
+            className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
+          >
+            coaching@martinarink.com
+          </a>{" "}
+          and she will send your private link.
+        </p>
+        <Link
+          href="/"
+          className="inline-block text-[14px] text-ink-quiet hover:text-ink transition-colors underline underline-offset-4"
+        >
+          Return home
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 /* ── Error state ──────────────────────────────────────────────── */
 function ExpiredPage() {
   return (
@@ -256,6 +289,13 @@ function Dashboard({
 /* ── Page ──────────────────────────────────────────────────────── */
 export default async function MembersPage({ params }: MembersPageProps) {
   const { token } = await params;
+
+  // If the portal is not configured (env vars missing), show polished beta page
+  // instead of the bleak "expired" view. This keeps the URL graceful in
+  // private-beta and during environment changes.
+  if (!process.env.MEMBERS_TOKEN_SECRET) {
+    return <PrivateBetaPage />;
+  }
 
   // Verify token via API route
   let verify: VerifyResponse;

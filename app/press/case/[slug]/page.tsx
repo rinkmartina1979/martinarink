@@ -4,15 +4,26 @@ import { buildMetadata } from "@/lib/metadata";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PortableTextBody } from "@/components/brand/PortableTextBody";
 import { getVisibleCaseStudies } from "@/sanity/lib/membersQueries";
+import { FALLBACK_CASE_STUDIES } from "@/lib/fallback-content";
 
 interface CaseStudyPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateStaticParams() {
+  return FALLBACK_CASE_STUDIES.map((cs) => ({ slug: cs.slug }));
+}
+
+async function findStudy(slug: string) {
+  const studies = await getVisibleCaseStudies();
+  const fromSanity = (studies ?? []).find((s) => s.slug === slug);
+  if (fromSanity) return fromSanity;
+  return FALLBACK_CASE_STUDIES.find((s) => s.slug === slug) ?? null;
+}
+
 export async function generateMetadata({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const studies = await getVisibleCaseStudies();
-  const study = (studies ?? []).find((s) => s.slug === slug);
+  const study = await findStudy(slug);
 
   if (!study) {
     return buildMetadata({ noIndex: true });
@@ -27,8 +38,7 @@ export async function generateMetadata({ params }: CaseStudyPageProps) {
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const studies = await getVisibleCaseStudies();
-  const study = (studies ?? []).find((s) => s.slug === slug);
+  const study = await findStudy(slug);
 
   if (!study) {
     notFound();
