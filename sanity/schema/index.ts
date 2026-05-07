@@ -34,6 +34,13 @@ import legalPage from './legalPage'
 // Singletons — Creative
 import creativeWorkPage from './creativeWorkPage'
 
+// Documents — Phase 2: Members & Clients
+import clientProfile from './clientProfile'
+import audioDrop from './audioDrop'
+import clientMilestone from './clientMilestone'
+import caseStudy from './caseStudy'
+import emailDigestLog from './emailDigestLog'
+
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects (must come before document types that reference them)
   seoMeta,
@@ -66,4 +73,11 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 
   // Documents — Legal
   legalPage,
+
+  // Documents — Phase 2: Members & Clients
+  clientProfile,
+  audioDrop,
+  clientMilestone,
+  caseStudy,
+  emailDigestLog,
 ]

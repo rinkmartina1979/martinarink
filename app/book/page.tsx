@@ -4,6 +4,7 @@ import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
 import { CalendlyEmbed } from "@/components/book/CalendlyEmbed";
+import { DepositCTA } from "@/components/book/DepositCTA";
 
 export const metadata = buildMetadata({
   title: "Book a Consultation",
@@ -15,7 +16,12 @@ const CALENDLY_URL =
   "https://calendly.com/martinarink/let-s-make-a-change";
 
 interface BookPageProps {
-  searchParams: Promise<{ token?: string; programme?: string }>;
+  searchParams: Promise<{
+    token?: string;
+    programme?: string;
+    cancelled?: string;
+    payment_error?: string;
+  }>;
 }
 
 /**
@@ -32,6 +38,8 @@ interface BookPageProps {
 export default async function BookPage({ searchParams }: BookPageProps) {
   const params = await searchParams;
   const isApproved = params.token === "approved";
+  const showCancelled = params.cancelled === "1";
+  const showPaymentError = params.payment_error === "1";
 
   if (!isApproved) {
     return (
@@ -133,7 +141,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
     );
   }
 
-  // Approved — show Calendly embed
+  // Approved — show deposit CTA + Calendly embed
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
@@ -154,12 +162,32 @@ export default async function BookPage({ searchParams }: BookPageProps) {
           <p className="mt-6 text-[15px] text-ink-quiet">
             €450, applied to the programme if you proceed.
           </p>
+
+          {/* Status banners */}
+          {showCancelled && (
+            <p className="mt-6 text-[14px] text-ink-soft bg-bone border border-sand/50 px-5 py-3 inline-block">
+              Your payment wasn&rsquo;t completed — the calendar is still available below.
+            </p>
+          )}
+          {showPaymentError && (
+            <p className="mt-6 text-[14px] text-ink-soft bg-bone border border-sand/50 px-5 py-3 inline-block">
+              There was an issue verifying your payment. Please try again or use the calendar below.
+            </p>
+          )}
+
+          {/* Primary CTA */}
+          <div className="mt-10 flex justify-center">
+            <DepositCTA />
+          </div>
         </div>
       </section>
 
       {/* ── CALENDLY EMBED ───────────────────────────────────── */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
+          <p className="text-[13px] text-ink-quiet text-center mb-6">
+            If you have received a complimentary booking link, the calendar is below.
+          </p>
           <div className="bg-bone p-2">
             {/* CalendlyEmbed listens for the embed postMessage event and
                 notifies our backend when a booking completes — free-tier safe */}

@@ -11,8 +11,11 @@ import {
   UserIcon,
   BookIcon,
   SearchIcon,
+  PlayIcon,
+  CalendarIcon,
 } from '@sanity/icons'
 import { schemaTypes } from './sanity/schema'
+import { analyticsPlugin } from './sanity/plugins/analytics'
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
@@ -48,6 +51,12 @@ const EXPLICIT_TYPES = new Set([
   'assessmentSubmission',
   'legalPage',
   'creativeWorkPage',
+  // Phase 2
+  'clientProfile',
+  'audioDrop',
+  'clientMilestone',
+  'caseStudy',
+  'emailDigestLog',
   // seoMeta is an object type, not a document — it won't appear anyway
 ])
 
@@ -173,6 +182,59 @@ export default defineConfig({
 
             S.divider(),
 
+            // ── PHASE 2: CLIENTS & MEMBERS ───────────────────
+            S.listItem()
+              .title('Clients & Members')
+              .icon(UserIcon)
+              .child(
+                S.list()
+                  .title('Clients & Members')
+                  .items([
+                    S.listItem()
+                      .title('Client Profiles')
+                      .icon(UserIcon)
+                      .child(
+                        S.documentTypeList('clientProfile')
+                          .title('Client Profiles')
+                          .defaultOrdering([{ field: 'enrolledAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Audio Drops')
+                      .icon(PlayIcon)
+                      .child(
+                        S.documentTypeList('audioDrop')
+                          .title('Audio Drops')
+                          .defaultOrdering([{ field: 'releasedAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Milestones')
+                      .icon(StarIcon)
+                      .child(
+                        S.documentTypeList('clientMilestone')
+                          .title('Milestones')
+                          .defaultOrdering([{ field: 'achievedAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Case Studies')
+                      .icon(DocumentTextIcon)
+                      .child(
+                        S.documentTypeList('caseStudy')
+                          .title('Case Studies')
+                          .defaultOrdering([{ field: 'order', direction: 'asc' }]),
+                      ),
+                    S.listItem()
+                      .title('Digest Log')
+                      .icon(CalendarIcon)
+                      .child(
+                        S.documentTypeList('emailDigestLog')
+                          .title('Email Digest Log')
+                          .defaultOrdering([{ field: 'sentAt', direction: 'desc' }]),
+                      ),
+                  ]),
+              ),
+
+            S.divider(),
+
             // ── LEGAL ─────────────────────────────────────────
             S.listItem()
               .title('Legal Pages')
@@ -210,6 +272,7 @@ export default defineConfig({
       },
     }),
     visionTool({ defaultApiVersion: '2026-02-01' }),
+    analyticsPlugin(),
   ],
 
   schema: {

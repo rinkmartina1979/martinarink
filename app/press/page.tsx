@@ -14,6 +14,8 @@ import {
   type SanityPressItem,
   type SanityPartnerLogo,
 } from "@/sanity/lib/queries";
+import { getVisibleCaseStudies } from "@/sanity/lib/membersQueries";
+import { CaseStudyCard } from "@/components/press/CaseStudyCard";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getPressPage();
@@ -165,11 +167,12 @@ function BookCard({ pub }: { pub: SanityPublication }) {
 
 /* ─── Page ───────────────────────────────────────────────── */
 export default async function PressPage() {
-  const [pressData, publications, pressItems, partnerLogos] = await Promise.all([
+  const [pressData, publications, pressItems, partnerLogos, caseStudies] = await Promise.all([
     getPressPage(),
     getPublications(),
     getPressItems(),
     getPartnerLogos(),
+    getVisibleCaseStudies(),
   ]);
 
   const heroCopy =
@@ -547,7 +550,35 @@ export default async function PressPage() {
         </div>
       </section>
 
-      {/* ── 9. Press CTA ─────────────────────────────────────── */}
+      {/* ── 9. Selected work — case studies ─────────────────── */}
+      {caseStudies && caseStudies.length > 0 && (
+        <section className="bg-cream section-pad border-t border-sand/30">
+          <div className="container-content">
+            <div className="max-w-4xl mx-auto">
+              <Eyebrow withLine>Selected work</Eyebrow>
+              <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft max-w-2xl">
+                Three accounts, with permission, from women who agreed to share
+                the nature of the work. Pseudonyms throughout.
+              </p>
+              <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {caseStudies.slice(0, 3).map((cs) => (
+                  <CaseStudyCard
+                    key={cs._id}
+                    pseudonym={cs.pseudonym}
+                    industry={cs.industry}
+                    programme={cs.programme ?? ""}
+                    problemSnapshot={cs.problemSnapshot ?? ""}
+                    outcomeMarker={cs.outcomeMarker ?? ""}
+                    slug={cs.slug ?? cs._id}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── 10. Press CTA ────────────────────────────────────── */}
       <section className="bg-plum section-pad">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-cream/60 mb-6">

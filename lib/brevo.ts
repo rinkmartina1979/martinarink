@@ -106,7 +106,8 @@ export type BrevoEventName =
   | "popup_email_captured"
   | "consultation_booked"
   | "consultation_canceled"
-  | "consultation_no_show";
+  | "consultation_no_show"
+  | "consultation_deposit_paid";
 
 interface BrevoEventOptions {
   email: string;
