@@ -135,9 +135,9 @@
     padding-inline: 1.5rem;
   }
   .section-pad {
-    padding-block: 6rem;
+    padding-block: 5rem;
   }
   @media (min-width: 768px) {
-    .section-pad { padding-block: 10rem; }
+    .section-pad { padding-block: 7rem; }
   }
 }
