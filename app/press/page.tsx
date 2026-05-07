@@ -16,6 +16,7 @@ import {
 } from "@/sanity/lib/queries";
 import { getVisibleCaseStudies } from "@/sanity/lib/membersQueries";
 import { CaseStudyCard } from "@/components/press/CaseStudyCard";
+import { FALLBACK_CASE_STUDIES } from "@/lib/fallback-content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getPressPage();
@@ -551,7 +552,12 @@ export default async function PressPage() {
       </section>
 
       {/* ── 9. Selected work — case studies ─────────────────── */}
-      {caseStudies && caseStudies.length > 0 && (
+      {(() => {
+        const displayCaseStudies =
+          caseStudies && caseStudies.length > 0
+            ? caseStudies
+            : FALLBACK_CASE_STUDIES;
+        return displayCaseStudies.length > 0 ? (
         <section className="bg-cream section-pad border-t border-sand/30">
           <div className="container-content">
             <div className="max-w-4xl mx-auto">
@@ -561,7 +567,7 @@ export default async function PressPage() {
                 the nature of the work. Pseudonyms throughout.
               </p>
               <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {caseStudies.slice(0, 3).map((cs) => (
+                {displayCaseStudies.slice(0, 3).map((cs) => (
                   <CaseStudyCard
                     key={cs._id}
                     pseudonym={cs.pseudonym}
@@ -576,7 +582,8 @@ export default async function PressPage() {
             </div>
           </div>
         </section>
-      )}
+        ) : null;
+      })()}
 
       {/* ── 10. Press CTA ────────────────────────────────────── */}
       <section className="bg-plum section-pad">

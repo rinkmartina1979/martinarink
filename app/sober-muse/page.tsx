@@ -4,7 +4,7 @@ import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
-import { buildMetadata, faqSchema } from "@/lib/metadata";
+import { buildMetadata, faqSchema, serviceSchema } from "@/lib/metadata";
 import { getSoberMusePage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
@@ -71,6 +71,21 @@ export default async function SoberMusePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(FAQS)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            serviceSchema({
+              name: "The Sober Muse Method",
+              description:
+                "A 90-day private mentoring engagement for accomplished women reconsidering their relationship with alcohol. By application.",
+              path: "/sober-muse",
+              priceFrom: 5000,
+              duration: "P90D",
+            }),
+          ),
+        }}
       />
 
       {/* HERO */}

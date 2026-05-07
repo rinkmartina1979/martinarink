@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'No test runner configured. See docs/ASSESSMENT_SYSTEM.md#testing' && exit 0"
+    "test": "echo 'No test runner configured. See docs/ASSESSMENT_SYSTEM.md#testing' && exit 0",
+    "seed:sanity": "tsx scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
