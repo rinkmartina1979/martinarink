@@ -85,8 +85,8 @@ export default async function EmpowermentPage() {
         }}
       />
 
-      {/* HERO */}
-      <section className="bg-cream pt-32 md:pt-40 pb-0">
+      {/* HERO — DS v1 §3.1 Variant A. lg:pt-48 hits hero spec; pb-0 flows into next section. */}
+      <section className="bg-cream pt-32 md:pt-40 lg:pt-48 pb-0">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
           <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
             <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>

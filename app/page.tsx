@@ -149,7 +149,8 @@ export default async function HomePage() {
   return (
     <>
       {/* ─── HERO — dark aubergine, fluid H1, 2026 editorial ───── */}
-      <section className="relative pt-32 md:pt-40 pb-20 md:pb-28 bg-plum overflow-hidden">
+      {/* Hero — DS v1 §3.1 Variant B. pt > pb for nav clearance; lg:py meets py-48 minimum. */}
+      <section className="relative pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-32 lg:pb-40 bg-plum overflow-hidden">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-7 lg:col-span-7">
             <Eyebrow withLine variant="light">
@@ -458,7 +459,7 @@ export default async function HomePage() {
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
             {testimonials.map((t, i) => {
-              const bgMap = ["bg-blush", "bg-bone", "bg-violet-soft", "bg-bone"];
+              const bgMap = ["bg-blush", "bg-bone", "bg-lilac-soft", "bg-bone"];
               const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25"];
               const isSanity = "_id" in t;
               const item = {

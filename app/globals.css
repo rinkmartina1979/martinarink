@@ -5,30 +5,47 @@
    ============================================================ */
 
 @theme {
-  /* ── BRAND COLORS ────────────────────────────────────────── */
-  --color-cream:        #F7F3EE;
-  --color-bone:         #EDE8E0;
-  --color-blush:        #F5E8EC;
-  --color-ink:          #1E1B17;
-  --color-ink-soft:     #4A3728;
-  --color-ink-quiet:    #8A7F72;
-  --color-sand:         #C8B8A2;
-  /* Plum (Dark Aubergine) — client-approved 2026 brand purple.
-     Deep, rich, editorial. Maps to CI Farbe 3. Premium, intellectual, feminine. */
-  --color-plum:         #231728;
-  --color-plum-deep:    #180F1C;
-  /* Legacy aliases — kept so any cached/external CSS still resolves.
-     Do NOT use in new code. */
-  --color-wine:         #231728;
-  --color-wine-deep:    #180F1C;
-  --color-pink:         #F942AA;
-  --color-pink-soft:    #FDBFE2;
-  /* Violet tints — from CI doc Farbe 3. Use for soft surfaces, dividers. */
-  --color-violet-soft:  #F3EBF5;
-  --color-violet-mid:   #E6C7EB;
-  --color-mint:         #C9EADE;
-  --color-gold:         #C9A84C;
-  --color-navy:         #1A1A2E;
+  /* ── BRAND COLORS — aligned to Editorial Design System v1 (2026-05-11) ──
+     Source of truth: docs/PRODUCTION_HANDOVER_MASTER_PLAN.md §2.2 A */
+
+  /* Surfaces (80% of all page area) */
+  --color-cream:        #F8F4F1;  /* primary surface — CI Farbe 1 */
+  --color-bone:         #EDE8E0;  /* cards, alternating sections */
+  --color-paper:        #FAFAF7;  /* highest elevation, subtle lift */
+
+  /* Ink hierarchy */
+  --color-ink:          #1E1B17;  /* primary text + dark hero backgrounds */
+  --color-ink-soft:     #4A3728;  /* body lead, sub-heads */
+  --color-ink-quiet:    #636260;  /* captions, metadata — CI confirmed override */
+  --color-sand:         #C8B8A2;  /* hairlines, dividers */
+
+  /* CTA — plum is the ONLY button fill colour */
+  --color-plum:         #231728;  /* primary CTA fill, dark hero option */
+  --color-plum-deep:    #180F1E;  /* button hover */
+  --color-plum-soft:    #F3EBF5;  /* plum tint blocks (investment panels) */
+
+  /* Tints — strictly one per page maximum */
+  --color-lilac-soft:   #F3EBF5;  /* quote blocks — CI Farbe 3 */
+  --color-lilac-mid:    #EDDDF0;
+  --color-lilac-deep:   #E6C7EB;
+  --color-blush:        #F5E8EC;  /* soft pink wash (current, retained) */
+  --color-mint-wash:    #C9EADE;  /* used once max per page — CI Farbe 2 */
+
+  /* Accents — under 5% of page area */
+  --color-pink:         #F942AA;  /* signature script, 1px hairlines — CI Farbe 5 */
+  --color-pink-soft:    #FDBFE2;  /* soft pink wash */
+  --color-teal:         #479EB9;  /* emergency accent, rare — CI Farbe 4 */
+
+  /* Dark sections */
+  --color-navy:         #1A1A2E;  /* dark CTA sections */
+  --color-gold:         #C9A84C;  /* gold accents on dark only */
+
+  /* ── Back-compat aliases (deprecated — do not use in new code) ──
+     These resolve so any in-flight code/cached CSS keeps rendering.
+     Remove in next major release (v2). */
+  --color-violet-soft:  #F3EBF5;  /* → use --color-lilac-soft */
+  --color-violet-mid:   #E6C7EB;  /* → use --color-lilac-deep */
+  --color-mint:         #C9EADE;  /* → use --color-mint-wash */
 
   /* ── FONT FAMILIES (set via next/font in layout.tsx) ─────── */
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
@@ -72,12 +89,21 @@
   --text-btn--letter-spacing: 0.18em;
 
   /* ── LAYOUT ──────────────────────────────────────────────── */
-  --container-content: 1280px;
-  --container-read:    680px;
+  --container-prose:   680px;   /* legal pages, long-form articles */
+  --container-narrow:  920px;   /* about, narrative pages */
+  --container-content: 1280px;  /* default page width */
+  --container-wide:    1440px;  /* press marquee, full-bleed */
+  --container-read:    680px;   /* legacy alias */
+
+  /* ── EDITORIAL SPACING — DS v1 §2.1 ──────────────────────── */
+  --spacing-section-mobile:   80px;   /* mobile section padding (py-20) */
+  --spacing-section-tablet:   96px;   /* tablet section padding (py-24) */
+  --spacing-section-desktop:  160px;  /* desktop section padding (py-40) */
+  --spacing-hero-desktop:     192px;  /* hero section padding (py-48) */
 
   /* ── ANIMATIONS ──────────────────────────────────────────── */
   --animate-fade-up:  fadeUp 0.7s ease-out both;
-  --animate-marquee:  marquee 28s linear infinite;
+  --animate-marquee:  marquee 45s linear infinite;  /* DS v1 §6.7 — 45s editorial */
 }
 
 @keyframes fadeUp {
@@ -143,14 +169,30 @@
     padding-inline: 1.5rem;
   }
   .section-pad {
-    padding-block: 5rem;
+    padding-block: var(--spacing-section-mobile);   /* 80px mobile */
   }
-  @media (min-width: 768px) {
-    .section-pad { padding-block: 7rem; }
+  @media (min-width: 640px) {
+    .section-pad { padding-block: var(--spacing-section-tablet); }   /* 96px tablet */
+  }
+  @media (min-width: 1024px) {
+    .section-pad { padding-block: var(--spacing-section-desktop); }  /* 160px desktop — DS v1 default */
   }
 }
 
-/* ── Section spacing variants ──────────────────── */
+/* ── Section spacing variants — DS v1 §2.2 decision tree ─────
+   .section-pad      → standard editorial section (py-20 / py-24 / py-40)
+   .section-hero     → primary hero (py-20 / py-32 / py-48)
+   .section-tight    → compact strip (logos, marquee) (py-12 / py-16 / py-20)
+   .section-wide     → signature section (py-24 / py-40 / py-60)        */
+.section-hero {
+  padding-block: var(--spacing-section-mobile);
+}
+@media (min-width: 640px) {
+  .section-hero { padding-block: 128px; }       /* py-32 */
+}
+@media (min-width: 1024px) {
+  .section-hero { padding-block: var(--spacing-hero-desktop); }  /* py-48 */
+}
 .section-tight {
   padding-block: 3.5rem;
 }

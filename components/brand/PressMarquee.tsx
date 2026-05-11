@@ -42,9 +42,11 @@ export function PressMarquee({
       <p className="text-center text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-5">
         As featured in
       </p>
+      {/* DS v1 §6.7 — 45s editorial pace (under 30s reads as ticker).
+          Hover pauses for legibility. prefers-reduced-motion override in globals.css. */}
       <div
-        className="flex whitespace-nowrap"
-        style={{ animation: "marquee 28s linear infinite" }}
+        className="flex whitespace-nowrap hover:[animation-play-state:paused]"
+        style={{ animation: "marquee 45s linear infinite" }}
       >
         {items.map((outlet, i) => (
           <span
