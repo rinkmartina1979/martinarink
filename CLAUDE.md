@@ -2,6 +2,26 @@
 
 # Martina Rink — Project Context (read every session)
 
+## Source of Truth — ALWAYS use these, never others
+
+| Resource | URL |
+|----------|-----|
+| **GitHub (source of truth)** | https://github.com/rinkmartina1979/martinarink |
+| **Vercel project (production)** | https://vercel.com/martina-rinks-projects/martinarink.com |
+| **Live site** | https://www.martinarink.com |
+
+### Git workflow
+```bash
+# The only remote is origin → rinkmartina1979/martinarink
+git push origin main        # triggers Vercel auto-deploy via webhook
+```
+
+**NEVER** deploy via `vercel --prod` CLI directly — it targets the wrong project and creates UNKNOWN ghost deployments. Always `git push origin main`.
+
+**Delete the orphaned Vercel project** `martinarink-next` from the dashboard — it has no git connection and causes confusion. URL: https://vercel.com/martina-rinks-projects/martinarink-next
+
+---
+
 ## Stack (locked)
 - **Next.js 16.2 + App Router** — React 19.2, TypeScript 5
 - **Tailwind CSS 4** — CSS-first config via `@theme` in `app/globals.css` (NO `tailwind.config.ts`)
