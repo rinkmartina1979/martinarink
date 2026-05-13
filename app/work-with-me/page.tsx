@@ -45,11 +45,11 @@ export default async function WorkWithMePage() {
             <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft max-w-[480px]">
               {heroCopy}
             </p>
-            {/* Scarcity signal */}
+            {/* Scarcity signal — TODO: surface intake month as Sanity field so Martina can update without a deploy */}
             <div className="mt-8 inline-flex items-center gap-3 px-4 py-2 bg-violet-soft border border-violet-mid self-start">
               <span className="block w-1.5 h-1.5 rounded-full bg-plum animate-pulse" />
               <span className="text-[12px] uppercase tracking-[0.18em] text-plum-deep">
-                Currently accepting two new clients · next intake
+                Two openings · next intake June 2026
               </span>
             </div>
           </div>
@@ -88,8 +88,8 @@ export default async function WorkWithMePage() {
                 <li>· Written prompts between sessions</li>
                 <li>· Ongoing correspondence</li>
               </ul>
-              <p className="mt-8 font-[family-name:var(--font-display)] text-[28px] text-cream">
-                from €5,000
+              <p className="mt-8 text-[12px] uppercase tracking-[0.18em] text-cream/55">
+                By application
               </p>
               <a
                 href="/sober-muse"
@@ -113,8 +113,8 @@ export default async function WorkWithMePage() {
                 <li>· Between-session correspondence</li>
                 <li>· Quarterly review sessions</li>
               </ul>
-              <p className="mt-8 font-[family-name:var(--font-display)] text-[28px] text-cream">
-                from €7,500
+              <p className="mt-8 text-[12px] uppercase tracking-[0.18em] text-cream/55">
+                By application
               </p>
               <a
                 href="/empowerment"
@@ -126,8 +126,7 @@ export default async function WorkWithMePage() {
           </div>
 
           <p className="mt-16 text-center text-[14px] text-cream/60">
-            Private consultation: €450 · Applied to programme fee upon
-            enrolment.
+            Investment is confirmed in the private consultation.
           </p>
         </div>
       </section>

@@ -8,7 +8,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { addBrevoContact } from "@/lib/brevo";
+import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
 
 const ApplySchema = z.object({
   firstName: z.string().min(1),
@@ -111,8 +111,29 @@ export async function POST(req: NextRequest) {
         APPLICATION_STATUS: "submitted",
         BUDGET_READINESS: budgetTag,
       },
-    }).catch((err) => console.error("[Apply] Brevo failed:", err));
+    }).catch((err) => console.error("[Apply] Brevo contact failed:", err));
   }
+
+  // ── Brevo: fire application_submitted event ───────────────
+  // This event drives the applicant-facing autoresponder automation —
+  // an immediate, personal-feeling confirmation that bridges the 48hr wait.
+  // Without this, applicants sit in silence and second-guess. Largest
+  // single conversion leak in the funnel prior to this hook.
+  trackBrevoEvent({
+    email,
+    eventName: "application_submitted",
+    properties: {
+      programme,
+      programme_label: programmeLabel,
+      budget_readiness: budgetTag,
+    },
+    contactProperties: {
+      FIRSTNAME: firstName,
+      APPLICATION_PROGRAMME: programme,
+      APPLICATION_STATUS: "submitted",
+      BUDGET_READINESS: budgetTag,
+    },
+  }).catch((err) => console.error("[Apply] Brevo event failed:", err));
 
   return NextResponse.json({ success: true });
 }

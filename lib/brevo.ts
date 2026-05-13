@@ -107,7 +107,11 @@ export type BrevoEventName =
   | "consultation_booked"
   | "consultation_canceled"
   | "consultation_no_show"
-  | "consultation_deposit_paid";
+  | "consultation_deposit_paid"
+  // Automation 8 — fires when an application is submitted via /api/apply.
+  // Drives the immediate applicant-facing autoresponder that bridges the
+  // 48hr wait between submission and Martina's personal reply.
+  | "application_submitted";
 
 interface BrevoEventOptions {
   email: string;

@@ -4,6 +4,7 @@ import { ARCHETYPE_RESULTS } from "@/lib/assessment/result-copy";
 import { deriveRouting } from "@/lib/assessment/scoring";
 import { verifyAndDecodeResultId } from "@/lib/assessment/resultId";
 import { getAssessmentResult } from "@/sanity/lib/queries";
+import { InlineLetterCapture } from "@/components/assessment/InlineLetterCapture";
 import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed } from "@/lib/assessment/types";
 import type { Metadata } from "next";
 
@@ -132,11 +133,22 @@ export default async function AssessmentResultPage({ params }: Props) {
         </div>
       </section>
 
+      {/* ── INLINE LETTER CAPTURE — for non-high readiness only ─────
+            Captures email at peak attention; replaces the leak-prone redirect
+            to /newsletter that medium/low CTAs previously sent users to. */}
+      {!isHighReadiness && (
+        <section className="bg-cream pb-12">
+          <div className="container-content max-w-[640px] mx-auto px-6">
+            <InlineLetterCapture archetype={archetype} />
+          </div>
+        </section>
+      )}
+
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section className="bg-bone border-t border-sand py-16 md:py-20">
         <div className="container-content max-w-[640px] mx-auto px-6">
           <p className="text-[13px] tracking-[0.2em] uppercase text-ink-quiet mb-8">
-            The natural next step
+            {isHighReadiness ? "The natural next step" : "Or — when you are ready"}
           </p>
 
           <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -147,7 +159,7 @@ export default async function AssessmentResultPage({ params }: Props) {
               {routing.primaryLabel}
             </a>
 
-            {routing.secondaryHref && (
+            {routing.secondaryHref && isHighReadiness && (
               <a
                 href={routing.secondaryHref}
                 className="inline-flex items-center justify-center border border-sand text-ink-soft uppercase tracking-[0.15em] text-[12px] font-medium px-8 py-4 rounded-[1px] hover:border-ink-quiet hover:text-ink transition-colors duration-200"

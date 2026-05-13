@@ -111,17 +111,21 @@ export function deriveRouting(result: ScoringResult): {
   }
 
   if (readinessLevel === "medium") {
-    // Not yet ready to apply — point to programme page + newsletter as soft warm-up.
-    const programmeHref =
+    // Medium readiness = the "threshold" archetype. They've already seen enough
+    // programme content to take the assessment — sending them back to read more
+    // is circular. The right CTA is a private consultation: it's the lower-risk
+    // commitment that still moves them off the threshold. Newsletter stays as a
+    // secondary safety net for the genuinely-not-yet ready.
+    const applyHref =
       serviceIntent === "empowerment"
-        ? "/empowerment"
+        ? "/apply/empowerment"
         : serviceIntent === "both"
         ? "/work-with-me"
-        : "/sober-muse";
+        : "/apply/sober-muse";
 
     return {
-      primaryHref: programmeHref,
-      primaryLabel: "READ ABOUT THE WORK",
+      primaryHref: applyHref,
+      primaryLabel: "BEGIN WITH A PRIVATE CONSULTATION",
       secondaryHref: "/newsletter",
       secondaryLabel: "RECEIVE THE PRIVATE LETTERS",
     };

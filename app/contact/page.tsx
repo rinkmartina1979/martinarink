@@ -53,7 +53,7 @@ export default async function ContactPage() {
             href="/book"
             className="block text-[17px] text-plum font-[family-name:var(--font-display)] italic underline decoration-pink underline-offset-4"
           >
-            → Request a private consultation
+            → Begin with a private consultation
           </Link>
         </div>
 

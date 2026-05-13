@@ -61,7 +61,7 @@ export default async function SoberMusePage() {
   const heroCopy =
     data?.heroCopy ??
     "It is about what you are finally able to see clearly, once the management strategy has been set aside.";
-  const ctaLabel = data?.ctaLabel ?? "Request a private consultation";
+  const ctaLabel = data?.ctaLabel ?? "Begin with a private consultation";
   const ctaUrl = data?.ctaUrl ?? "/book";
   const investmentText = data?.investmentText ?? null;
 

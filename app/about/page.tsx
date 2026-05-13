@@ -195,6 +195,11 @@ export default async function AboutPage() {
                     — and who has written, publicly and carefully, about what those
                     environments cost.
                   </p>
+                  <p>
+                    I hold a coaching certification from the International Coaching
+                    Institute (ICI), and my practice is grounded in the intersection
+                    of psychological insight, lived experience, and literary precision.
+                  </p>
                 </>
               )}
             </div>
@@ -219,7 +224,7 @@ export default async function AboutPage() {
       </section>
 
       {/* PERSONAL ORIGIN — DARK */}
-      <section className="bg-ink py-16 md:py-24">
+      <section className="bg-ink py-16 md:py-24 [transform:translateZ(0)] isolate [-webkit-font-smoothing:antialiased]">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>
             <span className="text-pink-soft">Where this started</span>
@@ -297,7 +302,18 @@ export default async function AboutPage() {
           <ScriptAccent className="block mt-10 text-[48px] text-plum">
             Martina
           </ScriptAccent>
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <p className="mt-10 text-[13px] uppercase tracking-[0.18em] text-ink-quiet">
+            Also on{" "}
+            <a
+              href="https://open.spotify.com/show/martinarink"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-plum underline decoration-pink decoration-1 underline-offset-4 hover:text-plum-deep transition-colors"
+            >
+              Spotify
+            </a>
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             <GhostButton href="/sober-muse">Explore the work</GhostButton>
           </div>

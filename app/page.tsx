@@ -154,7 +154,7 @@ export default async function HomePage() {
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-7 lg:col-span-7">
             <Eyebrow withLine variant="light">
-              For the woman who already has it all
+              FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
             </Eyebrow>
 
             {/* Fluid H1 — clamp scales from 44px (mobile) to 82px (desktop) */}
@@ -206,11 +206,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── AS FEATURED IN — infinite press marquee ─────────── */}
-      <PressMarquee />
-
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
       <AuthorityStrip />
+
+      {/* ─── AS FEATURED IN — infinite press marquee ─────────── */}
+      <PressMarquee />
 
       {/* ─── THE PRIVATE COST ────────────────────────────────── */}
       <section className="bg-cream section-pad">
@@ -254,7 +254,7 @@ export default async function HomePage() {
                 title: "The Sober Muse Method",
                 tagline: "For the woman re-examining alcohol.",
                 body: "Not because it has become a problem. Because it has become a question. A 90-day private engagement — no group sessions, no recovery narrative, no one-size-fits-all framework. One woman, one mentor.",
-                meta: "90 days · private · from €5,000",
+                meta: "90 days · private · by application",
                 href: "/sober-muse",
               },
               {
@@ -262,7 +262,7 @@ export default async function HomePage() {
                 title: "Female Empowerment & Leadership",
                 tagline: "For the woman navigating identity, presence, and what comes next.",
                 body: "There is a particular exhaustion that comes not from doing too much, but from being someone who no longer quite fits. The container you built has stopped being the same size as you are. This is information. And it is the beginning of the most interesting work available to you.",
-                meta: "6–12 months · open-ended · from €7,500",
+                meta: "6–12 months · open-ended · by application",
                 href: "/empowerment",
               },
             ].map((card) => (

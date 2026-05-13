@@ -254,8 +254,8 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
-      {/* MINT CTA SECTION */}
-      <section className="bg-mint section-pad">
+      {/* LILAC CTA SECTION */}
+      <section className="bg-violet-soft section-pad">
         <div className="container-content max-w-2xl mx-auto text-center">
           <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
             come home to yourself

@@ -77,7 +77,7 @@ export function NavDropdown() {
                   The Sober Muse Method
                 </span>
                 <span className="mt-2 block text-[12px] text-ink-quiet tracking-wide">
-                  90 days · private · from €5,000
+                  90 days · private · by application
                 </span>
                 <span className="mt-5 block text-[12px] text-plum group-hover:text-pink transition-colors">
                   Explore →
@@ -98,7 +98,7 @@ export function NavDropdown() {
                   Female Empowerment &amp; Leadership
                 </span>
                 <span className="mt-2 block text-[12px] text-ink-quiet tracking-wide">
-                  6–12 months · private · from €7,500
+                  6–12 months · private · by application
                 </span>
                 <span className="mt-5 block text-[12px] text-plum group-hover:text-pink transition-colors">
                   Explore →

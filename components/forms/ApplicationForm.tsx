@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,7 +44,7 @@ function ApplicationFormShell({
   submitLabel?: string;
   programme: "sober-muse" | "empowerment";
 }) {
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
   const [serverError, setServerError] = useState("");
 
   const {
@@ -66,27 +67,16 @@ function ApplicationFormShell({
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.error ?? "Something went wrong. Please try again.");
       }
-      setSubmitted(true);
+      // Redirect to the dedicated application thank-you page —
+      // gives applicants weight-appropriate acknowledgement, sets 48hr
+      // expectation, and bridges the silent wait with reading material.
+      router.push("/thank-you/application");
     } catch (err: unknown) {
       setServerError(
         err instanceof Error ? err.message : "Something went wrong."
       );
     }
   };
-
-  if (submitted) {
-    return (
-      <div className="bg-bone p-10 animate-[fadeUp_0.5s_ease-out_both]">
-        <p className="font-[family-name:var(--font-display)] italic text-[22px] text-ink mb-4">
-          Your application has been received.
-        </p>
-        <p className="text-[15px] leading-[1.7] text-ink-soft max-w-md">
-          I read every application personally. You will hear from me within 48
-          hours. If you don&rsquo;t see a response, check your spam folder.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-8">

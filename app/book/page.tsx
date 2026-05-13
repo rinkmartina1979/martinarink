@@ -154,10 +154,10 @@ export default async function BookPage({ searchParams }: BookPageProps) {
             A forty-five minute conversation, before anything else.
           </h1>
           <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
-            This is not a sales call, and it is not complimentary coaching.
-            It&rsquo;s a genuine conversation — about where you are, what
-            you&rsquo;re considering, and whether working together is right for
-            both of us. I hold four of these a week.
+            This is not a sales call, and it is not complimentary coaching. It
+            is a genuine conversation — about where you are, what you&rsquo;re
+            considering, and whether working together is right for both of us.
+            I hold four of these a week.
           </p>
           <p className="mt-6 text-[15px] text-ink-quiet">
             €450, applied to the programme if you proceed.
@@ -166,37 +166,43 @@ export default async function BookPage({ searchParams }: BookPageProps) {
           {/* Status banners */}
           {showCancelled && (
             <p className="mt-6 text-[14px] text-ink-soft bg-bone border border-sand/50 px-5 py-3 inline-block">
-              Your payment wasn&rsquo;t completed — the calendar is still available below.
+              Your payment wasn&rsquo;t completed — you can start again below.
             </p>
           )}
           {showPaymentError && (
             <p className="mt-6 text-[14px] text-ink-soft bg-bone border border-sand/50 px-5 py-3 inline-block">
-              There was an issue verifying your payment. Please try again or use the calendar below.
+              There was an issue verifying your payment. Please try again below.
             </p>
           )}
 
-          {/* Primary CTA */}
+          {/* Primary CTA — the only path forward for an approved applicant */}
           <div className="mt-10 flex justify-center">
             <DepositCTA />
           </div>
+          <p className="mt-6 text-[13px] text-ink-quiet leading-relaxed max-w-md mx-auto">
+            Payment confirms the consultation. The booking calendar opens
+            immediately after, in the same browser tab.
+          </p>
         </div>
       </section>
 
-      {/* ── CALENDLY EMBED ───────────────────────────────────── */}
+      {/* ── CALENDLY EMBED — kept here for the rare invited-back-without-deposit case
+            (e.g. rescheduling). Suppressed for first-time approved applicants by hiding
+            the section behind a small disclosure. */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
-          <p className="text-[13px] text-ink-quiet text-center mb-6">
-            If you have received a complimentary booking link, the calendar is below.
-          </p>
-          <div className="bg-bone p-2">
-            {/* CalendlyEmbed listens for the embed postMessage event and
-                notifies our backend when a booking completes — free-tier safe */}
-            <CalendlyEmbed url={CALENDLY_URL} />
-          </div>
-          <p className="mt-8 text-center text-[14px] text-ink-quiet leading-relaxed">
-            If, after our conversation, the timing doesn&rsquo;t feel right —
-            I&rsquo;ll say so, warmly. The fit matters as much to me as it does
-            to you.
+          <details className="text-center">
+            <summary className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet cursor-pointer hover:text-ink-soft transition-colors">
+              Rescheduling a confirmed consultation? Open the calendar
+            </summary>
+            <div className="mt-8 bg-bone p-2">
+              <CalendlyEmbed url={CALENDLY_URL} />
+            </div>
+          </details>
+          <p className="mt-12 text-center text-[14px] text-ink-quiet leading-relaxed max-w-md mx-auto">
+            If, after our conversation, the timing doesn&rsquo;t feel right — I
+            will say so, warmly. The fit matters as much to me as it does to
+            you.
           </p>
         </div>
       </section>

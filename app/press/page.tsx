@@ -468,7 +468,7 @@ export default async function PressPage() {
                   Formats
                 </p>
                 <p className="text-[16px] text-ink-soft">
-                  Panel chair · Panel guest · Intimate fireside conversation ·
+                  Panel guest · Intimate fireside conversation ·
                   Podcast guest
                 </p>
               </div>
