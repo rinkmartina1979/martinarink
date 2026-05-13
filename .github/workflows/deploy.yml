@@ -1,12 +1,27 @@
 name: Deploy to Vercel
 
+# DISABLED — Vercel deploys are handled natively by the GitHub integration
+# webhook (Settings > Git > Connected Repository in Vercel dashboard).
+# Running this CLI workflow simultaneously caused competing build attempts
+# and queue collisions. The GitHub integration is the single deploy path.
+#
+# HOW PRODUCTION DEPLOYS WORK:
+#   git push origin main  →  Vercel webhook fires  →  Vercel builds  →  live
+#
+# RE-ENABLE THIS ONLY IF:
+#   - The GitHub integration is disconnected
+#   - You are on a plan that requires CLI-based deploys
+#   - You explicitly need a custom build pipeline
+#
+# To re-enable: change `branches: []` back to `branches: [main]`
+
 on:
   push:
-    branches:
-      - main
+    branches: []   # ← empty = workflow never triggers
 
 jobs:
   deploy-production:
+    if: false   # ← double-guard: job never runs even if triggered
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +41,9 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Deploy to Vercel (production)
-        # VERCEL_ORG_ID and VERCEL_PROJECT_ID are not secrets — they are
-        # public identifiers. Hardcoded here so the workflow is self-contained
-        # and does not depend on GitHub Secrets being correctly configured.
         # Source of truth: https://vercel.com/martina-rinks-projects/martinarink.com
+        # Project ID: prj_ILo8RZxss4v5C16fjIDo5S4801FJ
+        # Org ID: team_sIFjzIPHK3CVVX1Vj6Ei5gdK
         env:
           VERCEL_ORG_ID: team_sIFjzIPHK3CVVX1Vj6Ei5gdK
           VERCEL_PROJECT_ID: prj_ILo8RZxss4v5C16fjIDo5S4801FJ

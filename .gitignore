@@ -40,4 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# Claude Code IDE artifacts — never commit
+.claude/
+martinarink-next/

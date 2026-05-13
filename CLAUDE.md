@@ -2,6 +2,59 @@
 
 # Martina Rink — Project Context (read every session)
 
+---
+
+## PROJECT GOVERNANCE — READ FIRST, EVERY SESSION
+
+### Single source of truth
+| Resource | Value |
+|----------|-------|
+| GitHub repo | `https://github.com/rinkmartina1979/martinarink` |
+| Vercel project | `https://vercel.com/martina-rinks-projects/martinarink.com` |
+| Vercel project ID | `prj_ILo8RZxss4v5C16fjIDo5S4801FJ` |
+| Vercel org ID | `team_sIFjzIPHK3CVVX1Vj6Ei5gdK` |
+| Live site | `https://martinarink.com` |
+| Production branch | `main` |
+
+### How production deploys work
+```
+git push origin main
+  → GitHub integration webhook fires (Vercel native)
+  → Vercel builds on their servers
+  → Production updated at martinarink.com
+```
+No CLI deploy. No GitHub Actions. No manual triggers. One path only.
+
+### PROHIBITED ACTIONS
+- `vercel deploy --prod` from local CLI — creates UNKNOWN ghost deployments
+- Push to any branch other than `main` for production changes
+- Push to any remote other than `https://github.com/rinkmartina1979/martinarink`
+- Reference `www.martinarink.com` in canonical URLs, og:url, or JSON-LD
+- Hardcode hex colors or prices in components — use tokens and SITE constants
+- Add `Co-Authored-By:` trailers — Vercel Hobby blocks deploys from unresolvable co-authors
+- Commit `.claude/`, `.next/`, `node_modules/`, `.vercel/`, or `martinarink-next/`
+
+### Git identity rule
+Commits must be authored by an email that is a verified address on the `rinkmartina1979` GitHub account. Vercel resolves: `commit email → GitHub account → Vercel owner`. If the chain breaks, all webhook deploys are blocked.
+
+Current commit author: `penupemamo83@gmail.com`
+**Required action:** add this email as a verified secondary email on GitHub account `rinkmartina1979` at https://github.com/settings/emails
+
+### Cache-free redeploy
+When a deploy goes to production but cached content is suspected:
+1. Vercel dashboard → `martinarink.com` → Deployments
+2. Latest deployment → `···` → Redeploy
+3. Uncheck "Use existing build cache" → Deploy
+
+### Verification before declaring complete
+A change is NOT done until:
+- [ ] `git push origin main` succeeded
+- [ ] Vercel dashboard shows `● Ready` (green) on latest deployment
+- [ ] Live URL (`https://martinarink.com`) reflects the change visually
+- [ ] No TypeScript errors: `npx tsc --noEmit` returns clean
+
+---
+
 ## Source of Truth — ALWAYS use these, never others
 
 | Resource | URL |
