@@ -18,6 +18,20 @@ git push origin main        # triggers Vercel auto-deploy via webhook
 
 **NEVER** deploy via `vercel --prod` CLI directly — it targets the wrong project and creates UNKNOWN ghost deployments. Always `git push origin main`.
 
+### Commit rules — Vercel Hobby plan compatibility
+**NEVER include `Co-Authored-By` trailers in commit messages.** Vercel's Hobby plan reads all commit trailers and blocks deployments if any co-author (`noreply@anthropic.com`, bot accounts, etc.) cannot be resolved as a Vercel team member. This is a confirmed 2026 bug affecting Claude Code, Cursor, and other AI agents.
+
+```bash
+# ✅ CORRECT — clean commit message, no trailer
+git commit -m "feat: description of change"
+
+# ❌ WRONG — blocks Vercel deploy on Hobby plan
+git commit -m "feat: change
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+```
+
+**Git identity:** commits must use the email registered on the `rinkmartina1979` GitHub account so Vercel can resolve the author chain. Current working identity: configure via `git config user.email`.
+
 ### Canonical URL rule (SEO — never violate)
 - **Canonical domain:** `martinarink.com` (no www)
 - `www.martinarink.com` is an alias — Vercel serves it but `next.config.ts` 301-redirects all www traffic to the bare domain
