@@ -6,4 +6,4 @@ Disallow: /apply/
 Disallow: /thank-you
 Disallow: /api/
 
-Sitemap: https://www.martinarink.com/sitemap.xml
+Sitemap: https://martinarink.com/sitemap.xml

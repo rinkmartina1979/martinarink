@@ -8,7 +8,7 @@
 |----------|-----|
 | **GitHub (source of truth)** | https://github.com/rinkmartina1979/martinarink |
 | **Vercel project (production)** | https://vercel.com/martina-rinks-projects/martinarink.com |
-| **Live site** | https://www.martinarink.com |
+| **Live site (canonical)** | https://martinarink.com |
 
 ### Git workflow
 ```bash
@@ -17,6 +17,12 @@ git push origin main        # triggers Vercel auto-deploy via webhook
 ```
 
 **NEVER** deploy via `vercel --prod` CLI directly — it targets the wrong project and creates UNKNOWN ghost deployments. Always `git push origin main`.
+
+### Canonical URL rule (SEO — never violate)
+- **Canonical domain:** `martinarink.com` (no www)
+- `www.martinarink.com` is an alias — Vercel serves it but `next.config.ts` 301-redirects all www traffic to the bare domain
+- `SITE.url` in `lib/utils.ts` = `https://martinarink.com` — this propagates to all `<link rel="canonical">`, `og:url`, sitemap, JSON-LD, and robots.txt
+- **Never change `SITE.url` back to `https://www.martinarink.com`** — that would make every page self-canonicalise to the wrong variant
 
 **Delete the orphaned Vercel project** `martinarink-next` from the dashboard — it has no git connection and causes confusion. URL: https://vercel.com/martina-rinks-projects/martinarink-next
 
