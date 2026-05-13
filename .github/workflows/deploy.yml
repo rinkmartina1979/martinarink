@@ -17,18 +17,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: Remove git remote so Vercel CLI does not inject GitHub metadata
-        # Vercel CLI reads the git remote URL and auto-enables GitHub deployment
-        # integration (githubDeployment=1), which then validates the team's
-        # gitCredentialId. Removing origin prevents that check entirely.
-        run: git remote remove origin
-
       - name: Deploy to Vercel (production)
+        # VERCEL_ORG_ID and VERCEL_PROJECT_ID are not secrets — they are
+        # public identifiers. Hardcoded here so the workflow is self-contained
+        # and does not depend on GitHub Secrets being correctly configured.
+        # Source of truth: https://vercel.com/martina-rinks-projects/martinarink.com
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: team_sIFjzIPHK3CVVX1Vj6Ei5gdK
+          VERCEL_PROJECT_ID: prj_ILo8RZxss4v5C16fjIDo5S4801FJ
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prod --yes --token=$VERCEL_TOKEN
