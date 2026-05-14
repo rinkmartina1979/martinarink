@@ -197,7 +197,7 @@ export default async function HomePage() {
                 alt="Martina Rink — private mentor and author"
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
-                className="object-cover object-[center_10%]"
+                className="object-contain object-top"
                 priority
                 fetchPriority="high"
               />
@@ -318,7 +318,7 @@ export default async function HomePage() {
                 alt="Martina Rink — author and cultural observer"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
+                className="object-contain object-top"
               />
             </div>
           </div>
@@ -459,7 +459,7 @@ export default async function HomePage() {
                 alt="Martina Rink — private mentor"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
+                className="object-contain object-top"
               />
             </div>
           </div>

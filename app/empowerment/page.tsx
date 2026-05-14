@@ -106,7 +106,7 @@ export default async function EmpowermentPage() {
               alt="Martina Rink — Female Empowerment & Leadership"
               fill
               sizes="(max-width: 768px) 100vw, 35vw"
-              className="object-cover object-[50%_8%]"
+              className="object-contain object-top"
               priority
             />
           </div>

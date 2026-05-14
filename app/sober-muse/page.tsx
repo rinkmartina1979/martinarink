@@ -109,7 +109,7 @@ export default async function SoberMusePage() {
               alt="Martina Rink — Sober Muse Method"
               fill
               sizes="(max-width: 768px) 100vw, 35vw"
-              className="object-cover object-[50%_8%]"
+              className="object-contain object-top"
               priority
             />
           </div>
@@ -262,7 +262,7 @@ export default async function SoberMusePage() {
                 alt="Martina Rink"
                 fill
                 sizes="(max-width: 768px) 100vw, 28vw"
-                className="object-cover object-top"
+                className="object-contain object-top"
               />
             </div>
           </div>
