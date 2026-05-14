@@ -209,6 +209,19 @@ export default async function HomePage() {
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
       <AuthorityStrip />
 
+      {/* ─── ENTITY DEFINITION (Google E-A-T + Knowledge Panel) ──
+          Single sentence. Visually quiet. Parses cleanly as
+          "Martina Rink is a [job title] and [credential]". */}
+      <section className="bg-cream border-b border-sand/30 py-10">
+        <div className="container-content max-w-3xl text-center">
+          <p className="text-[15px] md:text-[16px] leading-[1.7] text-ink-quiet italic font-[family-name:var(--font-display)]">
+            Martina Rink is a Spiegel Bestselling author and private mentor
+            for accomplished women — working across Ibiza, Berlin, and Munich
+            on identity, sobriety, and the second chapter of a public life.
+          </p>
+        </div>
+      </section>
+
       {/* ─── AS FEATURED IN — infinite press marquee ─────────── */}
       <PressMarquee />
 
@@ -330,6 +343,69 @@ export default async function HomePage() {
               className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
             >
               View the creative work →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── THREE SPIEGEL BESTSELLERS — book covers grid ──────
+          Top 1% authors put the credential on the homepage, not in a
+          sub-page. Files live in /public/images/books/. */}
+      <section className="bg-cream section-pad border-t border-sand/30">
+        <div className="container-content max-w-6xl">
+          <div className="text-center max-w-2xl mx-auto">
+            <Eyebrow className="justify-center">Three Spiegel Bestsellers</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[44px] leading-[1.1] tracking-[-0.015em] text-ink">
+              Written from inside the work.
+            </h2>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+            {[
+              {
+                title: "Isabella Blow — A Life in Fashion",
+                meta: "Prestel · 2014",
+                src: "/images/books/isabella-blow-cover.png",
+              },
+              {
+                title: "People of Deutschland",
+                meta: "Spiegel Bestseller · 2022",
+                src: "/images/books/people-of-deutschland-cover.png",
+              },
+              {
+                title: "Fashion Germany",
+                meta: "Prestel · 2020",
+                src: "/images/books/fashion-germany-cover.png",
+              },
+            ].map((book) => (
+              <figure key={book.title} className="flex flex-col items-center text-center">
+                <div className="relative w-full aspect-[2/3] bg-bone overflow-hidden">
+                  <Image
+                    src={book.src}
+                    alt={`${book.title} by Martina Rink — ${book.meta}`}
+                    fill
+                    sizes="(max-width: 768px) 80vw, 30vw"
+                    className="object-contain"
+                  />
+                </div>
+                <figcaption className="mt-6">
+                  <p className="font-[family-name:var(--font-display)] text-[20px] leading-[1.25] text-ink">
+                    {book.title}
+                  </p>
+                  <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+                    {book.meta}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div className="text-center mt-14">
+            <Link
+              href="/creative-work"
+              className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+            >
+              See the complete creative work →
             </Link>
           </div>
         </div>

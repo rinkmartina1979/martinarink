@@ -62,22 +62,32 @@ export function personSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${SITE.url}/#martina-rink`,
     name: "Martina Rink",
-    jobTitle: "Private Mentor · Author · Sober Conscious Coach",
+    jobTitle: ["Private Mentor", "Author", "Sober Muse Method Founder"],
+    description:
+      "Martina Rink is a Spiegel Bestselling author and private mentor for accomplished women navigating identity, sobriety, and the second chapter of a public life.",
     url: SITE.url,
-    sameAs: [
-      SITE.social.linkedin,
-      SITE.social.instagram,
-    ],
+    image: `${SITE.url}/images/portraits/martina-portrait-studio.jpg`,
+    email: SITE.email,
+    award: "Spiegel Bestseller Author (three titles)",
     worksFor: {
       "@type": "Organization",
       name: "The Sober Muse Method",
+      url: SITE.url,
     },
     knowsAbout: [
       "Conscious leadership",
       "Female empowerment",
-      "Sobriety coaching",
+      "Sobriety mentoring",
       "Executive mentoring",
+      "Identity and second-chapter careers",
+    ],
+    sameAs: [
+      SITE.social.linkedin,
+      SITE.social.instagram,
+      SITE.social.spotify,
+      "https://www.martinarink.de",
     ],
   };
 }
