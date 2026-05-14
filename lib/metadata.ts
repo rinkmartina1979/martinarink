@@ -180,3 +180,63 @@ export function faqSchema(faqs: Array<{ q: string; a: string }>) {
     })),
   };
 }
+
+// Breadcrumb schema — improves SERP appearance + Knowledge Graph entity context.
+// Pass ordered list from root → current page. Home is added automatically.
+export function breadcrumbSchema(
+  trail: Array<{ name: string; path: string }>,
+) {
+  const items = [{ name: "Home", path: "/" }, ...trail];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `${SITE.url}${item.path}`,
+    })),
+  };
+}
+
+// Book schema — required for Knowledge Graph Author entity disambiguation.
+// Each of Martina's three Spiegel Bestsellers gets a Book entity linked back
+// to her Person @id.
+export function bookSchema(opts: {
+  name: string;
+  alternateName?: string;
+  publisher: string;
+  publicationYear: string;
+  isbn?: string;
+  imagePath: string;
+  description: string;
+  bookFormat?: "Hardcover" | "Paperback" | "EBook";
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    name: opts.name,
+    ...(opts.alternateName && { alternateName: opts.alternateName }),
+    author: {
+      "@type": "Person",
+      "@id": `${SITE.url}/#martina-rink`,
+      name: "Martina Rink",
+      url: SITE.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: opts.publisher,
+    },
+    datePublished: opts.publicationYear,
+    ...(opts.isbn && { isbn: opts.isbn }),
+    image: `${SITE.url}${opts.imagePath}`,
+    description: opts.description,
+    bookFormat: `https://schema.org/${opts.bookFormat ?? "Hardcover"}`,
+    inLanguage: "en",
+    workExample: {
+      "@type": "Book",
+      bookFormat: `https://schema.org/${opts.bookFormat ?? "Hardcover"}`,
+      ...(opts.isbn && { isbn: opts.isbn }),
+    },
+  };
+}

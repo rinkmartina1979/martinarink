@@ -4,7 +4,7 @@ import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
-import { buildMetadata, aboutPersonSchema } from "@/lib/metadata";
+import { buildMetadata, aboutPersonSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getAboutPage } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -39,6 +39,14 @@ export default async function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPersonSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([{ name: "About", path: "/about" }]),
+          ),
+        }}
       />
       {/* HERO */}
       <section className="bg-cream pt-32 md:pt-40 pb-12">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getWorkWithMePage } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,6 +34,14 @@ export default async function WorkWithMePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([{ name: "Work With Me", path: "/work-with-me" }]),
+          ),
+        }}
+      />
       <section className="bg-cream pt-32 md:pt-40 pb-0">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
           {/* Text — 7/12 */}

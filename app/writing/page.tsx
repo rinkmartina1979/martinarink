@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getAllPosts, type PostListItem } from "@/sanity/lib/queries";
+
+const BREADCRUMBS = breadcrumbSchema([{ name: "Writing", path: "/writing" }]);
 
 export const metadata = buildMetadata({
   title: "Writing",
@@ -64,6 +66,10 @@ export default async function WritingPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMBS) }}
+      />
       <section className="bg-cream pt-32 md:pt-40 pb-16">
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>Writing</Eyebrow>

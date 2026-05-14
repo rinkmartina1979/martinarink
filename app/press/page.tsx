@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { GhostButton } from "@/components/brand/GhostButton";
@@ -195,6 +195,14 @@ export default async function PressPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pressSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([{ name: "Press & Speaking", path: "/press" }]),
+          ),
+        }}
       />
 
       {/* ── 1. Hero ─────────────────────────────────────────── */}

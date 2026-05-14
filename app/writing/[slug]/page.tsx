@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { calcReadingTime, articleSchema } from "@/lib/posts";
 import { SITE } from "@/lib/utils";
 import { urlForImage } from "@/sanity/lib/image";
@@ -217,6 +217,17 @@ export default async function ArticlePage({
             ),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              breadcrumbSchema([
+                { name: "Writing", path: "/writing" },
+                { name: sanityPost.title, path: `/writing/${slug}` },
+              ]),
+            ),
+          }}
+        />
         <article className="bg-cream pt-32 md:pt-40 pb-16">
           <div className="container-read">
             <Eyebrow>
@@ -298,6 +309,17 @@ export default async function ArticlePage({
               url: articleUrl,
               publishedAt: hardcoded.publishedAt,
             }),
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Writing", path: "/writing" },
+              { name: hardcoded.title, path: `/writing/${slug}` },
+            ]),
           ),
         }}
       />

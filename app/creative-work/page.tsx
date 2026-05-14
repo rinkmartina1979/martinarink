@@ -3,8 +3,42 @@ import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, bookSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getCreativeWorkPage } from "@/sanity/lib/queries";
+
+const BOOKS = [
+  bookSchema({
+    name: "People of Deutschland",
+    publisher: "Prestel Verlag",
+    publicationYear: "2022",
+    imagePath: "/images/books/people-of-deutschland-cover.png",
+    description:
+      "A Spiegel Bestseller exploring identity, belonging, and what it means to be German today — through 45 portraits and conversations.",
+    isbn: "978-3791388458",
+  }),
+  bookSchema({
+    name: "Isabella Blow — A Life in Fashion",
+    publisher: "Prestel Verlag",
+    publicationYear: "2014",
+    imagePath: "/images/books/isabella-blow-cover.png",
+    description:
+      "An intimate portrait of fashion legend Isabella Blow, written by her personal assistant and one of the only people granted close access to her life and archive.",
+    isbn: "978-3791349336",
+  }),
+  bookSchema({
+    name: "Fashion Germany",
+    publisher: "Prestel Verlag",
+    publicationYear: "2020",
+    imagePath: "/images/books/fashion-germany-cover.png",
+    description:
+      "A definitive volume on contemporary German fashion — the designers, houses, and creative movements shaping a new generation of style.",
+    isbn: "978-3791385969",
+  }),
+];
+
+const BREADCRUMBS = breadcrumbSchema([
+  { name: "Creative Work", path: "/creative-work" },
+]);
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getCreativeWorkPage();
@@ -43,6 +77,19 @@ export default async function CreativeWorkPage() {
 
   return (
     <>
+      {/* ─── SCHEMA — three Book entities + breadcrumbs ─────── */}
+      {BOOKS.map((b, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(b) }}
+        />
+      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMBS) }}
+      />
+
       {/* ─── HERO ─────────────────────────────────────────────── */}
       <section className="bg-cream pt-32 md:pt-40 pb-20">
         <div className="container-content max-w-3xl">
