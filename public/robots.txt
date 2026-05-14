@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /book
-Disallow: /apply/
-Disallow: /thank-you
-Disallow: /api/
-
-Sitemap: https://martinarink.com/sitemap.xml
