@@ -5,6 +5,7 @@ import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata, aboutPersonSchema, breadcrumbSchema } from "@/lib/metadata";
+import { SITE } from "@/lib/utils";
 import { getAboutPage } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -91,6 +92,7 @@ export default async function AboutPage() {
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
                 className="object-contain object-top"
+                priority
               />
             </div>
           </aside>
@@ -313,7 +315,7 @@ export default async function AboutPage() {
           <p className="mt-10 text-[13px] uppercase tracking-[0.18em] text-ink-quiet">
             Also on{" "}
             <a
-              href="https://open.spotify.com/show/martinarink"
+              href={SITE.social.spotify}
               target="_blank"
               rel="noopener noreferrer"
               className="text-plum underline decoration-pink decoration-1 underline-offset-4 hover:text-plum-deep transition-colors"

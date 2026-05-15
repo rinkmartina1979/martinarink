@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getNewsletterPage } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -32,6 +32,14 @@ export default async function NewsletterPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([{ name: "Newsletter", path: "/newsletter" }]),
+          ),
+        }}
+      />
       <section className="bg-cream pt-32 md:pt-40 pb-16">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-start">
           <div className="md:col-span-7">

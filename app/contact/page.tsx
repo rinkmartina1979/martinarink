@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import Link from "next/link";
 import { getContactPage } from "@/sanity/lib/queries";
 
@@ -33,7 +33,16 @@ export default async function ContactPage() {
     "For press, speaking enquiries, or partnership conversations, write to me at:";
 
   return (
-    <section className="bg-cream pt-32 md:pt-40 pb-24 min-h-screen">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([{ name: "Contact", path: "/contact" }]),
+          ),
+        }}
+      />
+      <section className="bg-cream pt-32 md:pt-40 pb-24 min-h-screen">
       <div className="container-content max-w-2xl">
         <Eyebrow withLine>Contact</Eyebrow>
         <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[48px] leading-tight text-ink">
@@ -78,5 +87,6 @@ export default async function ContactPage() {
         </div>
       </div>
     </section>
+    </>
   );
 }
