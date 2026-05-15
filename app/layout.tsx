@@ -3,6 +3,7 @@ import { draftMode } from "next/headers";
 import { VisualEditingClient } from "@/components/sanity/VisualEditingClient";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { playfair, dmSans, dancingScript } from "@/lib/fonts";
 import { buildMetadata, personSchema, organizationSchema } from "@/lib/metadata";
 import { Nav } from "@/components/layout/Nav";
@@ -50,6 +51,7 @@ export default async function RootLayout({
         {isDraftMode && <VisualEditingClient />}
         <Analytics />
         <SpeedInsights />
+        <GoogleAnalytics gaId="G-RBXW7LFCD5" />
       </body>
     </html>
   );
