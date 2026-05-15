@@ -34,43 +34,70 @@ export function NewsletterForm() {
 
   if (status === "ok") {
     return (
-      <div className="bg-bone p-8 text-center max-w-md mx-auto">
-        <p className="font-[family-name:var(--font-display)] italic text-[20px] text-ink">
-          Your letter is on its way. Check your inbox.
+      <div className="py-10 text-center max-w-md mx-auto">
+        <span className="block text-[11px] uppercase tracking-[0.22em] text-pink mb-4">
+          welcome
+        </span>
+        <p className="font-[family-name:var(--font-display)] italic text-[22px] text-ink leading-snug">
+          Your letter is on its way.
         </p>
+        <p className="mt-2 text-[14px] text-ink-soft">Check your inbox — and the spam folder, just this once.</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="max-w-md mx-auto">
-      <div className="space-y-3">
-        <input
-          type="text"
-          placeholder="First name (optional)"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          className="w-full bg-bone border border-sand px-4 py-3 text-[16px] text-ink placeholder:text-ink-quiet/70 focus:outline-none focus:border-plum"
-        />
-        <input
-          type="email"
-          required
-          placeholder="Your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-bone border border-sand px-4 py-3 text-[16px] text-ink placeholder:text-ink-quiet/70 focus:outline-none focus:border-plum"
-        />
+    <form onSubmit={onSubmit} className="max-w-sm mx-auto">
+      {/* Editorial hairline inputs — no box, bottom border only */}
+      <div className="space-y-6">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder=" "
+            id="nf-firstname"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="peer w-full bg-transparent border-b border-sand/80 pb-3 pt-5 text-[15px] text-ink placeholder-transparent focus:outline-none focus:border-plum transition-colors duration-200"
+          />
+          <label
+            htmlFor="nf-firstname"
+            className="absolute top-0 left-0 text-[11px] uppercase tracking-[0.2em] text-ink-quiet peer-placeholder-shown:text-[14px] peer-placeholder-shown:tracking-normal peer-placeholder-shown:top-4 peer-placeholder-shown:text-ink-soft/60 peer-focus:text-[11px] peer-focus:tracking-[0.2em] peer-focus:top-0 peer-focus:text-plum transition-all duration-200"
+          >
+            First name — optional
+          </label>
+        </div>
+
+        <div className="relative">
+          <input
+            type="email"
+            required
+            placeholder=" "
+            id="nf-email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="peer w-full bg-transparent border-b border-sand/80 pb-3 pt-5 text-[15px] text-ink placeholder-transparent focus:outline-none focus:border-plum transition-colors duration-200"
+          />
+          <label
+            htmlFor="nf-email"
+            className="absolute top-0 left-0 text-[11px] uppercase tracking-[0.2em] text-ink-quiet peer-placeholder-shown:text-[14px] peer-placeholder-shown:tracking-normal peer-placeholder-shown:top-4 peer-placeholder-shown:text-ink-soft/60 peer-focus:text-[11px] peer-focus:tracking-[0.2em] peer-focus:top-0 peer-focus:text-plum transition-all duration-200"
+          >
+            Your email
+          </label>
+        </div>
       </div>
-      <div className="mt-5">
+
+      <div className="mt-10">
         <PlumButton type="submit" className="w-full" disabled={status === "loading"}>
-          {status === "loading" ? "Sending..." : "Receive the letters"}
+          {status === "loading" ? "Sending…" : "Receive the letters"}
         </PlumButton>
       </div>
+
       {status === "err" && (
         <p className="mt-3 text-[13px] text-plum">{errorMsg}</p>
       )}
-      <p className="mt-4 text-[12px] text-ink-quiet text-center">
-        Your email. Nothing else required. Unsubscribing is one click.
+
+      <p className="mt-5 text-[11px] uppercase tracking-[0.18em] text-ink-quiet/70 text-center">
+        One letter · Once a week · Unsubscribe any time
       </p>
     </form>
   );

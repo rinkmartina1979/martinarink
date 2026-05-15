@@ -70,10 +70,10 @@ export default async function WritingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMBS) }}
       />
-      <section className="bg-cream pt-32 md:pt-40 pb-16">
+      <section className="bg-cream pt-24 md:pt-32 pb-14">
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>Writing</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
+          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[48px] md:text-[68px] lg:text-[76px] leading-[1.02] tracking-[-0.02em] text-ink">
             Essays on the examined life.
           </h1>
           <p className="mt-6 text-[18px] leading-[1.65] text-ink-soft max-w-[560px]">
@@ -131,7 +131,7 @@ export default async function WritingPage() {
         </div>
       </section>
 
-      <section className="bg-bone section-pad">
+      <section className="bg-bone py-16 md:py-20">
         <div className="container-content max-w-2xl mx-auto text-center">
           <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
             Receive the letters.

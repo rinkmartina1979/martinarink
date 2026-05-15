@@ -298,7 +298,7 @@ export default async function PressPage() {
 
       {/* ── 3. Featured press items from Sanity (if any) ─────── */}
       {featuredPressItems.length > 0 && (
-        <section className="bg-cream section-pad">
+        <section className="bg-cream py-16 md:py-20">
           <div className="container-content max-w-4xl">
             <Eyebrow withLine>Press appearances</Eyebrow>
             <div className="mt-10 space-y-4">
