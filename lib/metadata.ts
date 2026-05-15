@@ -55,6 +55,9 @@ export function buildMetadata({
     robots: (PREVIEW_MODE || noIndex)
       ? { index: false, follow: false }
       : { index: true, follow: true, googleBot: { index: true, follow: true } },
+    verification: {
+      google: "KMLEM_u25o5kMbkF_qCm0kwkARncHvEXC84_Vva_i2k",
+    },
   };
 }
 
