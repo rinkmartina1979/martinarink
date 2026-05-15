@@ -152,15 +152,15 @@ export default async function HomePage() {
       {/* Hero — DS v1 §3.1 Variant B. pt > pb for nav clearance; lg:py meets py-48 minimum. */}
       <section className="relative pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-32 lg:pb-40 bg-plum overflow-hidden">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-7 lg:col-span-7">
+          <div className="md:col-span-8 lg:col-span-8">
             <Eyebrow withLine variant="light">
               FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
             </Eyebrow>
 
-            {/* Fluid H1 — clamp scales from 44px (mobile) to 82px (desktop) */}
+            {/* Fluid H1 — clamp scales from 44px (mobile) to 112px (desktop) — Vogue 2026 editorial */}
             <h1
-              className="mt-6 font-[family-name:var(--font-display)] leading-[0.95] tracking-[-0.02em] text-cream"
-              style={{ fontSize: "clamp(2.75rem, 5.5vw + 0.5rem, 5.125rem)" }}
+              className="mt-6 font-[family-name:var(--font-display)] leading-[0.95] tracking-[-0.025em] text-cream"
+              style={{ fontSize: "clamp(2.75rem, 6.5vw + 0.5rem, 7rem)" }}
             >
               You&rsquo;ve built a life that looks{" "}
               <em className="italic">extraordinary</em> from the outside
@@ -190,14 +190,14 @@ export default async function HomePage() {
           </div>
 
           {/* Hero portrait — full-length editorial */}
-          <div className="md:col-span-5 lg:col-span-5 relative">
-            <div className="relative aspect-[3/5] bg-bone overflow-hidden">
+          <div className="md:col-span-4 lg:col-span-4 relative">
+            <div className="relative aspect-[2/3] bg-bone overflow-hidden">
               <Image
                 src="/images/portraits/martina-portrait-studio.jpg"
                 alt="Martina Rink — private mentor and author"
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
-                className="object-contain object-top"
+                className="object-cover object-top"
                 priority
                 fetchPriority="high"
               />
@@ -226,7 +226,7 @@ export default async function HomePage() {
       <PressMarquee />
 
       {/* ─── THE PRIVATE COST ────────────────────────────────── */}
-      <section className="bg-cream section-pad">
+      <section className="bg-bone section-pad">
         <div className="container-content max-w-3xl">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] tracking-[-0.015em] text-ink">
             The outside life is not the whole story.
@@ -282,12 +282,12 @@ export default async function HomePage() {
               <Link
                 key={card.href}
                 href={card.href}
-                className="group relative bg-cream border border-sand/50 p-10 md:p-12 hover:border-pink hover:-translate-y-1 transition-all duration-300"
+                className="group relative bg-bone border-l-[3px] border-l-sand/60 hover:border-l-pink p-10 md:p-12 hover:-translate-y-1 transition-all duration-300 shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_32px_rgba(61,26,92,0.10)]"
               >
-                <span className="block font-[family-name:var(--font-display)] italic text-pink-soft text-[42px] leading-none">
+                <span className="block font-[family-name:var(--font-body)] text-[11px] uppercase tracking-[0.3em] text-pink/70">
                   {card.roman}
                 </span>
-                <h3 className="mt-6 font-[family-name:var(--font-display)] text-[28px] text-ink leading-tight">
+                <h3 className="mt-4 font-[family-name:var(--font-display)] text-[28px] text-ink leading-tight">
                   {card.title}
                 </h3>
                 <p className="mt-2 font-[family-name:var(--font-display)] italic text-[18px] text-ink-soft">
@@ -312,13 +312,13 @@ export default async function HomePage() {
       <section className="bg-bone section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-5">
-            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
+            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
               <Image
                 src="/images/portraits/martina-library-pink.jpg"
                 alt="Martina Rink — author and cultural observer"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-contain object-top"
+                className="object-cover object-top"
               />
             </div>
           </div>
@@ -453,13 +453,13 @@ export default async function HomePage() {
       <section className="bg-bone section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-5">
-            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
+            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
               <Image
                 src="/images/portraits/martina-salon-ibiza.jpg"
                 alt="Martina Rink — private mentor"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-contain object-top"
+                className="object-cover object-top"
               />
             </div>
           </div>
@@ -504,9 +504,22 @@ export default async function HomePage() {
 
       {/* ─── ASSESSMENT TEASER (DARK) ────────────────────────── */}
       <section className="relative bg-navy section-pad overflow-hidden">
+        {/* Centered plum bloom — editorial warmth */}
         <div
           aria-hidden
-          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-3xl opacity-[0.08] bg-pink"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        >
+          <div className="w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.18] bg-plum" />
+        </div>
+        {/* Edge pink accent orb */}
+        <div
+          aria-hidden
+          className="absolute top-[-80px] right-[-80px] w-[500px] h-[500px] rounded-full blur-3xl opacity-[0.14] bg-pink"
+        />
+        {/* Bottom-left teal hint — depth */}
+        <div
+          aria-hidden
+          className="absolute bottom-0 left-0 w-[320px] h-[320px] rounded-full blur-3xl opacity-[0.07] bg-teal"
         />
         <div className="container-content relative max-w-3xl mx-auto text-center">
           <Eyebrow className="justify-center">

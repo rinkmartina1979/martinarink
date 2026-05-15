@@ -12,9 +12,9 @@ interface PlumButtonProps {
 
 const baseClasses =
   "inline-flex items-center justify-center rounded-[1px] " +
-  "bg-plum text-cream uppercase tracking-[0.18em] font-medium text-[0.75rem] " +
-  "px-7 py-4 md:px-10 md:py-[18px] min-h-[44px] min-w-[44px] " +
-  "transition-colors duration-300 ease-out hover:bg-plum-deep " +
+  "bg-plum text-cream uppercase tracking-[0.2em] font-medium text-[0.75rem] " +
+  "px-8 py-4 md:px-12 md:py-[18px] min-h-[44px] min-w-[44px] " +
+  "transition-all duration-300 ease-out hover:bg-plum-deep hover:tracking-[0.25em] " +
   "disabled:opacity-50 disabled:cursor-not-allowed";
 
 export function PlumButton({

@@ -100,7 +100,7 @@ export default async function EmpowermentPage() {
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
           <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
             <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-[1.05] text-ink">
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[48px] md:text-[76px] lg:text-[88px] leading-[1.0] tracking-[-0.02em] text-ink">
               {heroHeadline}
             </h1>
             <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[520px]">
@@ -116,7 +116,7 @@ export default async function EmpowermentPage() {
               alt="Martina Rink — Female Empowerment & Leadership"
               fill
               sizes="(max-width: 768px) 100vw, 35vw"
-              className="object-contain object-top"
+              className="object-cover object-top"
               priority
             />
           </div>

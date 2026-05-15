@@ -9,10 +9,10 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-10 md:gap-8">
           {/* Brand column */}
           <div>
-            <p className="font-[family-name:var(--font-display)] text-[20px] tracking-[0.04em]">
+            <p className="font-[family-name:var(--font-display)] text-[20px] tracking-[0.14em] pb-3 border-b border-pink/30">
               MARTINA RINK<span className="text-pink">.</span>
             </p>
-            <p className="mt-3 text-[13px] text-cream/70 leading-relaxed">
+            <p className="mt-4 text-[13px] text-cream/70 leading-relaxed">
               Private mentoring for the woman who has built the life and is,
               quietly, ready for the next chapter of it.
             </p>

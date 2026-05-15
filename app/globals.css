@@ -20,8 +20,8 @@
   --color-sand:         #C8B8A2;  /* hairlines, dividers */
 
   /* CTA — plum is the ONLY button fill colour */
-  --color-plum:         #231728;  /* primary CTA fill, dark hero option */
-  --color-plum-deep:    #180F1E;  /* button hover */
+  --color-plum:         #3D1A5C;  /* primary CTA fill, dark hero option — deep violet-plum */
+  --color-plum-deep:    #2B1242;  /* button hover */
   --color-plum-soft:    #F3EBF5;  /* plum tint blocks (investment panels) */
 
   /* Tints — strictly one per page maximum */

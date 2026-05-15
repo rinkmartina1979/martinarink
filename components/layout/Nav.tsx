@@ -34,14 +34,14 @@ export function Nav() {
           : "border-b border-sand/30",
       )}
     >
-      <div className="container-content flex items-center justify-between h-[96px]">
-        {/* Logo — editorial wordmark, display font */}
+      <div className="container-content flex items-center justify-between h-[72px] md:h-[80px]">
+        {/* Logo — editorial wordmark, refined tracking for luxury register */}
         <Link
           href="/"
-          className="font-[family-name:var(--font-display)] text-[28px] md:text-[32px] tracking-[0.10em] text-ink hover:text-ink/80 transition-colors duration-200"
+          className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] tracking-[0.16em] text-ink hover:text-pink transition-colors duration-300"
           aria-label="Martina Rink home"
         >
-          MARTINA RINK<span className="text-pink text-[1.1em] leading-none">.</span>
+          MARTINA RINK<span className="text-pink">.</span>
         </Link>
 
         {/* Desktop nav */}
@@ -50,7 +50,7 @@ export function Nav() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[13px] uppercase tracking-[0.12em] font-medium text-ink hover:text-pink transition-colors duration-200"
+              className="text-[11px] uppercase tracking-[0.18em] font-medium text-ink hover:text-pink transition-colors duration-200"
             >
               {link.label}
             </Link>
@@ -60,12 +60,12 @@ export function Nav() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[13px] uppercase tracking-[0.12em] font-medium text-ink hover:text-pink transition-colors duration-200"
+              className="text-[11px] uppercase tracking-[0.18em] font-medium text-ink hover:text-pink transition-colors duration-200"
             >
               {link.label}
             </Link>
           ))}
-          <PlumButton href="/assessment" className="!px-7 !py-[14px] !text-[11px] !tracking-[0.18em]">
+          <PlumButton href="/assessment" className="!px-8 !py-[13px] !text-[10px] !tracking-[0.22em] hover:!tracking-[0.26em] transition-[letter-spacing]">
             Begin the Assessment
           </PlumButton>
         </nav>

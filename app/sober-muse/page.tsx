@@ -103,7 +103,7 @@ export default async function SoberMusePage() {
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
           <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
             <Eyebrow withLine>The Sober Muse Method</Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[48px] md:text-[72px] lg:text-[80px] leading-[1.02] tracking-[-0.02em] text-ink">
               {heroHeadline}
             </h1>
             <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[520px]">
@@ -119,7 +119,7 @@ export default async function SoberMusePage() {
               alt="Martina Rink — Sober Muse Method"
               fill
               sizes="(max-width: 768px) 100vw, 35vw"
-              className="object-contain object-top"
+              className="object-cover object-top"
               priority
             />
           </div>
@@ -225,7 +225,7 @@ export default async function SoberMusePage() {
             ].map((p) => (
               <div
                 key={p.title}
-                className="bg-bone p-8 md:p-10 border-b-2 border-transparent hover:border-pink transition-colors duration-300 group"
+                className="bg-bone p-8 md:p-10 border-l-[3px] border-l-sand/50 hover:border-l-pink shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_32px_rgba(61,26,92,0.10)] transition-all duration-300 group"
               >
                 <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet">
                   {p.phase}
@@ -272,7 +272,7 @@ export default async function SoberMusePage() {
                 alt="Martina Rink"
                 fill
                 sizes="(max-width: 768px) 100vw, 28vw"
-                className="object-contain object-top"
+                className="object-cover object-top"
               />
             </div>
           </div>

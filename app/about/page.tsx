@@ -50,10 +50,10 @@ export default async function AboutPage() {
         }}
       />
       {/* HERO */}
-      <section className="bg-cream pt-32 md:pt-40 pb-12">
-        <div className="container-content max-w-4xl">
+      <section className="bg-cream pt-32 md:pt-44 pb-0">
+        <div className="container-content max-w-5xl">
           <Eyebrow withLine>About Martina Rink</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.015em] text-ink">
+          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[52px] md:text-[72px] lg:text-[80px] leading-[1.02] tracking-[-0.02em] text-ink">
             {heroHeadline}
           </h1>
         </div>
@@ -91,7 +91,7 @@ export default async function AboutPage() {
                 alt="Martina Rink"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-contain object-top"
+                className="object-cover object-top"
                 priority
               />
             </div>
