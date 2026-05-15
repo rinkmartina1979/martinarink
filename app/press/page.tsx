@@ -206,7 +206,7 @@ export default async function PressPage() {
       />
 
       {/* ── 1. Hero ─────────────────────────────────────────── */}
-      <section className="bg-cream pt-32 md:pt-44 pb-20">
+      <section className="bg-cream pt-28 md:pt-36 pb-16">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-7">
             <Eyebrow withLine>Press &amp; Speaking</Eyebrow>
@@ -333,7 +333,7 @@ export default async function PressPage() {
       )}
 
       {/* ── 4. Books ─────────────────────────────────────────── */}
-      <section className="bg-cream section-pad">
+      <section className="bg-cream py-16 md:py-20">
         <div className="container-content max-w-5xl">
           <Eyebrow withLine>Books</Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
@@ -418,7 +418,7 @@ export default async function PressPage() {
       </section>
 
       {/* ── 5. Isabella Blow — signature credential ──────────── */}
-      <section className="bg-ink section-pad">
+      <section className="bg-ink py-16 md:py-20">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-sand/50 mb-8">
             Background
@@ -444,7 +444,7 @@ export default async function PressPage() {
       </section>
 
       {/* ── 6. Speaking ──────────────────────────────────────── */}
-      <section id="speaking" className="bg-cream section-pad">
+      <section id="speaking" className="bg-cream py-16 md:py-20">
         <div className="container-content max-w-4xl">
           <Eyebrow withLine>Speaking</Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
@@ -458,7 +458,7 @@ export default async function PressPage() {
 
           <div className="mt-14 grid md:grid-cols-2 gap-8">
             {SPEAKING_TOPICS.map((topic, i) => (
-              <div key={i} className="bg-bone p-8">
+              <div key={i} className="bg-bone border-l-[3px] border-l-sand/60 hover:border-l-pink p-8 transition-all duration-300 shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_28px_rgba(61,26,92,0.09)]">
                 <p className="font-[family-name:var(--font-display)] text-[20px] leading-tight text-ink mb-4">
                   {topic.title}
                 </p>
@@ -494,7 +494,7 @@ export default async function PressPage() {
       </section>
 
       {/* ── 7. Press biographies ─────────────────────────────── */}
-      <section className="bg-bone section-pad">
+      <section className="bg-bone py-16 md:py-20">
         <div className="container-content max-w-4xl">
           <Eyebrow withLine>Press materials</Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
@@ -526,7 +526,7 @@ export default async function PressPage() {
       </section>
 
       {/* ── 8. Literary representation ───────────────────────── */}
-      <section className="bg-cream section-pad">
+      <section className="bg-cream py-14 md:py-16">
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>Literary representation</Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] text-[28px] text-ink">
@@ -566,7 +566,7 @@ export default async function PressPage() {
             ? caseStudies
             : FALLBACK_CASE_STUDIES;
         return displayCaseStudies.length > 0 ? (
-        <section className="bg-cream section-pad border-t border-sand/30">
+        <section className="bg-cream py-16 md:py-20 border-t border-sand/30">
           <div className="container-content">
             <div className="max-w-4xl mx-auto">
               <Eyebrow withLine>Selected work</Eyebrow>
@@ -594,7 +594,7 @@ export default async function PressPage() {
       })()}
 
       {/* ── 10. Press CTA ────────────────────────────────────── */}
-      <section className="bg-plum section-pad">
+      <section className="bg-plum py-16 md:py-20">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-cream/60 mb-6">
             Press &amp; speaking enquiries

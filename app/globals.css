@@ -96,10 +96,10 @@
   --container-read:    680px;   /* legacy alias */
 
   /* ── EDITORIAL SPACING — DS v1 §2.1 ──────────────────────── */
-  --spacing-section-mobile:   80px;   /* mobile section padding (py-20) */
-  --spacing-section-tablet:   96px;   /* tablet section padding (py-24) */
-  --spacing-section-desktop:  160px;  /* desktop section padding (py-40) */
-  --spacing-hero-desktop:     192px;  /* hero section padding (py-48) */
+  --spacing-section-mobile:   64px;   /* mobile section padding */
+  --spacing-section-tablet:   80px;   /* tablet section padding */
+  --spacing-section-desktop:  104px;  /* desktop section padding — tightened for editorial density */
+  --spacing-hero-desktop:     160px;  /* hero section padding */
 
   /* ── ANIMATIONS ──────────────────────────────────────────── */
   --animate-fade-up:  fadeUp 0.7s ease-out both;
