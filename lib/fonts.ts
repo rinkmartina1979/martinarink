@@ -1,4 +1,5 @@
-import { Playfair_Display, DM_Sans, Dancing_Script } from "next/font/google";
+import { Playfair_Display, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 
 // Display font — substitute for Bodoni Moda
 export const playfair = Playfair_Display({
@@ -17,10 +18,20 @@ export const dmSans = DM_Sans({
   display: "swap",
 });
 
-// Script accent — substitute for Buffalo
-export const dancingScript = Dancing_Script({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+// Script accent — Sloop Script (premium editorial typeface)
+export const dancingScript = localFont({
+  src: [
+    {
+      path: "../app/fonts/SloopScript.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../app/fonts/SloopScript.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
   variable: "--font-dancing-script",
   display: "swap",
 });
