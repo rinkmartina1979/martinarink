@@ -148,30 +148,45 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ─── HERO — cream editorial, fluid H1, full-bleed portrait right ───── */}
-      <section className="relative pt-32 md:pt-40 lg:pt-48 bg-cream overflow-hidden">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
+      {/* ─── HERO — cream editorial, absolute portrait right ───── */}
+      <section className="relative bg-cream overflow-hidden">
 
-          {/* Text — 7 columns, vertically centred, bottom padding owns the section height */}
-          <div className="md:col-span-7 md:pr-12 lg:pr-20 pb-24 md:pb-32 lg:pb-44 flex flex-col justify-center">
+        {/* Portrait — desktop only: absolute, right 42%, full section height, flush to edge */}
+        <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[42%] overflow-hidden">
+          <Image
+            src="/images/portraits/martina-hero.jpg"
+            alt="Martina Rink — private mentor and author"
+            fill
+            sizes="42vw"
+            className="object-cover object-top"
+            priority
+            fetchPriority="high"
+          />
+          {/* Gradient fade — editorial crop, blends into cream */}
+          <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-cream to-transparent pointer-events-none" />
+        </div>
+
+        {/* Text — defines section height, z-10 sits above portrait */}
+        <div className="relative z-10 container-content">
+          <div className="md:w-[54%] md:pr-16 lg:pr-28 pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-36 lg:pb-52">
             <Eyebrow withLine>
               FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
             </Eyebrow>
 
-            {/* Fluid H1 — clamp 44px → 82px */}
+            {/* Fluid H1 — clamp 48px → 136px, Vogue editorial scale */}
             <h1
-              className="mt-6 font-[family-name:var(--font-display)] leading-[0.95] tracking-[-0.025em] text-ink"
-              style={{ fontSize: "clamp(2.75rem, 6.5vw + 0.5rem, 7rem)" }}
+              className="mt-6 font-[family-name:var(--font-display)] leading-[0.93] tracking-[-0.025em] text-ink"
+              style={{ fontSize: "clamp(3rem, 7vw + 0.5rem, 8.5rem)" }}
             >
               You&rsquo;ve built a life that looks{" "}
               <em className="italic">extraordinary</em> from the outside
-              <br className="hidden md:inline" />
-              <ScriptAccent className="block mt-2 text-[0.7em] leading-none text-pink">
+              <br className="hidden lg:inline" />
+              <ScriptAccent className="block mt-2 text-[0.65em] leading-none text-pink">
                 — and yet.
               </ScriptAccent>
             </h1>
 
-            <p className="mt-8 max-w-[520px] text-[19px] leading-[1.65] text-ink-soft">
+            <p className="mt-8 max-w-[480px] text-[19px] leading-[1.65] text-ink-soft">
               {heroSubheadline}
             </p>
 
@@ -180,22 +195,21 @@ export default async function HomePage() {
               <GhostButton href={heroSecondaryUrl}>{heroSecondaryLabel}</GhostButton>
             </div>
           </div>
-
-          {/* Portrait — 5 columns, full section height, flush to right viewport edge */}
-          {/* -mx-6 on mobile = full-width below text; md:-mr-12 negates container right padding */}
-          <div className="md:col-span-5 relative min-h-[480px] -mx-6 md:mx-0 md:-mr-12 overflow-hidden">
-            <Image
-              src="/images/portraits/martina-hero.jpg"
-              alt="Martina Rink — private mentor and author"
-              fill
-              sizes="(max-width: 768px) 100vw, 43vw"
-              className="object-cover object-top"
-              priority
-              fetchPriority="high"
-            />
-          </div>
-
         </div>
+
+        {/* Portrait — mobile only: in flow below text, full width */}
+        <div className="md:hidden relative h-[440px] overflow-hidden">
+          <Image
+            src="/images/portraits/martina-hero.jpg"
+            alt="Martina Rink — private mentor and author"
+            fill
+            sizes="100vw"
+            className="object-cover object-top"
+            priority
+            fetchPriority="high"
+          />
+        </div>
+
       </section>
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
