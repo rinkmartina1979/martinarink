@@ -148,42 +148,38 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ─── HERO — dark aubergine, fluid H1, 2026 editorial ───── */}
-      {/* Hero — DS v1 §3.1 Variant B. pt > pb for nav clearance; lg:py meets py-48 minimum. */}
-      <section className="relative pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-32 lg:pb-40 bg-plum overflow-hidden">
+      {/* ─── HERO — cream editorial, fluid H1 ───── */}
+      {/* Hero — DS v1 §3.1 Variant A. pt > pb for nav clearance; lg:py meets py-48 minimum. */}
+      <section className="relative pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-32 lg:pb-40 bg-cream overflow-hidden">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-8 lg:col-span-8">
-            <Eyebrow withLine variant="light">
+            <Eyebrow withLine>
               FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
             </Eyebrow>
 
-            {/* Fluid H1 — clamp scales from 44px (mobile) to 112px (desktop) — Vogue 2026 editorial */}
+            {/* Fluid H1 — clamp scales from 44px (mobile) to 112px (desktop) — editorial */}
             <h1
-              className="mt-6 font-[family-name:var(--font-display)] leading-[0.95] tracking-[-0.025em] text-cream"
+              className="mt-6 font-[family-name:var(--font-display)] leading-[0.95] tracking-[-0.025em] text-ink"
               style={{ fontSize: "clamp(2.75rem, 6.5vw + 0.5rem, 7rem)" }}
             >
               You&rsquo;ve built a life that looks{" "}
               <em className="italic">extraordinary</em> from the outside
               <br className="hidden md:inline" />
-              {/* TODO: "— and yet." script accent — homepage hero only, keep here */}
+              {/* "— and yet." script accent — homepage hero only */}
               <ScriptAccent className="block mt-2 text-[0.7em] leading-none text-pink">
                 — and yet.
               </ScriptAccent>
             </h1>
 
-            <p className="mt-8 max-w-[520px] text-[19px] leading-[1.65] text-cream/75">
+            <p className="mt-8 max-w-[520px] text-[19px] leading-[1.65] text-ink-soft">
               {heroSubheadline}
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:items-center">
-              {/* Cream-fill primary button on dark plum background */}
-              <PlumButton
-                href={heroCtaUrl}
-                className="!bg-cream !text-plum hover:!bg-bone"
-              >
+              <PlumButton href={heroCtaUrl}>
                 {heroCta}
               </PlumButton>
-              <GhostButton href={heroSecondaryUrl} variant="light">
+              <GhostButton href={heroSecondaryUrl}>
                 {heroSecondaryLabel}
               </GhostButton>
             </div>
