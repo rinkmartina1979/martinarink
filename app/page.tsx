@@ -150,12 +150,12 @@ export default async function HomePage() {
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────────────── */}
+      {/* body copy is hardcoded inside HeroSection per brief — not Sanity-driven */}
       <HeroSection
         heroCta={heroCta}
         heroCtaUrl={heroCtaUrl}
         heroSecondaryLabel={heroSecondaryLabel}
         heroSecondaryUrl={heroSecondaryUrl}
-        heroSubheadline={heroSubheadline}
       />
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
