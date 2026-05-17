@@ -61,8 +61,8 @@ export default async function AboutPage() {
 
       {/* OPENING — flows from hero, no top padding */}
       <section className="bg-cream pb-16 md:pb-24">
-        <div className="container-content grid md:grid-cols-12 gap-0 md:gap-16 items-start">
-          <div className="md:col-span-7 pt-10 md:pt-0 space-y-6 text-[17px] leading-[1.75] text-ink-soft">
+        <div className="container-content grid lg:grid-cols-[1.1fr_0.75fr] gap-0 lg:gap-16 lg:items-start">
+          <div className="pt-10 lg:pt-0 space-y-6 text-[17px] leading-[1.75] text-ink-soft">
             {data?.heroCopy ? (
               data.heroCopy.split("\n").filter(Boolean).map((para, i) => (
                 <p key={i}>{para}</p>
@@ -84,14 +84,17 @@ export default async function AboutPage() {
               </>
             )}
           </div>
-          <aside className="md:col-span-5 md:sticky md:top-24 md:self-start pt-10 md:pt-0">
-            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+
+          {/* Portrait — full image, no crop */}
+          <aside className="lg:sticky lg:top-24 lg:self-start pt-10 lg:pt-4">
+            <div className="mx-auto w-full max-w-[480px] lg:max-w-full bg-[#F8F4F1]">
               <Image
                 src="/images/portraits/martina-portrait-pink-blouse.jpg"
-                alt="Martina Rink"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
+                alt="Martina Rink seated beside flowers"
+                width={1200}
+                height={1500}
+                sizes="(min-width: 1024px) 38vw, 92vw"
+                className="h-auto w-full object-contain"
                 priority
               />
             </div>
