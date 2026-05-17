@@ -121,7 +121,7 @@ export function HeroSection({
             that looks{" "}
             <em className="italic">extraordinary</em>
             <br className="hidden md:inline" />{" "}
-            from the outside
+            from&nbsp;the&nbsp;outside
           </h1>
 
           {/* — Pink hairline + script accent — */}
