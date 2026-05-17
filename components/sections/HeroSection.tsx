@@ -1,15 +1,21 @@
-"use client";
+/**
+ * HeroSection — server component, no Framer Motion.
+ * CSS animations reference @keyframes fadeUp already defined in globals.css.
+ * Zero JS dependency: works before hydration, works with prefers-reduced-motion.
+ */
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 
-/* ─────────────────────────────────────────────────────────────
-   Ease curve — shared across all elements
-   ───────────────────────────────────────────────────────────── */
-const EASE = [0.22, 1, 0.36, 1] as const;
-const DUR = 0.88;
+/* Shared ease for inline animation shorthand */
+const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const DUR = "0.85s";
+
+/** Returns an inline animation string using the global fadeUp keyframe */
+function anim(delay: string) {
+  return `fadeUp ${DUR} ${EASE} ${delay} both`;
+}
 
 interface HeroSectionProps {
   heroCta?: string;
@@ -30,9 +36,9 @@ export function HeroSection({
       style={{ backgroundColor: "#2A1538" }}
     >
       {/* ══════════════════════════════════════════════════════
-          DESKTOP PORTRAIT — absolute right, full section height
-          Sharp. No blur. No filter. No placeholder.
-          Gradient only on the narrow left seam.
+          DESKTOP PORTRAIT — absolute right, full section height.
+          Image is sharp, no blur, no filter, no placeholder.
+          Left-seam gradient is 64 px and stops before the face.
           ══════════════════════════════════════════════════════ */}
       <div className="hidden md:block absolute right-0 top-0 h-full w-[44%] overflow-hidden">
         <Image
@@ -44,21 +50,19 @@ export function HeroSection({
           sizes="(min-width: 1024px) 46vw, 100vw"
           className="object-cover object-[50%_center]"
         />
-
-        {/* Left seam — 64 px strip only, never reaches the face */}
+        {/* Left-seam blend — 64 px strip, never reaches the face */}
         <div
           aria-hidden
-          className="absolute inset-y-0 left-0 w-16 pointer-events-none"
+          className="pointer-events-none absolute inset-y-0 left-0 w-16"
           style={{
             background:
               "linear-gradient(to right, #2A1538 0%, rgba(42,21,56,0.45) 65%, transparent 100%)",
           }}
         />
-
-        {/* Bottom micro-fade — softens the foot only */}
+        {/* Bottom micro-fade */}
         <div
           aria-hidden
-          className="absolute bottom-0 inset-x-0 h-16 pointer-events-none"
+          className="pointer-events-none absolute bottom-0 inset-x-0 h-16"
           style={{
             background:
               "linear-gradient(to top, rgba(42,21,56,0.55) 0%, transparent 100%)",
@@ -67,9 +71,12 @@ export function HeroSection({
       </div>
 
       {/* ══════════════════════════════════════════════════════
-          TEXT COLUMN — left 56 %, vertically centred
-          Direct initial/animate/transition — avoids variant
-          function stall in Framer Motion v12 production builds.
+          TEXT COLUMN — left 56 %, vertically centred.
+          CSS animations — no Framer Motion, fires on first paint.
+          Font-size: clamp(3.2rem, 5.5vw, 6.8rem)
+            → 51 px @ 390 px viewport
+            → 79 px @ 1440 px viewport   (3–4 readable lines)
+            → 106 px @ 1920 px viewport
           ══════════════════════════════════════════════════════ */}
       <div
         className="relative z-10 flex items-center container-content
@@ -79,12 +86,10 @@ export function HeroSection({
         <div className="md:w-[56%] md:pr-14 lg:pr-20">
 
           {/* — Overline — */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DUR, delay: 0, ease: EASE }}
-            className="mb-7 font-[family-name:var(--font-body)] flex items-center gap-3"
+          <p
+            className="mb-7 flex items-center gap-3 font-[family-name:var(--font-body)]"
             style={{
+              animation: anim("0s"),
               fontSize: "10px",
               letterSpacing: "0.36em",
               textTransform: "uppercase",
@@ -93,22 +98,20 @@ export function HeroSection({
           >
             <span
               aria-hidden
-              className="inline-block h-px w-8 flex-shrink-0"
+              className="inline-block flex-shrink-0 h-px w-8"
               style={{ backgroundColor: "#F942AA" }}
             />
             Private Sober Muse Mentorship
-          </motion.p>
+          </p>
 
           {/* — H1 — */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DUR, delay: 0.12, ease: EASE }}
+          <h1
             className="font-[family-name:var(--font-display)]"
             style={{
-              fontSize: "clamp(4rem, 7.1vw, 8.5rem)",
-              lineHeight: 0.84,
-              letterSpacing: "-0.065em",
+              animation: anim("0.12s"),
+              fontSize: "clamp(3.2rem, 5.5vw, 6.8rem)",
+              lineHeight: 0.86,
+              letterSpacing: "-0.055em",
               color: "#FFF9F4",
             }}
           >
@@ -118,14 +121,12 @@ export function HeroSection({
             <em className="italic">extraordinary</em>
             <br className="hidden md:inline" />{" "}
             from the outside
-          </motion.h1>
+          </h1>
 
           {/* — Pink hairline + script accent — */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DUR, delay: 0.24, ease: EASE }}
+          <div
             className="mt-6 flex items-center gap-4"
+            style={{ animation: anim("0.24s") }}
           >
             <span
               aria-hidden
@@ -135,18 +136,16 @@ export function HeroSection({
                 backgroundColor: "#F942AA",
               }}
             />
-            <ScriptAccent className="leading-none text-[clamp(2rem,3.8vw,3.4rem)] text-pink">
+            <ScriptAccent className="leading-none text-[clamp(1.9rem,3.4vw,3rem)] text-pink">
               and yet.
             </ScriptAccent>
-          </motion.div>
+          </div>
 
-          {/* — Body copy — hardcoded per brief, not Sanity — */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DUR, delay: 0.34, ease: EASE }}
-            className="mt-8 max-w-[400px] font-[family-name:var(--font-body)]"
+          {/* — Body copy — hardcoded per brief — */}
+          <p
+            className="mt-7 max-w-[400px] font-[family-name:var(--font-body)]"
             style={{
+              animation: anim("0.34s"),
               fontSize: "17px",
               lineHeight: 1.72,
               color: "rgba(255,249,244,0.72)",
@@ -154,20 +153,18 @@ export function HeroSection({
           >
             Private mentorship for accomplished women who are ready to feel at
             home inside the life they built.
-          </motion.p>
+          </p>
 
           {/* — CTAs — */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DUR, delay: 0.42, ease: EASE }}
-            className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center"
+          <div
+            className="mt-9 flex flex-col sm:flex-row gap-4 sm:items-center"
+            style={{ animation: anim("0.42s") }}
           >
             {/* Primary — cream fill */}
             <Link
               href={heroCtaUrl}
               className="inline-flex items-center justify-center gap-2
-                         px-8 py-[13px] rounded-[1px]
+                         rounded-[1px] px-8 py-[13px]
                          font-[family-name:var(--font-body)]
                          transition-colors duration-200
                          hover:bg-[#EDE8E0]"
@@ -187,9 +184,9 @@ export function HeroSection({
             <Link
               href={heroSecondaryUrl}
               className="inline-flex items-center justify-center
-                         px-8 py-[13px] rounded-[1px]
+                         rounded-[1px] px-8 py-[13px]
                          font-[family-name:var(--font-body)]
-                         transition-colors duration-200
+                         border transition-colors duration-200
                          hover:border-[rgba(255,249,244,0.65)]
                          hover:text-[#FFF9F4]"
               style={{
@@ -202,13 +199,13 @@ export function HeroSection({
             >
               {heroSecondaryLabel}
             </Link>
-          </motion.div>
+          </div>
 
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════
-          MOBILE PORTRAIT — below text, sharp, full width
+          MOBILE PORTRAIT — below text, sharp, full width.
           No blur. No filter. No placeholder.
           ══════════════════════════════════════════════════════ */}
       <div
@@ -227,7 +224,7 @@ export function HeroSection({
         {/* Micro top fade — smooths join to text block */}
         <div
           aria-hidden
-          className="absolute top-0 inset-x-0 h-12 pointer-events-none"
+          className="pointer-events-none absolute top-0 inset-x-0 h-12"
           style={{
             background:
               "linear-gradient(to bottom, #2A1538 0%, transparent 100%)",
