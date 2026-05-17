@@ -48,7 +48,7 @@ export function HeroSection({
           priority
           fetchPriority="high"
           sizes="(min-width: 1024px) 46vw, 100vw"
-          className="object-cover object-[50%_center]"
+          className="object-cover object-[50%_18%]"
         />
         {/* Left-seam blend — 64 px strip, never reaches the face */}
         <div
