@@ -70,7 +70,7 @@ export function HeroSection({
           ══════════════════════════════════════════════════════ */}
       <div
         className="relative z-10 flex items-start container-content
-                   pt-24 pb-12 md:pt-14 lg:pt-12 md:pb-14"
+                   pt-24 pb-12 md:pt-16 lg:pt-16 md:pb-14"
         style={{ minHeight: "calc(100svh - 92px)" }}
       >
         <div className="w-full md:w-[53%] md:pr-10 lg:pr-14">
@@ -118,7 +118,6 @@ export function HeroSection({
             }}
           >
             You&rsquo;ve built a life{" "}
-            <br className="hidden md:inline" />
             that looks{" "}
             <em className="italic">extraordinary</em>
             <br className="hidden md:inline" />{" "}
