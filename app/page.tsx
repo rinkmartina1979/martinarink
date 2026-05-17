@@ -148,68 +148,87 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ─── HERO — cream editorial, absolute portrait right ───── */}
+      {/* ─── HERO ─────────────────────────────────────────────── */}
       <section className="relative bg-cream overflow-hidden">
+        {/*
+          Inner wrapper owns the height.
+          Desktop: min-h-[780px] — portrait fills this, crop at ~knee
+          flex-col so text div can use flex-1 for vertical centering
+        */}
+        <div className="relative flex flex-col min-h-[560px] md:min-h-[700px] lg:min-h-[780px]">
 
-        {/* Portrait — desktop only: absolute, right 42%, full section height, flush to edge */}
-        <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[42%] overflow-hidden">
-          <Image
-            src="/images/portraits/martina-hero.jpg"
-            alt="Martina Rink — private mentor and author"
-            fill
-            sizes="42vw"
-            className="object-cover object-top"
-            priority
-            fetchPriority="high"
-          />
-          {/* Gradient fade — editorial crop, blends into cream */}
-          <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-cream to-transparent pointer-events-none" />
-        </div>
+          {/* ── Portrait — desktop only, absolute right, full inner height ── */}
+          <div className="hidden md:block absolute right-0 top-0 h-full w-[42%] overflow-hidden">
+            <Image
+              src="/images/portraits/martina-hero.jpg"
+              alt="Martina Rink"
+              fill
+              sizes="42vw"
+              className="object-cover object-[center_top]"
+              priority
+              fetchPriority="high"
+            />
+            {/* Soft cream fade at base — editorial, not hard-cropped */}
+            <div className="absolute bottom-0 inset-x-0 h-36
+                            bg-gradient-to-t from-cream to-transparent
+                            pointer-events-none" />
+          </div>
 
-        {/* Text — defines section height, z-10 sits above portrait */}
-        <div className="relative z-10 container-content">
-          <div className="md:w-[54%] md:pr-16 lg:pr-28 pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-36 lg:pb-52">
-            <Eyebrow withLine>
-              FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
-            </Eyebrow>
+          {/* ── Text — fills available height, vertically centred ── */}
+          <div className="relative z-10 flex-1 flex items-center
+                          container-content pt-28 pb-12
+                          md:pt-0 md:pb-0">
+            <div className="md:w-[54%] md:pr-12 lg:pr-20">
 
-            {/* Fluid H1 — clamp 48px → 136px, Vogue editorial scale */}
-            <h1
-              className="mt-6 font-[family-name:var(--font-display)] leading-[0.93] tracking-[-0.025em] text-ink"
-              style={{ fontSize: "clamp(3rem, 7vw + 0.5rem, 8.5rem)" }}
-            >
-              You&rsquo;ve built a life that looks{" "}
-              <em className="italic">extraordinary</em> from the outside
-              <br className="hidden lg:inline" />
-              <ScriptAccent className="block mt-2 text-[0.65em] leading-none text-pink">
-                — and yet.
-              </ScriptAccent>
-            </h1>
+              <Eyebrow withLine>
+                FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
+              </Eyebrow>
 
-            <p className="mt-8 max-w-[480px] text-[19px] leading-[1.65] text-ink-soft">
-              {heroSubheadline}
-            </p>
+              {/* H1 — Vogue editorial scale, tight leading */}
+              <h1
+                className="mt-5 font-[family-name:var(--font-display)]
+                           leading-[0.92] tracking-[-0.025em] text-ink"
+                style={{ fontSize: "clamp(3.25rem, 7.5vw, 8rem)" }}
+              >
+                You&rsquo;ve built a life{" "}
+                <br className="hidden md:inline" />
+                that looks{" "}
+                <em className="italic">extraordinary</em>
+                <br className="hidden md:inline" />
+                from the outside
+                <ScriptAccent className="block mt-3 text-[0.6em]
+                                         leading-none text-pink">
+                  — and yet.
+                </ScriptAccent>
+              </h1>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:items-center">
-              <PlumButton href={heroCtaUrl}>{heroCta}</PlumButton>
-              <GhostButton href={heroSecondaryUrl}>{heroSecondaryLabel}</GhostButton>
+              <p className="mt-6 max-w-[440px] text-[17px] md:text-[18px]
+                            leading-[1.7] text-ink-soft">
+                {heroSubheadline}
+              </p>
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:items-center">
+                <PlumButton href={heroCtaUrl}>{heroCta}</PlumButton>
+                <GhostButton href={heroSecondaryUrl}>{heroSecondaryLabel}</GhostButton>
+              </div>
+
             </div>
           </div>
-        </div>
 
-        {/* Portrait — mobile only: in flow below text, full width */}
-        <div className="md:hidden relative h-[440px] overflow-hidden">
-          <Image
-            src="/images/portraits/martina-hero.jpg"
-            alt="Martina Rink — private mentor and author"
-            fill
-            sizes="100vw"
-            className="object-cover object-top"
-            priority
-            fetchPriority="high"
-          />
-        </div>
+          {/* ── Portrait — mobile only, below text ── */}
+          <div className="md:hidden relative h-[380px] overflow-hidden">
+            <Image
+              src="/images/portraits/martina-hero.jpg"
+              alt="Martina Rink"
+              fill
+              sizes="100vw"
+              className="object-cover object-[center_15%]"
+              priority
+              fetchPriority="high"
+            />
+          </div>
 
+        </div>
       </section>
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
