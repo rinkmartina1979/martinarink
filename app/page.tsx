@@ -387,7 +387,7 @@ export default async function HomePage() {
                   className="relative w-full overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
                   style={{
                     aspectRatio:     "4 / 5",
-                    backgroundColor: "#F4EFE8",
+                    backgroundColor: "#FFFFFF",
                   }}
                 >
                   <Image
