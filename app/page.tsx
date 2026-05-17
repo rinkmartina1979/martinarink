@@ -151,10 +151,10 @@ export default async function HomePage() {
     <>
       {/* ─── HERO ─────────────────────────────────────────────── */}
       {/* body copy is hardcoded inside HeroSection per brief — not Sanity-driven */}
+      {/* secondary label + body copy are hardcoded in HeroSection — not Sanity-driven */}
       <HeroSection
         heroCta={heroCta}
         heroCtaUrl={heroCtaUrl}
-        heroSecondaryLabel={heroSecondaryLabel}
         heroSecondaryUrl={heroSecondaryUrl}
       />
 

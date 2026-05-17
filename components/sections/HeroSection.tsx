@@ -79,8 +79,8 @@ export function HeroSection({
             → 106 px @ 1920 px viewport
           ══════════════════════════════════════════════════════ */}
       <div
-        className="relative z-10 flex items-center container-content
-                   pt-28 pb-16 md:pt-0 md:pb-0"
+        className="relative z-10 flex items-start container-content
+                   pt-28 pb-16 md:pt-16 lg:pt-20 md:pb-14"
         style={{ minHeight: "calc(100svh - 92px)" }}
       >
         <div className="md:w-[56%] md:pr-14 lg:pr-20">
