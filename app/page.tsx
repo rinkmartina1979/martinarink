@@ -149,15 +149,10 @@ export default async function HomePage() {
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────────────── */}
-      <section className="relative bg-cream overflow-hidden">
-        {/*
-          Inner wrapper owns the height.
-          Desktop: min-h-[780px] — portrait fills this, crop at ~knee
-          flex-col so text div can use flex-1 for vertical centering
-        */}
+      <section className="relative bg-plum overflow-hidden">
         <div className="relative flex flex-col min-h-[560px] md:min-h-[700px] lg:min-h-[780px]">
 
-          {/* ── Portrait — desktop only, absolute right, full inner height ── */}
+          {/* ── Portrait — desktop, absolute right, full height ── */}
           <div className="hidden md:block absolute right-0 top-0 h-full w-[42%] overflow-hidden">
             <Image
               src="/images/portraits/martina-hero.jpg"
@@ -168,26 +163,30 @@ export default async function HomePage() {
               priority
               fetchPriority="high"
             />
-            {/* Soft cream fade at base — editorial, not hard-cropped */}
-            <div className="absolute bottom-0 inset-x-0 h-36
-                            bg-gradient-to-t from-cream to-transparent
+            {/* Fade portrait into plum background */}
+            <div className="absolute bottom-0 inset-x-0 h-40
+                            bg-gradient-to-t from-plum to-transparent
+                            pointer-events-none" />
+            {/* Left edge blend — portrait meets dark background softly */}
+            <div className="absolute inset-y-0 left-0 w-24
+                            bg-gradient-to-r from-plum to-transparent
                             pointer-events-none" />
           </div>
 
-          {/* ── Text — fills available height, vertically centred ── */}
+          {/* ── Text — vertically centred on dark background ── */}
           <div className="relative z-10 flex-1 flex items-center
                           container-content pt-28 pb-12
                           md:pt-0 md:pb-0">
             <div className="md:w-[54%] md:pr-12 lg:pr-20">
 
-              <Eyebrow withLine>
+              <Eyebrow withLine variant="light">
                 FOR THE WOMAN WHO HAS BUILT THE OUTSIDE LIFE
               </Eyebrow>
 
-              {/* H1 — Vogue editorial scale, tight leading */}
+              {/* H1 — cream on dark aubergine */}
               <h1
                 className="mt-5 font-[family-name:var(--font-display)]
-                           leading-[0.92] tracking-[-0.025em] text-ink"
+                           leading-[0.92] tracking-[-0.025em] text-cream"
                 style={{ fontSize: "clamp(3.25rem, 7.5vw, 8rem)" }}
               >
                 You&rsquo;ve built a life{" "}
@@ -203,13 +202,19 @@ export default async function HomePage() {
               </h1>
 
               <p className="mt-6 max-w-[440px] text-[17px] md:text-[18px]
-                            leading-[1.7] text-ink-soft">
+                            leading-[1.7] text-cream/70">
                 {heroSubheadline}
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:items-center">
-                <PlumButton href={heroCtaUrl}>{heroCta}</PlumButton>
-                <GhostButton href={heroSecondaryUrl}>{heroSecondaryLabel}</GhostButton>
+                {/* Cream fill button on dark background */}
+                <PlumButton href={heroCtaUrl}
+                  className="!bg-cream !text-plum hover:!bg-bone">
+                  {heroCta}
+                </PlumButton>
+                <GhostButton href={heroSecondaryUrl} variant="light">
+                  {heroSecondaryLabel}
+                </GhostButton>
               </div>
 
             </div>
