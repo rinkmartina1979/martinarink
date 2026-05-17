@@ -300,51 +300,122 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── THREE SPIEGEL BESTSELLERS — book covers grid ──────
-          Top 1% authors put the credential on the homepage, not in a
-          sub-page. Files live in /public/images/books/. */}
-      <section className="bg-cream section-pad border-t border-sand/30">
-        <div className="container-content max-w-6xl">
-          <div className="text-center max-w-2xl mx-auto">
-            <Eyebrow className="justify-center">Three Spiegel Bestsellers</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[44px] leading-[1.1] tracking-[-0.015em] text-ink">
+      {/* ─── PUBLISHED WORKS — premium editorial book archive ───
+          White background, large display headline, publisher-style
+          card layout. Mobile: title/meta above image. */}
+      <section
+        className="py-16 md:py-24 border-t border-sand/30"
+        style={{ backgroundColor: "#FFFCF8" }}
+      >
+        <div className="container-content max-w-7xl">
+
+          {/* Header */}
+          <div className="text-center mb-14 md:mb-20">
+            <p
+              className="font-[family-name:var(--font-body)]"
+              style={{
+                fontSize:      "11px",
+                letterSpacing: "0.32em",
+                textTransform: "uppercase",
+                color:         "#636260",
+              }}
+            >
+              Bestsellers
+            </p>
+            <h2
+              className="mt-5 font-[family-name:var(--font-display)] text-ink mx-auto"
+              style={{
+                fontSize:   "clamp(2.6rem, 6vw, 6.8rem)",
+                lineHeight: 0.92,
+                letterSpacing: "-0.02em",
+                maxWidth:   "1100px",
+              }}
+            >
               Written from inside the work.
             </h2>
           </div>
 
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+          {/* Book grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10 xl:gap-14">
             {[
               {
                 title: "Isabella Blow — A Life in Fashion",
-                meta: "Prestel · 2014",
-                src: "/images/books/isabella-blow-cover.png",
+                meta:  "PRESTEL · 2014",
+                src:   "/images/books/isabella-blow-cover.png",
+                alt:   "Book cover of Isabella Blow — A Life in Fashion by Martina Rink",
               },
               {
                 title: "People of Deutschland",
-                meta: "Spiegel Bestseller · 2022",
-                src: "/images/books/people-of-deutschland-cover.png",
+                meta:  "SPIEGEL BESTSELLER · 2022",
+                src:   "/images/books/people-of-deutschland-cover.png",
+                alt:   "Book cover of People of Deutschland by Martina Rink and Simon Usifo",
               },
               {
                 title: "Fashion Germany",
-                meta: "Prestel · 2020",
-                src: "/images/books/fashion-germany-cover.png",
+                meta:  "CALLWEY",
+                src:   "/images/books/fashion-germany-cover.png",
+                alt:   "Book cover of Fashion Germany by Martina Rink",
               },
             ].map((book) => (
-              <figure key={book.title} className="flex flex-col items-center text-center">
-                <div className="relative w-full aspect-[2/3] bg-bone overflow-hidden">
-                  <Image
-                    src={book.src}
-                    alt={`${book.title} by Martina Rink — ${book.meta}`}
-                    fill
-                    sizes="(max-width: 768px) 80vw, 30vw"
-                    className="object-contain"
-                  />
-                </div>
-                <figcaption className="mt-6">
-                  <p className="font-[family-name:var(--font-display)] text-[20px] leading-[1.25] text-ink">
+              <figure
+                key={book.title}
+                className="group flex flex-col items-center text-center"
+              >
+                {/* Mobile: title + meta ABOVE image */}
+                <figcaption className="md:hidden mb-5 w-full">
+                  <p
+                    className="font-[family-name:var(--font-display)] text-ink leading-[1.2]"
+                    style={{ fontSize: "clamp(1.35rem, 5vw, 1.6rem)" }}
+                  >
                     {book.title}
                   </p>
-                  <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+                  <p
+                    className="mt-2 font-[family-name:var(--font-body)]"
+                    style={{
+                      fontSize:      "10px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color:         "#636260",
+                    }}
+                  >
+                    {book.meta}
+                  </p>
+                </figcaption>
+
+                {/* Image stage */}
+                <div
+                  className="relative w-full overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
+                  style={{
+                    aspectRatio:     "4 / 5",
+                    backgroundColor: "#F4EFE8",
+                  }}
+                >
+                  <Image
+                    src={book.src}
+                    alt={book.alt}
+                    fill
+                    sizes="(max-width: 768px) 88vw, 30vw"
+                    className="object-contain p-8 md:p-10"
+                  />
+                </div>
+
+                {/* Desktop: title + meta BELOW image */}
+                <figcaption className="hidden md:block mt-7 w-full">
+                  <p
+                    className="font-[family-name:var(--font-display)] text-ink leading-[1.2]"
+                    style={{ fontSize: "1.2rem" }}
+                  >
+                    {book.title}
+                  </p>
+                  <p
+                    className="mt-2 font-[family-name:var(--font-body)]"
+                    style={{
+                      fontSize:      "10px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color:         "#636260",
+                    }}
+                  >
                     {book.meta}
                   </p>
                 </figcaption>
@@ -352,14 +423,17 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <div className="text-center mt-14">
+          {/* Footer link */}
+          <div className="text-center mt-16 md:mt-20">
             <Link
               href="/creative-work"
-              className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+              className="inline-block font-[family-name:var(--font-body)] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+              style={{ fontSize: "13px", letterSpacing: "0.06em" }}
             >
               See the complete creative work →
             </Link>
           </div>
+
         </div>
       </section>
 
