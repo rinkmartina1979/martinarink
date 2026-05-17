@@ -23,10 +23,10 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-  heroCta           = "Begin the assessment",
-  heroCtaUrl        = "/assessment",
+  heroCta            = "Begin the assessment",
+  heroCtaUrl         = "/assessment",
   heroSecondaryLabel = "Explore the work",
-  heroSecondaryUrl  = "/work-with-me",
+  heroSecondaryUrl   = "/work-with-me",
 }: HeroSectionProps) {
   return (
     <section
@@ -35,55 +35,56 @@ export function HeroSection({
     >
       {/* ══════════════════════════════════════════════════════
           DESKTOP PORTRAIT
-          · w-[48%] — wider column gives more editorial room
-          · objectPosition "50% 35%" — shows full face + torso
-          · Left seam: w-12 (48 px) Tailwind gradient only
-          · No bottom gradient — removed to keep image clean
+          · w-[47%] right column — matches reference 2 balance
+          · objectPosition "50% 52%" — shows full face + seated
+            pose including blouse, tie, arms, cream trousers,
+            sofa, plant/vase. Face is NOT the dominant element.
+          · Seam: w-6 only — minimal, not foggy
+          · No bottom gradient
           ══════════════════════════════════════════════════════ */}
-      <div className="hidden md:block absolute right-0 top-0 h-full w-[48%] overflow-hidden">
+      <div className="hidden md:block absolute right-0 top-0 h-full w-[47%] overflow-hidden">
         <Image
           src="/images/portraits/martina-hero-editorial.png"
           alt="Martina Rink — private mentor for accomplished women"
           fill
           priority
           fetchPriority="high"
-          sizes="(min-width: 1024px) 48vw, 100vw"
-          className="object-cover"
-          style={{ objectPosition: "50% 35%" }}
+          sizes="(min-width: 1024px) 47vw, 100vw"
+          className="h-full w-full object-cover"
+          style={{ objectPosition: "50% 52%" }}
         />
 
-        {/* Left-seam — 48 px only, Tailwind gradient, no inline style */}
+        {/* Left seam — 24 px only, whisper-thin, zero fog */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 w-12
+          className="pointer-events-none absolute inset-y-0 left-0 w-6
                      bg-gradient-to-r from-[#2A1538] to-transparent"
         />
-        {/* NO bottom gradient — removed per brief */}
       </div>
 
       {/* ══════════════════════════════════════════════════════
           TEXT COLUMN
-          · w-[52%] on md+ — matches the wider image column
-          · pt-20 md:pt-20 lg:pt-24 — breathing room from navbar
-          · items-start so overline always clears the top edge
+          · lg:w-[53%] — matches 47% image column
+          · py-12 md:py-14 lg:py-12 — compact, reference 2 rhythm
+          · items-start — overline always clears navbar
           ══════════════════════════════════════════════════════ */}
       <div
         className="relative z-10 flex items-start container-content
-                   pt-28 pb-16 md:pt-20 lg:pt-24 md:pb-16"
+                   pt-24 pb-12 md:pt-14 lg:pt-12 md:pb-14"
         style={{ minHeight: "calc(100svh - 92px)" }}
       >
-        <div className="md:w-[52%] md:pr-10 lg:pr-14">
+        <div className="w-full md:w-[53%] md:pr-10 lg:pr-14">
 
           {/* — Overline — */}
           <p
-            className="mb-7 flex items-center gap-3
+            className="mb-6 flex items-center gap-3
                        font-[family-name:var(--font-body)]"
             style={{
-              animation:    anim("0s"),
-              fontSize:     "10px",
-              letterSpacing:"0.36em",
-              textTransform:"uppercase",
-              color:        "rgba(255,249,244,0.72)",   /* slightly more readable */
+              animation:     anim("0s"),
+              fontSize:      "10px",
+              letterSpacing: "0.36em",
+              textTransform: "uppercase",
+              color:         "rgba(255,249,244,0.72)",
             }}
           >
             <span
@@ -95,19 +96,25 @@ export function HeroSection({
           </p>
 
           {/* — H1 —
-              clamp(3.8rem, 6.7vw, 7.8rem)
-                → ~58 px @ 390 px mobile
-                → ~97 px @ 1440 px desktop
-                → ~129 px @ 1920 px desktop (capped at 7.8rem = 125 px)
-              leading-[0.86] · tracking-[-0.06em]                        */}
+              clamp(3.5rem, 5.8vw, 7rem)
+                → ~56 px @ 390 px mobile
+                → ~84 px @ 1440 px desktop  (4 lines, Vogue scale)
+                → ~112 px @ 1920 px desktop (capped at 7 rem = 112 px)
+
+              Target line rhythm at 1440px:
+                "You've built a"
+                "life that looks"
+                "extraordinary"
+                "from the outside"
+          */}
           <h1
             className="font-[family-name:var(--font-display)]"
             style={{
-              animation:    anim("0.12s"),
-              fontSize:     "clamp(3.8rem, 6.7vw, 7.8rem)",
-              lineHeight:   0.86,
-              letterSpacing:"-0.06em",
-              color:        "#FFF9F4",
+              animation:     anim("0.12s"),
+              fontSize:      "clamp(3.5rem, 5.8vw, 7rem)",
+              lineHeight:    0.88,
+              letterSpacing: "-0.055em",
+              color:         "#FFF9F4",
             }}
           >
             You&rsquo;ve built a life{" "}
@@ -120,7 +127,7 @@ export function HeroSection({
 
           {/* — Pink hairline + script accent — */}
           <div
-            className="mt-6 flex items-center gap-4"
+            className="mt-3 flex items-center gap-4"
             style={{ animation: anim("0.24s") }}
           >
             <span
@@ -132,7 +139,7 @@ export function HeroSection({
               }}
             />
             <ScriptAccent
-              className="leading-none text-[clamp(1.9rem,3.4vw,3rem)] text-pink"
+              className="leading-none text-[clamp(2rem,3.2vw,4rem)] text-pink"
             >
               and yet.
             </ScriptAccent>
@@ -140,7 +147,7 @@ export function HeroSection({
 
           {/* — Body copy — hardcoded per brief, not Sanity — */}
           <p
-            className="mt-7 max-w-[400px] font-[family-name:var(--font-body)]"
+            className="mt-6 max-w-[400px] font-[family-name:var(--font-body)]"
             style={{
               animation:  anim("0.34s"),
               fontSize:   "17px",
@@ -154,7 +161,7 @@ export function HeroSection({
 
           {/* — CTAs — */}
           <div
-            className="mt-9 flex flex-col sm:flex-row gap-4 sm:items-center"
+            className="mt-7 flex flex-col sm:flex-row gap-4 sm:items-center"
             style={{ animation: anim("0.42s") }}
           >
             {/* Primary — cream fill */}
@@ -166,11 +173,11 @@ export function HeroSection({
                          transition-colors duration-200
                          hover:bg-[#EDE8E0]"
               style={{
-                fontSize:     "12px",
-                letterSpacing:"0.26em",
-                textTransform:"uppercase",
-                backgroundColor:"#F8F4F1",
-                color:        "#2A1538",
+                fontSize:        "12px",
+                letterSpacing:   "0.26em",
+                textTransform:   "uppercase",
+                backgroundColor: "#F8F4F1",
+                color:           "#2A1538",
               }}
             >
               {heroCta}
@@ -187,11 +194,11 @@ export function HeroSection({
                          hover:border-[rgba(255,249,244,0.65)]
                          hover:text-[#FFF9F4]"
               style={{
-                fontSize:     "12px",
-                letterSpacing:"0.26em",
-                textTransform:"uppercase",
-                border:       "1px solid rgba(255,249,244,0.35)",
-                color:        "rgba(255,249,244,0.75)",
+                fontSize:      "12px",
+                letterSpacing: "0.26em",
+                textTransform: "uppercase",
+                border:        "1px solid rgba(255,249,244,0.35)",
+                color:         "rgba(255,249,244,0.75)",
               }}
             >
               {heroSecondaryLabel}
@@ -203,8 +210,9 @@ export function HeroSection({
 
       {/* ══════════════════════════════════════════════════════
           MOBILE PORTRAIT — below text, full width, sharp.
-          objectPosition centers on face at top of frame.
-          No blur · No filter · No placeholder.
+          · object-[center_top] — face at top of frame
+          · h-[60svh] — enough room to show seated composition
+          · No blur · No filter · No placeholder
           ══════════════════════════════════════════════════════ */}
       <div
         className="md:hidden relative overflow-hidden"
@@ -217,13 +225,12 @@ export function HeroSection({
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover"
-          style={{ objectPosition: "50% 20%" }}
+          className="h-full w-full object-cover object-[center_top]"
         />
-        {/* Micro top fade only — joins text block cleanly */}
+        {/* Micro top fade — joins text block */}
         <div
           aria-hidden
-          className="pointer-events-none absolute top-0 inset-x-0 h-12
+          className="pointer-events-none absolute top-0 inset-x-0 h-10
                      bg-gradient-to-b from-[#2A1538] to-transparent"
         />
       </div>
