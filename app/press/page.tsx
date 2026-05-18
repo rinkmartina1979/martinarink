@@ -448,7 +448,7 @@ export default async function PressPage() {
         <div className="container-content max-w-4xl">
           <Eyebrow withLine>Speaking</Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
-            For audiences of senior women.
+            Curated for confident women.
           </h2>
           <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft max-w-2xl">
             Martina speaks for conferences, corporate retreats, and curated

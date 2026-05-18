@@ -168,7 +168,7 @@ export default async function HomePage() {
         <div className="container-content max-w-3xl text-center">
           <p className="text-[15px] md:text-[16px] leading-[1.7] text-ink-quiet italic font-[family-name:var(--font-display)]">
             Martina Rink is a Spiegel Bestselling author and private mentor
-            for accomplished women — working across Ibiza, Berlin, and Munich
+            for accomplished women — working across Ibiza, Berlin, London and worldwide
             on identity, sobriety, and the second chapter of a public life.
           </p>
         </div>
