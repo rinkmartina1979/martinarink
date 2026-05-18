@@ -349,7 +349,7 @@ export default async function PressPage() {
                 /* Book order: Isabella Blow first (flagship credential), then People of Deutschland, then Fashion Germany */
                 <>
                   <article>
-                    <div className="relative aspect-[3/4] bg-ink overflow-hidden mb-5">
+                    <div className="relative aspect-[3/4] bg-white overflow-hidden mb-5">
                       <Image
                         src="/images/books/isabella-blow-cover.png"
                         alt="Isabella Blow — book cover by Martina Rink"
@@ -357,8 +357,8 @@ export default async function PressPage() {
                         sizes="(max-width: 768px) 100vw, 28vw"
                         className="object-cover"
                       />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-ink/80 to-transparent">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-sand/70 mb-1">
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-1">
                           Spiegel Bestseller · Biography
                         </p>
                       </div>
@@ -374,7 +374,7 @@ export default async function PressPage() {
                     </p>
                   </article>
                   <article>
-                    <div className="relative aspect-[3/4] bg-bone overflow-hidden mb-5">
+                    <div className="relative aspect-[3/4] bg-white overflow-hidden mb-5">
                       <Image
                         src="/images/books/people-of-deutschland-cover.png"
                         alt="People of Deutschland — book cover by Martina Rink"
@@ -393,7 +393,7 @@ export default async function PressPage() {
                     </p>
                   </article>
                   <article>
-                    <div className="relative aspect-[3/4] bg-sand/20 overflow-hidden mb-5">
+                    <div className="relative aspect-[3/4] bg-white overflow-hidden mb-5">
                       <Image
                         src="/images/books/fashion-germany-cover.png"
                         alt="Fashion Germany — book cover by Martina Rink"

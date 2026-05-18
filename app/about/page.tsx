@@ -175,7 +175,7 @@ export default async function AboutPage() {
             to be like her. It was how to read a room the way she read it.
           </blockquote>
           <p className="mt-10 text-[12px] uppercase tracking-[0.22em] text-ink-quiet">
-            — Martina, on her years at Isabella Blow&rsquo;s side, London 2003–2007
+            — Martina, on her years at Isabella Blow&rsquo;s side, London 2004–2007
           </p>
         </div>
       </section>

@@ -1,7 +1,7 @@
 export async function GET() {
   const body = `# Martina Rink — Private Mentorship for Accomplished Women
 
-Spiegel-bestselling author. Former personal assistant to Isabella Blow (London 2003-2007). Co-creator of People of Deutschland. Private mentor based in Germany, working internationally with executive women in English.
+Spiegel-bestselling author. Former personal assistant to Isabella Blow (London 2004-2007). Co-creator of People of Deutschland. Private mentor based in Germany, working internationally with executive women in English.
 
 ## Key pages
 - About: https://martinarink.com/about

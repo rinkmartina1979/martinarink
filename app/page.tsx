@@ -305,7 +305,7 @@ export default async function HomePage() {
           card layout. Mobile: title/meta above image. */}
       <section
         className="py-16 md:py-24 border-t border-sand/30"
-        style={{ backgroundColor: "#FFFCF8" }}
+        style={{ backgroundColor: "#FFFFFF" }}
       >
         <div className="container-content max-w-7xl">
 
