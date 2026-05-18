@@ -91,8 +91,8 @@ export default async function AboutPage() {
               <Image
                 src="/images/portraits/martina-portrait-pink-blouse.jpg"
                 alt="Martina Rink seated beside flowers"
-                width={1200}
-                height={1500}
+                width={1324}
+                height={1322}
                 sizes="(min-width: 1024px) 38vw, 92vw"
                 className="h-auto w-full object-contain"
                 priority
