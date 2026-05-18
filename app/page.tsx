@@ -63,6 +63,7 @@ const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
     quote:
       "The session with Martina was a thoroughly enriching experience. It was inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself — in a remarkably short time.",
     nda: false,
+    photoPath: "/images/portraits/anja-testimonial.avif",
   },
 ];
 
