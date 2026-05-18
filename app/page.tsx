@@ -227,7 +227,7 @@ export default async function HomePage() {
                 title: "Female Empowerment & Leadership",
                 tagline: "For the woman navigating identity, presence, and what comes next.",
                 body: "There is a particular exhaustion that comes not from doing too much, but from being someone who no longer quite fits. The container you built has stopped being the same size as you are. This is information. And it is the beginning of the most interesting work available to you.",
-                meta: "6–12 months · open-ended · by application",
+                meta: "3–12 months · open-ended · by application",
                 href: "/empowerment",
               },
             ].map((card) => (

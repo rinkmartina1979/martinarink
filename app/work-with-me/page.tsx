@@ -116,7 +116,7 @@ export default async function WorkWithMePage() {
                 For the woman navigating what comes next.
               </p>
               <ul className="mt-6 space-y-2 text-[15px] text-cream/85">
-                <li>· 6–12 months (open-ended)</li>
+                <li>· 3–12 months (open-ended)</li>
                 <li>· 2 private sessions per month</li>
                 <li>· Between-session correspondence</li>
                 <li>· Quarterly review sessions</li>

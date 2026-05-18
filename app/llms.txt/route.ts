@@ -6,7 +6,7 @@ Spiegel-bestselling author. Former personal assistant to Isabella Blow (London 2
 ## Key pages
 - About: https://martinarink.com/about
 - The Sober Muse Method (€5,000, 90 days): https://martinarink.com/sober-muse
-- Female Empowerment & Leadership (€7,500, 6-12 months): https://martinarink.com/empowerment
+- Female Empowerment & Leadership (€7,500, 3-12 months): https://martinarink.com/empowerment
 - Work with Martina: https://martinarink.com/work-with-me
 - Press & Speaking: https://martinarink.com/press
 - Writing: https://martinarink.com/writing

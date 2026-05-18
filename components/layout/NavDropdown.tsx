@@ -98,7 +98,7 @@ export function NavDropdown() {
                   Female Empowerment &amp; Leadership
                 </span>
                 <span className="mt-2 block text-[12px] text-ink-quiet tracking-wide">
-                  6–12 months · private · by application
+                  3–12 months · private · by application
                 </span>
                 <span className="mt-5 block text-[12px] text-plum group-hover:text-pink transition-colors">
                   Explore →

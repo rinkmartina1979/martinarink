@@ -67,7 +67,7 @@ export default defineType({
       title: 'Investment Text',
       type: 'string',
       group: 'content',
-      description: 'e.g. "from €7,500 · 6–12 months"',
+      description: 'e.g. "from €7,500 · 3–12 months"',
     }),
     defineField({
       name: 'ctaLabel',

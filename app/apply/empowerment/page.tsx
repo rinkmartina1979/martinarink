@@ -5,7 +5,7 @@ import { EmpowermentApplicationForm } from "@/components/forms/ApplicationForm";
 export const metadata = buildMetadata({
   title: "Apply — Female Empowerment & Leadership",
   description:
-    "Begin your application for the Female Empowerment & Leadership programme — 6–12 months private mentoring from €7,500.",
+    "Begin your application for the Female Empowerment & Leadership programme — 3–12 months private mentoring from €7,500.",
   path: "/apply/empowerment",
   noIndex: true,
 });

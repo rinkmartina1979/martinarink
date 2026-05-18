@@ -106,7 +106,7 @@ export default function OGImage() {
               fontStyle: "italic",
             }}
           >
-            6–12 months · private · from €7,500
+            3–12 months · private · from €7,500
           </div>
         </div>
 

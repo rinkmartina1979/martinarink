@@ -39,7 +39,7 @@ export default async function TermsPage() {
                 Martina Rink offers private mentoring services through two
                 programmes: the Sober Muse Method (90-day engagement) and the
                 Female Empowerment &amp; Leadership programme (open-ended,
-                typically 6–12 months). Delivered via private video or phone
+                typically 3–12 months). Delivered via private video or phone
                 sessions and written correspondence.
               </p>
             </section>
