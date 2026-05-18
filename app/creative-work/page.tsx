@@ -109,8 +109,8 @@ export default async function CreativeWorkPage() {
       {/* ─── ISABELLA BLOW ────────────────────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content">
-          <div className="grid md:grid-cols-12 gap-10 md:gap-16">
-            <div className="md:col-span-6">
+          <div className="max-w-2xl">
+            <div>
               <Eyebrow>{ib?.heading ?? "Isabella Blow"}</Eyebrow>
               <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] text-ink">
                 {ib?.heading ?? "Isabella Blow"}
@@ -146,47 +146,6 @@ export default async function CreativeWorkPage() {
                 <p className="mt-8 text-[12px] text-ink-quiet uppercase tracking-[0.15em]">
                   {ib.photoCredit}
                 </p>
-              )}
-            </div>
-
-            <div className="md:col-span-6">
-              {ib?.imageGallery && ib.imageGallery.length > 0 ? (
-                <div className="grid grid-cols-2 gap-3">
-                  {ib.imageGallery.map((img, i) => (
-                    <div key={i} className={`bg-sand/20 overflow-hidden ${i === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"}`}>
-                      <div className="w-full h-full flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                        {img.alt || "Image"}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Book cover — primary */}
-                  <div className="col-span-2 relative aspect-[16/9] bg-bone overflow-hidden">
-                    <Image
-                      src="/images/portraits/martina-gallery-leopard.jpg"
-                      alt="Martina Rink with Isabella Blow — London editorial"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover object-[50%_25%]"
-                    />
-                  </div>
-                  <div className="relative aspect-square bg-bone overflow-hidden">
-                    <Image
-                      src="/images/books/isabella-blow-cover.png"
-                      alt="Isabella Blow — published biography"
-                      fill
-                      sizes="25vw"
-                      className="object-contain p-4"
-                    />
-                  </div>
-                  <div className="relative aspect-square bg-bone overflow-hidden flex items-end p-4">
-                    <p className="text-[13px] text-ink-soft leading-snug italic font-[family-name:var(--font-display)]">
-                      &ldquo;She wore hats that could clear a room. Not to be noticed. To exist.&rdquo;
-                    </p>
-                  </div>
-                </div>
               )}
             </div>
           </div>
