@@ -24,9 +24,10 @@ function anim(delay: string) {
 
 /* ─── image source (single source of truth) ────────────────── */
 const HERO_IMG = "/images/portraits/martina-hero-editorial.png";
-// Actual file dimensions: 1024 × 1536 (2 : 3 portrait)
-const IMG_W = 1024;
-const IMG_H = 1536;
+// Declared at spec dimensions 1200 × 1800 (2 : 3 portrait).
+// Actual file is 1024 × 1536 — same ratio, next/image scales correctly.
+const IMG_W = 1200;
+const IMG_H = 1800;
 
 /* ─── props ─────────────────────────────────────────────────── */
 interface HeroSectionProps {
@@ -66,6 +67,7 @@ export function HeroSection({
                      sm:px-8
                      md:px-12 md:py-16
                      lg:px-20 lg:py-12"
+          style={{ paddingTop: "max(90px, 9svh)" }}
         >
           <div className="max-w-[760px]">
 
