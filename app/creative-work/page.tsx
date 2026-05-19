@@ -253,27 +253,39 @@ export default async function CreativeWorkPage() {
               ))}
             </div>
           ) : (
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[
-                "/images/portraits/martina-glam-portrait.jpg",
-                "/images/portraits/martina-floral-dress.jpg",
-                "/images/portraits/martina-leopard-lounge.jpg",
-                "/images/books/fashion-germany-cover.png",
-                "/images/portraits/martina-bw-studio.jpg",
-                "/images/portraits/martina-library-pink.jpg",
-                "/images/portraits/martina-salon-ibiza.jpg",
-                "/images/portraits/martina-night-sky.jpg",
-              ].map((src, i) => (
-                <div key={i} className="relative aspect-[2/3] bg-ink-soft/30 overflow-hidden">
+            /* ── EDITORIAL ARCHIVE LAYOUT ── */
+            <div className="mt-12 space-y-[6px]">
+              {/* Row 1 — bookshelf lifestyle, full width */}
+              <div className="relative overflow-hidden h-[240px] md:h-[420px]">
+                <Image
+                  src="/images/portraits/fashion-germany-bookshelf.png"
+                  alt="Fashion Germany by Martina Rink — on shelf"
+                  fill
+                  sizes="(min-width: 1280px) 1280px, 100vw"
+                  className="object-cover object-center"
+                />
+              </div>
+              {/* Row 2 — editorial spreads (left, wider) + book cover (right) */}
+              <div className="grid grid-cols-[3fr_2fr] gap-[6px] h-[180px] md:h-[300px]">
+                <div className="relative overflow-hidden">
                   <Image
-                    src={src}
-                    alt="Fashion Germany — editorial"
+                    src="/images/portraits/fashion-editorial-spreads.png"
+                    alt="Fashion Germany — editorial spreads"
                     fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
+                    sizes="(min-width: 768px) 60vw, 100vw"
                     className="object-cover object-center"
                   />
                 </div>
-              ))}
+                <div className="relative overflow-hidden bg-cream/[0.04] flex items-center justify-center">
+                  <Image
+                    src="/images/books/fashion-germany-cover.png"
+                    alt="Fashion Germany — cover"
+                    fill
+                    sizes="(min-width: 768px) 40vw, 100vw"
+                    className="object-contain object-center p-6 md:p-10"
+                  />
+                </div>
+              </div>
             </div>
           )}
 
