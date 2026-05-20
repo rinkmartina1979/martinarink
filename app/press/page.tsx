@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { Eyebrow } from "@/components/brand/Eyebrow";
+import { PlumButton } from "@/components/brand/PlumButton";
+import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
-import { Eyebrow } from "@/components/brand/Eyebrow";
-import { GhostButton } from "@/components/brand/GhostButton";
-import Link from "next/link";
 import {
   getPressPage,
   getPublications,
@@ -17,7 +18,9 @@ import {
 import { getVisibleCaseStudies } from "@/sanity/lib/membersQueries";
 import { CaseStudyCard } from "@/components/press/CaseStudyCard";
 import { FALLBACK_CASE_STUDIES } from "@/lib/fallback-content";
+import { CopyButton } from "@/components/press/CopyButton";
 
+/* ─── Metadata ──────────────────────────────────────────────── */
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getPressPage();
   if (data?.seo?.seoTitle) {
@@ -28,14 +31,14 @@ export async function generateMetadata(): Promise<Metadata> {
     });
   }
   return buildMetadata({
-    title: "Press & Speaking",
+    title: "Press & Speaking — Martina Rink",
     description:
       "Press information, biography, speaking topics, and media kit for Martina Rink — Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women in transition.",
     path: "/press",
   });
 }
 
-/* ─── Structured data ─────────────────────────────────────── */
+/* ─── Structured data ─────────────────────────────────────────── */
 function pressSchema() {
   return {
     "@context": "https://schema.org",
@@ -45,60 +48,106 @@ function pressSchema() {
         "@id": `${SITE.url}/#person`,
         name: "Martina Rink",
         url: SITE.url,
-        jobTitle: ["Author", "Private Mentor", "Panel Speaker", "Sober Conscious Coach"],
+        jobTitle: ["Author", "Private Mentor", "Panel Speaker"],
         description:
           "Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to high-achieving women navigating identity, sobriety, and the second chapter of a serious career.",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Steinkreuzstr. 26b",
-          addressLocality: "Karlsruhe",
-          postalCode: "76228",
-          addressCountry: "DE",
-        },
         email: SITE.email,
         telephone: "+49-172-174-1499",
         sameAs: [SITE.social.linkedin, SITE.social.instagram],
-        knowsAbout: [
-          "Women's identity and leadership",
-          "Conscious sobriety",
-          "High-achieving women in transition",
-          "Cultural observation and memoir",
-          "Fashion history",
-        ],
       },
       {
         "@type": "Book",
         "@id": `${SITE.url}/#book-people-of-deutschland`,
         name: "People of Deutschland",
         author: { "@id": `${SITE.url}/#person` },
-        description: "A documentary portrait of contemporary Germany — its people, contradictions, and quiet grandeur.",
-        inLanguage: "de",
-        genre: "Documentary Photography / Non-fiction",
+        publisher: "Prestel · Random House",
+        datePublished: "2023",
       },
       {
         "@type": "Book",
         "@id": `${SITE.url}/#book-fashion-germany`,
         name: "Fashion Germany",
         author: { "@id": `${SITE.url}/#person` },
-        description: "A portrait of German fashion — its designers, codes, and the culture that shaped one of Europe's most underestimated style capitals.",
-        inLanguage: "de",
-        genre: "Fashion / Photography / Non-fiction",
+        publisher: "Prestel · Random House",
+        datePublished: "2014",
       },
       {
         "@type": "Book",
         "@id": `${SITE.url}/#book-isabella-blow`,
         name: "Isabella Blow",
         author: { "@id": `${SITE.url}/#person` },
-        description: "A biography of Isabella Blow written from unique proximity. A Spiegel Bestseller.",
-        inLanguage: "de",
-        genre: "Biography / Fashion",
+        publisher: "Thames & Hudson",
+        datePublished: "2010",
         isPartOf: { "@type": "BookSeries", name: "Spiegel Bestseller" },
       },
     ],
   };
 }
 
-/* ─── Fallbacks ────────────────────────────────────────────── */
+/* ─── Static data ─────────────────────────────────────────────── */
+const MEDIA_OUTLETS = [
+  "Deutsche Welle", "Deutschlandfunk Nova", "WDR", "SWR",
+  "Glamour Germany", "Strive", "Woman", "House Magazine",
+  "Perspective Daily", "Prestel", "Fondation Cartier", "Tiffany & Co",
+];
+
+const PRESS_MOSAIC = [
+  {
+    id: "pod",
+    book: "People of Deutschland",
+    year: "2023",
+    publisher: "Prestel · Random House",
+    bg: "bg-cream",
+    mainImage: {
+      src: "/images/creative-work/pod-1.png",
+      w: 1414, h: 2000,
+      alt: "People of Deutschland — book cover by Martina Rink",
+      contain: true,
+    },
+    supporting: [
+      { src: "/images/creative-work/pod-5.jpg",  w: 1200, h: 800,  alt: "People of Deutschland — editorial portrait spread" },
+      { src: "/images/creative-work/pod-7.jpg",  w: 1808, h: 1194, alt: "People of Deutschland — feature photography" },
+    ],
+    outlets: ["Deutsche Welle", "Deutschlandfunk Nova", "SWR", "WDR", "Strive", "Perspective Daily"],
+  },
+  {
+    id: "blow",
+    book: "Isabella Blow — A Life in Fashion",
+    year: "2010",
+    publisher: "Thames & Hudson",
+    bg: "bg-bone",
+    mainImage: {
+      src: "/images/creative-work/blow-3.jpg",
+      w: 896, h: 1273,
+      alt: "Isabella Blow — editorial photography by Martina Rink",
+      contain: true,
+    },
+    supporting: [
+      { src: "/images/creative-work/blow-1.png", w: 1280, h: 947,  alt: "Isabella Blow — book cover, Thames & Hudson" },
+      { src: "/images/creative-work/blow-5.jpg", w: 640,  h: 426,  alt: "Isabella Blow — archive fashion photography" },
+    ],
+    outlets: ["χίλιες και μια ιδέες", "House Magazine", "Elara Magazine", "Tiffany & Co", "International press"],
+  },
+  {
+    id: "fashion",
+    book: "Fashion Germany",
+    year: "2014",
+    publisher: "Prestel · Random House",
+    bg: "bg-cream",
+    mainImage: {
+      src: "/images/creative-work/fashion-4.jpg",
+      w: 768, h: 1087,
+      alt: "Fashion Germany — book interior spread by Martina Rink",
+      contain: true,
+    },
+    supporting: [
+      { src: "/images/creative-work/fashion-1.png", w: 1064, h: 960, alt: "Fashion Germany — cover, Prestel 2014" },
+      { src: "/images/creative-work/fashion-8.jpg", w: 640,  h: 427, alt: "Fashion Germany — editorial feature" },
+    ],
+    outlets: ["Glamour Germany", "Woman Magazine", "Fondation Cartier", "Prestel", "Himmlisch Schön"],
+  },
+] as const;
+
 const SPEAKING_TOPICS = [
   {
     title: "The intelligent woman's guide to re-examining alcohol",
@@ -133,63 +182,27 @@ const BIOS = [
   },
 ];
 
-const MEDIA_OUTLETS = [
-  "Deutsche Welle", "Deutschlandfunk Nova", "WDR", "SWR",
-  "Glamour Germany", "Strive", "Woman", "House Magazine",
-  "Perspective Daily", "Prestel", "Fondation Cartier", "Tiffany & Co",
-];
-
-/* ─── Helpers ─────────────────────────────────────────────── */
-function BookCard({ pub }: { pub: SanityPublication }) {
-  return (
-    <article>
-      <div className={`aspect-[3/4] flex items-end p-6 mb-5 ${pub.isBestseller ? "bg-ink" : "bg-bone"}`}>
-        <div>
-          {pub.isBestseller && (
-            <p className="text-[10px] uppercase tracking-[0.2em] text-sand/60 mb-2">
-              Spiegel Bestseller · Biography
-            </p>
-          )}
-          {pub.subtitle && (
-            <p className="text-[10px] uppercase tracking-[0.2em] mb-2 text-ink-quiet">
-              {pub.subtitle}
-            </p>
-          )}
-          <p className={`font-[family-name:var(--font-display)] text-[22px] leading-tight ${pub.isBestseller ? "text-cream" : "text-ink"}`}>
-            {pub.title}
-          </p>
-        </div>
-      </div>
-      {pub.description && (
-        <p className="text-[14px] leading-[1.75] text-ink-soft">{pub.description}</p>
-      )}
-    </article>
-  );
-}
-
-/* ─── Page ───────────────────────────────────────────────── */
+/* ─── Page ───────────────────────────────────────────────────── */
 export default async function PressPage() {
-  const [pressData, publications, pressItems, partnerLogos, caseStudies] = await Promise.all([
-    getPressPage(),
-    getPublications(),
-    getPressItems(),
-    getPartnerLogos(),
-    getVisibleCaseStudies(),
-  ]);
+  const [pressData, publications, pressItems, partnerLogos, caseStudies] =
+    await Promise.all([
+      getPressPage(),
+      getPublications(),
+      getPressItems(),
+      getPartnerLogos(),
+      getVisibleCaseStudies(),
+    ]);
 
   const heroCopy =
     pressData?.bioCopy ??
     "Martina Rink is a Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women at the inflection points of a serious career. She is available for press interviews, podcast conversations, and panel discussions.";
 
-  const ctaLabel = pressData?.ctaLabel ?? null;
-  const ctaUrl = pressData?.ctaUrl ?? null;
-
-  // Use Sanity publications if available, else show hardcoded books
   const hasSanityPublications = publications && publications.length > 0;
-  // Use Sanity partner logos for media bar if available
-  const hasSanityLogos = partnerLogos && partnerLogos.length > 0;
-  // Use featured Sanity press items if available
-  const featuredPressItems = pressItems?.filter((p: SanityPressItem) => p.featured) ?? [];
+  const hasSanityLogos        = partnerLogos  && partnerLogos.length  > 0;
+  const featuredPressItems    = pressItems?.filter((p: SanityPressItem) => p.featured) ?? [];
+
+  const displayCaseStudies =
+    caseStudies && caseStudies.length > 0 ? caseStudies : FALLBACK_CASE_STUDIES;
 
   return (
     <>
@@ -206,480 +219,330 @@ export default async function PressPage() {
         }}
       />
 
-      {/* ── 1. Hero ─────────────────────────────────────────── */}
-      <section className="bg-cream pt-28 md:pt-36 pb-16">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-7">
-            <Eyebrow withLine>Press &amp; Speaking</Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[58px] leading-[1.08] text-ink">
-              A voice at the intersection of identity, culture, and the examined
-              life.
+      {/* ══════════════════════════════════════════════════════
+          1 — HERO
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-aubergine pt-28 md:pt-36 lg:pt-44 pb-0 overflow-hidden">
+        <div className="container-content grid lg:grid-cols-[0.56fr_0.44fr] gap-12 lg:gap-0 items-end">
+
+          {/* Left — text */}
+          <div className="pb-16 md:pb-20 lg:pb-24">
+            <Eyebrow className="text-cream/60 border-cream/20">
+              Press &amp; Speaking
+            </Eyebrow>
+
+            <h1
+              className="mt-7 font-[family-name:var(--font-display)] text-cream leading-[0.86] tracking-[-0.055em]"
+              style={{ fontSize: "clamp(3.6rem, 6.8vw, 7.8rem)" }}
+            >
+              A voice at the
+              intersection of
+              identity, culture,
+              and the examined life.
             </h1>
-            <p className="mt-8 text-[18px] leading-[1.8] text-ink-soft max-w-2xl">
+
+            <p className="mt-8 text-[17px] md:text-[18px] leading-[1.8] text-cream/70 max-w-[500px] font-[family-name:var(--font-body)]">
               {heroCopy}
             </p>
+
             {/* Credential pills */}
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-2">
               {[
                 "Spiegel Bestseller author",
                 "Former PA to Isabella Blow",
-                "Panel guest",
+                "Panel guest · Europe-wide",
                 "Private mentor · by application",
               ].map((cred) => (
                 <span
                   key={cred}
-                  className="px-4 py-2 border border-sand text-[12px] uppercase tracking-[0.16em] text-ink-quiet"
+                  className="px-4 py-2 border border-cream/20 text-[10px] uppercase tracking-[0.18em] text-cream/60 font-[family-name:var(--font-body)]"
                 >
                   {cred}
                 </span>
               ))}
             </div>
 
-            {/* Above-the-fold press strip */}
-            <div className="mt-10 pt-6 border-t border-sand/60">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">
-                As featured in
-              </p>
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
-                {["Der Spiegel", "Brigitte", "STERN", "Vogue Germany", "Die Zeit"].map(
-                  (outlet) => (
-                    <span
-                      key={outlet}
-                      className="font-[family-name:var(--font-display)] text-[15px] text-ink/55 tracking-[0.04em]"
-                    >
-                      {outlet}
-                    </span>
-                  )
-                )}
-              </div>
+            {/* CTAs */}
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <PlumButton href={`mailto:${SITE.email}`}>
+                Request press materials
+              </PlumButton>
+              <GhostButton
+                href="#speaking"
+                className="border-cream/40 text-cream hover:bg-cream/10"
+              >
+                Invite Martina to speak
+              </GhostButton>
             </div>
+
+            {/* Contact line */}
+            <p className="mt-8 text-[12px] uppercase tracking-[0.18em] text-cream/35 font-[family-name:var(--font-body)]">
+              {SITE.email} · +49 (0) 172 174 1499
+            </p>
           </div>
-          <div className="md:col-span-5">
-            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
+
+          {/* Right — portrait */}
+          <div className="relative lg:self-end">
+            <div className="relative bg-bone overflow-hidden mx-auto max-w-[420px] lg:max-w-none">
               <Image
-                src="/images/portraits/martina-podcast-studio.jpg"
-                alt="Martina Rink — speaker and author"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-center"
+                src="/images/portraits/martina-bw-studio.jpg"
+                alt="Martina Rink — speaker, author, and private mentor"
+                width={1067}
+                height={1600}
+                sizes="(max-width: 1024px) 90vw, 38vw"
+                className="w-full object-cover object-top"
                 priority
               />
-              {/* Mask baked-in carousel dots at bottom of source image */}
-              <div aria-hidden className="absolute bottom-0 left-0 right-0 h-8 bg-bone" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── 2. Media bar ────────────────────────────────────── */}
-      <section className="bg-bone border-t border-b border-sand/60 py-10">
+      {/* ══════════════════════════════════════════════════════
+          2 — AUTHORITY STRIP
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream border-y border-sand/40 py-8 md:py-10 overflow-hidden">
         <div className="container-content">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet text-center mb-8">
-            {hasSanityLogos ? "Partners & affiliates" : "Featured in"}
+          <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet text-center mb-6 font-[family-name:var(--font-body)]">
+            {hasSanityLogos ? "Partners & affiliates" : "As featured in"}
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
-            {hasSanityLogos
-              ? (partnerLogos as SanityPartnerLogo[]).map((logo) => (
-                  <span
-                    key={logo._id}
-                    className="font-[family-name:var(--font-display)] text-[16px] text-ink/40 tracking-[0.04em]"
-                  >
-                    {logo.name}
-                  </span>
-                ))
-              : MEDIA_OUTLETS.map((outlet) => (
-                  <span
-                    key={outlet}
-                    className="font-[family-name:var(--font-display)] text-[16px] text-ink/40 tracking-[0.04em]"
-                  >
-                    {outlet}
-                  </span>
-                ))}
+          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-3 md:gap-x-12">
+            {(hasSanityLogos
+              ? (partnerLogos as SanityPartnerLogo[]).map((l) => l.name)
+              : MEDIA_OUTLETS
+            ).map((name) => (
+              <span
+                key={name}
+                className="font-[family-name:var(--font-display)] text-[14px] md:text-[15px] text-ink/40 tracking-[0.04em] whitespace-nowrap"
+              >
+                {name}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── 3. Featured press items from Sanity (if any) ─────── */}
-      {featuredPressItems.length > 0 && (
-        <section className="bg-cream py-16 md:py-20">
-          <div className="container-content max-w-4xl">
-            <Eyebrow withLine>Press appearances</Eyebrow>
-            <div className="mt-10 space-y-4">
+      {/* ══════════════════════════════════════════════════════
+          3 — FEATURED MEDIA MOSAIC
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-bone py-20 md:py-28">
+        <div className="container-content">
+          <div className="max-w-4xl mb-14 md:mb-18">
+            <Eyebrow withLine>Media coverage</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[40px] md:text-[52px] leading-[1.0] tracking-[-0.02em] text-ink">
+              Featured in the conversation.
+            </h2>
+            <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
+              Three published books. Two decades of editorial work. A selection of coverage across print, radio, television, and digital.
+            </p>
+          </div>
+
+          {/* Sanity press items (if any) */}
+          {featuredPressItems.length > 0 && (
+            <div className="max-w-4xl mb-16 space-y-px">
               {featuredPressItems.map((item: SanityPressItem) => (
-                <div key={item._id} className="flex items-start gap-6 py-4 border-b border-sand/40">
+                <div key={item._id} className="flex items-start gap-6 py-5 border-b border-sand/50 bg-cream px-6">
                   <div className="flex-1">
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet mb-1">
-                      {item.publication}
-                      {item.type && ` · ${item.type}`}
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-1 font-[family-name:var(--font-body)]">
+                      {item.publication}{item.type && ` · ${item.type}`}
                     </p>
                     {item.headline && (
-                      <p className="font-[family-name:var(--font-display)] text-[18px] text-ink">
+                      <p className="font-[family-name:var(--font-display)] italic text-[18px] text-ink leading-snug">
                         {item.headline}
                       </p>
                     )}
                   </div>
                   {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[13px] text-plum underline underline-offset-4 shrink-0"
-                    >
+                    <a href={item.url} target="_blank" rel="noopener noreferrer"
+                      className="text-[11px] uppercase tracking-[0.15em] text-plum hover:text-plum-deep transition-colors shrink-0 font-[family-name:var(--font-body)] mt-1">
                       Read →
                     </a>
                   )}
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
+          )}
 
-      {/* ── 3b. Press coverage wall — three books ────────────── */}
-      <section className="bg-bone py-20 md:py-28">
-        <div className="container-content">
-          <div className="max-w-5xl mx-auto">
-            <Eyebrow withLine>Media coverage</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
-              On the record.
-            </h2>
-            <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-xl">
-              Three books. Two decades of editorial work. A selection of the coverage across print, radio, television, and digital.
-            </p>
-          </div>
-
-          {/* ── People of Deutschland ── */}
-          <div className="mt-16 md:mt-20 max-w-5xl mx-auto">
-            <div className="flex items-center gap-5 mb-8">
-              <span className="h-px w-8 bg-pink" aria-hidden />
-              <span className="text-[10px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
-                People of Deutschland · 2023
-              </span>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                {
-                  outlet: "Deutsche Welle",
-                  tag: "DW · Reportage",
-                  headline: '„People of Deutschland“: Der alltägliche Rassismus',
-                  note: "Cover story with full feature",
-                  url: "https://www.dw.com/de/people-of-deutschland-der-allt%C3%A4gliche-rassismus/a-64900990",
-                },
-                {
-                  outlet: "Deutschlandfunk Nova",
-                  tag: "Radio",
-                  headline: 'Kreativmanager Simon Usifo: „Wir sollten mehr zuhören"',
-                  note: "22 März 2023",
-                  url: null,
-                },
-                {
-                  outlet: "SWR",
-                  tag: "Radio · Television",
-                  headline: "Martina Rink und Simon Usifo — Das können wir gegen Diskriminierung tun",
-                  note: "07 Feb 2023 · SWR Leute",
-                  url: null,
-                },
-                {
-                  outlet: "WDR",
-                  tag: "Public Broadcasting",
-                  headline: "Feature coverage of People of Deutschland",
-                  note: "Radio & online",
-                  url: null,
-                },
-                {
-                  outlet: "Strive Magazine",
-                  tag: "Print · Business",
-                  headline: "Entrepreneurs, identities, and the German creative scene",
-                  note: "BRAIN section · 2023",
-                  url: null,
-                },
-                {
-                  outlet: "Perspective Daily",
-                  tag: "Online · Long-read",
-                  headline: '„Wo ist der Professor, der Arzt, der Anwalt, der so aussieht wie ich?"',
-                  note: "October 2023 · von Benjamin Fuchs",
-                  url: null,
-                },
-              ].map((item) => (
-                <div
-                  key={item.outlet}
-                  className="group bg-cream border-l-[3px] border-l-sand/40 hover:border-l-pink p-7 transition-all duration-300 hover:shadow-[0_4px_28px_rgba(61,26,92,0.08)]"
-                >
-                  <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet/70 font-[family-name:var(--font-body)] mb-3">
-                    {item.tag}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[16px] font-semibold text-ink leading-snug mb-2">
-                    {item.outlet}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] italic text-[14px] leading-[1.6] text-ink-soft mb-3">
-                    {item.headline}
-                  </p>
-                  <p className="text-[11px] text-ink-quiet font-[family-name:var(--font-body)]">
-                    {item.note}
-                  </p>
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-block text-[11px] uppercase tracking-[0.18em] text-plum hover:text-plum-deep font-[family-name:var(--font-body)] transition-colors"
-                    >
-                      Read article →
-                    </a>
-                  )}
+          {/* 3 book groups */}
+          <div className="space-y-20 md:space-y-28">
+            {PRESS_MOSAIC.map((group, gi) => (
+              <div key={group.id}>
+                {/* Group header */}
+                <div className="flex items-center gap-5 mb-8">
+                  <span className="h-px w-10 bg-pink shrink-0" aria-hidden />
+                  <div>
+                    <p className="text-[9px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
+                      {group.publisher} · {group.year}
+                    </p>
+                    <p className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] leading-tight text-ink mt-0.5">
+                      {group.book}
+                    </p>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* ── Isabella Blow ── */}
-          <div className="mt-16 md:mt-20 max-w-5xl mx-auto">
-            <div className="flex items-center gap-5 mb-8">
-              <span className="h-px w-8 bg-pink" aria-hidden />
-              <span className="text-[10px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
-                Isabella Blow — A Life in Fashion · 2010
-              </span>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                {
-                  outlet: "χίλιες και μια ιδέες",
-                  tag: "Greece · Print",
-                  headline: "International feature on Isabella Blow and the biography",
-                  note: "Full spread, Greece",
-                  url: null,
-                },
-                {
-                  outlet: "House Magazine",
-                  tag: "UK · Print · Issue 13",
-                  headline: "Company Fashion Spotlight — Martina Rink",
-                  note: "Winter 2016 · The Outsiders and Absentees Issue",
-                  url: null,
-                },
-                {
-                  outlet: "Elara Magazine",
-                  tag: "International · Print",
-                  headline: "Feature profile and interview",
-                  note: "Cover feature",
-                  url: null,
-                },
-                {
-                  outlet: "Tiffany & Co",
-                  tag: "Event coverage",
-                  headline: "Launch event — with Claudia Schiffer, Christiane Arp, Jette Joop",
-                  note: "Berlin · International press",
-                  url: null,
-                },
-                {
-                  outlet: "Christoph Meister Events",
-                  tag: "Society coverage",
-                  headline: "Book launch and cultural evening",
-                  note: "Munich · 2010",
-                  url: null,
-                },
-                {
-                  outlet: "International Press",
-                  tag: "Multi-territory",
-                  headline: "Coverage across DE, UK, US, GR, and the Middle East",
-                  note: "Spiegel Bestseller on publication",
-                  url: null,
-                },
-              ].map((item) => (
-                <div
-                  key={item.outlet}
-                  className="group bg-cream border-l-[3px] border-l-sand/40 hover:border-l-pink p-7 transition-all duration-300 hover:shadow-[0_4px_28px_rgba(61,26,92,0.08)]"
-                >
-                  <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet/70 font-[family-name:var(--font-body)] mb-3">
-                    {item.tag}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[16px] font-semibold text-ink leading-snug mb-2">
-                    {item.outlet}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] italic text-[14px] leading-[1.6] text-ink-soft mb-3">
-                    {item.headline}
-                  </p>
-                  <p className="text-[11px] text-ink-quiet font-[family-name:var(--font-body)]">
-                    {item.note}
-                  </p>
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-block text-[11px] uppercase tracking-[0.18em] text-plum hover:text-plum-deep font-[family-name:var(--font-body)] transition-colors"
-                    >
-                      Read article →
-                    </a>
-                  )}
+                {/* Mosaic grid */}
+                <div className="grid lg:grid-cols-[1.35fr_1fr] gap-3 md:gap-4 items-stretch">
+                  {/* Large main image */}
+                  <div className={`relative bg-bone flex items-center justify-center p-4 md:p-6 min-h-[300px] lg:min-h-[480px] ${gi % 2 === 1 ? "lg:order-2" : ""}`}>
+                    <Image
+                      src={group.mainImage.src}
+                      alt={group.mainImage.alt}
+                      width={group.mainImage.w}
+                      height={group.mainImage.h}
+                      sizes="(max-width: 768px) 90vw, (max-width: 1024px) 55vw, 38vw"
+                      className="object-contain max-h-[440px] w-auto h-auto drop-shadow-[0_8px_24px_rgba(30,27,23,0.12)]"
+                    />
+                  </div>
+
+                  {/* Two supporting images */}
+                  <div className={`flex flex-col gap-3 md:gap-4 ${gi % 2 === 1 ? "lg:order-1" : ""}`}>
+                    {group.supporting.map((img, si) => (
+                      <div
+                        key={si}
+                        className="relative bg-bone flex items-center justify-center p-3 md:p-4 flex-1 min-h-[160px] md:min-h-[220px]"
+                      >
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          width={img.w}
+                          height={img.h}
+                          sizes="(max-width: 768px) 90vw, (max-width: 1024px) 42vw, 28vw"
+                          className="object-contain max-h-[200px] w-auto h-auto"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* ── Fashion Germany ── */}
-          <div className="mt-16 md:mt-20 max-w-5xl mx-auto">
-            <div className="flex items-center gap-5 mb-8">
-              <span className="h-px w-8 bg-pink" aria-hidden />
-              <span className="text-[10px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
-                Fashion Germany · 2014
-              </span>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                {
-                  outlet: "Glamour Germany",
-                  tag: "Print · August 2014",
-                  headline: "Fashion Germany — a portrait of German style",
-                  note: "Full feature, national edition",
-                  url: null,
-                },
-                {
-                  outlet: "Woman Magazine",
-                  tag: "Print · Austria",
-                  headline: "Auf Wiener Buchkräusung — Fashion Talk with Martina Rink",
-                  note: "Auflagen: 150,914",
-                  url: null,
-                },
-                {
-                  outlet: "Fondation Cartier",
-                  tag: "Exhibition · Paris",
-                  headline: "Kreatives Deutschland — Fashion Germany in cultural context",
-                  note: "Freie Fondation Cartier feature, 2014",
-                  url: null,
-                },
-                {
-                  outlet: "Prestel Verlag",
-                  tag: "Publisher feature",
-                  headline: "Kreatives Deutschland — Die Autorin Martina Rink stellt vor",
-                  note: "Publisher's spotlight on publication",
-                  url: null,
-                },
-                {
-                  outlet: "Himmlisch Schön",
-                  tag: "Print · Fashion",
-                  headline: "Deutsche Mode — Laser, Fashion Germany, and the new German aesthetic",
-                  note: "Full spread feature",
-                  url: null,
-                },
-                {
-                  outlet: "Ganz mein Stil",
-                  tag: "Print · Lifestyle",
-                  headline: "Katharina Blenisses — Stilberaterin trifft Frauen jeden Alters",
-                  note: "Beachrobe edition · 2014",
-                  url: null,
-                },
-              ].map((item) => (
-                <div
-                  key={item.outlet}
-                  className="group bg-cream border-l-[3px] border-l-sand/40 hover:border-l-pink p-7 transition-all duration-300 hover:shadow-[0_4px_28px_rgba(61,26,92,0.08)]"
-                >
-                  <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet/70 font-[family-name:var(--font-body)] mb-3">
-                    {item.tag}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[16px] font-semibold text-ink leading-snug mb-2">
-                    {item.outlet}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] italic text-[14px] leading-[1.6] text-ink-soft mb-3">
-                    {item.headline}
-                  </p>
-                  <p className="text-[11px] text-ink-quiet font-[family-name:var(--font-body)]">
-                    {item.note}
-                  </p>
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-block text-[11px] uppercase tracking-[0.18em] text-plum hover:text-plum-deep font-[family-name:var(--font-body)] transition-colors"
+                {/* Outlet badges */}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {group.outlets.map((outlet) => (
+                    <span
+                      key={outlet}
+                      className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)] hover:border-sand transition-colors duration-200"
                     >
-                      Read article →
-                    </a>
-                  )}
+                      {outlet}
+                    </span>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-
         </div>
       </section>
 
-      {/* ── 4. Books ─────────────────────────────────────────── */}
-      <section className="bg-cream py-16 md:py-20">
-        <div className="container-content max-w-5xl">
-          <Eyebrow withLine>Books</Eyebrow>
-          <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
-            Published work.
-          </h2>
+      {/* ══════════════════════════════════════════════════════
+          4 — PUBLISHED WORK
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream py-20 md:py-28">
+        <div className="container-content">
+          <div className="max-w-4xl mb-14">
+            <Eyebrow withLine>Books</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+              Published work.
+            </h2>
+          </div>
 
-          <div className="mt-14 grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 max-w-5xl">
             {hasSanityPublications
               ? (publications as SanityPublication[]).map((pub) => (
-                  <BookCard key={pub._id} pub={pub} />
-                ))
-              : (
-                /* Book order: Isabella Blow first (flagship credential), then People of Deutschland, then Fashion Germany */
-                <>
-                  <article>
-                    <div className="relative aspect-[3/4] bg-white overflow-hidden mb-5">
-                      <Image
-                        src="/images/books/isabella-blow-cover.png"
-                        alt="Isabella Blow — book cover by Martina Rink"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 28vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet mb-1">
-                          Spiegel Bestseller · Biography
-                        </p>
+                  <article key={pub._id} className="flex flex-col">
+                    <div className="bg-bone flex items-center justify-center p-10 md:p-12 mb-6">
+                      <div className="relative w-full max-w-[220px] aspect-[2/3]">
+                        <Image
+                          src={`/images/books/${pub.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}-cover.png`}
+                          alt={`${pub.title} — book cover by Martina Rink`}
+                          fill
+                          sizes="(max-width: 768px) 60vw, 20vw"
+                          className="object-contain drop-shadow-[0_8px_24px_rgba(30,27,23,0.14)]"
+                        />
                       </div>
                     </div>
-                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-2">
-                      Isabella Blow
+                    <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet mb-2 font-[family-name:var(--font-body)]">
+                      {pub.subtitle ?? (pub.isBestseller ? "Spiegel Bestseller · Biography" : "")}
+                    </p>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-3 leading-snug">
+                      {pub.title}
                     </h3>
-                    <p className="text-[14px] leading-[1.75] text-ink-soft">
+                    {pub.description && (
+                      <p className="text-[14px] leading-[1.75] text-ink-soft font-[family-name:var(--font-body)]">
+                        {pub.description}
+                      </p>
+                    )}
+                  </article>
+                ))
+              : (
+                <>
+                  {/* Isabella Blow — flagship credential first */}
+                  <article className="flex flex-col">
+                    <div className="bg-bone flex items-center justify-center p-10 md:p-12 mb-6">
+                      <div className="relative w-full max-w-[220px] aspect-[2/3]">
+                        <Image
+                          src="/images/books/isabella-blow-cover.png"
+                          alt="Isabella Blow — A Life in Fashion, book cover by Martina Rink"
+                          fill
+                          sizes="(max-width: 768px) 60vw, 20vw"
+                          className="object-contain drop-shadow-[0_8px_24px_rgba(30,27,23,0.14)]"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet mb-2 font-[family-name:var(--font-body)]">
+                      Thames &amp; Hudson · 2010
+                    </p>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-3 leading-snug">
+                      Isabella Blow — A Life in Fashion
+                    </h3>
+                    <p className="text-[14px] leading-[1.75] text-ink-soft font-[family-name:var(--font-body)]">
                       Written from a position of unique proximity — Rink served as
-                      Blow&rsquo;s personal assistant and confidante. A Spiegel
-                      Bestseller. Literary representation via Elisabeth Ruge Agentur
-                      GmbH, Berlin.
+                      Blow&rsquo;s personal assistant and confidante. A Spiegel Bestseller.
                     </p>
                   </article>
-                  <article>
-                    <div className="relative aspect-[3/4] bg-white overflow-hidden mb-5">
-                      <Image
-                        src="/images/books/people-of-deutschland-cover.png"
-                        alt="People of Deutschland — book cover by Martina Rink"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 28vw"
-                        className="object-cover"
-                      />
+
+                  {/* People of Deutschland */}
+                  <article className="flex flex-col">
+                    <div className="bg-bone flex items-center justify-center p-10 md:p-12 mb-6">
+                      <div className="relative w-full max-w-[220px] aspect-[2/3]">
+                        <Image
+                          src="/images/books/people-of-deutschland-cover.png"
+                          alt="People of Deutschland — book cover by Martina Rink"
+                          fill
+                          sizes="(max-width: 768px) 60vw, 20vw"
+                          className="object-contain drop-shadow-[0_8px_24px_rgba(30,27,23,0.14)]"
+                        />
+                      </div>
                     </div>
-                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-2">
+                    <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet mb-2 font-[family-name:var(--font-body)]">
+                      Prestel · Random House · 2023
+                    </p>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-3 leading-snug">
                       People of Deutschland
                     </h3>
-                    <p className="text-[14px] leading-[1.75] text-ink-soft">
-                      A documentary portrait of contemporary Germany — its people,
-                      contradictions, and quiet grandeur. National media coverage upon
-                      publication.
+                    <p className="text-[14px] leading-[1.75] text-ink-soft font-[family-name:var(--font-body)]">
+                      A documentary portrait of contemporary Germany — its people, contradictions, and quiet grandeur. National media coverage upon publication.
                     </p>
                   </article>
-                  <article>
-                    <div className="relative aspect-[3/4] bg-white overflow-hidden mb-5">
-                      <Image
-                        src="/images/books/fashion-germany-cover.png"
-                        alt="Fashion Germany — book cover by Martina Rink"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 28vw"
-                        className="object-cover"
-                      />
+
+                  {/* Fashion Germany */}
+                  <article className="flex flex-col">
+                    <div className="bg-bone flex items-center justify-center p-10 md:p-12 mb-6">
+                      <div className="relative w-full max-w-[220px] aspect-[2/3]">
+                        <Image
+                          src="/images/books/fashion-germany-cover.png"
+                          alt="Fashion Germany — book cover by Martina Rink"
+                          fill
+                          sizes="(max-width: 768px) 60vw, 20vw"
+                          className="object-contain drop-shadow-[0_8px_24px_rgba(30,27,23,0.14)]"
+                        />
+                      </div>
                     </div>
-                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-2">
+                    <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet mb-2 font-[family-name:var(--font-body)]">
+                      Prestel · Random House · 2014
+                    </p>
+                    <h3 className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-3 leading-snug">
                       Fashion Germany
                     </h3>
-                    <p className="text-[14px] leading-[1.75] text-ink-soft">
-                      A portrait of German fashion — its designers, its codes, and the
-                      culture that shaped one of Europe&rsquo;s most underestimated
-                      style capitals.
+                    <p className="text-[14px] leading-[1.75] text-ink-soft font-[family-name:var(--font-body)]">
+                      A portrait of German fashion — its designers, its codes, and the culture that shaped one of Europe&rsquo;s most underestimated style capitals.
                     </p>
                   </article>
                 </>
@@ -688,129 +551,190 @@ export default async function PressPage() {
         </div>
       </section>
 
-      {/* ── 5. Isabella Blow — signature credential ──────────── */}
-      <section className="bg-ink py-16 md:py-20">
-        <div className="container-content max-w-3xl">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-sand/50 mb-8">
-            Background
-          </p>
-          <blockquote className="font-[family-name:var(--font-display)] italic text-[32px] md:text-[40px] leading-[1.2] text-cream">
-            &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
-            and a generation of designers who changed fashion&rsquo;s
-            course.&rdquo;
-          </blockquote>
-          <p className="mt-8 text-[16px] leading-[1.75] text-cream/70">
-            For several years, Martina Rink served as personal assistant to
-            Isabella Blow — the late British fashion editor, stylist, and
-            singular talent spotter whose influence defined the avant-garde of
-            the 1990s and 2000s. That proximity to radical vision, eccentricity,
-            and the human cost of brilliance shaped the particular lens Rink
-            brings to her work with women.
-          </p>
-          <p className="mt-5 text-[16px] leading-[1.75] text-cream/70">
-            It is a perspective that cannot be acquired from a course. It is
-            earned.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. Speaking ──────────────────────────────────────── */}
-      <section id="speaking" className="bg-cream py-16 md:py-20">
-        <div className="container-content max-w-4xl">
-          <Eyebrow withLine>Speaking</Eyebrow>
-          <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
-            Curated for confident women.
-          </h2>
-          <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft max-w-2xl">
-            Martina speaks for conferences, corporate retreats, and curated
-            evenings. Her talks are conversational, precisely argued, and
-            deliberately uncomfortable in the way that useful things tend to be.
-          </p>
-
-          <div className="mt-14 grid md:grid-cols-2 gap-8">
-            {SPEAKING_TOPICS.map((topic, i) => (
-              <div key={i} className="bg-bone border-l-[3px] border-l-sand/60 hover:border-l-pink p-8 transition-all duration-300 shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_28px_rgba(61,26,92,0.09)]">
-                <p className="font-[family-name:var(--font-display)] text-[20px] leading-tight text-ink mb-4">
-                  {topic.title}
+      {/* ══════════════════════════════════════════════════════
+          5 — ISABELLA BLOW BACKGROUND BLOCK
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-aubergine py-20 md:py-28">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-[1fr_0.38fr] gap-12 lg:gap-20 items-start max-w-5xl">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-sand/50 mb-8 font-[family-name:var(--font-body)]">
+                Background
+              </p>
+              <blockquote className="font-[family-name:var(--font-display)] italic text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-cream">
+                &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
+                and a generation of designers who changed fashion&rsquo;s course.&rdquo;
+              </blockquote>
+              <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-2xl">
+                <p>
+                  For several years, Martina Rink served as personal assistant to
+                  Isabella Blow — the late British fashion editor, stylist, and
+                  singular talent spotter whose influence defined the avant-garde
+                  of the 1990s and 2000s.
                 </p>
-                <p className="text-[14px] leading-[1.7] text-ink-soft">
-                  {topic.body}
+                <p>
+                  That proximity to radical vision, eccentricity, and the human
+                  cost of brilliance shaped the particular lens Rink brings to her
+                  work with women.
+                </p>
+                <p>
+                  It is a perspective that cannot be acquired from a course. It is
+                  earned.
                 </p>
               </div>
-            ))}
-          </div>
-
-          <div className="mt-14 border-t border-sand/50 pt-10">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div>
-                <p className="text-[14px] uppercase tracking-[0.18em] text-ink-quiet mb-2">
-                  Formats
-                </p>
-                <p className="text-[16px] text-ink-soft">
-                  Panel guest · Intimate fireside conversation ·
-                  Podcast guest
-                </p>
-              </div>
-              <div>
-                <p className="text-[14px] uppercase tracking-[0.18em] text-ink-quiet mb-2">
-                  Availability
-                </p>
-                <p className="text-[16px] text-ink-soft">
-                  Europe-wide · International on request
-                </p>
+            </div>
+            {/* Book cover — right side */}
+            <div className="hidden lg:flex items-start justify-center pt-2">
+              <div className="relative w-full max-w-[200px] aspect-[2/3]">
+                <Image
+                  src="/images/books/isabella-blow-cover.png"
+                  alt="Isabella Blow — A Life in Fashion"
+                  fill
+                  sizes="200px"
+                  className="object-contain drop-shadow-[0_12px_32px_rgba(0,0,0,0.4)]"
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── 7. Press biographies ─────────────────────────────── */}
-      <section className="bg-bone py-16 md:py-20">
-        <div className="container-content max-w-4xl">
-          <Eyebrow withLine>Press materials</Eyebrow>
-          <h2 className="mt-6 font-[family-name:var(--font-display)] italic text-[40px] text-ink">
-            Biographies.
-          </h2>
-          <p className="mt-4 text-[16px] text-ink-soft">
-            Three lengths for editorial use. Please do not edit without prior
-            approval.
-          </p>
+      {/* ══════════════════════════════════════════════════════
+          6 — SPEAKING
+      ══════════════════════════════════════════════════════ */}
+      <section id="speaking" className="bg-cream py-20 md:py-28 scroll-mt-20">
+        <div className="container-content">
+          <div className="max-w-4xl mb-14">
+            <Eyebrow withLine>Speaking</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+              For audiences of senior women.
+            </h2>
+            <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-2xl font-[family-name:var(--font-body)]">
+              Martina speaks for conferences, corporate retreats, and curated
+              evenings. Her talks are conversational, precisely argued, and
+              deliberately uncomfortable in the way that useful things tend to be.
+            </p>
+          </div>
 
-          <div className="mt-12 space-y-8">
-            {BIOS.map((bio) => (
-              <div key={bio.length} className="bg-cream p-8 md:p-10">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet mb-5">
-                  {bio.length} bio
+          <div className="grid md:grid-cols-2 gap-5 max-w-5xl">
+            {SPEAKING_TOPICS.map((topic, i) => (
+              <div
+                key={i}
+                className="group bg-bone border border-sand/40 p-8 md:p-10 hover:border-sand/70 hover:shadow-[0_4px_28px_rgba(61,26,92,0.07)] transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="h-px w-6 bg-pink shrink-0" aria-hidden />
+                  <span className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
+                    Topic {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <p className="font-[family-name:var(--font-display)] text-[19px] md:text-[20px] leading-snug text-ink mb-4">
+                  {topic.title}
                 </p>
-                <p className="text-[16px] leading-[1.8] text-ink-soft whitespace-pre-line">
+                <p className="text-[14px] leading-[1.75] text-ink-soft font-[family-name:var(--font-body)]">
+                  {topic.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          7 — FORMATS / AVAILABILITY
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-bone border-y border-sand/40 py-10 md:py-12">
+        <div className="container-content">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 max-w-4xl">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-3 font-[family-name:var(--font-body)]">
+                Formats
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {["Panel chair", "Panel guest", "Fireside conversation", "Podcast guest"].map((f) => (
+                  <span key={f} className="px-4 py-2 border border-sand/60 text-[11px] text-ink-soft font-[family-name:var(--font-body)] tracking-[0.06em]">
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-3 font-[family-name:var(--font-body)]">
+                Availability
+              </p>
+              <p className="text-[15px] text-ink-soft font-[family-name:var(--font-body)]">
+                Europe-wide · International on request
+              </p>
+              <a
+                href={`mailto:${SITE.email}`}
+                className="mt-2 inline-block text-[12px] uppercase tracking-[0.16em] text-plum hover:text-plum-deep transition-colors font-[family-name:var(--font-body)]"
+              >
+                Send a speaking enquiry →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          8 — PRESS MATERIALS / BIOS
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream py-20 md:py-28">
+        <div className="container-content">
+          <div className="max-w-4xl mb-14">
+            <Eyebrow withLine>Press materials</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+              Biographies.
+            </h2>
+            <p className="mt-4 text-[16px] text-ink-soft font-[family-name:var(--font-body)]">
+              Three lengths for editorial use. Please do not edit without prior approval.
+            </p>
+          </div>
+
+          <div className="space-y-4 max-w-4xl">
+            {BIOS.map((bio) => (
+              <div key={bio.length} className="bg-[#FAFAF7] border border-sand/40 p-8 md:p-10">
+                <div className="flex items-start justify-between gap-4 mb-5">
+                  <p className="text-[10px] uppercase tracking-[0.26em] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {bio.length} bio
+                  </p>
+                  <CopyButton text={bio.text} label="Copy bio" />
+                </div>
+                <p className="text-[15px] md:text-[16px] leading-[1.85] text-ink-soft font-[family-name:var(--font-body)] whitespace-pre-line">
                   {bio.text}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <GhostButton href="/contact">Request headshot</GhostButton>
-            <GhostButton href="/contact">Request hi-res book cover</GhostButton>
+          <div className="mt-10 flex flex-wrap gap-4 max-w-4xl">
+            <GhostButton href={`mailto:${SITE.email}?subject=Headshot request`}>
+              Request headshot
+            </GhostButton>
+            <GhostButton href={`mailto:${SITE.email}?subject=Hi-res book cover request`}>
+              Request hi-res book cover
+            </GhostButton>
           </div>
         </div>
       </section>
 
-      {/* ── 8. Literary representation ───────────────────────── */}
-      <section className="bg-cream py-14 md:py-16">
+      {/* ══════════════════════════════════════════════════════
+          9 — LITERARY REPRESENTATION
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-bone py-16 md:py-20">
         <div className="container-content max-w-3xl">
           <Eyebrow withLine>Literary representation</Eyebrow>
-          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[28px] text-ink">
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[26px] md:text-[30px] text-ink leading-snug">
             For rights and literary enquiries.
           </h2>
-          <div className="mt-8 bg-bone p-8 md:p-10">
-            <p className="font-[family-name:var(--font-display)] text-[20px] text-ink mb-1">
+          <div className="mt-8 bg-cream border border-sand/50 p-8 md:p-10">
+            <p className="font-[family-name:var(--font-display)] text-[22px] text-ink mb-1">
               Elisabeth Ruge Agentur GmbH
             </p>
-            <p className="text-[14px] text-ink-quiet mb-6">
+            <p className="text-[13px] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
               Rosenthaler Str. 34/35, 10178 Berlin, Germany
             </p>
-            <div className="space-y-2 text-[15px] text-ink-soft">
+            <div className="space-y-2 text-[15px] text-ink-soft font-[family-name:var(--font-body)]">
               <p>
                 Representative:{" "}
                 <span className="text-ink">Elisabeth Ruge</span>
@@ -819,7 +743,7 @@ export default async function PressPage() {
                 E-Mail:{" "}
                 <a
                   href="mailto:info@elisabeth-ruge-agentur.de"
-                  className="text-plum underline underline-offset-4"
+                  className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
                 >
                   info@elisabeth-ruge-agentur.de
                 </a>
@@ -830,79 +754,85 @@ export default async function PressPage() {
         </div>
       </section>
 
-      {/* ── 9. Selected work — case studies ─────────────────── */}
-      {(() => {
-        const displayCaseStudies =
-          caseStudies && caseStudies.length > 0
-            ? caseStudies
-            : FALLBACK_CASE_STUDIES;
-        return displayCaseStudies.length > 0 ? (
-        <section className="bg-cream py-16 md:py-20 border-t border-sand/30">
+      {/* ══════════════════════════════════════════════════════
+          10 — SELECTED WORK / CASE STUDIES
+      ══════════════════════════════════════════════════════ */}
+      {displayCaseStudies.length > 0 && (
+        <section className="bg-cream py-20 md:py-28 border-t border-sand/30">
           <div className="container-content">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mb-14">
               <Eyebrow withLine>Selected work</Eyebrow>
-              <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft max-w-2xl">
-                Three accounts, with permission, from women who agreed to share
-                the nature of the work. Pseudonyms throughout.
+              <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+                Private work. Three accounts.
+              </h2>
+              <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
+                Three accounts, with permission, from women who agreed to share the nature of the work. Pseudonyms throughout.
               </p>
-              <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {displayCaseStudies.slice(0, 3).map((cs) => (
-                  <CaseStudyCard
-                    key={cs._id}
-                    pseudonym={cs.pseudonym}
-                    industry={cs.industry}
-                    programme={cs.programme ?? ""}
-                    problemSnapshot={cs.problemSnapshot ?? ""}
-                    outcomeMarker={cs.outcomeMarker ?? ""}
-                    slug={cs.slug ?? cs._id}
-                  />
-                ))}
-              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {displayCaseStudies.slice(0, 3).map((cs) => (
+                <CaseStudyCard
+                  key={cs._id}
+                  pseudonym={cs.pseudonym}
+                  industry={cs.industry}
+                  programme={cs.programme ?? ""}
+                  problemSnapshot={cs.problemSnapshot ?? ""}
+                  outcomeMarker={cs.outcomeMarker ?? ""}
+                  slug={cs.slug ?? cs._id}
+                />
+              ))}
             </div>
           </div>
         </section>
-        ) : null;
-      })()}
+      )}
 
-      {/* ── 10. Press CTA ────────────────────────────────────── */}
-      <section className="bg-aubergine py-16 md:py-20">
-        <div className="container-content max-w-3xl">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-cream/60 mb-6">
-            Press &amp; speaking enquiries
-          </p>
-          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-cream">
-            {ctaLabel ?? "For press interviews, podcast conversations, and speaking engagements."}
-          </h2>
-          <p className="mt-6 text-[17px] leading-[1.75] text-cream/80">
-            Write directly to Martina. She responds to press and speaking
-            requests personally.
-          </p>
-          <a
-            href={ctaUrl ?? `mailto:${SITE.email}`}
-            className="mt-8 inline-block font-[family-name:var(--font-display)] italic text-[24px] text-cream underline decoration-cream/40 decoration-1 underline-offset-[6px] hover:decoration-cream transition-colors"
-          >
-            {SITE.email}
-          </a>
-          <p className="mt-10 text-[14px] uppercase tracking-[0.18em] text-cream/50">
-            Tel: +49 (0) 172 174 1499
-          </p>
-          <p className="mt-3 text-[13px] text-cream/40">
-            Response within 48 hours on working days.
-          </p>
-        </div>
-      </section>
+      {/* ══════════════════════════════════════════════════════
+          11 — FINAL PRESS CTA
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-aubergine py-20 md:py-28">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-end max-w-5xl">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-cream/50 mb-6 font-[family-name:var(--font-body)]">
+                Press &amp; speaking enquiries
+              </p>
+              <h2 className="font-[family-name:var(--font-display)] text-[32px] md:text-[42px] lg:text-[48px] leading-[1.05] tracking-[-0.02em] text-cream">
+                For press interviews, podcast conversations, and speaking engagements.
+              </h2>
+              <p className="mt-6 text-[17px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-xl">
+                Write directly to Martina. She responds to press and speaking requests personally.
+              </p>
+              <div className="mt-10 space-y-3 font-[family-name:var(--font-body)]">
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="block font-[family-name:var(--font-display)] italic text-[22px] md:text-[26px] text-cream hover:text-pink transition-colors duration-200"
+                >
+                  {SITE.email}
+                </a>
+                <p className="text-[13px] uppercase tracking-[0.18em] text-cream/45">
+                  Tel: +49 (0) 172 174 1499
+                </p>
+                <p className="text-[13px] text-cream/35">
+                  Response within 48 hours on working days.
+                </p>
+              </div>
+            </div>
+            <div className="lg:pb-2">
+              <PlumButton href={`mailto:${SITE.email}`}>
+                Write to Martina
+              </PlumButton>
+            </div>
+          </div>
 
-      {/* ── 10. Reassurance footer ───────────────────────────── */}
-      <section className="bg-cream py-16">
-        <div className="container-content max-w-3xl">
-          <div className="border-t border-sand/60 pt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <p className="text-[14px] text-ink-quiet">
+          {/* Footer nav strip */}
+          <div className="mt-16 pt-8 border-t border-cream/10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-[13px] text-cream/30 font-[family-name:var(--font-body)]">
               Martina Rink — UG (haftungsbeschränkt), Karlsruhe
             </p>
-            <div className="flex gap-6 text-[14px]">
-              <Link href="/about" className="text-ink-quiet hover:text-ink transition-colors">About</Link>
-              <Link href="/writing" className="text-ink-quiet hover:text-ink transition-colors">Writing</Link>
-              <Link href="/work-with-me" className="text-ink-quiet hover:text-ink transition-colors">Work with me</Link>
+            <div className="flex gap-6 text-[13px] font-[family-name:var(--font-body)]">
+              <Link href="/about"        className="text-cream/40 hover:text-cream/80 transition-colors">About</Link>
+              <Link href="/writing"      className="text-cream/40 hover:text-cream/80 transition-colors">Writing</Link>
+              <Link href="/work-with-me" className="text-cream/40 hover:text-cream/80 transition-colors">Work with me</Link>
             </div>
           </div>
         </div>
