@@ -350,7 +350,7 @@ export default async function HomePage() {
             {[
               {
                 title: "Isabella Blow — A Life in Fashion",
-                meta:  "PRESTEL · 2014",
+                meta:  "THAMES & HUDSON · 2010",
                 src:   "/images/books/isabella-blow-cover.png",
                 alt:   "Book cover of Isabella Blow — A Life in Fashion by Martina Rink",
               },
