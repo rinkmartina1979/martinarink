@@ -134,8 +134,9 @@ const BIOS = [
 ];
 
 const MEDIA_OUTLETS = [
-  "Der Spiegel", "Brigitte", "STERN", "Vogue Germany",
-  "ELLE Germany", "Die Zeit", "Süddeutsche Zeitung", "Manager Magazin",
+  "Deutsche Welle", "Deutschlandfunk Nova", "WDR", "SWR",
+  "Glamour Germany", "Strive", "Woman", "House Magazine",
+  "Perspective Daily", "Prestel", "Fondation Cartier", "Tiffany & Co",
 ];
 
 /* ─── Helpers ─────────────────────────────────────────────── */
@@ -333,6 +334,274 @@ export default async function PressPage() {
           </div>
         </section>
       )}
+
+      {/* ── 3b. Press coverage wall — three books ────────────── */}
+      <section className="bg-bone py-20 md:py-28">
+        <div className="container-content">
+          <div className="max-w-5xl mx-auto">
+            <Eyebrow withLine>Media coverage</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+              On the record.
+            </h2>
+            <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-xl">
+              Three books. Two decades of editorial work. A selection of the coverage across print, radio, television, and digital.
+            </p>
+          </div>
+
+          {/* ── People of Deutschland ── */}
+          <div className="mt-16 md:mt-20 max-w-5xl mx-auto">
+            <div className="flex items-center gap-5 mb-8">
+              <span className="h-px w-8 bg-pink" aria-hidden />
+              <span className="text-[10px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
+                People of Deutschland · 2023
+              </span>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  outlet: "Deutsche Welle",
+                  tag: "DW · Reportage",
+                  headline: '„People of Deutschland“: Der alltägliche Rassismus',
+                  note: "Cover story with full feature",
+                  url: "https://www.dw.com/de/people-of-deutschland-der-allt%C3%A4gliche-rassismus/a-64900990",
+                },
+                {
+                  outlet: "Deutschlandfunk Nova",
+                  tag: "Radio",
+                  headline: 'Kreativmanager Simon Usifo: „Wir sollten mehr zuhören"',
+                  note: "22 März 2023",
+                  url: null,
+                },
+                {
+                  outlet: "SWR",
+                  tag: "Radio · Television",
+                  headline: "Martina Rink und Simon Usifo — Das können wir gegen Diskriminierung tun",
+                  note: "07 Feb 2023 · SWR Leute",
+                  url: null,
+                },
+                {
+                  outlet: "WDR",
+                  tag: "Public Broadcasting",
+                  headline: "Feature coverage of People of Deutschland",
+                  note: "Radio & online",
+                  url: null,
+                },
+                {
+                  outlet: "Strive Magazine",
+                  tag: "Print · Business",
+                  headline: "Entrepreneurs, identities, and the German creative scene",
+                  note: "BRAIN section · 2023",
+                  url: null,
+                },
+                {
+                  outlet: "Perspective Daily",
+                  tag: "Online · Long-read",
+                  headline: '„Wo ist der Professor, der Arzt, der Anwalt, der so aussieht wie ich?"',
+                  note: "October 2023 · von Benjamin Fuchs",
+                  url: null,
+                },
+              ].map((item) => (
+                <div
+                  key={item.outlet}
+                  className="group bg-cream border-l-[3px] border-l-sand/40 hover:border-l-pink p-7 transition-all duration-300 hover:shadow-[0_4px_28px_rgba(61,26,92,0.08)]"
+                >
+                  <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet/70 font-[family-name:var(--font-body)] mb-3">
+                    {item.tag}
+                  </p>
+                  <p className="font-[family-name:var(--font-display)] text-[16px] font-semibold text-ink leading-snug mb-2">
+                    {item.outlet}
+                  </p>
+                  <p className="font-[family-name:var(--font-display)] italic text-[14px] leading-[1.6] text-ink-soft mb-3">
+                    {item.headline}
+                  </p>
+                  <p className="text-[11px] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {item.note}
+                  </p>
+                  {item.url && (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-block text-[11px] uppercase tracking-[0.18em] text-plum hover:text-plum-deep font-[family-name:var(--font-body)] transition-colors"
+                    >
+                      Read article →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Isabella Blow ── */}
+          <div className="mt-16 md:mt-20 max-w-5xl mx-auto">
+            <div className="flex items-center gap-5 mb-8">
+              <span className="h-px w-8 bg-pink" aria-hidden />
+              <span className="text-[10px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
+                Isabella Blow — A Life in Fashion · 2010
+              </span>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  outlet: "χίλιες και μια ιδέες",
+                  tag: "Greece · Print",
+                  headline: "International feature on Isabella Blow and the biography",
+                  note: "Full spread, Greece",
+                  url: null,
+                },
+                {
+                  outlet: "House Magazine",
+                  tag: "UK · Print · Issue 13",
+                  headline: "Company Fashion Spotlight — Martina Rink",
+                  note: "Winter 2016 · The Outsiders and Absentees Issue",
+                  url: null,
+                },
+                {
+                  outlet: "Elara Magazine",
+                  tag: "International · Print",
+                  headline: "Feature profile and interview",
+                  note: "Cover feature",
+                  url: null,
+                },
+                {
+                  outlet: "Tiffany & Co",
+                  tag: "Event coverage",
+                  headline: "Launch event — with Claudia Schiffer, Christiane Arp, Jette Joop",
+                  note: "Berlin · International press",
+                  url: null,
+                },
+                {
+                  outlet: "Christoph Meister Events",
+                  tag: "Society coverage",
+                  headline: "Book launch and cultural evening",
+                  note: "Munich · 2010",
+                  url: null,
+                },
+                {
+                  outlet: "International Press",
+                  tag: "Multi-territory",
+                  headline: "Coverage across DE, UK, US, GR, and the Middle East",
+                  note: "Spiegel Bestseller on publication",
+                  url: null,
+                },
+              ].map((item) => (
+                <div
+                  key={item.outlet}
+                  className="group bg-cream border-l-[3px] border-l-sand/40 hover:border-l-pink p-7 transition-all duration-300 hover:shadow-[0_4px_28px_rgba(61,26,92,0.08)]"
+                >
+                  <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet/70 font-[family-name:var(--font-body)] mb-3">
+                    {item.tag}
+                  </p>
+                  <p className="font-[family-name:var(--font-display)] text-[16px] font-semibold text-ink leading-snug mb-2">
+                    {item.outlet}
+                  </p>
+                  <p className="font-[family-name:var(--font-display)] italic text-[14px] leading-[1.6] text-ink-soft mb-3">
+                    {item.headline}
+                  </p>
+                  <p className="text-[11px] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {item.note}
+                  </p>
+                  {item.url && (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-block text-[11px] uppercase tracking-[0.18em] text-plum hover:text-plum-deep font-[family-name:var(--font-body)] transition-colors"
+                    >
+                      Read article →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Fashion Germany ── */}
+          <div className="mt-16 md:mt-20 max-w-5xl mx-auto">
+            <div className="flex items-center gap-5 mb-8">
+              <span className="h-px w-8 bg-pink" aria-hidden />
+              <span className="text-[10px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
+                Fashion Germany · 2014
+              </span>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  outlet: "Glamour Germany",
+                  tag: "Print · August 2014",
+                  headline: "Fashion Germany — a portrait of German style",
+                  note: "Full feature, national edition",
+                  url: null,
+                },
+                {
+                  outlet: "Woman Magazine",
+                  tag: "Print · Austria",
+                  headline: "Auf Wiener Buchkräusung — Fashion Talk with Martina Rink",
+                  note: "Auflagen: 150,914",
+                  url: null,
+                },
+                {
+                  outlet: "Fondation Cartier",
+                  tag: "Exhibition · Paris",
+                  headline: "Kreatives Deutschland — Fashion Germany in cultural context",
+                  note: "Freie Fondation Cartier feature, 2014",
+                  url: null,
+                },
+                {
+                  outlet: "Prestel Verlag",
+                  tag: "Publisher feature",
+                  headline: "Kreatives Deutschland — Die Autorin Martina Rink stellt vor",
+                  note: "Publisher's spotlight on publication",
+                  url: null,
+                },
+                {
+                  outlet: "Himmlisch Schön",
+                  tag: "Print · Fashion",
+                  headline: "Deutsche Mode — Laser, Fashion Germany, and the new German aesthetic",
+                  note: "Full spread feature",
+                  url: null,
+                },
+                {
+                  outlet: "Ganz mein Stil",
+                  tag: "Print · Lifestyle",
+                  headline: "Katharina Blenisses — Stilberaterin trifft Frauen jeden Alters",
+                  note: "Beachrobe edition · 2014",
+                  url: null,
+                },
+              ].map((item) => (
+                <div
+                  key={item.outlet}
+                  className="group bg-cream border-l-[3px] border-l-sand/40 hover:border-l-pink p-7 transition-all duration-300 hover:shadow-[0_4px_28px_rgba(61,26,92,0.08)]"
+                >
+                  <p className="text-[9px] uppercase tracking-[0.28em] text-ink-quiet/70 font-[family-name:var(--font-body)] mb-3">
+                    {item.tag}
+                  </p>
+                  <p className="font-[family-name:var(--font-display)] text-[16px] font-semibold text-ink leading-snug mb-2">
+                    {item.outlet}
+                  </p>
+                  <p className="font-[family-name:var(--font-display)] italic text-[14px] leading-[1.6] text-ink-soft mb-3">
+                    {item.headline}
+                  </p>
+                  <p className="text-[11px] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {item.note}
+                  </p>
+                  {item.url && (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-block text-[11px] uppercase tracking-[0.18em] text-plum hover:text-plum-deep font-[family-name:var(--font-body)] transition-colors"
+                    >
+                      Read article →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       {/* ── 4. Books ─────────────────────────────────────────── */}
       <section className="bg-cream py-16 md:py-20">
