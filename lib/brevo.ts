@@ -111,7 +111,8 @@ export type BrevoEventName =
   // Automation 8 — fires when an application is submitted via /api/apply.
   // Drives the immediate applicant-facing autoresponder that bridges the
   // 48hr wait between submission and Martina's personal reply.
-  | "application_submitted";
+  | "application_submitted"
+  | "intake_submitted";
 
 interface BrevoEventOptions {
   email: string;
