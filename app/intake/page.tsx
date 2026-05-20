@@ -19,12 +19,13 @@ const PROGRAMME_LABELS: Record<Programme, string> = {
   consultation:   "Private Consultation",
 };
 
-export default function IntakePage({
+export default async function IntakePage({
   searchParams,
 }: {
-  searchParams: { programme?: string };
+  searchParams: Promise<{ programme?: string }>;
 }) {
-  const rawProgramme = searchParams?.programme;
+  const params = await searchParams;
+  const rawProgramme = params?.programme;
   const programme: Programme = VALID_PROGRAMMES.includes(rawProgramme as Programme)
     ? (rawProgramme as Programme)
     : "sober-muse";
