@@ -308,7 +308,7 @@ export default async function AboutPage() {
             </h2>
           ) : (
             <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
-              This is private work. It is serious. And it is available to women
+              This is private work. It is serious, and it is available to women
               who are ready for it.
             </h2>
           )}
