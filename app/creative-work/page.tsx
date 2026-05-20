@@ -12,6 +12,27 @@ export const metadata: Metadata = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// AMAZON ICON — inline SVG, 16×16
+// ─────────────────────────────────────────────────────────────────────────────
+function AmazonIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="currentColor"
+      aria-hidden="true"
+      className="opacity-80 flex-shrink-0"
+    >
+      <path d="M13.958 10.09c0 1.232.029 2.256-.591 3.351-.502.891-1.301 1.438-2.186 1.438-1.214 0-1.922-.924-1.922-2.292 0-2.692 2.415-3.182 4.699-3.182v.685zm3.186 7.705c-.209.189-.512.201-.745.074-1.052-.872-1.238-1.276-1.814-2.106-1.734 1.767-2.962 2.297-5.209 2.297-2.66 0-4.731-1.641-4.731-4.925 0-2.565 1.391-4.309 3.37-5.164 1.715-.754 4.11-.891 5.942-1.095V6.45c0-.7.054-1.528-.357-2.133-.355-.539-1.038-.763-1.637-.763-1.113 0-2.11.571-2.352 1.752-.05.265-.243.524-.507.537l-2.84-.307c-.238-.053-.502-.246-.434-.612C6.387 2.386 8.567 1.5 11.051 1.5c1.28 0 2.956.341 3.972 1.31 1.28 1.196 1.157 2.793 1.157 4.532v4.103c0 1.233.511 1.775 .991 2.44.17.239.206.525-.008.701-.538.449-1.494 1.283-2.02 1.75l.001-.041z"/>
+      <path d="M20.483 18.524c-2.222 1.648-5.447 2.526-8.222 2.526-3.889 0-7.391-1.439-10.04-3.826-.207-.188-.023-.444.227-.298 2.859 1.662 6.396 2.666 10.048 2.666 2.463 0 5.17-.512 7.662-1.569.377-.16.693.246.325.501z"/>
+      <path d="M21.484 17.364c-.283-.363-1.874-.172-2.587-.087-.218.026-.25-.163-.056-.299 1.266-.889 3.346-.633 3.587-.335.243.301-.063 2.389-1.252 3.385-.182.152-.355.071-.275-.129.267-.667.865-2.172.583-2.535z"/>
+    </svg>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // BOOK COVER STAGE — large, padded, bg-bone, never cropped
 // ─────────────────────────────────────────────────────────────────────────────
 function CoverStage({
@@ -534,6 +555,159 @@ export default function CreativeWorkPage() {
               ]}
             />
           </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          OWN THE WORK — AMAZON PURCHASE SECTION
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-ink py-24 lg:py-32">
+        <div className="container-content">
+
+          {/* Header */}
+          <div className="max-w-2xl mx-auto text-center mb-16 lg:mb-20">
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <span className="h-px w-10 bg-pink/50" aria-hidden />
+              <p className="text-[10px] uppercase tracking-[0.34em] text-cream/50 font-[family-name:var(--font-body)]">
+                Available in print
+              </p>
+              <span className="h-px w-10 bg-pink/50" aria-hidden />
+            </div>
+            <h2 className="font-[family-name:var(--font-display)] text-[42px] md:text-[56px] leading-[1.0] tracking-[-0.015em] text-cream">
+              Own the work.
+            </h2>
+            <p className="mt-6 text-[16px] leading-[1.8] text-cream/55 font-[family-name:var(--font-body)] max-w-lg mx-auto">
+              Three books written across two decades. Each one a document of
+              a world that was worth paying close attention to.
+            </p>
+          </div>
+
+          {/* Book cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+
+            {/* ── People of Deutschland ── */}
+            <article className="group flex flex-col bg-cream/[0.04] border border-cream/10 hover:border-pink/40 transition-all duration-300">
+
+              {/* Cover */}
+              <div className="relative bg-[#1a1610] flex items-center justify-center px-10 pt-12 pb-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+                <Image
+                  src="/images/books/people-of-deutschland-cover.png"
+                  alt="People of Deutschland — book cover by Martina Rink"
+                  width={400}
+                  height={560}
+                  className="relative z-10 w-full max-w-[200px] mx-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] group-hover:scale-[1.03] transition-transform duration-500 object-contain"
+                />
+              </div>
+
+              {/* Info */}
+              <div className="flex flex-col flex-1 p-8 lg:p-10">
+                <p className="text-[9px] uppercase tracking-[0.3em] text-pink/70 font-[family-name:var(--font-body)] mb-3">
+                  Prestel · Random House · 2023
+                </p>
+                <h3 className="font-[family-name:var(--font-display)] text-[22px] leading-snug text-cream mb-4">
+                  People of Deutschland
+                </h3>
+                <p className="text-[14px] leading-[1.75] text-cream/50 font-[family-name:var(--font-body)] flex-1">
+                  A portrait of contemporary Germany told through thirty-five women
+                  of influence. Spiegel bestseller. Photography, culture, and a
+                  country seen from the inside.
+                </p>
+                <a
+                  href="https://www.amazon.de/exec/obidos/ASIN/3959103980/edel_fb_edenbooks-21"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center justify-center gap-3 bg-plum hover:bg-plum-deep text-cream text-[11px] uppercase tracking-[0.22em] font-[family-name:var(--font-body)] py-4 px-6 rounded-[1px] transition-colors duration-200"
+                >
+                  <AmazonIcon />
+                  Order on Amazon
+                </a>
+              </div>
+            </article>
+
+            {/* ── Isabella Blow ── */}
+            <article className="group flex flex-col bg-cream/[0.04] border border-cream/10 hover:border-pink/40 transition-all duration-300">
+
+              <div className="relative bg-[#1a1610] flex items-center justify-center px-10 pt-12 pb-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+                <Image
+                  src="/images/books/isabella-blow-cover.png"
+                  alt="Isabella Blow — A Life in Fashion, book cover by Martina Rink"
+                  width={400}
+                  height={560}
+                  className="relative z-10 w-full max-w-[200px] mx-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] group-hover:scale-[1.03] transition-transform duration-500 object-contain"
+                />
+              </div>
+
+              <div className="flex flex-col flex-1 p-8 lg:p-10">
+                <p className="text-[9px] uppercase tracking-[0.3em] text-pink/70 font-[family-name:var(--font-body)] mb-3">
+                  Thames &amp; Hudson · 2010
+                </p>
+                <h3 className="font-[family-name:var(--font-display)] text-[22px] leading-snug text-cream mb-4">
+                  Isabella Blow —<br />A Life in Fashion
+                </h3>
+                <p className="text-[14px] leading-[1.75] text-cream/50 font-[family-name:var(--font-body)] flex-1">
+                  The definitive visual biography of fashion&rsquo;s most singular
+                  patron. Intimate, meticulous, and unlike anything published on
+                  the subject before or since.
+                </p>
+                <a
+                  href="https://www.amazon.de/Isabella-Blow-Martina-Rink/dp/0500515352/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center justify-center gap-3 bg-plum hover:bg-plum-deep text-cream text-[11px] uppercase tracking-[0.22em] font-[family-name:var(--font-body)] py-4 px-6 rounded-[1px] transition-colors duration-200"
+                >
+                  <AmazonIcon />
+                  Order on Amazon
+                </a>
+              </div>
+            </article>
+
+            {/* ── Fashion Germany ── */}
+            <article className="group flex flex-col bg-cream/[0.04] border border-cream/10 hover:border-pink/40 transition-all duration-300">
+
+              <div className="relative bg-[#1a1610] flex items-center justify-center px-10 pt-12 pb-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+                <Image
+                  src="/images/books/fashion-germany-cover.png"
+                  alt="Fashion Germany — book cover by Martina Rink"
+                  width={400}
+                  height={560}
+                  className="relative z-10 w-full max-w-[200px] mx-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] group-hover:scale-[1.03] transition-transform duration-500 object-contain"
+                />
+              </div>
+
+              <div className="flex flex-col flex-1 p-8 lg:p-10">
+                <p className="text-[9px] uppercase tracking-[0.3em] text-pink/70 font-[family-name:var(--font-body)] mb-3">
+                  Prestel · Random House · 2014
+                </p>
+                <h3 className="font-[family-name:var(--font-display)] text-[22px] leading-snug text-cream mb-4">
+                  Fashion Germany
+                </h3>
+                <p className="text-[14px] leading-[1.75] text-cream/50 font-[family-name:var(--font-body)] flex-1">
+                  An inside document of the German fashion industry — the
+                  creative directors, photographers, stylists, and editors
+                  who built it from the ground up.
+                </p>
+                <a
+                  href="https://www.amazon.de/Fashion-Germany-Kreative-Stories-Trends/dp/3791348884/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center justify-center gap-3 bg-plum hover:bg-plum-deep text-cream text-[11px] uppercase tracking-[0.22em] font-[family-name:var(--font-body)] py-4 px-6 rounded-[1px] transition-colors duration-200"
+                >
+                  <AmazonIcon />
+                  Order on Amazon
+                </a>
+              </div>
+            </article>
+
+          </div>
+
+          {/* Footnote */}
+          <p className="mt-12 text-center text-[11px] tracking-[0.12em] text-cream/25 font-[family-name:var(--font-body)]">
+            Links open Amazon.de
+          </p>
+
         </div>
       </section>
 
