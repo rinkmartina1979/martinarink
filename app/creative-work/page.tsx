@@ -1,333 +1,441 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { PlumButton } from "@/components/brand/PlumButton";
-import { GhostButton } from "@/components/brand/GhostButton";
-import { buildMetadata, bookSchema, breadcrumbSchema } from "@/lib/metadata";
-import { getCreativeWorkPage } from "@/sanity/lib/queries";
+import { ScriptAccent } from "@/components/brand/ScriptAccent";
 
-const BOOKS = [
-  bookSchema({
-    name: "People of Deutschland",
-    publisher: "Prestel Verlag",
-    publicationYear: "2022",
-    imagePath: "/images/books/people-of-deutschland-cover.png",
-    description:
-      "A Spiegel Bestseller exploring identity, belonging, and what it means to be German today — through 45 portraits and conversations.",
-    isbn: "978-3791388458",
-  }),
-  bookSchema({
-    name: "Isabella Blow — A Life in Fashion",
-    publisher: "Prestel Verlag",
-    publicationYear: "2014",
-    imagePath: "/images/books/isabella-blow-cover.png",
-    description:
-      "An intimate portrait of fashion legend Isabella Blow, written by her personal assistant and one of the only people granted close access to her life and archive.",
-    isbn: "978-3791349336",
-  }),
-  bookSchema({
-    name: "Fashion Germany",
-    publisher: "Prestel Verlag",
-    publicationYear: "2020",
-    imagePath: "/images/books/fashion-germany-cover.png",
-    description:
-      "A definitive volume on contemporary German fashion — the designers, houses, and creative movements shaping a new generation of style.",
-    isbn: "978-3791385969",
-  }),
-];
+export const metadata: Metadata = {
+  title: "Creative Work — Martina Rink",
+  description:
+    "Three books. People of Deutschland, Isabella Blow, and Fashion Germany — the publishing work of Martina Rink.",
+};
 
-const BREADCRUMBS = breadcrumbSchema([
-  { name: "Creative Work", path: "/creative-work" },
-]);
-
-export async function generateMetadata(): Promise<Metadata> {
-  const data = await getCreativeWorkPage();
-  if (data?.seo?.seoTitle) {
-    return buildMetadata({
-      title: data.seo.seoTitle,
-      description: data.seo.seoDescription ?? undefined,
-      path: "/creative-work",
-    });
-  }
-  return buildMetadata({
-    title: "Creative Work",
-    description:
-      "A selection of Martina Rink's editorial and creative work — People of Deutschland, Isabella Blow, and Fashion Germany.",
-    path: "/creative-work",
-  });
+// ── Interior spread gallery ────────────────────────────────────────────────────
+function SpreadGallery({
+  images,
+}: {
+  images: { src: string; width: number; height: number; alt: string }[];
+}) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {images.map((img) => (
+        <div key={img.src} className="relative bg-bone overflow-hidden">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={img.width}
+            height={img.height}
+            className="w-full h-auto object-contain"
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+        </div>
+      ))}
+    </div>
+  );
 }
 
-export default async function CreativeWorkPage() {
-  const data = await getCreativeWorkPage();
+// ── Event photo strip ──────────────────────────────────────────────────────────
+function EventStrip({
+  images,
+  credit,
+}: {
+  images: { src: string; width: number; height: number; alt: string }[];
+  credit?: string;
+}) {
+  return (
+    <div className="mt-12">
+      {credit && (
+        <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4 font-[family-name:var(--font-body)]">
+          Photo credit: {credit}
+        </p>
+      )}
+      <div
+        className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory"
+        style={{ scrollbarWidth: "thin" }}
+      >
+        {images.map((img) => (
+          <div
+            key={img.src}
+            className="flex-shrink-0 snap-start relative overflow-hidden bg-bone"
+            style={{ width: 300, height: 200 }}
+          >
+            <Image
+              src={img.src}
+              alt={img.alt}
+              fill
+              className="object-cover"
+              sizes="300px"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  const eyebrow = data?.eyebrow ?? "Creative Work";
-  const heroHeadline =
-    data?.heroHeadline ?? "Before the practice, there was an eye.";
-  const heroSubheadline =
-    data?.heroSubheadline ??
-    "A selection of editorial and creative work from the years before this practice took its current form.";
-  const introCopy =
-    data?.introCopy ??
-    "Photography. Fashion. A decade in London, Berlin, and beyond. The work that preceded the work.";
+// ── Section title band ─────────────────────────────────────────────────────────
+function BookBand({
+  title,
+  year,
+  publisher,
+}: {
+  title: string;
+  year: string;
+  publisher?: string;
+}) {
+  return (
+    <div className="bg-aubergine py-7 px-6">
+      <div className="container-content flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-8">
+        <h2
+          className="font-[family-name:var(--font-display)] text-[32px] md:text-[44px]
+                     tracking-[-0.01em] leading-tight text-cream"
+        >
+          {title}
+        </h2>
+        <div className="flex items-center gap-4">
+          <span className="h-px w-8 bg-pink/60" aria-hidden />
+          <span className="text-[10px] uppercase tracking-[0.28em] text-cream/50 font-[family-name:var(--font-body)]">
+            {year}
+            {publisher ? ` · ${publisher}` : ""}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  const pod = data?.peopleOfDeutschland;
-  const ib = data?.isabellaBlow;
-  const fg = data?.fashionGermany;
-  const closing = data?.closingSection;
-
+export default function CreativeWorkPage() {
   return (
     <>
-      {/* ─── SCHEMA — three Book entities + breadcrumbs ─────── */}
-      {BOOKS.map((b, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(b) }}
-        />
-      ))}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMBS) }}
-      />
-
-      {/* ─── HERO ─────────────────────────────────────────────── */}
-      <section className="bg-cream pt-32 md:pt-40 pb-20">
-        <div className="container-content max-w-3xl">
-          <Eyebrow withLine>{eyebrow}</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[64px] leading-[1.0] tracking-[-0.015em] text-ink">
-            {heroHeadline}
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="bg-aubergine pt-32 md:pt-44 pb-20 md:pb-28">
+        <div className="container-content max-w-4xl">
+          <Eyebrow className="text-cream/50">Published Work</Eyebrow>
+          <h1
+            className="mt-6 font-[family-name:var(--font-display)]
+                       text-[56px] md:text-[88px] lg:text-[104px]
+                       leading-[0.96] tracking-[-0.025em] text-cream"
+          >
+            Creative
+            <br />
+            <em className="italic">work.</em>
           </h1>
-          <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[540px]">
-            {heroSubheadline}
-          </p>
-          <p className="mt-6 text-[17px] leading-[1.7] text-ink-soft max-w-[540px]">
-            {introCopy}
+          <div className="mt-6 flex items-center gap-5">
+            <span className="h-px w-16 bg-pink/50" aria-hidden />
+            <ScriptAccent className="text-[2rem] text-pink leading-none">
+              three books.
+            </ScriptAccent>
+          </div>
+          <p
+            className="mt-10 text-[17px] leading-[1.75] text-cream/65 max-w-[560px]
+                        font-[family-name:var(--font-body)]"
+          >
+            Three books written and photographed across two decades — a body of work
+            on identity, fashion, and the culture that shapes both.
           </p>
         </div>
       </section>
 
-      {/* ─── ISABELLA BLOW ────────────────────────────────────── */}
+      {/* ══════════════════════════════════════════════════════
+          01 — PEOPLE OF DEUTSCHLAND
+      ══════════════════════════════════════════════════════ */}
+      <BookBand title="People of Deutschland" year="2023" publisher="Spiegel Bestseller" />
+
       <section className="bg-cream section-pad">
         <div className="container-content">
-          <div className="max-w-2xl">
-            <div>
-              <Eyebrow>{ib?.heading ?? "Isabella Blow"}</Eyebrow>
-              <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] text-ink">
-                {ib?.heading ?? "Isabella Blow"}
-              </h2>
-              {ib?.body ? (
-                <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft">
-                  {ib.body.split("\n").filter(Boolean).map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
-              ) : (
-                <p className="mt-8 text-[17px] leading-[1.7] text-ink-soft">
-                  Personal assistant to Isabella Blow in London — a period that shaped an understanding of style as a form of identity, of dressing as a declaration of inner life. The most formative years professionally.
-                </p>
-              )}
 
-              {(ib?.quote || ib?.quoteSource) && (
-                <div className="mt-10 border-l-2 border-pink pl-6">
-                  {ib.quote && (
-                    <blockquote className="font-[family-name:var(--font-display)] italic text-[20px] leading-[1.45] text-ink">
-                      &ldquo;{ib.quote}&rdquo;
-                    </blockquote>
-                  )}
-                  {ib.quoteSource && (
-                    <p className="mt-4 text-[12px] uppercase tracking-[0.18em] text-ink-quiet">
-                      — {ib.quoteSource}
-                    </p>
-                  )}
-                </div>
-              )}
+          {/* Cover + intro */}
+          <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
 
-              {ib?.photoCredit && (
-                <p className="mt-8 text-[12px] text-ink-quiet uppercase tracking-[0.15em]">
-                  {ib.photoCredit}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── PEOPLE OF DEUTSCHLAND ───────────────────────────── */}
-      <section className="bg-bone section-pad">
-        <div className="container-content">
-          <div className="max-w-2xl">
-            <Eyebrow>
-              {pod?.heading ?? "People of Deutschland"}
-            </Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] text-ink">
-              {pod?.heading ?? "People of Deutschland"}
-            </h2>
-            {pod?.body && (
-              <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft">
-                {pod.body.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-            )}
-            {!pod?.body && (
-              <p className="mt-8 text-[17px] leading-[1.7] text-ink-soft">
-                A photographic portrait series documenting contemporary German identity — the faces, the postures, the particular quiet of a country still becoming itself.
-              </p>
-            )}
-          </div>
-
-          {/* Gallery placeholder or images */}
-          {pod?.imageGallery && pod.imageGallery.length > 0 ? (
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {pod.imageGallery.map((img, i) => (
-                <div key={i} className="aspect-[3/4] bg-sand/30 overflow-hidden">
-                  {/* Images will render via next/image when Sanity is live */}
-                  <div className="w-full h-full flex items-center justify-center text-ink-quiet text-[11px] uppercase tracking-[0.15em]">
-                    {img.alt || "Image"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {[
-                { src: "/images/portraits/martina-event-editorial.jpg", label: "Berlin, 2018" },
-                { src: "/images/portraits/martina-cafe-editorial.jpg", label: "Hamburg, 2018" },
-                { src: "/images/portraits/martina-portrait-pink-blouse.jpg", label: "Munich, 2019" },
-                { src: "/images/books/people-of-deutschland-cover.png", label: "Cover" },
-                { src: "/images/portraits/martina-home-working.jpg", label: "Frankfurt, 2018" },
-                { src: "/images/portraits/martina-event-plum.png", label: "Cologne, 2019" },
-              ].map((item, i) => (
-                <div key={i} className="relative aspect-[3/4] bg-sand/20 overflow-hidden">
-                  <Image
-                    src={item.src}
-                    alt={item.label}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    className="object-cover object-center"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {pod?.photoCredit && (
-            <p className="mt-6 text-[12px] text-ink-quiet uppercase tracking-[0.15em]">
-              {pod.photoCredit}
-            </p>
-          )}
-        </div>
-      </section>
-
-      {/* ─── FASHION GERMANY ──────────────────────────────────── */}
-      <section className="bg-ink section-pad">
-        <div className="container-content">
-          <div className="max-w-2xl mx-auto text-center">
-            <Eyebrow className="justify-center">
-              <span className="text-cream/60">{fg?.heading ?? "Fashion Germany"}</span>
-            </Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] text-cream">
-              {fg?.heading ?? "Fashion Germany"}
-            </h2>
-            {fg?.body ? (
-              <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-cream/80">
-                {fg.body.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-8 text-[17px] leading-[1.7] text-cream/80">
-                Editorial work for German fashion publications — a period of close attention to how women present themselves, to the distance between how they look and what they feel.
-              </p>
-            )}
-          </div>
-
-          {fg?.imageGallery && fg.imageGallery.length > 0 ? (
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3">
-              {fg.imageGallery.map((img, i) => (
-                <div key={i} className="aspect-[2/3] bg-ink-soft/30 overflow-hidden">
-                  <div className="w-full h-full flex items-center justify-center text-cream/30 text-[11px] uppercase tracking-[0.15em]">
-                    {img.alt || "Image"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            /* ── EDITORIAL ARCHIVE LAYOUT ── */
-            <div className="mt-12 space-y-[6px]">
-              {/* Row 1 — bookshelf lifestyle, full width */}
-              <div className="relative overflow-hidden h-[240px] md:h-[420px]">
+            <div className="md:col-span-4 lg:col-span-3">
+              <div className="shadow-xl">
                 <Image
-                  src="/images/portraits/fashion-germany-bookshelf.png"
-                  alt="Fashion Germany by Martina Rink — on shelf"
-                  fill
-                  sizes="(min-width: 1280px) 1280px, 100vw"
-                  className="object-cover object-center"
+                  src="/images/creative-work/pod-1.png"
+                  alt="People of Deutschland — book cover by Martina Rink"
+                  width={1414}
+                  height={2000}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 90vw, 320px"
+                  priority
                 />
               </div>
-              {/* Row 2 — editorial spreads (left, wider) + book cover (right) */}
-              <div className="grid grid-cols-[3fr_2fr] gap-[6px] h-[180px] md:h-[300px]">
-                <div className="relative overflow-hidden">
-                  <Image
-                    src="/images/portraits/fashion-editorial-spreads.png"
-                    alt="Fashion Germany — editorial spreads"
-                    fill
-                    sizes="(min-width: 768px) 60vw, 100vw"
-                    className="object-cover object-center"
-                  />
-                </div>
-                <div className="relative overflow-hidden bg-cream/[0.04] flex items-center justify-center">
-                  <Image
-                    src="/images/books/fashion-germany-cover.png"
-                    alt="Fashion Germany — cover"
-                    fill
-                    sizes="(min-width: 768px) 40vw, 100vw"
-                    className="object-contain object-center p-6 md:p-10"
-                  />
-                </div>
+            </div>
+
+            <div className="md:col-span-8 lg:col-span-9 flex flex-col justify-center">
+              <p className="text-[11px] uppercase tracking-[0.26em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
+                Photography · Thomas Rafalzyk
+              </p>
+              <blockquote
+                className="font-[family-name:var(--font-display)] text-[24px] md:text-[28px]
+                           leading-[1.35] text-ink italic mb-8 max-w-[540px]"
+              >
+                &ldquo;85 Menschen. 85 Geschichten. Ein Buch über unser Land — und wer wir
+                sind.&rdquo;
+              </blockquote>
+              <p className="text-[16px] leading-[1.8] text-ink-soft max-w-[540px] font-[family-name:var(--font-body)]">
+                Eighty-five people. Eighty-five stories from across Germany — musicians,
+                founders, athletes, artists, and the quietly extraordinary. Shot in black and
+                white, written with precision. A portrait of a country through the people who
+                define it.
+              </p>
+              <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-[540px] font-[family-name:var(--font-body)]">
+                Published 2023. <em>Spiegel</em> Bestseller.
+              </p>
+            </div>
+          </div>
+
+          {/* Interior spreads */}
+          <div className="mt-16">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
+              Inside the book
+            </p>
+            <div className="grid md:grid-cols-3 gap-3">
+              <div className="bg-bone overflow-hidden">
+                <Image
+                  src="/images/creative-work/pod-2.png"
+                  alt="People of Deutschland — interior spread"
+                  width={2667}
+                  height={1563}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
+              <div className="bg-bone overflow-hidden">
+                <Image
+                  src="/images/creative-work/pod-3.png"
+                  alt="People of Deutschland — interior spread"
+                  width={3508}
+                  height={2481}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
+              <div className="bg-bone overflow-hidden">
+                <Image
+                  src="/images/creative-work/pod-4.jpg"
+                  alt="People of Deutschland — interior spread"
+                  width={2000}
+                  height={1125}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
               </div>
             </div>
-          )}
+          </div>
 
-          {fg?.quote && (
-            <div className="mt-14 max-w-2xl mx-auto text-center">
-              <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] leading-[1.45] text-cream/90">
-                &ldquo;{fg.quote}&rdquo;
-              </blockquote>
-              {fg.quoteSource && (
-                <p className="mt-4 text-[12px] uppercase tracking-[0.18em] text-cream/50">
-                  — {fg.quoteSource}
-                </p>
-              )}
-            </div>
-          )}
-
-          {fg?.photoCredit && (
-            <p className="mt-8 text-center text-[12px] text-cream/40 uppercase tracking-[0.15em]">
-              {fg.photoCredit}
-            </p>
-          )}
+          {/* Launch photos */}
+          <EventStrip
+            credit="Thomas Rafalzyk"
+            images={[
+              { src: "/images/creative-work/pod-5.jpg",  width: 1200, height: 800,  alt: "People of Deutschland launch" },
+              { src: "/images/creative-work/pod-6.jpg",  width: 1200, height: 800,  alt: "People of Deutschland launch" },
+              { src: "/images/creative-work/pod-7.jpg",  width: 1808, height: 1194, alt: "People of Deutschland launch" },
+              { src: "/images/creative-work/pod-8.png",  width: 1900, height: 1182, alt: "People of Deutschland launch" },
+              { src: "/images/creative-work/pod-9.jpg",  width: 5500, height: 3667, alt: "People of Deutschland launch" },
+              { src: "/images/creative-work/pod-10.png", width: 1742, height: 1200, alt: "People of Deutschland launch" },
+            ]}
+          />
         </div>
       </section>
 
-      {/* ─── CLOSING ──────────────────────────────────────────── */}
-      <section className="bg-cream section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-[1.15] text-ink">
-            {closing?.heading ?? "The work that led here."}
-          </h2>
-          <p className="mt-6 text-[17px] leading-[1.7] text-ink-soft">
-            {closing?.body ??
-              "All of this — the photography, the fashion, the years with Isabella — was preparation. Not for a portfolio, but for a way of seeing. That seeing is now the practice."}
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <PlumButton href={closing?.primaryCtaUrl ?? "/about"}>
-              {closing?.primaryCtaLabel ?? "Read the full story"}
-            </PlumButton>
-            <GhostButton href={closing?.secondaryCtaUrl ?? "/work-with-me"}>
-              {closing?.secondaryCtaLabel ?? "Work with me"}
-            </GhostButton>
+      {/* ══════════════════════════════════════════════════════
+          02 — ISABELLA BLOW
+      ══════════════════════════════════════════════════════ */}
+      <BookBand title="Isabella Blow" year="2010" publisher="Thames & Hudson" />
+
+      <section className="bg-bone section-pad">
+        <div className="container-content">
+
+          {/* Cover + intro — reversed */}
+          <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
+
+            {/* Text left */}
+            <div className="md:col-span-7 lg:col-span-8 flex flex-col justify-center md:order-1 order-2">
+              <p className="text-[11px] uppercase tracking-[0.26em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
+                Photography · Dafydd Jones
+              </p>
+              <blockquote
+                className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px]
+                           leading-[1.4] text-ink italic mb-4 max-w-[520px]"
+              >
+                &ldquo;Few book launches have drummed up as much excitement as Martina
+                Rink&rsquo;s <em>Isabella Blow.</em>&rdquo;
+              </blockquote>
+              <p className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet mb-8 font-[family-name:var(--font-body)]">
+                Evening Standard, 2010
+              </p>
+              <p className="text-[16px] leading-[1.8] text-ink-soft max-w-[520px] font-[family-name:var(--font-body)]">
+                The definitive portrait of fashion&rsquo;s most singular muse. Written by
+                Martina Rink — Isabella Blow&rsquo;s personal assistant — this is the book
+                that could only come from someone who was in the room: the dinners, the
+                fittings, the private conversations.
+              </p>
+              <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-[520px] font-[family-name:var(--font-body)]">
+                Published by Thames &amp; Hudson, 2010.
+              </p>
+            </div>
+
+            {/* Cover right */}
+            <div className="md:col-span-5 lg:col-span-4 md:order-2 order-1">
+              <div className="shadow-xl max-w-[320px] md:max-w-none">
+                <Image
+                  src="/images/creative-work/blow-3.jpg"
+                  alt="Isabella Blow — book by Martina Rink, Thames & Hudson"
+                  width={896}
+                  height={1273}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 320px, (max-width: 1024px) 40vw, 380px"
+                  priority
+                />
+              </div>
+            </div>
           </div>
+
+          {/* Interior spreads */}
+          <div className="mt-16">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
+              Inside the book
+            </p>
+            <SpreadGallery
+              images={[
+                { src: "/images/creative-work/blow-1.png", width: 1280, height: 947, alt: "Isabella Blow — interior pages" },
+                { src: "/images/creative-work/blow-2.png", width: 1280, height: 751, alt: "Isabella Blow — interior pages" },
+              ]}
+            />
+          </div>
+
+          {/* Launch photos */}
+          <EventStrip
+            credit="Dafydd Jones"
+            images={[
+              { src: "/images/creative-work/blow-4.jpg",  width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-5.jpg",  width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-6.jpg",  width: 426, height: 640, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-7.jpg",  width: 426, height: 640, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-8.jpg",  width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-9.jpg",  width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-10.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-11.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-12.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-13.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-14.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-15.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-16.jpg", width: 426, height: 640, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-17.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-18.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-19.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+              { src: "/images/creative-work/blow-20.jpg", width: 640, height: 426, alt: "Isabella Blow book launch" },
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          03 — FASHION GERMANY
+      ══════════════════════════════════════════════════════ */}
+      <BookBand title="Fashion Germany" year="2014" />
+
+      <section className="bg-cream section-pad">
+        <div className="container-content">
+
+          {/* Cover + intro */}
+          <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
+
+            <div className="md:col-span-4 lg:col-span-3">
+              <div className="shadow-xl">
+                <Image
+                  src="/images/creative-work/fashion-1.png"
+                  alt="Fashion Germany — book by Martina Rink"
+                  width={1064}
+                  height={960}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 90vw, 320px"
+                  priority
+                />
+              </div>
+            </div>
+
+            <div className="md:col-span-8 lg:col-span-9 flex flex-col justify-center">
+              <blockquote
+                className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px]
+                           leading-[1.4] text-ink italic mb-4 max-w-[540px]"
+              >
+                &ldquo;The book&rsquo;s encyclopedic entries are illustrated with numerous
+                beautiful colour images — followers of contemporary fashion will enjoy this
+                title.&rdquo;
+              </blockquote>
+              <p className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet mb-8 font-[family-name:var(--font-body)]">
+                New York Journal of Books, 2014
+              </p>
+              <p className="text-[16px] leading-[1.8] text-ink-soft max-w-[540px] font-[family-name:var(--font-body)]">
+                An encyclopedic portrait of German fashion — the photographers, designers,
+                editors, models, and stylists who built an industry the world watches without
+                always naming. Short interviews, essays, and hundreds of images collected into
+                a single definitive volume.
+              </p>
+              <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-[540px] font-[family-name:var(--font-body)]">
+                Published 2014.
+              </p>
+            </div>
+          </div>
+
+          {/* Interior spreads */}
+          <div className="mt-16">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
+              Inside the book
+            </p>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="bg-bone overflow-hidden">
+                <Image
+                  src="/images/creative-work/fashion-2.png"
+                  alt="Fashion Germany — interior spread"
+                  width={1280}
+                  height={747}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <div className="bg-bone overflow-hidden">
+                <Image
+                  src="/images/creative-work/fashion-3.png"
+                  alt="Fashion Germany — interior spread"
+                  width={1836}
+                  height={1226}
+                  className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Content photos */}
+          <EventStrip
+            images={[
+              { src: "/images/creative-work/fashion-4.jpg",  width: 768, height: 1087, alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-5.jpg",  width: 700, height: 467,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-6.jpg",  width: 500, height: 442,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-7.jpg",  width: 633, height: 481,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-8.jpg",  width: 640, height: 427,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-9.jpg",  width: 541, height: 481,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-11.jpg", width: 441, height: 480,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-12.jpg", width: 640, height: 461,  alt: "Fashion Germany" },
+              { src: "/images/creative-work/fashion-13.jpg", width: 640, height: 465,  alt: "Fashion Germany" },
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* ── CLOSING ─────────────────────────────────────────── */}
+      <section className="bg-aubergine py-20 md:py-28">
+        <div className="container-content max-w-2xl text-center mx-auto">
+          <ScriptAccent className="block text-[3rem] text-pink mb-6">
+            the work continues.
+          </ScriptAccent>
+          <p className="text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)]">
+            Three published books. Two decades of editorial work. The thread running
+            through all of it — the same one running through the private work now —
+            is a fascination with what women do when they stop performing and start
+            choosing.
+          </p>
         </div>
       </section>
     </>
