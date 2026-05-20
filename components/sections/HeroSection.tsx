@@ -207,7 +207,7 @@ export function HeroSection({
             · items-end: portrait grounded at bottom of panel
             · object-contain: full portrait, zero crop
         ─────────────────────────────────────────────────────── */}
-        <div className="hidden lg:flex items-end justify-center bg-[#EDE8E0]">
+        <div className="hidden lg:flex items-end justify-center">
           <Image
             src={HERO_IMG}
             alt="Martina Rink — private mentor for accomplished women"
@@ -228,7 +228,7 @@ export function HeroSection({
           · h-auto w-full: full portrait, natural height, no crop
           · No fill · No object-cover · No overflow-hidden
           ══════════════════════════════════════════════════════ */}
-      <div className="lg:hidden bg-[#EDE8E0]">
+      <div className="lg:hidden">
         <Image
           src={HERO_IMG}
           alt="Martina Rink"
