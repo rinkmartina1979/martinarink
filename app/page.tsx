@@ -92,12 +92,12 @@ function TestimonialBlock({
       {/* Portrait + attribution */}
       <div className="mt-8 flex items-center gap-4">
         {testimonial.photoPath && (
-          <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-sand/60">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border border-sand/60">
             <Image
               src={testimonial.photoPath}
               alt={displayName ?? "Client"}
               fill
-              sizes="48px"
+              sizes="64px"
               className="object-cover object-top"
             />
           </div>
@@ -576,7 +576,7 @@ export default async function HomePage() {
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
             {testimonials.map((t, i) => {
-              const bgMap = ["bg-blush", "bg-bone", "bg-lilac-soft", "bg-bone"];
+              const bgMap = ["bg-rose", "bg-rose", "bg-rose", "bg-rose"];
               const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25"];
               const isSanity = "_id" in t;
               const item = {

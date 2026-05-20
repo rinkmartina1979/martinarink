@@ -16,7 +16,7 @@ export function TestimonialCard({
   return (
     <figure
       className={cn(
-        "bg-blush p-10 md:p-14 max-w-3xl mx-auto",
+        "bg-rose p-10 md:p-14 max-w-3xl mx-auto",
         className,
       )}
     >
