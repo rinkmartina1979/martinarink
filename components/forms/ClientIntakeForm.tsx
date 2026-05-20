@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -174,6 +174,8 @@ function YesNoConditional({
 export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "empowerment" | "consultation" }) {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const errorBannerRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -184,21 +186,24 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
   } = useForm<IntakeFormValues>({
     resolver: zodResolver(IntakeSchema),
     defaultValues: {
-      programme:       programme ?? "sober-muse",
-      medications:     false,
-      recentTherapy:   false,
-      sleepIssues:     false,
-      addictions:      false,
+      programme:        programme ?? "sober-muse",
+      medications:      false,
+      recentTherapy:    false,
+      sleepIssues:      false,
+      addictions:       false,
       currentTherapist: false,
-      exerciseRegular: false,
-      hobbies:         false,
-      emailOptIn:      false,
-      conditions:      [],
+      exerciseRegular:  false,
+      hobbies:          false,
+      emailOptIn:       false,
+      conditions:       [],
     },
   });
 
+  const errorCount = Object.keys(errors).length;
+
   const onSubmit = async (data: IntakeFormValues) => {
     setServerError("");
+    setSubmitAttempted(false);
     try {
       const res = await fetch("/api/intake", {
         method: "POST",
@@ -215,6 +220,14 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
     }
   };
 
+  const onInvalid = () => {
+    setSubmitAttempted(true);
+    // Scroll to the error banner after render
+    setTimeout(() => {
+      errorBannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+  };
+
   const CONDITIONS = [
     "ADD / ADHD", "Alcohol use", "Anxiety", "Depression",
     "Eating disorder", "Emotional abuse (past or present)",
@@ -223,7 +236,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-20">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate className="space-y-20">
 
       {/* ── 1. PERSONAL INFORMATION ───────────────────────── */}
       <fieldset className="space-y-6">
@@ -656,7 +669,26 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
             <span className="text-pink ml-1">*</span>
           </span>
         </label>
-        <FieldError message={errors.consent?.message} />
+        <FieldError message={errors.consent ? "Please tick the consent box to continue." : undefined} />
+
+        {/* Validation error banner — shown when submit was attempted with errors */}
+        {submitAttempted && errorCount > 0 && (
+          <div
+            ref={errorBannerRef}
+            role="alert"
+            aria-live="polite"
+            className="border border-pink/40 bg-pink/5 px-5 py-4"
+          >
+            <p className="text-[12px] uppercase tracking-[0.18em] text-pink mb-1 font-[family-name:var(--font-body)]">
+              Please review your answers
+            </p>
+            <p className="text-[13px] leading-[1.65] text-ink-soft font-[family-name:var(--font-body)]">
+              {errorCount === 1
+                ? "There is 1 field that needs attention — it is highlighted above."
+                : `There are ${errorCount} fields that need attention — they are highlighted above.`}
+            </p>
+          </div>
+        )}
 
         {serverError && (
           <p role="alert" aria-live="polite" className="text-[14px] text-pink">
