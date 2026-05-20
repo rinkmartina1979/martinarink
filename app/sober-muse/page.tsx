@@ -243,7 +243,7 @@ export default async function SoberMusePage() {
       </section>
 
       {/* TESTIMONIAL — DARK PLUM */}
-      <section className="bg-plum section-pad">
+      <section className="bg-aubergine section-pad">
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
