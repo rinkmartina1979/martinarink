@@ -362,7 +362,7 @@ export default async function HomePage() {
               },
               {
                 title: "Fashion Germany",
-                meta:  "CALLWEY",
+                meta:  "PRESTEL · RANDOM HOUSE",
                 src:   "/images/books/fashion-germany-cover.png",
                 alt:   "Book cover of Fashion Germany by Martina Rink",
               },
