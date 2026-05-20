@@ -288,14 +288,58 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
-      {/* TESTIMONIAL */}
+      {/* TESTIMONIALS */}
       <section className="bg-cream py-16">
-        <div className="container-content">
+        <div className="container-content space-y-8 max-w-3xl mx-auto">
+
+          {/* Existing NDA testimonial */}
           <TestimonialCard
             quote="What Martina does is different — it's more like being read than being advised. Within the first month she named something I had never managed to say out loud."
             attribution="Senior Director · Vienna"
             nda
           />
+
+          {/* Canan Chandni Bauer */}
+          <figure className="bg-rose p-10 md:p-14 max-w-3xl mx-auto">
+            <span
+              aria-hidden
+              className="block font-[family-name:var(--font-display)] italic text-pink-soft text-[80px] leading-none -mb-4"
+            >
+              &ldquo;
+            </span>
+            <blockquote className="font-[family-name:var(--font-display)] italic text-ink text-2xl md:text-[28px] leading-snug">
+              I wholeheartedly recommend this female empowerment experience.
+              I&rsquo;m genuinely pleasantly surprised by just how much I&rsquo;ve
+              gained. Working with Martina was an empathetic and, at the same time,
+              highly professional experience. I was particularly impressed by how
+              she addressed issues such as fears, inner blocks, panic attacks and
+              career guidance on a truly personal level. This has given me much
+              greater clarity about my own strengths and the path I should take.
+              I came across her through Miss Germany and am very grateful for that.
+              You can tell straight away that she puts her heart and soul into her
+              work.
+            </blockquote>
+            <figcaption className="mt-8 flex items-center gap-4">
+              <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border border-sand/60">
+                <Image
+                  src="/images/portraits/canan-chandni-bauer.png"
+                  alt="Canan Chandni Bauer"
+                  fill
+                  sizes="64px"
+                  className="object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="text-[12px] uppercase tracking-[0.18em] text-ink font-medium">
+                  Canan Chandni Bauer
+                </p>
+                <p className="text-[11px] uppercase tracking-[0.14em] text-ink-quiet mt-0.5">
+                  Miss Germany · Germany
+                </p>
+              </div>
+            </figcaption>
+          </figure>
+
         </div>
       </section>
 
