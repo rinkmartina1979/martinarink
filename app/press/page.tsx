@@ -594,7 +594,7 @@ export default async function PressPage() {
       })()}
 
       {/* ── 10. Press CTA ────────────────────────────────────── */}
-      <section className="bg-plum py-16 md:py-20">
+      <section className="bg-aubergine py-16 md:py-20">
         <div className="container-content max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-cream/60 mb-6">
             Press &amp; speaking enquiries

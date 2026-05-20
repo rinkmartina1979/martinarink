@@ -531,13 +531,13 @@ export default async function HomePage() {
       </section>
 
       {/* ─── ASSESSMENT TEASER (DARK) ────────────────────────── */}
-      <section className="relative bg-navy section-pad overflow-hidden">
+      <section className="relative bg-aubergine section-pad overflow-hidden">
         {/* Centered plum bloom — editorial warmth */}
         <div
           aria-hidden
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
         >
-          <div className="w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.18] bg-plum" />
+          <div className="w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.15] bg-aubergine-soft" />
         </div>
         {/* Edge pink accent orb */}
         <div

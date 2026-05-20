@@ -48,7 +48,7 @@ export function HeroSection({
   heroSecondaryUrl   = "/work-with-me",
 }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-[#2A1538] text-[#FFF9F4]">
+    <section className="relative overflow-hidden bg-aubergine text-cream">
 
       {/* ══════════════════════════════════════════════════════
           MAIN GRID
@@ -80,7 +80,7 @@ export function HeroSection({
                 fontSize:      "10px",
                 letterSpacing: "0.36em",
                 textTransform: "uppercase",
-                color:         "rgba(255,249,244,0.72)",
+                color:         "color-mix(in srgb, var(--color-cream) 72%, transparent)",
               }}
             >
               <span
@@ -108,7 +108,7 @@ export function HeroSection({
                          text-[clamp(3.4rem,5.7vw,7rem)]
                          leading-[0.88]
                          tracking-[-0.055em]
-                         text-[#FFF9F4]"
+                         text-cream"
               style={{ animation: anim("0.12s") }}
             >
               You&rsquo;ve built a life{" "}
@@ -145,7 +145,7 @@ export function HeroSection({
                 animation:  anim("0.34s"),
                 fontSize:   "17px",
                 lineHeight: 1.72,
-                color:      "rgba(255,249,244,0.72)",
+                color:      "color-mix(in srgb, var(--color-cream) 72%, transparent)",
               }}
             >
               Private mentorship for accomplished women who are ready to feel at
@@ -170,7 +170,7 @@ export function HeroSection({
                   letterSpacing:   "0.26em",
                   textTransform:   "uppercase",
                   backgroundColor: "#F8F4F1",
-                  color:           "#2A1538",
+                  color:           "var(--color-aubergine)",
                 }}
               >
                 {heroCta}
@@ -184,14 +184,14 @@ export function HeroSection({
                            rounded-[1px] px-8 py-[13px]
                            font-[family-name:var(--font-body)]
                            border transition-colors duration-200
-                           hover:border-[rgba(255,249,244,0.65)]
-                           hover:text-[#FFF9F4]"
+                           hover:border-cream/65
+                           hover:text-cream"
                 style={{
                   fontSize:      "12px",
                   letterSpacing: "0.26em",
                   textTransform: "uppercase",
-                  border:        "1px solid rgba(255,249,244,0.35)",
-                  color:         "rgba(255,249,244,0.75)",
+                  border:        "1px solid color-mix(in srgb, var(--color-cream) 35%, transparent)",
+                  color:         "color-mix(in srgb, var(--color-cream) 75%, transparent)",
                 }}
               >
                 {heroSecondaryLabel}

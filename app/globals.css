@@ -23,7 +23,9 @@
   --color-plum:         #3D1A5C;  /* primary CTA fill, dark hero option — deep violet-plum */
   --color-plum-deep:    #2B1242;  /* button hover */
   --color-plum-soft:    #F3EBF5;  /* plum tint blocks (investment panels) */
-  --color-aubergine:    #2C0A35;  /* deep eggplant — dark testimonial blocks */
+  --color-aubergine:    #231727;  /* approved editorial aubergine — dark section bg */
+  --color-aubergine-soft: #2A1B30;  /* hover / lighter aubergine tint */
+  --color-aubergine-deep: #17101B;  /* deepest aubergine — footer/extreme dark */
 
   /* Tints — strictly one per page maximum */
   --color-lilac-soft:   #F3EBF5;  /* quote blocks — CI Farbe 3 */
