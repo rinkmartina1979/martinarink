@@ -156,7 +156,7 @@ function YesNoConditional({
           </label>
         ))}
       </div>
-      {value === true && (
+      {(value === true || value === "true") && (
         <textarea
           rows={2}
           placeholder={detailPlaceholder ?? "Please describe…"}
