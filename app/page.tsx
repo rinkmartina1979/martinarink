@@ -156,6 +156,7 @@ export default async function HomePage() {
       <HeroSection
         heroCta={heroCta}
         heroCtaUrl={heroCtaUrl}
+        heroSecondaryLabel={heroSecondaryLabel}
         heroSecondaryUrl={heroSecondaryUrl}
       />
 

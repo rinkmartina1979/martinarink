@@ -8,6 +8,7 @@
  *  · Desktop: CSS grid, portrait pinned to bottom with object-contain
  *  · Mobile:  text first, full portrait second (h-auto, no crop)
  *
+ * Navbar height: h-[72px] mobile / h-[80px] md+ (Nav.tsx)
  * CSS entrance animations use @keyframes fadeUp from globals.css.
  */
 
@@ -53,21 +54,20 @@ export function HeroSection({
           MAIN GRID
           · Single column on mobile / tablet
           · 55 fr text | 45 fr portrait at lg (1024 px +)
-          · min-h accounts for 92 px fixed navbar
+          · min-h accounts for fixed navbar: 72px mobile / 80px md+
           ══════════════════════════════════════════════════════ */}
       <div
-        className="mx-auto grid min-h-[calc(100svh-92px)] max-w-[1440px]
+        className="mx-auto grid min-h-[calc(100svh-72px)] md:min-h-[calc(100svh-80px)] max-w-[1440px]
                    lg:grid-cols-[0.55fr_0.45fr]"
       >
 
         {/* ── TEXT PANEL ───────────────────────────────────── */}
         <div
           className="flex items-center
-                     px-6 py-14
+                     px-6 pb-14 pt-[max(90px,_9svh)]
                      sm:px-8
-                     md:px-12 md:py-16
-                     lg:px-20 lg:py-12"
-          style={{ paddingTop: "max(90px, 9svh)" }}
+                     md:px-12 md:pb-16
+                     lg:px-20 lg:pb-12"
         >
           <div className="max-w-[760px]">
 
@@ -216,7 +216,7 @@ export function HeroSection({
             priority
             fetchPriority="high"
             sizes="(min-width: 1024px) 45vw, 100vw"
-            className="h-[calc(100svh-92px)] w-auto max-w-full object-contain"
+            className="h-[calc(100svh-80px)] w-auto max-w-full object-contain"
           />
         </div>
 
