@@ -9,7 +9,26 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function IntakePage() {
+type Programme = "sober-muse" | "empowerment" | "consultation";
+
+const VALID_PROGRAMMES: Programme[] = ["sober-muse", "empowerment", "consultation"];
+
+const PROGRAMME_LABELS: Record<Programme, string> = {
+  "sober-muse":   "The Sober Muse Method",
+  empowerment:    "Female Empowerment & Leadership",
+  consultation:   "Private Consultation",
+};
+
+export default function IntakePage({
+  searchParams,
+}: {
+  searchParams: { programme?: string };
+}) {
+  const rawProgramme = searchParams?.programme;
+  const programme: Programme = VALID_PROGRAMMES.includes(rawProgramme as Programme)
+    ? (rawProgramme as Programme)
+    : "sober-muse";
+
   return (
     <>
       {/* ── HEADER ────────────────────────────────────────── */}
@@ -20,7 +39,7 @@ export default function IntakePage() {
           <div className="flex items-center gap-4 mb-8">
             <span className="h-px w-12 bg-pink" aria-hidden />
             <p className="text-[10px] uppercase tracking-[0.36em] text-cream/60 font-[family-name:var(--font-body)]">
-              Confidential
+              Confidential &nbsp;·&nbsp; {PROGRAMME_LABELS[programme]}
             </p>
           </div>
 
@@ -60,7 +79,7 @@ export default function IntakePage() {
       {/* ── FORM BODY ─────────────────────────────────────── */}
       <section className="bg-cream py-16 md:py-24">
         <div className="container-content max-w-3xl">
-          <ClientIntakeForm />
+          <ClientIntakeForm programme={programme} />
         </div>
       </section>
     </>

@@ -280,6 +280,15 @@ export default async function EmpowermentPage() {
           <div className="mt-10">
             <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
           </div>
+          <p className="mt-8 text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+            Already accepted?{" "}
+            <a
+              href="/intake?programme=empowerment"
+              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
+            >
+              Complete your confidential intake form
+            </a>
+          </p>
           <p className="mt-6 italic text-[18px] text-ink-soft">
             <ScriptAccent className="text-[28px] text-ink-soft">
               it&rsquo;s about time, darling.
