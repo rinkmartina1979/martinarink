@@ -223,7 +223,7 @@ export default async function AboutPage() {
             </h3>
             <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
               For clients in the Sober Muse Method Program, I maintain a close
-              and discreet professional relationship with Ms. Ruta Nürnberger,
+              and discreet professional relationship with Mrs. Ruta Nürnberger,
               Head doctor of the My Way Betty Ford Clinic, who also acts as a
               trusted advisor to my work.
             </p>
