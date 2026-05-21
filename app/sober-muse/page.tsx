@@ -174,7 +174,7 @@ export default async function SoberMusePage() {
                   "One woman, one mentor, no group dynamic",
                   "Work that begins with the original question, not the symptom",
                   "Precise, confidential, and calibrated to where you actually are",
-                  "Available in English, internationally",
+                  "Available in English, German",
                   "For women who are, by every external measure, doing well",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
