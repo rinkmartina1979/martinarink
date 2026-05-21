@@ -296,8 +296,8 @@ export default async function SoberMusePage() {
             ) : (
               <>
                 <p>
-                  This includes three private sessions per month, written prompts
-                  between sessions, ongoing correspondence, and a final integration
+                  This includes four sessions per month, daily check ins,
+                  ongoing correspondence, and a final integration
                   session. Payment by instalment is available.
                 </p>
                 <p>

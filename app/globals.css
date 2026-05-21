@@ -20,8 +20,8 @@
   --color-sand:         #C8B8A2;  /* hairlines, dividers */
 
   /* CTA — plum is the ONLY button fill colour */
-  --color-plum:         #3D1A5C;  /* primary CTA fill, dark hero option — deep violet-plum */
-  --color-plum-deep:    #2B1242;  /* button hover */
+  --color-plum:         #5C2D8E;  /* primary CTA fill — brand Deep Amethyst */
+  --color-plum-deep:    #451F6B;  /* button hover */
   --color-plum-soft:    #F3EBF5;  /* plum tint blocks (investment panels) */
   --color-aubergine:    #231727;  /* approved editorial aubergine — dark section bg */
   --color-aubergine-soft: #2A1B30;  /* hover / lighter aubergine tint */

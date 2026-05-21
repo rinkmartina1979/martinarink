@@ -109,9 +109,9 @@ export const FALLBACK_CASE_STUDIES: MemberCaseStudy[] = [
     order: 2,
   },
   {
-    _id: "fallback-case-margaux",
-    slug: "margaux",
-    pseudonym: "Margaux",
+    _id: "fallback-case-nathalie",
+    slug: "nathalie",
+    pseudonym: "Nathalie",
     industry: "C-suite, international media group — London",
     programme: "empowerment",
     problemSnapshot:
@@ -119,7 +119,7 @@ export const FALLBACK_CASE_STUDIES: MemberCaseStudy[] = [
     workNarrative: [
       block(
         "m1",
-        "Margaux came in October on the suggestion of a former client. Her brief, in the first session, was crisp. She wanted help thinking, in private, about something she had not allowed herself to think about in public.",
+        "Nathalie came in October on the suggestion of a former client. Her brief, in the first session, was crisp. She wanted help thinking, in private, about something she had not allowed herself to think about in public.",
       ),
       block(
         "m2",

@@ -146,7 +146,7 @@ const BIOS = [
   },
   {
     length: "200 words",
-    text: "Martina Rink is a private mentor, author, and panel speaker whose work addresses the interior life of women at the height of their careers. Her two programmes — The Sober Muse Method and Female Empowerment & Leadership — work with a small number of senior women each year on the questions that do not appear on any competency framework: who am I, now that I have become this? What do I actually want, given that I can no longer pretend I haven’t thought about it?\n\nRink spent several years as personal assistant to Isabella Blow — the legendary British fashion editor, stylist, and talent spotter whose influence shaped a generation of designers including Alexander McQueen and Philip Treacy. That proximity to radical vision, eccentricity, and the cost of brilliance left a permanent mark on her thinking.\n\nShe is the author of People of Deutschland, a documentary portrait of contemporary Germany, and a Spiegel Bestseller. Her writing on women, identity, and culture appears in her online journal and regular letters to subscribers.\n\nRink is represented for literary rights by Elisabeth Ruge Agentur GmbH, Berlin. She is based across Ibiza, Berlin, and Munich.",
+    text: "Martina Rink is a private mentor, author, and panel speaker whose work addresses the interior life of women at the height of their careers. Her two programmes — The Sober Muse Method and Female Empowerment & Leadership — work with a small number of women each year on the questions that do not appear on any competency framework: who am I, now that I have become this? What do I actually want, given that I can no longer pretend I haven’t thought about it?\n\nRink spent several years as personal assistant to Isabella Blow — the legendary British fashion editor, stylist, and talent spotter whose influence shaped a generation of designers including Alexander McQueen and Philip Treacy. That proximity to radical vision, eccentricity, and the cost of brilliance left a permanent mark on her thinking.\n\nShe is the co-author of People of Deutschland, a documentary portrait of contemporary Germany, and a Spiegel Bestseller. Her writing on women, identity, and culture appears in her online journal and regular letters to subscribers.\n\nRink is represented for literary rights by Elisabeth Ruge Agentur GmbH, Berlin. She is based across Ibiza, Berlin.",
   },
 ];
 
@@ -639,6 +639,9 @@ export default async function PressPage() {
               &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
               and a generation of designers who changed fashion&rsquo;s course.&rdquo;
             </blockquote>
+            <p className="mt-4 text-[13px] uppercase tracking-[0.18em] text-sand/50 font-[family-name:var(--font-body)]">
+              &mdash; Martina Rink on Isabella Blow
+            </p>
             <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-2xl">
               <p>
                 For several years, Martina Rink served as personal assistant to
@@ -671,9 +674,9 @@ export default async function PressPage() {
               For audiences of senior women.
             </h2>
             <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-2xl font-[family-name:var(--font-body)]">
-              Martina speaks for conferences, corporate retreats, and curated
-              evenings. Her talks are conversational, precisely argued, and
-              deliberately uncomfortable in the way that useful things tend to be.
+              Martina speaks at events, conferences, retreats. Her talks are
+              conversational, precisely argued, and deliberately uncomfortable
+              in the way that useful things tend to be.
             </p>
           </div>
 

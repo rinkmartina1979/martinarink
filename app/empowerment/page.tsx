@@ -235,7 +235,7 @@ export default async function EmpowermentPage() {
                   work is done — usually somewhere between six months and two years.
                 </p>
                 <p>
-                  We meet twice a month by private video or phone. Between sessions,
+                  We meet 4 times a month by private video call or in person and daily check ins. Between sessions,
                   there is correspondence — sometimes a question I leave you with,
                   sometimes something you bring. The work is cumulative.
                 </p>
