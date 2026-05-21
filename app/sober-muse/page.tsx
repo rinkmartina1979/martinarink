@@ -24,7 +24,7 @@ const FAQS = [
   },
   {
     q: "Where does the work take place?",
-    a: "By private video or phone session, scheduled to your timezone. I work with women internationally. No in-person requirement.",
+    a: "By private video or in person, scheduled to your timezone. I work with women internationally.",
   },
   {
     q: "What if I'm not sure it's the right fit?",
