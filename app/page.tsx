@@ -394,7 +394,7 @@ export default async function HomePage() {
 
                 {/* Image stage */}
                 <div
-                  className="relative w-full overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
+                  className="relative w-full bg-white overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
                   style={{
                     aspectRatio:     "4 / 5",
                     backgroundColor: "#FFFFFF",
@@ -405,7 +405,7 @@ export default async function HomePage() {
                     alt={book.alt}
                     fill
                     sizes="(max-width: 768px) 88vw, 30vw"
-                    className="object-contain p-8 md:p-10"
+                    className="object-contain p-10 md:p-12"
                   />
                 </div>
 

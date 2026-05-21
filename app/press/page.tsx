@@ -447,7 +447,7 @@ export default async function PressPage() {
             </div>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {["House Magazine", "Elara Magazine", "Tiffany & Co", "International press"].map((o) => (
+              {["House Magazine", "International press", "Elle", "Vogue", "Harper's Bazaar", "Cosmopolitan"].map((o) => (
                 <span key={o} className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)]">
                   {o}
                 </span>
@@ -501,7 +501,7 @@ export default async function PressPage() {
             </div>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {["Glamour Germany", "Woman Magazine", "Fondation Cartier", "Prestel"].map((o) => (
+              {["Glamour Germany", "Woman Magazine", "Elle", "Vogue"].map((o) => (
                 <span key={o} className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)]">
                   {o}
                 </span>
@@ -631,43 +631,30 @@ export default async function PressPage() {
       ══════════════════════════════════════════════════════ */}
       <section className="bg-aubergine py-20 md:py-28">
         <div className="container-content">
-          <div className="grid lg:grid-cols-[1fr_0.42fr] gap-12 lg:gap-16 items-start max-w-5xl">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-sand/50 mb-8 font-[family-name:var(--font-body)]">
-                Background
+          <div className="max-w-3xl">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-sand/50 mb-8 font-[family-name:var(--font-body)]">
+              Background
+            </p>
+            <blockquote className="font-[family-name:var(--font-display)] italic text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-cream">
+              &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
+              and a generation of designers who changed fashion&rsquo;s course.&rdquo;
+            </blockquote>
+            <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-2xl">
+              <p>
+                For several years, Martina Rink served as personal assistant to
+                Isabella Blow &mdash; the late British fashion editor, stylist, and
+                singular talent spotter whose influence defined the avant-garde
+                of the 1990s and 2000s.
               </p>
-              <blockquote className="font-[family-name:var(--font-display)] italic text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-cream">
-                &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
-                and a generation of designers who changed fashion&rsquo;s course.&rdquo;
-              </blockquote>
-              <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-2xl">
-                <p>
-                  For several years, Martina Rink served as personal assistant to
-                  Isabella Blow &mdash; the late British fashion editor, stylist, and
-                  singular talent spotter whose influence defined the avant-garde
-                  of the 1990s and 2000s.
-                </p>
-                <p>
-                  That proximity to radical vision, eccentricity, and the human
-                  cost of brilliance shaped the particular lens Rink brings to her
-                  work with women.
-                </p>
-                <p>
-                  It is a perspective that cannot be acquired from a course. It is
-                  earned.
-                </p>
-              </div>
-            </div>
-            {/* Press clipping as credibility image */}
-            <div className="hidden lg:flex items-center justify-center bg-cream/5 p-6">
-              <Image
-                src="/images/press/blow-press-feature.jpg"
-                alt="Isabella Blow — press coverage spread featuring Martina Rink biography"
-                width={853}
-                height={539}
-                sizes="280px"
-                className="w-full object-contain opacity-80"
-              />
+              <p>
+                That proximity to radical vision, eccentricity, and the human
+                cost of brilliance shaped the particular lens Rink brings to her
+                work with women.
+              </p>
+              <p>
+                It is a perspective that cannot be acquired from a course. It is
+                earned.
+              </p>
             </div>
           </div>
         </div>
