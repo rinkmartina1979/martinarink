@@ -9,6 +9,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
+import {
+  applicationConfirmationEmail,
+  applicationNotificationEmail,
+} from "@/lib/email-templates";
 
 const ApplySchema = z.object({
   firstName: z.string().min(1),
@@ -53,49 +57,56 @@ export async function POST(req: NextRequest) {
   };
   const programmeLabel = programmeLabels[programme];
 
-  // ── Resend internal notification ──────────────────────────
+  // ── Resend: internal notification + applicant confirmation ──
   const resendKey = process.env.RESEND_API_KEY;
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO;
   const fromEmail = process.env.RESEND_FROM_EMAIL || "hello@martinarink.com";
+  const fromName = "Martina Rink";
 
   if (resendKey && notifyEmail) {
-    const html = `
-      <div style="font-family: Georgia, serif; max-width: 600px; color: #1E1B17;">
-        <h2 style="font-size: 20px; font-weight: normal;">New application — ${programmeLabel}</h2>
-        <p style="color: #8A7F72; font-size: 13px;">${new Date().toISOString()}</p>
-        <hr style="border: none; border-top: 1px solid #C8B8A2; margin: 20px 0;" />
-        <p><strong>Name:</strong> ${firstName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <hr style="border: none; border-top: 1px solid #C8B8A2; margin: 20px 0;" />
-        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What brought you here?</h3>
-        <p style="white-space: pre-wrap;">${q1}</p>
-        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What have you tried before?</h3>
-        <p style="white-space: pre-wrap;">${q2}</p>
-        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">Current situation</h3>
-        <p>${q3}</p>
-        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">What success looks like</h3>
-        <p style="white-space: pre-wrap;">${q4}</p>
-        <h3 style="font-size: 14px; color: #8A7F72; text-transform: uppercase; letter-spacing: 0.1em;">Investment readiness</h3>
-        <p><strong style="color: ${budgetTag === "READY" ? "#5C2D8E" : budgetTag === "READY-PAYMENT-PLAN" ? "#4A3728" : "#8A7F72"};">${budgetTag}</strong> — ${q5}</p>
-      </div>
-    `;
+    // 1. Internal notification to Martina — uses branded template
+    const notification = applicationNotificationEmail({
+      firstName,
+      email,
+      programme,
+      programmeLabel,
+      budgetTag,
+      q1,
+      q2,
+      q3,
+      q4,
+      q5,
+      submittedAt: new Date().toISOString(),
+    });
 
     fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendKey}`,
-      },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
       body: JSON.stringify({
-        from: fromEmail,
+        from: `${fromName} <${fromEmail}>`,
         to: [notifyEmail],
         reply_to: email,
-        subject: `[Application] ${firstName} — ${programmeLabel}`,
-        html,
+        subject: notification.subject,
+        html: notification.html,
       }),
-    }).catch((err) => console.error("[Apply] Resend failed:", err));
+    }).catch((err) => console.error("[Apply] Resend notification failed:", err));
+
+    // 2. Confirmation to the applicant — bridges the 48-hour wait
+    const confirmation = applicationConfirmationEmail({ firstName, programme, programmeLabel });
+
+    fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
+      body: JSON.stringify({
+        from: `${fromName} <${fromEmail}>`,
+        to: [email],
+        reply_to: notifyEmail,
+        subject: confirmation.subject,
+        html: confirmation.html,
+      }),
+    }).catch((err) => console.error("[Apply] Resend confirmation failed:", err));
   } else {
-    console.warn("[Apply] RESEND_API_KEY or RESEND_NOTIFY_EMAIL not configured — notification skipped.");
+    console.warn("[Apply] RESEND_API_KEY or RESEND_NOTIFY_EMAIL not configured — emails skipped.");
   }
 
   // ── Brevo: add applicant to Assessment Leads list ────────

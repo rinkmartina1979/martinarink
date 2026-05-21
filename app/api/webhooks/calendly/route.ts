@@ -29,6 +29,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { trackBrevoEvent } from "@/lib/brevo";
+import { consultationBookingEmail } from "@/lib/email-templates";
 
 export const runtime = "nodejs"; // crypto.timingSafeEqual is not available on edge.
 export const dynamic = "force-dynamic";
@@ -109,50 +110,25 @@ async function notifyMartinaOfBooking(payload: CalendlyInviteePayload["payload"]
 
   if (!apiKey || !notifyEmail) return;
 
-  const inviteeName = payload.first_name || payload.name || "Client";
-  const inviteeEmail = payload.email || "(no email)";
-  const eventName = payload.scheduled_event?.name || "Consultation";
-  const startTime = payload.scheduled_event?.start_time || "(unknown time)";
-  const joinUrl = payload.scheduled_event?.location?.join_url;
-  const utmSource = payload.tracking?.utm_source;
-
-  const qaRows = (payload.questions_and_answers || [])
-    .map(
-      ({ question, answer }) =>
-        `<tr><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;color:#8A7F72;width:40%;">${question}</td><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">${answer}</td></tr>`,
-    )
-    .join("");
-
-  const html = `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1E1B17;">
-      <h2 style="font-size:22px;font-weight:normal;margin-bottom:8px;">
-        New consultation booked — ${inviteeName}
-      </h2>
-      <p style="color:#8A7F72;font-size:13px;margin-bottom:24px;">
-        ${eventName} · ${startTime}
-      </p>
-      <table style="width:100%;border-collapse:collapse;font-size:15px;">
-        <tr><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;color:#8A7F72;width:40%;">Email</td><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">${inviteeEmail}</td></tr>
-        <tr><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;color:#8A7F72;">Name</td><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">${payload.name || ""}</td></tr>
-        ${utmSource ? `<tr><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;color:#8A7F72;">Came from</td><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">${utmSource}</td></tr>` : ""}
-        ${joinUrl ? `<tr><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;color:#8A7F72;">Join link</td><td style="padding:8px 0;border-bottom:1px solid #C8B8A2;"><a href="${joinUrl}" style="color:#5C2D8E;">${joinUrl}</a></td></tr>` : ""}
-        ${qaRows}
-      </table>
-    </div>
-  `;
+  const email = consultationBookingEmail({
+    inviteeName: payload.first_name || payload.name || "Client",
+    inviteeEmail: payload.email || "(no email)",
+    eventName: payload.scheduled_event?.name || "Consultation",
+    startTime: payload.scheduled_event?.start_time || "(unknown time)",
+    joinUrl: payload.scheduled_event?.location?.join_url,
+    utmSource: payload.tracking?.utm_source,
+    qaRows: payload.questions_and_answers || [],
+  });
 
   try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
       body: JSON.stringify({
-        from: fromEmail,
+        from: `Martina Rink <${fromEmail}>`,
         to: [notifyEmail],
-        subject: `[Booking] ${eventName} — ${inviteeName}`,
-        html,
+        subject: email.subject,
+        html: email.html,
       }),
     });
   } catch (err) {

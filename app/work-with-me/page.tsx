@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
+import { GhostButton } from "@/components/brand/GhostButton";
+import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getWorkWithMePage } from "@/sanity/lib/queries";
+import { SITE } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getWorkWithMePage();
@@ -15,9 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
     });
   }
   return buildMetadata({
-    title: "Work With Me",
+    title: "Work With Me — Martina Rink",
     description:
-      "Apply for a private consultation with Martina Rink. Two programmes: the Sober Muse Method and Female Empowerment & Leadership.",
+      "Two programmes: The Sober Muse Method and Female Empowerment & Leadership. By application. Private consultation from €450, applied to programme investment.",
     path: "/work-with-me",
   });
 }
@@ -42,32 +46,48 @@ export default async function WorkWithMePage() {
           ),
         }}
       />
-      <section className="bg-cream pt-32 md:pt-40 pb-0">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
-          {/* Text — 7/12 */}
+
+      {/* ══════════════════════════════════════════════════════
+          1 — HERO
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream pt-28 md:pt-36 lg:pt-44 pb-0">
+        <div className="container-content grid md:grid-cols-12 gap-0 items-stretch">
+          {/* Text — 7 cols */}
           <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
             <Eyebrow withLine>Work with me</Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[44px] md:text-[60px] leading-tight text-ink">
+            <h1
+              className="mt-7 font-[family-name:var(--font-display)] text-ink leading-[0.92] tracking-[-0.04em]"
+              style={{ fontSize: "clamp(2.8rem, 5vw, 6rem)" }}
+            >
               {heroHeadline}
             </h1>
-            <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft max-w-[480px]">
+            <p className="mt-8 text-[17px] md:text-[18px] leading-[1.8] text-ink-soft max-w-[500px] font-[family-name:var(--font-body)]">
               {heroCopy}
             </p>
-            {/* Scarcity signal — TODO: surface intake month as Sanity field so Martina can update without a deploy */}
-            <div className="mt-8 inline-flex items-center gap-3 px-4 py-2 bg-violet-soft border border-violet-mid self-start">
-              <span className="block w-1.5 h-1.5 rounded-full bg-plum animate-pulse" />
-              <span className="text-[12px] uppercase tracking-[0.18em] text-plum-deep">
-                Two openings · next intake June 2026
+
+            {/* Availability signal */}
+            <div className="mt-8 inline-flex items-center gap-3 px-5 py-3 bg-violet-soft border border-violet-mid self-start">
+              <span className="block w-1.5 h-1.5 rounded-full bg-plum animate-pulse shrink-0" />
+              <span className="text-[11px] uppercase tracking-[0.2em] text-plum-deep font-[family-name:var(--font-body)]">
+                Two openings &middot; next intake June 2026
               </span>
             </div>
+
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
+              <GhostButton href="#programmes">
+                See the programmes
+              </GhostButton>
+            </div>
           </div>
-          {/* Portrait — 5/12, full height, bleeds to edge */}
-          <div className="md:col-span-5 relative min-h-[480px] md:min-h-0 bg-bone overflow-hidden">
+
+          {/* Portrait — 5 cols, bleeds */}
+          <div className="md:col-span-5 relative min-h-[420px] md:min-h-0 bg-bone overflow-hidden">
             <Image
               src="/images/portraits/martina-portrait-studio.jpg"
               alt="Martina Rink — private mentor"
               fill
-              sizes="(max-width: 768px) 100vw, 38vw"
+              sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover object-top"
               priority
             />
@@ -75,114 +95,208 @@ export default async function WorkWithMePage() {
         </div>
       </section>
 
-      <section className="bg-ink py-16 md:py-24">
-        <div className="container-content max-w-5xl mx-auto">
-          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-cream text-center">
-            The two programmes.
-          </h2>
-
-          <div className="mt-16 grid md:grid-cols-12 gap-0 md:divide-x divide-plum-deep/40">
-            {/* Sober Muse — 5/12 cols */}
-            <div className="md:col-span-5 md:pr-14 py-4 md:py-0 space-y-4">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
-                Sober Muse Method
-              </p>
-              <p className="mt-4 font-[family-name:var(--font-display)] italic text-[22px] text-cream">
-                For the woman re-examining alcohol.
-              </p>
-              <ul className="mt-6 space-y-2 text-[15px] text-cream/85">
-                <li>· 90 days</li>
-                <li>· 3 private sessions per month</li>
-                <li>· Written prompts between sessions</li>
-                <li>· Ongoing correspondence</li>
-              </ul>
-              <p className="mt-8 text-[12px] uppercase tracking-[0.18em] text-cream/55">
-                By application
-              </p>
-              <a
-                href="/sober-muse"
-                className="mt-4 inline-block text-[14px] text-pink underline decoration-pink decoration-1 underline-offset-[6px]"
-              >
-                Learn more →
-              </a>
-            </div>
-
-            {/* Empowerment — 7/12 cols */}
-            <div className="md:col-span-7 md:pl-14 pt-10 md:pt-0 space-y-4">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
-                Female Empowerment &amp; Leadership
-              </p>
-              <p className="mt-4 font-[family-name:var(--font-display)] italic text-[22px] text-cream">
-                For the woman navigating what comes next.
-              </p>
-              <ul className="mt-6 space-y-2 text-[15px] text-cream/85">
-                <li>· 3–12 months (open-ended)</li>
-                <li>· 2 private sessions per month</li>
-                <li>· Between-session correspondence</li>
-                <li>· Quarterly review sessions</li>
-              </ul>
-              <p className="mt-8 text-[12px] uppercase tracking-[0.18em] text-cream/55">
-                By application
-              </p>
-              <a
-                href="/empowerment"
-                className="mt-4 inline-block text-[14px] text-pink underline decoration-pink decoration-1 underline-offset-[6px]"
-              >
-                Learn more →
-              </a>
-            </div>
-          </div>
-
-          <p className="mt-16 text-center text-[14px] text-cream/60">
-            Investment is confirmed in the private consultation.
-          </p>
-        </div>
-      </section>
-
-      <section className="bg-cream py-14 md:py-20">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
-            Not sure which applies to you?
-          </h2>
-          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
-            The assessment will help. Seven questions. Four minutes. A clearer
-            sense of which conversation — if either — is the right fit.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-bone py-14 md:py-20">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <h2 className="font-[family-name:var(--font-display)] italic text-[28px] text-ink">
-            Before you apply, ask yourself:
-          </h2>
-          <div className="mt-10 space-y-6">
+      {/* ══════════════════════════════════════════════════════
+          2 — HOW IT WORKS (process strip)
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-bone border-y border-sand/40 py-14 md:py-18">
+        <div className="container-content">
+          <div className="grid md:grid-cols-4 gap-8 md:gap-6 max-w-5xl">
             {[
-              "Am I doing this because I want to — not because I feel I should?",
-              "Am I willing to be honest, even when what's honest is inconvenient?",
-              "Am I at a point where I want a real conversation, not a framework?",
-              "Am I prepared to do the work, rather than just talk about doing it?",
-            ].map((q) => (
-              <p
-                key={q}
-                className="font-[family-name:var(--font-display)] italic text-[20px] text-ink"
-              >
-                {q}
-              </p>
+              {
+                step: "01",
+                title: "Take the assessment",
+                body: "Seven questions. Four minutes. Tells you which programme — if either — is the right conversation.",
+                href: "/assessment",
+              },
+              {
+                step: "02",
+                title: "Submit your application",
+                body: "Short form. Five honest questions. I read every application myself.",
+                href: null,
+              },
+              {
+                step: "03",
+                title: "Private consultation",
+                body: "Forty-five minutes. €450, applied in full to the programme if you proceed. Not a pitch.",
+                href: null,
+              },
+              {
+                step: "04",
+                title: "The work begins",
+                body: "Private sessions, written correspondence, and the particular attention of someone who has been here.",
+                href: null,
+              },
+            ].map(({ step, title, body, href }) => (
+              <div key={step} className="relative">
+                <p className="text-[10px] uppercase tracking-[0.26em] text-ink-quiet mb-4 font-[family-name:var(--font-body)]">
+                  {step}
+                </p>
+                <span className="h-px w-8 bg-pink block mb-5" aria-hidden />
+                <p className="font-[family-name:var(--font-display)] text-[18px] text-ink mb-3 leading-snug">
+                  {title}
+                </p>
+                <p className="text-[14px] leading-[1.7] text-ink-soft font-[family-name:var(--font-body)] mb-4">
+                  {body}
+                </p>
+                {href && (
+                  <Link
+                    href={href}
+                    className="text-[11px] uppercase tracking-[0.16em] text-plum hover:text-plum-deep transition-colors font-[family-name:var(--font-body)]"
+                  >
+                    Begin here &rarr;
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
-          <p className="mt-12 text-[15px] text-ink-quiet">
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          3 — TWO PROGRAMMES
+      ══════════════════════════════════════════════════════ */}
+      <section id="programmes" className="bg-ink py-20 md:py-28 scroll-mt-20">
+        <div className="container-content max-w-5xl">
+          <Eyebrow className="text-cream/40 border-cream/15 mb-10">
+            The two programmes
+          </Eyebrow>
+
+          <div className="grid md:grid-cols-2 gap-px bg-cream/10">
+            {/* Sober Muse */}
+            <div className="bg-ink p-10 md:p-12 flex flex-col">
+              <p className="text-[9px] uppercase tracking-[0.3em] text-cream/40 mb-6 font-[family-name:var(--font-body)]">
+                Programme one
+              </p>
+              <span className="h-px w-8 bg-pink block mb-8" aria-hidden />
+              <h2 className="font-[family-name:var(--font-display)] text-[26px] md:text-[30px] text-cream leading-snug mb-5">
+                The Sober Muse Method
+              </h2>
+              <p className="font-[family-name:var(--font-display)] italic text-[18px] text-cream/65 mb-8">
+                For the woman re-examining alcohol.
+              </p>
+              <ul className="space-y-3 text-[14px] text-cream/75 font-[family-name:var(--font-body)] mb-8">
+                {[
+                  "90 days, private",
+                  "3 sessions per month",
+                  "Written work between sessions",
+                  "Direct correspondence",
+                  `From ${SITE.pricing.soberMuseFrom}`,
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="w-1 h-1 rounded-full bg-pink shrink-0" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-[11px] uppercase tracking-[0.2em] text-cream/30 mb-4 font-[family-name:var(--font-body)]">
+                By application
+              </p>
+              <div className="mt-auto flex flex-col sm:flex-row gap-3">
+                <PlumButton href="/apply/sober-muse">Apply now</PlumButton>
+                <GhostButton href="/sober-muse" className="border-cream/20 text-cream/70 hover:bg-cream/10 hover:text-cream">
+                  Learn more
+                </GhostButton>
+              </div>
+            </div>
+
+            {/* Empowerment */}
+            <div className="bg-ink p-10 md:p-12 flex flex-col border-t md:border-t-0 border-cream/10">
+              <p className="text-[9px] uppercase tracking-[0.3em] text-cream/40 mb-6 font-[family-name:var(--font-body)]">
+                Programme two
+              </p>
+              <span className="h-px w-8 bg-pink block mb-8" aria-hidden />
+              <h2 className="font-[family-name:var(--font-display)] text-[26px] md:text-[30px] text-cream leading-snug mb-5">
+                Female Empowerment &amp; Leadership
+              </h2>
+              <p className="font-[family-name:var(--font-display)] italic text-[18px] text-cream/65 mb-8">
+                For the woman navigating what comes next.
+              </p>
+              <ul className="space-y-3 text-[14px] text-cream/75 font-[family-name:var(--font-body)] mb-8">
+                {[
+                  "3–12 months, open-ended",
+                  "2 sessions per month",
+                  "Between-session correspondence",
+                  "Quarterly reviews",
+                  `From ${SITE.pricing.empowermentFrom}`,
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="w-1 h-1 rounded-full bg-pink shrink-0" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-[11px] uppercase tracking-[0.2em] text-cream/30 mb-4 font-[family-name:var(--font-body)]">
+                By application
+              </p>
+              <div className="mt-auto flex flex-col sm:flex-row gap-3">
+                <PlumButton href="/apply/empowerment">Apply now</PlumButton>
+                <GhostButton href="/empowerment" className="border-cream/20 text-cream/70 hover:bg-cream/10 hover:text-cream">
+                  Learn more
+                </GhostButton>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-10 text-center text-[13px] text-cream/35 font-[family-name:var(--font-body)]">
+            Investment is confirmed in the private consultation. {SITE.pricing.consultation} — credited in full upon enrolment.
+          </p>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          4 — INNER QUALIFYING QUESTIONS
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-bone py-20 md:py-28 border-b border-sand/40">
+        <div className="container-content max-w-3xl">
+          <Eyebrow withLine className="mb-10">Before you apply</Eyebrow>
+          <h2 className="font-[family-name:var(--font-display)] italic text-[28px] md:text-[34px] text-ink mb-12 leading-snug">
+            Ask yourself, honestly:
+          </h2>
+          <div className="space-y-6">
+            {[
+              "Am I doing this because I want to — not because I feel I should?",
+              "Am I willing to be honest, even when what is honest is inconvenient?",
+              "Am I at a point where I want a real conversation, not a framework?",
+              "Am I prepared to do the work, rather than just talk about doing it?",
+            ].map((q, i) => (
+              <div key={i} className="flex items-start gap-6 py-5 border-b border-sand/50">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-ink-quiet shrink-0 mt-1 font-[family-name:var(--font-body)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="font-[family-name:var(--font-display)] italic text-[18px] md:text-[20px] text-ink leading-snug">
+                  {q}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-10 text-[15px] text-ink-quiet font-[family-name:var(--font-body)]">
             If the answer to each of those is yes, we should speak.
           </p>
-          <div className="mt-10">
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
           </div>
-          <p className="mt-5 text-[13px] text-ink-quiet">
-            Private consultation: €450 · Applied in full to programme investment upon enrolment.
+          <p className="mt-5 text-[12px] text-ink-quiet font-[family-name:var(--font-body)]">
+            Private consultation: {SITE.pricing.consultation} &middot; Applied in full to programme investment upon enrolment.
           </p>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          5 — NOT READY YET? Newsletter bridge
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream py-20 md:py-28">
+        <div className="container-content max-w-4xl">
+          <div className="mb-10">
+            <Eyebrow withLine>Not ready yet?</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[28px] md:text-[34px] text-ink leading-snug">
+              The letter is a gentler beginning.
+            </h2>
+            <p className="mt-4 text-[16px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
+              Many women arrive at the application after months of reading the letter.
+              There is no pressure. Read first. Decide later.
+            </p>
+          </div>
+          <NewsletterStrip source="work-with-me-bridge" />
         </div>
       </section>
     </>
