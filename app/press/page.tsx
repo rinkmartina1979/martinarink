@@ -138,11 +138,11 @@ const SPEAKING_TOPICS = [
 const BIOS = [
   {
     length: "25 words",
-    text: "Martina Rink is a private mentor, Spiegel Bestseller author, and former personal assistant to Isabella Blow. She works with executive women on identity and sobriety.",
+    text: "Martina Rink is a private mentor, Spiegel Bestseller author, and former personal assistant to Isabella Blow. She works with female entrepreneurs, founders, and creatives on identity and sobriety.",
   },
   {
     length: "75 words",
-    text: "Martina Rink is a private mentor and Spiegel Bestseller author whose work sits at the intersection of identity, leadership, and the examined life. A former personal assistant to the late Isabella Blow — one of the defining figures of twentieth-century fashion — she brings a rare cultural eye to the question of who high-achieving women become after they have built the life. She works by application, across Europe and internationally.",
+    text: "Martina Rink is a private mentor and Spiegel Bestseller author whose work sits at the intersection of identity, leadership, and the examined life. A former personal assistant to the late Isabella Blow — one of the defining figures of twentieth-century fashion — she brings a rare cultural eye to the question of who female entrepreneurs, founders, and creatives become after they have built the life. She works by application, across Europe and internationally.",
   },
 ];
 
@@ -159,7 +159,7 @@ export default async function PressPage() {
 
   const heroCopy =
     pressData?.bioCopy ??
-    "Martina Rink is a Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women at the inflection points of a serious career. She is available for press interviews, podcast conversations, and panel discussions.";
+    "Martina Rink is a Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to female entrepreneurs, founders, and creatives. She is available for press interviews, podcast conversations, and panel discussions.";
 
   const hasSanityPublications = publications && publications.length > 0;
   const hasSanityLogos        = partnerLogos  && partnerLogos.length  > 0;
