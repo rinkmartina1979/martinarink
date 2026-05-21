@@ -144,10 +144,6 @@ const BIOS = [
     length: "75 words",
     text: "Martina Rink is a private mentor and Spiegel Bestseller author whose work sits at the intersection of identity, leadership, and the examined life. A former personal assistant to the late Isabella Blow — one of the defining figures of twentieth-century fashion — she brings a rare cultural eye to the question of who high-achieving women become after they have built the life. She works by application, across Europe and internationally.",
   },
-  {
-    length: "200 words",
-    text: "Martina Rink is a private mentor, author, and panel speaker whose work addresses the interior life of women at the height of their careers. Her two programmes — The Sober Muse Method and Female Empowerment & Leadership — work with a small number of women each year on the questions that do not appear on any competency framework: who am I, now that I have become this? What do I actually want, given that I can no longer pretend I haven’t thought about it?\n\nRink spent several years as personal assistant to Isabella Blow — the legendary British fashion editor, stylist, and talent spotter whose influence shaped a generation of designers including Alexander McQueen and Philip Treacy. That proximity to radical vision, eccentricity, and the cost of brilliance left a permanent mark on her thinking.\n\nShe is the co-author of People of Deutschland, a documentary portrait of contemporary Germany, and a Spiegel Bestseller. Her writing on women, identity, and culture appears in her online journal and regular letters to subscribers.\n\nRink is represented for literary rights by Elisabeth Ruge Agentur GmbH, Berlin. She is based across Ibiza, Berlin.",
-  },
 ];
 
 /* ─── Page ───────────────────────────────────────────────────── */
@@ -751,7 +747,7 @@ export default async function PressPage() {
               Biographies.
             </h2>
             <p className="mt-4 text-[16px] text-ink-soft font-[family-name:var(--font-body)]">
-              Three lengths for editorial use. Please do not edit without prior approval.
+              Two lengths for editorial use. Please do not edit without prior approval.
             </p>
           </div>
 
