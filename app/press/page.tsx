@@ -391,7 +391,7 @@ export default async function PressPage() {
               <span className="h-px w-10 bg-pink shrink-0" aria-hidden />
               <div>
                 <p className="text-[9px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
-                  Thames &amp; Hudson &middot; 2010 &middot; Spiegel Bestseller
+                  Thames &amp; Hudson &middot; 2010
                 </p>
                 <p className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] leading-tight text-ink mt-0.5">
                   Isabella Blow &mdash; A Life in Fashion
@@ -564,7 +564,7 @@ export default async function PressPage() {
                       />
                     </div>
                     <p className="mt-6 text-[9px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
-                      Thames &amp; Hudson &middot; 2010 &middot; Spiegel Bestseller
+                      Thames &amp; Hudson &middot; 2010
                     </p>
                     <h3 className="mt-2 font-[family-name:var(--font-display)] text-[20px] text-ink leading-snug">
                       Isabella Blow &mdash; A Life in Fashion
