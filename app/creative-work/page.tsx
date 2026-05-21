@@ -373,10 +373,52 @@ export default function CreativeWorkPage() {
           {/* Spreads */}
           <div className="mt-16 md:mt-20">
             <SectionLabel>Inside the book</SectionLabel>
-            <div className="grid md:grid-cols-3 gap-4">
-              <Spread src="/images/creative-work/pod-2.png" width={2667} height={1563} alt="People of Deutschland — interior spread" />
-              <Spread src="/images/creative-work/pod-3.png" width={3508} height={2481} alt="People of Deutschland — interior spread" />
-              <Spread src="/images/creative-work/pod-4.jpg" width={2000} height={1125} alt="People of Deutschland — interior spread" />
+
+            {/* Hero spread — full width */}
+            <div className="w-full bg-[#F0EDEA] p-4 md:p-6">
+              <Image
+                src="/images/creative-work/pod-spread-1.png"
+                alt="People of Deutschland — interior spreads, portrait editorial"
+                width={1600}
+                height={1100}
+                sizes="(max-width: 768px) 100vw, 90vw"
+                className="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
+
+            {/* Two spreads side by side */}
+            <div className="grid md:grid-cols-[1fr_1fr] gap-px bg-sand/30 mt-px">
+              <div className="bg-[#F0EDEA] p-4 md:p-6 flex items-center justify-center">
+                <Image
+                  src="/images/creative-work/pod-spread-2.png"
+                  alt="People of Deutschland — B&W portrait spreads"
+                  width={1600}
+                  height={1100}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="w-full h-auto object-contain"
+                  loading="lazy"
+                />
+              </div>
+              <div className="bg-bone p-4 md:p-6 flex items-center justify-center">
+                <Image
+                  src="/images/creative-work/pod-spread-3.jpg"
+                  alt="People of Deutschland — afterword by Düzen Tekkal"
+                  width={1600}
+                  height={900}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="w-full h-auto object-contain"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            {/* Caption strip */}
+            <div className="mt-4 flex items-center gap-4">
+              <span className="h-px w-6 bg-pink shrink-0" aria-hidden />
+              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet font-[family-name:var(--font-body)]">
+                85 portraits &middot; Photography Thomas Rafalzyk &middot; Afterword Düzen Tekkal
+              </p>
             </div>
           </div>
 
