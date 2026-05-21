@@ -91,62 +91,59 @@ const MEDIA_OUTLETS = [
   "Perspective Daily", "Prestel", "Fondation Cartier", "Tiffany & Co",
 ];
 
-const PRESS_MOSAIC = [
-  {
-    id: "pod",
-    book: "People of Deutschland",
-    year: "2023",
-    publisher: "Prestel · Random House",
-    bg: "bg-cream",
-    mainImage: {
-      src: "/images/creative-work/pod-1.png",
-      w: 1414, h: 2000,
-      alt: "People of Deutschland — book cover by Martina Rink",
-      contain: true,
-    },
-    supporting: [
-      { src: "/images/creative-work/pod-5.jpg",  w: 1200, h: 800,  alt: "People of Deutschland — editorial portrait spread" },
-      { src: "/images/creative-work/pod-7.jpg",  w: 1808, h: 1194, alt: "People of Deutschland — feature photography" },
-    ],
-    outlets: ["Deutsche Welle", "Deutschlandfunk Nova", "SWR", "WDR", "Strive", "Perspective Daily"],
-  },
-  {
-    id: "blow",
-    book: "Isabella Blow — A Life in Fashion",
-    year: "2010",
-    publisher: "Thames & Hudson",
-    bg: "bg-bone",
-    mainImage: {
-      src: "/images/creative-work/blow-3.jpg",
-      w: 896, h: 1273,
-      alt: "Isabella Blow — editorial photography by Martina Rink",
-      contain: true,
-    },
-    supporting: [
-      { src: "/images/creative-work/blow-1.png", w: 1280, h: 947,  alt: "Isabella Blow — book cover, Thames & Hudson" },
-      { src: "/images/creative-work/blow-5.jpg", w: 640,  h: 426,  alt: "Isabella Blow — archive fashion photography" },
-    ],
-    outlets: ["χίλιες και μια ιδέες", "House Magazine", "Elara Magazine", "Tiffany & Co", "International press"],
-  },
-  {
-    id: "fashion",
-    book: "Fashion Germany",
-    year: "2014",
-    publisher: "Prestel · Random House",
-    bg: "bg-cream",
-    mainImage: {
-      src: "/images/creative-work/fashion-4.jpg",
-      w: 768, h: 1087,
-      alt: "Fashion Germany — book interior spread by Martina Rink",
-      contain: true,
-    },
-    supporting: [
-      { src: "/images/creative-work/fashion-1.png", w: 1064, h: 960, alt: "Fashion Germany — cover, Prestel 2014" },
-      { src: "/images/creative-work/fashion-8.jpg", w: 640,  h: 427, alt: "Fashion Germany — editorial feature" },
-    ],
-    outlets: ["Glamour Germany", "Woman Magazine", "Fondation Cartier", "Prestel", "Himmlisch Schön"],
-  },
-] as const;
+/* ─── Real press images — mapped from martinarink.de/press ───── */
+const POD_IMAGES = [
+  "/images/press/pod-press-collage.jpg",
+  "/images/press/pod-perspective-daily.jpg",
+  "/images/press/71100e_1103a0815a0d4e5a8c2b927dc706f895~mv2.jpg",
+  "/images/press/71100e_390ad54df29a4fd0b5aad49a974eaf01~mv2.jpg",
+  "/images/press/71100e_1010b79438fc4c39928ea6dcfcc79350~mv2.jpg",
+  "/images/press/71100e_10d2ebd59cbe481e803406d44b640d8b~mv2.jpg",
+  "/images/press/71100e_ba067e03585f49a493e7879b9e2dede7~mv2.jpg",
+  "/images/press/71100e_041037ca3b9d431d9f44dfdd47af54d9~mv2.jpg",
+  "/images/press/71100e_c84c3a7eef7242b3972a270925a0f1e3~mv2.jpg",
+  "/images/press/71100e_d187a2e0437d483ebf1d74358838fd02~mv2.jpg",
+  "/images/press/71100e_67ad0a9c103f4996b7b79a408de0e053~mv2.jpg",
+  "/images/press/71100e_305c14d7fa6c48ef8a5a411026fd28b7~mv2.jpg",
+  "/images/press/71100e_a911b36e823e4db69940d13c0fca6d00~mv2.jpg",
+  "/images/press/71100e_ed55938d03174b4bb2ac0cd45f48ab0a~mv2.jpg",
+  "/images/press/71100e_c3c595de8e0d4281bfa19bd6694bc407~mv2.jpg",
+  "/images/press/71100e_d732489171194700aaa6077585e59192~mv2.jpg",
+  "/images/press/71100e_df40b2dd853340c3bad486a78bed3f42~mv2.jpg",
+  "/images/press/71100e_f28a5ecef4aa44579c4df771686c8665~mv2.jpg",
+  "/images/press/71100e_24165bb20e0245c8b2121f94d5bfa34e~mv2.jpg",
+  "/images/press/71100e_2d1de8dfffeb4202a5fad03061a79204~mv2.jpg",
+  "/images/press/71100e_83a5c9c1f43648d9bd6d7a2fdb44355c~mv2.jpg",
+  "/images/press/71100e_4da7b9974a674060b94a6ef61512a129~mv2.jpg",
+  "/images/press/71100e_8b6741599a434cbe881c119788f4f155~mv2.jpg",
+  "/images/press/71100e_1b5bd5f868eb4351b76fb1a9021e9e0a~mv2.jpg",
+];
+
+type PressImage = { src: string; portrait: boolean };
+
+const BLOW_IMAGES: PressImage[] = [
+  { src: "/images/press/blow-greek-press.jpg",                                     portrait: false },
+  { src: "/images/press/blow-events-collage.jpg",                                  portrait: false },
+  { src: "/images/press/blow-interview.jpg",                                        portrait: false },
+  { src: "/images/press/71100e_c0ccd545dde24172bca23ed6b385d6e4~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_e342c7f6cbbc475f9ed1da3948f9c716~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_c89bee0785b045d7afd9bad5608b946f~mv2.png",          portrait: false },
+  { src: "/images/press/71100e_985c882e5dbd4c0788e28518208790eb~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_5b6f8d2797c0424ebf6d83d2e6155f88~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_08a91f7ea6724ea0bfecbac81110d597~mv2.jpg",          portrait: false },
+  { src: "/images/press/71100e_f423fce09b2a47f3af2a7a3bb3f1e766~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_84196668313d4c389d56283688f8a334~mv2.jpg",          portrait: true  },
+];
+
+const FASHION_IMAGES: PressImage[] = [
+  { src: "/images/press/fashion-germany-press.jpg",                                portrait: false },
+  { src: "/images/press/71100e_d273e9b43e1e42648ccb940207e4f976~mv2.jpeg",         portrait: true  },
+  { src: "/images/press/71100e_c4981776ad1e4123bfb01feac6a79201~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_690a2130c791439ea0b444c4b13fe1a7~mv2.png",          portrait: false },
+  { src: "/images/press/71100e_5bf2ec7fef3a4d449a9ff6072c0c130c~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_22b68e652ca543ee8e3902b7c5619fd0~mv2.jpg",          portrait: true  },
+  { src: "/images/press/71100e_d6443c5b19eb40928ed25beeb4e5ab07~mv2.jpg",          portrait: true  },
+];
 
 const SPEAKING_TOPICS = [
   {
@@ -323,23 +320,34 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          3 — FEATURED MEDIA MOSAIC
+          3 — PEOPLE OF DEUTSCHLAND PRESS GALLERY
       ══════════════════════════════════════════════════════ */}
       <section className="bg-bone py-20 md:py-28">
         <div className="container-content">
-          <div className="max-w-4xl mb-14 md:mb-18">
-            <Eyebrow withLine>Media coverage</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[40px] md:text-[52px] leading-[1.0] tracking-[-0.02em] text-ink">
-              Featured in the conversation.
-            </h2>
-            <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
-              Three published books. Two decades of editorial work. A selection of coverage across print, radio, television, and digital.
-            </p>
+
+          {/* Section header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12">
+            <div>
+              <Eyebrow withLine>Press coverage</Eyebrow>
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.0] tracking-[-0.02em] text-ink">
+                People of Deutschland
+              </h2>
+              <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-ink-quiet font-[family-name:var(--font-body)]">
+                Prestel · Random House · 2023
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 md:max-w-[400px] md:justify-end">
+              {["Deutsche Welle", "Deutschlandfunk Nova", "SWR", "WDR", "Strive", "Perspective Daily"].map((o) => (
+                <span key={o} className="px-3 py-1.5 border border-sand/70 text-[10px] uppercase tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+                  {o}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Sanity press items (if any) */}
+          {/* Sanity press items if any */}
           {featuredPressItems.length > 0 && (
-            <div className="max-w-4xl mb-16 space-y-px">
+            <div className="max-w-4xl mb-10 space-y-px">
               {featuredPressItems.map((item: SanityPressItem) => (
                 <div key={item._id} className="flex items-start gap-6 py-5 border-b border-sand/50 bg-cream px-6">
                   <div className="flex-1">
@@ -363,76 +371,224 @@ export default async function PressPage() {
             </div>
           )}
 
-          {/* 3 book groups */}
-          <div className="space-y-20 md:space-y-28">
-            {PRESS_MOSAIC.map((group, gi) => (
-              <div key={group.id}>
-                {/* Group header */}
-                <div className="flex items-center gap-5 mb-8">
-                  <span className="h-px w-10 bg-pink shrink-0" aria-hidden />
-                  <div>
-                    <p className="text-[9px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
-                      {group.publisher} · {group.year}
-                    </p>
-                    <p className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] leading-tight text-ink mt-0.5">
-                      {group.book}
-                    </p>
-                  </div>
-                </div>
+          {/* Hero press image — full width */}
+          <div className="relative aspect-[16/7] overflow-hidden mb-1.5 md:mb-2 bg-ink">
+            <Image
+              src={POD_IMAGES[0]}
+              alt="People of Deutschland — press coverage collage"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-95 hover:scale-[1.02] transition-transform duration-700"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent pointer-events-none" />
+          </div>
 
-                {/* Mosaic grid */}
-                <div className="grid lg:grid-cols-[1.35fr_1fr] gap-3 md:gap-4 items-stretch">
-                  {/* Large main image */}
-                  <div className={`relative bg-bone flex items-center justify-center p-4 md:p-6 min-h-[300px] lg:min-h-[480px] ${gi % 2 === 1 ? "lg:order-2" : ""}`}>
-                    <Image
-                      src={group.mainImage.src}
-                      alt={group.mainImage.alt}
-                      width={group.mainImage.w}
-                      height={group.mainImage.h}
-                      sizes="(max-width: 768px) 90vw, (max-width: 1024px) 55vw, 38vw"
-                      className="object-contain max-h-[440px] w-auto h-auto drop-shadow-[0_8px_24px_rgba(30,27,23,0.12)]"
-                    />
-                  </div>
-
-                  {/* Two supporting images */}
-                  <div className={`flex flex-col gap-3 md:gap-4 ${gi % 2 === 1 ? "lg:order-1" : ""}`}>
-                    {group.supporting.map((img, si) => (
-                      <div
-                        key={si}
-                        className="relative bg-bone flex items-center justify-center p-3 md:p-4 flex-1 min-h-[160px] md:min-h-[220px]"
-                      >
-                        <Image
-                          src={img.src}
-                          alt={img.alt}
-                          width={img.w}
-                          height={img.h}
-                          sizes="(max-width: 768px) 90vw, (max-width: 1024px) 42vw, 28vw"
-                          className="object-contain max-h-[200px] w-auto h-auto"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Outlet badges */}
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {group.outlets.map((outlet) => (
-                    <span
-                      key={outlet}
-                      className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)] hover:border-sand transition-colors duration-200"
-                    >
-                      {outlet}
-                    </span>
-                  ))}
-                </div>
+          {/* Two featured press images */}
+          <div className="grid grid-cols-2 gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+            {POD_IMAGES.slice(1, 3).map((src, i) => (
+              <div key={i} className="relative aspect-[16/9] overflow-hidden bg-ink group">
+                <Image
+                  src={src}
+                  alt={`People of Deutschland — press feature ${i + 2}`}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 48vw"
+                  className="object-cover opacity-90 group-hover:scale-[1.03] group-hover:opacity-100 transition-all duration-500"
+                />
               </div>
             ))}
+          </div>
+
+          {/* Main grid — remaining 21 images */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 md:gap-2">
+            {POD_IMAGES.slice(3).map((src, i) => (
+              <div
+                key={i}
+                className="relative aspect-[16/9] overflow-hidden bg-ink group cursor-pointer"
+              >
+                <Image
+                  src={src}
+                  alt={`People of Deutschland — media coverage ${i + 4}`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-cover opacity-88 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-500"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Count strip */}
+          <div className="mt-6 flex items-center gap-4">
+            <span className="h-px w-8 bg-pink shrink-0" aria-hidden />
+            <p className="text-[11px] uppercase tracking-[0.24em] text-ink-quiet font-[family-name:var(--font-body)]">
+              {POD_IMAGES.length} press features · print, radio, digital
+            </p>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          4 — PUBLISHED WORK
+          4 — ISABELLA BLOW PRESS GALLERY
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream py-20 md:py-28">
+        <div className="container-content">
+
+          {/* Section header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12">
+            <div>
+              <Eyebrow withLine>Press coverage</Eyebrow>
+              <h2 className="mt-4 font-[family-name:var(--font-display)] italic text-[36px] md:text-[48px] leading-[1.0] tracking-[-0.02em] text-ink">
+                Isabella Blow
+              </h2>
+              <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-ink-quiet font-[family-name:var(--font-body)]">
+                Thames &amp; Hudson · 2010 · Spiegel Bestseller
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 md:max-w-[380px] md:justify-end">
+              {["House Magazine", "Glamour", "Elara Magazine", "Tiffany & Co", "International"].map((o) => (
+                <span key={o} className="px-3 py-1.5 border border-sand/70 text-[10px] uppercase tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+                  {o}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Editorial featured layout — first 3 images large */}
+          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr] gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+            {/* Dominant left image */}
+            <div className="relative aspect-[4/3] overflow-hidden bg-bone group">
+              <Image
+                src={BLOW_IMAGES[0].src}
+                alt="Isabella Blow — press coverage"
+                fill
+                sizes="(max-width: 768px) 100vw, 60vw"
+                className="object-cover group-hover:scale-[1.03] transition-transform duration-600"
+                priority
+              />
+            </div>
+            {/* Right stack */}
+            <div className="flex flex-col gap-1.5 md:gap-2">
+              {BLOW_IMAGES.slice(1, 3).map((img, i) => (
+                <div key={i} className="relative aspect-[4/3] overflow-hidden bg-bone group">
+                  <Image
+                    src={img.src}
+                    alt={`Isabella Blow — press feature ${i + 2}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 38vw"
+                    className="object-cover group-hover:scale-[1.03] transition-transform duration-600"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Remaining 8 images — mixed portrait/landscape grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-2">
+            {BLOW_IMAGES.slice(3).map((img, i) => (
+              <div
+                key={i}
+                className={`relative overflow-hidden bg-bone group ${
+                  img.portrait ? "aspect-[3/4]" : "aspect-[4/3]"
+                }`}
+              >
+                <Image
+                  src={img.src}
+                  alt={`Isabella Blow — media coverage ${i + 4}`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Count strip */}
+          <div className="mt-6 flex items-center gap-4">
+            <span className="h-px w-8 bg-pink shrink-0" aria-hidden />
+            <p className="text-[11px] uppercase tracking-[0.24em] text-ink-quiet font-[family-name:var(--font-body)]">
+              {BLOW_IMAGES.length} press features · international coverage
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          5 — FASHION GERMANY PRESS GALLERY
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-bone py-20 md:py-28">
+        <div className="container-content">
+
+          {/* Section header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12">
+            <div>
+              <Eyebrow withLine>Press coverage</Eyebrow>
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.0] tracking-[-0.02em] text-ink">
+                Fashion Germany
+              </h2>
+              <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-ink-quiet font-[family-name:var(--font-body)]">
+                Prestel · Random House · 2014
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 md:max-w-[380px] md:justify-end">
+              {["Glamour Germany", "Woman Magazine", "Fondation Cartier", "Prestel", "Himmlisch Schön"].map((o) => (
+                <span key={o} className="px-3 py-1.5 border border-sand/70 text-[10px] uppercase tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+                  {o}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Featured row — first two images large */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+            {FASHION_IMAGES.slice(0, 2).map((img, i) => (
+              <div key={i} className={`relative overflow-hidden bg-ink group ${img.portrait ? "aspect-[3/4]" : "aspect-[4/3]"}`}>
+                <Image
+                  src={img.src}
+                  alt={`Fashion Germany — press feature ${i + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500"
+                  priority
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Remaining 5 images */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1.5 md:gap-2">
+            {FASHION_IMAGES.slice(2).map((img, i) => (
+              <div
+                key={i}
+                className={`relative overflow-hidden bg-ink group ${
+                  img.portrait ? "aspect-[3/4]" : "aspect-[4/3]"
+                }`}
+              >
+                <Image
+                  src={img.src}
+                  alt={`Fashion Germany — media coverage ${i + 3}`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  className="object-cover opacity-88 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-500"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Count strip */}
+          <div className="mt-6 flex items-center gap-4">
+            <span className="h-px w-8 bg-pink shrink-0" aria-hidden />
+            <p className="text-[11px] uppercase tracking-[0.24em] text-ink-quiet font-[family-name:var(--font-body)]">
+              {FASHION_IMAGES.length} press features · German fashion media
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          6 — PUBLISHED WORK
       ══════════════════════════════════════════════════════ */}
       <section className="bg-cream py-20 md:py-28">
         <div className="container-content">
@@ -552,7 +708,7 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          5 — ISABELLA BLOW BACKGROUND BLOCK
+          7 — ISABELLA BLOW BACKGROUND BLOCK
       ══════════════════════════════════════════════════════ */}
       <section className="bg-aubergine py-20 md:py-28">
         <div className="container-content">
@@ -600,7 +756,7 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          6 — SPEAKING
+          8 — SPEAKING
       ══════════════════════════════════════════════════════ */}
       <section id="speaking" className="bg-cream py-20 md:py-28 scroll-mt-20">
         <div className="container-content">
@@ -641,7 +797,7 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          7 — FORMATS / AVAILABILITY
+          9 — FORMATS / AVAILABILITY
       ══════════════════════════════════════════════════════ */}
       <section className="bg-bone border-y border-sand/40 py-10 md:py-12">
         <div className="container-content">
@@ -677,7 +833,7 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          8 — PRESS MATERIALS / BIOS
+          10 — PRESS MATERIALS / BIOS
       ══════════════════════════════════════════════════════ */}
       <section className="bg-cream py-20 md:py-28">
         <div className="container-content">
@@ -719,7 +875,7 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          9 — LITERARY REPRESENTATION
+          11 — LITERARY REPRESENTATION
       ══════════════════════════════════════════════════════ */}
       <section className="bg-bone py-16 md:py-20">
         <div className="container-content max-w-3xl">
@@ -755,7 +911,7 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          10 — SELECTED WORK / CASE STUDIES
+          12 — SELECTED WORK / CASE STUDIES
       ══════════════════════════════════════════════════════ */}
       {displayCaseStudies.length > 0 && (
         <section className="bg-cream py-20 md:py-28 border-t border-sand/30">
@@ -787,7 +943,7 @@ export default async function PressPage() {
       )}
 
       {/* ══════════════════════════════════════════════════════
-          11 — FINAL PRESS CTA
+          13 — FINAL PRESS CTA
       ══════════════════════════════════════════════════════ */}
       <section className="bg-aubergine py-20 md:py-28">
         <div className="container-content">
