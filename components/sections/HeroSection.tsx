@@ -41,7 +41,7 @@ function anim(delay: string) {
 }
 
 /* ─── image ──────────────────────────────────────────────────── */
-const HERO_IMG = "/images/portraits/martina-hero-editorial.png";
+const HERO_IMG = "/images/portraits/martina-women-empowerment-coach.jpg";
 
 /* ─── props ──────────────────────────────────────────────────── */
 interface HeroSectionProps {
