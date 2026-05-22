@@ -37,7 +37,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "When a woman has spent two decades building a career, she often discovers that the title was never the destination — it was a container.",
     publishedAt: "2026-04-08T00:00:00Z",
     coverImage: null,
-    localImage: "/images/portraits/martina-portrait-studio.jpg",
+    localImage: "/images/portraits/martina-library-pink.jpg",
   },
   {
     _id: "3",
@@ -104,7 +104,7 @@ export default async function WritingPage() {
                         alt={article.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+                        className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-bone group-hover:bg-blush transition-colors duration-300" />
