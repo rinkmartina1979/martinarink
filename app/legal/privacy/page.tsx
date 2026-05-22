@@ -86,7 +86,7 @@ export default async function PrivacyPage() {
                 <li>There is a legal obligation (Art. 6(1)(c) GDPR); or</li>
                 <li>It is necessary for the assertion, exercise or defence of legal claims (Art. 6(1)(f) GDPR).</li>
               </ul>
-              <p className="mt-4">This site uses the following data processors: Vercel (hosting), Sanity (content management), Brevo (email), Cal.com (booking), Stripe (payments), Resend (transactional email), Vercel Analytics (anonymised usage).</p>
+              <p className="mt-4">This site uses the following data processors: Vercel (hosting, EU/US), Sanity (content management, EU/US), Kit / ConvertKit (newsletter email, US — Privacy Shield successor framework), Cal.com (booking, EU/US), Stripe (payments, EU/US), Resend (transactional email, US), Vercel Analytics (anonymised usage, no cookies).</p>
             </section>
 
             <section>

@@ -32,9 +32,7 @@ export default async function ImprintPage() {
                 Angaben gemäß § 5 TMG
               </h2>
               <p>
-                Martina Rink UG (haftungsbeschränkt)
-                <br />
-                <span className="text-ink-quiet text-[14px]">auch bekannt als: Concept Studio Martina Rink</span>
+                Concept Studio Martina Rink UG (haftungsbeschränkt)
                 <br /><br />
                 Steinkreuzstr. 26b
                 <br />
@@ -80,7 +78,7 @@ export default async function ImprintPage() {
 
             <section>
               <h2 className="text-[13px] uppercase tracking-[0.18em] text-ink-quiet mb-3">
-                Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+                Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
               </h2>
               <p>
                 Martina Rink
