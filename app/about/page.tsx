@@ -320,9 +320,8 @@ export default async function AboutPage() {
               { year: "2024", credential: "Personal & Business Life Coach", institution: "Coaching & Training Academy, Munich" },
               { year: "2024", credential: "Hypno-Coach", institution: "Coaching & Training Academy, Munich" },
               { year: "2023–24", credential: "NLP Practitioner", institution: "Coaching & Training Academy, Munich" },
-              { year: "2023", credential: "Ayurveda Fach-Coach", institution: "Dr. med. Ulrich Bauhofer · Deutsche Gesellschaft für Ayurveda" },
               { year: "2021", credential: "Sobriety Consultant", institution: "Coaching & Training Academy, Munich" },
-              { year: "2020", credential: "Transcendental Meditation", institution: "Paracelsus Academy, Munich" },
+              { year: "2020", credential: "Transcendental Meditation", institution: "Dr. med. Ulrich Bauhofer" },
             ].map((item) => (
               <div key={item.credential} className="grid grid-cols-[80px_1fr] gap-6 py-5 items-baseline">
                 <span className="text-[12px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)] shrink-0">
