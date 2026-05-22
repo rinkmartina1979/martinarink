@@ -520,14 +520,14 @@ export default async function PressPage() {
             {hasSanityPublications
               ? (publications as SanityPublication[]).map((pub) => (
                   <article key={pub._id} className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-cream border border-sand/20 p-10">
                       <Image
                         src={`/images/books/${pub.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}-cover.png`}
                         alt={`${pub.title} — book cover by Martina Rink`}
                         width={900}
                         height={1200}
                         sizes="(min-width: 1024px) 28vw, 80vw"
-                        className="max-h-full w-auto object-contain drop-shadow-[0_18px_35px_rgba(30,27,23,0.12)]"
+                        className="max-h-full w-auto object-contain drop-shadow-[0_20px_40px_rgba(30,27,23,0.22)]"
                       />
                     </div>
                     <p className="mt-6 text-[9px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
@@ -546,14 +546,14 @@ export default async function PressPage() {
               : (
                 <>
                   <article className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-cream border border-sand/20 p-10">
                       <Image
                         src="/images/books/isabella-blow-cover.png"
                         alt="Isabella Blow — A Life in Fashion, book cover by Martina Rink"
                         width={900}
                         height={1200}
                         sizes="(min-width: 1024px) 28vw, 80vw"
-                        className="max-h-full w-auto object-contain drop-shadow-[0_18px_35px_rgba(30,27,23,0.12)]"
+                        className="max-h-full w-auto object-contain drop-shadow-[0_20px_40px_rgba(30,27,23,0.22)]"
                       />
                     </div>
                     <p className="mt-6 text-[9px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
@@ -569,14 +569,14 @@ export default async function PressPage() {
                   </article>
 
                   <article className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-cream border border-sand/20 p-10">
                       <Image
                         src="/images/books/people-of-deutschland-cover.png"
                         alt="People of Deutschland — book cover by Martina Rink"
                         width={900}
                         height={1200}
                         sizes="(min-width: 1024px) 28vw, 80vw"
-                        className="max-h-full w-auto object-contain drop-shadow-[0_18px_35px_rgba(30,27,23,0.12)]"
+                        className="max-h-full w-auto object-contain drop-shadow-[0_20px_40px_rgba(30,27,23,0.22)]"
                       />
                     </div>
                     <p className="mt-6 text-[9px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
@@ -592,14 +592,14 @@ export default async function PressPage() {
                   </article>
 
                   <article className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-cream border border-sand/20 p-10">
                       <Image
                         src="/images/books/fashion-germany-cover.png"
                         alt="Fashion Germany — book cover by Martina Rink"
                         width={900}
                         height={1200}
                         sizes="(min-width: 1024px) 28vw, 80vw"
-                        className="max-h-full w-auto object-contain drop-shadow-[0_18px_35px_rgba(30,27,23,0.12)]"
+                        className="max-h-full w-auto object-contain drop-shadow-[0_20px_40px_rgba(30,27,23,0.22)]"
                       />
                     </div>
                     <p className="mt-6 text-[9px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
