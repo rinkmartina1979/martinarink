@@ -115,13 +115,13 @@ export default async function AboutPage() {
       <section className="bg-bone overflow-hidden">
         <div className="grid md:grid-cols-2">
           {/* Left — full-bleed image, no container constraint */}
-          <div className="relative h-[420px] md:h-auto md:min-h-[580px] bg-sand/30">
+          <div className="relative h-[480px] md:h-auto md:min-h-[600px] bg-[#EDE8E0]">
             <Image
-              src="/images/portraits/martina-gallery-leopard.jpg"
-              alt="Martina Rink — formative years"
+              src="/images/portraits/martina-before-practice.jpg"
+              alt="Martina Rink — pink blouse, roses, Chanel and Vogue books"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center"
+              className="object-cover object-[center_18%]"
             />
           </div>
           {/* Right — text with internal padding */}
