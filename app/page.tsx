@@ -314,8 +314,7 @@ export default async function HomePage() {
           White background, large display headline, publisher-style
           card layout. Mobile: title/meta above image. */}
       <section
-        className="py-16 md:py-24 border-t border-sand/30"
-        style={{ backgroundColor: "#FFFFFF" }}
+        className="py-16 md:py-24 border-t border-sand/30 bg-cream"
       >
         <div className="container-content max-w-7xl">
 
@@ -394,11 +393,8 @@ export default async function HomePage() {
 
                 {/* Image stage */}
                 <div
-                  className="relative w-full bg-white overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
-                  style={{
-                    aspectRatio:     "4 / 5",
-                    backgroundColor: "#FFFFFF",
-                  }}
+                  className="relative w-full bg-bone overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
+                  style={{ aspectRatio: "4 / 5" }}
                 >
                   <Image
                     src={book.src}

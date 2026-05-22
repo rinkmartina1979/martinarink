@@ -26,6 +26,14 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
+                  href="/about"
+                  className="text-[14px] text-cream/85 hover:text-pink transition-colors"
+                >
+                  About Martina
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/sober-muse"
                   className="text-[14px] text-cream/85 hover:text-pink transition-colors"
                 >
@@ -159,7 +167,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-sand/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="text-[12px] text-cream/50">
-            © 2026 Martina Rink UG (haftungsbeschränkt) &middot; Working worldwide
+            © 2026 Martina Rink UG (haftungsbeschränkt) &middot; Ibiza &middot; Berlin &middot; World
           </div>
           <div className="flex flex-wrap gap-6 text-[12px] uppercase tracking-[0.15em]">
             <Link href="/legal/privacy" className="text-cream/50 hover:text-cream">

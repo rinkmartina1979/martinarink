@@ -20,7 +20,8 @@ export function GhostButton({
     "inline-flex items-center justify-center rounded-[1px] " +
     "uppercase tracking-[0.18em] font-medium text-[0.75rem] " +
     "px-7 py-4 md:px-9 md:py-4 min-h-[44px] min-w-[44px] " +
-    "border transition-all duration-300 ease-out";
+    "border transition-all duration-300 ease-out " +
+    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-plum";
 
   const variantClasses =
     variant === "dark"

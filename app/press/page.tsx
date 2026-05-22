@@ -892,6 +892,7 @@ export default async function PressPage() {
             <div className="flex gap-6 text-[13px] font-[family-name:var(--font-body)]">
               <Link href="/about"        className="text-cream/40 hover:text-cream/80 transition-colors">About</Link>
               <Link href="/writing"      className="text-cream/40 hover:text-cream/80 transition-colors">Writing</Link>
+              <Link href="/assessment"   className="text-cream/40 hover:text-cream/80 transition-colors">Assessment</Link>
               <Link href="/work-with-me" className="text-cream/40 hover:text-cream/80 transition-colors">Work with me</Link>
             </div>
           </div>

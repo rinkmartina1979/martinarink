@@ -21,7 +21,8 @@ const STATIC_PAGES: {
   { path: "/creative-work",  changeFrequency: "monthly", priority: 0.6 },
   { path: "/legal/privacy",  changeFrequency: "yearly",  priority: 0.3 },
   { path: "/legal/imprint",  changeFrequency: "yearly",  priority: 0.3 },
-  { path: "/legal/terms",    changeFrequency: "yearly",  priority: 0.3 },
+  { path: "/legal/terms",        changeFrequency: "yearly",  priority: 0.3 },
+  { path: "/legal/cancellation", changeFrequency: "yearly",  priority: 0.3 },
 ];
 
 // Hardcoded fallback article slugs — always included so crawlers can index
@@ -32,7 +33,7 @@ const HARDCODED_ARTICLE_SLUGS = [
 ];
 
 // Hardcoded case study slugs
-const HARDCODED_CASE_SLUGS = ["adriana", "helena", "margaux"];
+const HARDCODED_CASE_SLUGS = ["adriana", "helena", "nathalie"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE.url;
