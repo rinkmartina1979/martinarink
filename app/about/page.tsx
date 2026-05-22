@@ -7,6 +7,7 @@ import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata, aboutPersonSchema, breadcrumbSchema } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
 import { getAboutPage } from "@/sanity/lib/queries";
+import { CredentialBadges } from "@/components/brand/CredentialBadges";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getAboutPage();
@@ -304,6 +305,13 @@ export default async function AboutPage() {
               )}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ACCREDITATIONS */}
+      <section className="bg-bone border-t border-sand/30">
+        <div className="container-content">
+          <CredentialBadges variant="block" />
         </div>
       </section>
 

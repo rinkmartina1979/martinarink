@@ -8,6 +8,7 @@ import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib
 import { getSoberMusePage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
+import { CredentialBadges } from "@/components/brand/CredentialBadges";
 
 const FAQS = [
   {
@@ -307,7 +308,10 @@ export default async function SoberMusePage() {
               </>
             )}
           </div>
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-10 pt-8 border-t border-sand/30">
+            <CredentialBadges variant="strip" />
+          </div>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
             <GhostButton href="/assessment">Begin the assessment</GhostButton>
           </div>

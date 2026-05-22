@@ -7,6 +7,7 @@ import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getEmpowermentPage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
+import { CredentialBadges } from "@/components/brand/CredentialBadges";
 
 const FAQS = [
   {
@@ -277,6 +278,9 @@ export default async function EmpowermentPage() {
             The conversation begins with a request. I read every application
             personally and respond within three working days.
           </p>
+          <div className="mt-10 pt-8 border-t border-sand/30">
+            <CredentialBadges variant="strip" />
+          </div>
           <div className="mt-10">
             <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
           </div>
