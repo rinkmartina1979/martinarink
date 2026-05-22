@@ -91,10 +91,10 @@ export function HeroSection({
           ══════════════════════════════════════════════════ */}
       <div
         className="flex-shrink-0
-                   px-6 pt-8 pb-5
+                   px-6 pt-[88px] pb-5
                    sm:px-10
-                   md:px-14 md:pt-10 md:pb-6
-                   lg:px-20 lg:pt-12 lg:pb-7
+                   md:px-14 md:pt-[92px] md:pb-6
+                   lg:px-20 lg:pt-[96px] lg:pb-7
                    xl:px-28"
       >
 
@@ -112,11 +112,11 @@ export function HeroSection({
           {/* Headline */}
           <h1
             className="font-[family-name:var(--font-display)]
-                       text-[clamp(2.6rem,3.9vw,5.4rem)]
-                       leading-[0.88]
-                       tracking-[-0.05em]
+                       text-[clamp(2.2rem,3.4vw,4.6rem)]
+                       leading-[0.9]
+                       tracking-[-0.04em]
                        text-cream
-                       max-w-[700px]"
+                       max-w-[680px]"
           >
             You&rsquo;ve built a life that
             looks{" "}
@@ -217,7 +217,7 @@ export function HeroSection({
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover object-[center_8%]"
+          className="object-cover object-[center_22%]"
         />
 
         {/* Top gradient: dissolves text panel into image */}
