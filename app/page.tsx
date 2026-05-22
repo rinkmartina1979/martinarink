@@ -65,14 +65,6 @@ const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
     nda: false,
     photoPath: "/images/portraits/anja-testimonial.avif",
   },
-  {
-    name: "Canan Chandni Bauer",
-    role: "Miss Germany · Germany",
-    quote:
-      "I wholeheartedly recommend this female empowerment experience. I'm genuinely pleasantly surprised by just how much I've gained. Working with Martina was an empathetic and, at the same time, highly professional experience. I was particularly impressed by how she addressed issues such as fears, inner blocks, panic attacks and career guidance on a truly personal level. This has given me much greater clarity about my own strengths and the path I should take.",
-    nda: false,
-    photoPath: "/images/portraits/canan-chandni-bauer.png",
-  },
 ];
 
 function TestimonialBlock({

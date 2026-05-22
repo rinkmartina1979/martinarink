@@ -19,12 +19,12 @@
   --color-ink-quiet:    #636260;  /* captions, metadata — CI confirmed override */
   --color-sand:         #C8B8A2;  /* hairlines, dividers */
 
-  /* CTA — rose editorial palette (replaces purple/plum sitewide) */
-  --color-plum:         #C4546B;  /* primary CTA fill — deep editorial rose */
-  --color-plum-deep:    #A64260;  /* CTA hover — deeper rose */
-  --color-plum-soft:    #FAEAED;  /* pale rose tint blocks (investment panels) */
-  --color-rose-btn:     #C4546B;  /* alias — same value */
-  --color-rose-btn-deep:#A64260;  /* alias hover — same value */
+  /* CTA — warm blush rose, same family as review card bg-rose (#F5D0DC) */
+  --color-plum:         #C4687D;  /* primary CTA fill — deep warm blush rose */
+  --color-plum-deep:    #A85268;  /* CTA hover — deeper warm rose */
+  --color-plum-soft:    #FAE8EC;  /* pale rose tint (investment panels) */
+  --color-rose-btn:     #C4687D;  /* alias — same value */
+  --color-rose-btn-deep:#A85268;  /* alias hover — same value */
   --color-aubergine:    #231727;  /* approved editorial aubergine — dark section bg */
   --color-aubergine-soft: #2A1B30;  /* hover / lighter aubergine tint */
   --color-aubergine-deep: #17101B;  /* deepest aubergine — footer/extreme dark */
