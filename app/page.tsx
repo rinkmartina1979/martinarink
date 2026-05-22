@@ -65,6 +65,14 @@ const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
     nda: false,
     photoPath: "/images/portraits/anja-testimonial.avif",
   },
+  {
+    name: "Armina",
+    role: "Patent Engineer",
+    quote:
+      "My experience with Martina as a life coach was life-changing. From the very first consultation, I felt understood and supported. She helped me gain clarity about my life path and clearly define my goals. Martina's dedication is noticeable in every coaching session — she supports me in discovering my own inner strength and developing my full potential. Her voice is calming and encouraging, and every conversation offers a safe space for growth. I wholeheartedly recommend Martina to anyone seeking an empathetic and committed coach.",
+    nda: false,
+    photoPath: "/images/portraits/armina-patent-engineer.avif",
+  },
 ];
 
 function TestimonialBlock({
