@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "Press & Speaking — Martina Rink",
     description:
-      "Press information, biography, speaking topics, and media kit for Martina Rink — Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to senior women in transition.",
+      "Press information, biography, speaking topics, and media kit for Martina Rink — Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to female entrepreneurs, founders, and creatives.",
     path: "/press",
   });
 }
@@ -50,7 +50,7 @@ function pressSchema() {
         url: SITE.url,
         jobTitle: ["Author", "Private Mentor", "Panel Speaker"],
         description:
-          "Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to high-achieving women navigating identity, sobriety, and the second chapter of a serious career.",
+          "Spiegel Bestseller author, former personal assistant to Isabella Blow, and private mentor to female entrepreneurs, founders, and creatives navigating identity, sobriety, and what comes next.",
         email: SITE.email,
         telephone: "+49-172-174-1499",
         sameAs: [SITE.social.linkedin, SITE.social.instagram],
@@ -667,7 +667,7 @@ export default async function PressPage() {
           <div className="max-w-4xl mb-14">
             <Eyebrow withLine>Speaking</Eyebrow>
             <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
-              For audiences of senior women.
+              For entrepreneurs, founders, and creatives.
             </h2>
             <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-2xl font-[family-name:var(--font-body)]">
               Martina speaks at events, conferences, retreats. Her talks are

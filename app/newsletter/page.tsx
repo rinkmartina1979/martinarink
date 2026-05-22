@@ -373,8 +373,8 @@ export default async function NewsletterPage() {
               <div className="space-y-4 text-[15px] md:text-[16px] leading-[1.8] text-ink-soft font-[family-name:var(--font-body)] max-w-lg">
                 <p>
                   Private mentor, Spiegel Bestseller author, and former personal
-                  assistant to Isabella Blow. I work with a small number of senior
-                  women each year on the questions that do not appear on any competency
+                  assistant to Isabella Blow. I work with a small number of female entrepreneurs,
+                  founders, and creatives on the questions that do not appear on any competency
                   framework.
                 </p>
                 <p>

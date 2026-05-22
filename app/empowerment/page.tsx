@@ -48,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "Female Empowerment & Leadership",
     description:
-      "Private engagement for senior women navigating identity, leadership, and what comes next. From €7,500. English-speaking, internationally based.",
+      "Private engagement for female entrepreneurs, founders, and creatives navigating identity, leadership, and what comes next. From €7,500. English and German.",
     path: "/empowerment",
   });
 }
@@ -77,7 +77,7 @@ export default async function EmpowermentPage() {
             serviceSchema({
               name: "Female Empowerment & Leadership",
               description:
-                "Long-form private mentoring for senior women — six to twelve months, by application, from €7,500.",
+                "Long-form private mentoring for female entrepreneurs, founders, and creatives — six to twelve months, by application, from €7,500.",
               path: "/empowerment",
               priceFrom: 7500,
               duration: "P6M",
@@ -138,8 +138,8 @@ export default async function EmpowermentPage() {
             ) : (
               <>
                 <p>
-                  You are senior. You are accomplished. You have the title, the
-                  team, the life that other people describe as impressive.
+                  You are accomplished. You are a founder, a creative, a leader.
+                  You have the title, the team, the life that other people describe as impressive.
                 </p>
                 <p>
                   And somewhere inside that impressive life, there is a gap. Between
@@ -266,7 +266,7 @@ export default async function EmpowermentPage() {
       </section>
 
       {/* LILAC CTA SECTION */}
-      <section className="bg-violet-soft section-pad">
+      <section className="bg-lilac-soft section-pad">
         <div className="container-content max-w-2xl mx-auto text-center">
           <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
             come home to yourself
@@ -357,7 +357,7 @@ export default async function EmpowermentPage() {
       </section>
 
       {/* WHO THIS IS NOT FOR — premium qualifier */}
-      <section className="bg-violet-soft section-pad">
+      <section className="bg-lilac-soft section-pad">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>An honest filter</Eyebrow>
           <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">

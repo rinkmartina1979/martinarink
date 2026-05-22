@@ -327,7 +327,7 @@ export default async function HomePage() {
                 fontSize:      "11px",
                 letterSpacing: "0.32em",
                 textTransform: "uppercase",
-                color:         "#636260",
+                color:         "var(--color-ink-quiet)",
               }}
             >
               Bestsellers
@@ -385,7 +385,7 @@ export default async function HomePage() {
                       fontSize:      "10px",
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
-                      color:         "#636260",
+                      color:         "var(--color-ink-quiet)",
                     }}
                   >
                     {book.meta}
@@ -423,7 +423,7 @@ export default async function HomePage() {
                       fontSize:      "10px",
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
-                      color:         "#636260",
+                      color:         "var(--color-ink-quiet)",
                     }}
                   >
                     {book.meta}

@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "The Sober Muse Method",
     description:
-      "A 90-day private engagement for executive women re-examining their relationship with alcohol. No recovery language. No group settings. From €5,000.",
+      "A 90-day private engagement for female entrepreneurs, founders, and creatives re-examining their relationship with alcohol. No recovery language. No group settings. From €5,000.",
     path: "/sober-muse",
   });
 }

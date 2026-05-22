@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "About — Author & Private Mentor",
     description:
-      "Spiegel Bestseller author, former personal assistant to Isabella Blow, co-creator of People of Deutschland. Private mentor to executive women.",
+      "Spiegel Bestseller author, former personal assistant to Isabella Blow, co-creator of People of Deutschland. Private mentor to female entrepreneurs, founders, and creatives.",
     path: "/about",
   });
 }
@@ -161,7 +161,7 @@ export default async function AboutPage() {
       </section>
 
       {/* PULL QUOTE — Isabella Blow specific authority */}
-      <section className="bg-violet-soft py-14 md:py-20">
+      <section className="bg-lilac-soft py-14 md:py-20">
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
@@ -236,7 +236,7 @@ export default async function AboutPage() {
               practice.
             </p>
             <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
-              Through The Sober Muse Mentorship Program, I support women in
+              Through The Sober Muse Method, I support women in
               sustainably navigating their challenges by helping them apply the
               new patterns, tools, and resources they have learned in treatment
               to real life.
