@@ -221,9 +221,16 @@ export function HeroSection({
           hard aubergine / portrait cut — a hallmark of Vogue, Jacquemus,
           and Net-a-Porter editorial splits.
         */}
+        {/*
+          object-contain — shows the FULL seated subject:
+          face, shoulders, watch, outfit, Chanel/Vogue books, sofa.
+          For a personal brand coach, complete presence (not a Vogue
+          face-crop) builds trust and communicates authority + warmth.
+          Warm cream bg fills the empty letterbox areas naturally.
+        */}
         <div
           className="relative overflow-hidden bg-[#F0EBE6]
-                     h-[60svh] min-h-[430px]
+                     h-[62svh] min-h-[440px]
                      lg:h-auto lg:min-h-0"
         >
           <Image
@@ -233,14 +240,15 @@ export function HeroSection({
             priority
             fetchPriority="high"
             sizes="(min-width: 1024px) 46vw, 100vw"
-            className="object-cover object-[50%_8%]"
+            className="object-contain object-center
+                       lg:object-contain lg:object-[center_55%]"
           />
 
-          {/* Seam gradient — softens the aubergine / portrait edge */}
+          {/* Seam gradient — bleeds aubergine into the cream edge, removes the hard cut */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-0 w-10
-                       bg-gradient-to-r from-aubergine/25 to-transparent"
+            className="pointer-events-none absolute inset-y-0 left-0 w-16
+                       bg-gradient-to-r from-aubergine/30 to-transparent"
           />
         </div>
 
