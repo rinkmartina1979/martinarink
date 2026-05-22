@@ -1,40 +1,40 @@
 /**
- * HeroSection — 2026 stacked editorial.
+ * HeroSection — Premium 52/48 split editorial hero.
  *
- * ┌─────────────────────────────────────────────────────────────┐
- * │  ROW 1 — TEXT  (flex-shrink-0, compact, fills width)        │
- * │  [Headline — left]               [CTAs — right, baseline]   │
- * │  [Script accent]                                            │
- * │  [Body copy — left]                                         │
- * ├─────────────────────────────────────────────────────────────┤
- * │  ROW 2 — IMAGE  (flex-1, full viewport width)               │
- * │  fill + object-cover + object-[center_8%]                   │
- * └─────────────────────────────────────────────────────────────┘
+ * ┌────────────────────────────────┬─────────────────────┐
+ * │  LEFT 52% — editorial copy     │  RIGHT 48% — portrait│
+ * │                                │                      │
+ * │  eyebrow (pink hairline)       │  fill + object-cover │
+ * │  H1  (display, tight leading)  │  object-[50%_42%]    │
+ * │  script accent "and yet."      │                      │
+ * │  body copy                     │  left seam gradient  │
+ * │  CTAs (cream fill / ghost)     │  (desktop only)      │
+ * │  trust micro-copy              │                      │
+ * └────────────────────────────────┴─────────────────────┘
  *
  * KEY RULES:
- *  1. Section height is EXACT: calc(100svh - navbar).
- *     NOT min-height — min-height lets the text row grow past the
- *     fold and pushes the image out of view entirely.
+ *  1. Image is a true portrait COLUMN — not a background strip.
+ *     It sits in its own grid cell and bleeds to the right edge.
  *
- *  2. Row 1 is flex-shrink-0 (never compressed) with compact padding.
- *     Row 2 is flex-1 (fills EVERY pixel remaining after Row 1).
+ *  2. Primary CTA = cream fill + aubergine text.
+ *     Plum is the site-wide action colour but inside the aubergine
+ *     hero, cream-on-dark is the luxury editorial choice.
  *
- *  3. Image uses fill + object-cover. The parent must be:
- *       · position: relative  — required by next/image fill
- *       · overflow: hidden    — clips the scaled image to bounds
- *       · have explicit height (flex-1 inherits from section) ✓
+ *  3. Grid uses min-h, not h, so if copy grows (e.g. translated text)
+ *     the section grows rather than overflowing.
  *
- *  4. object-[center_8%]: keeps Martina's face in frame on any
- *     container height. 8% = the vertical anchor point of her face.
+ *  4. object-[50%_42%]: 42% down the image keeps the face (eyes,
+ *     smile, neck) visible at every container aspect ratio.
  *
- *  5. Text layout: headline + CTAs on the SAME ROW at desktop.
- *     This fills the horizontal space and stops the dead-space
- *     problem on wide viewports.
+ *  5. Left seam gradient is desktop-only (lg:block) — it dissolves
+ *     the image edge into the aubergine text column.
+ *
+ *  6. Mobile: text column first in DOM → above the portrait.
+ *     Portrait gets a fixed svh height so it never disappears.
  */
 
 import Image from "next/image";
-import { PlumButton }  from "@/components/brand/PlumButton";
-import { GhostButton } from "@/components/brand/GhostButton";
+import Link  from "next/link";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 
 /* ─── animation ──────────────────────────────────────────────── */
@@ -44,9 +44,7 @@ function anim(delay: string) {
 }
 
 /* ─── image ──────────────────────────────────────────────────── */
-const HERO_IMG = "/images/portraits/martina-hero-empowerment.jpg";
-// Placeholder matches studio wall tone — no dark flash while loading
-const HERO_BG  = "#EEE8E2";
+const HERO_IMG = "/images/portraits/martina-hero-editorial.png";
 
 /* ─── props ──────────────────────────────────────────────────── */
 interface HeroSectionProps {
@@ -67,178 +65,189 @@ export function HeroSection({
 }: HeroSectionProps) {
   return (
     /*
-      SECTION — exact viewport height minus fixed navbar.
-      ─────────────────────────────────────────────────────
-      h-[calc(100svh-72px)] mobile   (navbar = 72px)
-      md:h-[calc(100svh-80px)]       (navbar = 80px on md+)
-
-      WHY h- not min-h-:
-        min-height lets the flex children grow beyond the viewport.
-        Text row at large font → overflows fold → image is invisible.
-        Fixed height = section always fits the screen exactly. ✓
+      SECTION — full width, aubergine background.
+      The grid inside is not wrapped in container-content because
+      the right image column must bleed to the viewport edge.
     */
-    <section
-      className="flex flex-col overflow-hidden bg-aubergine text-cream
-                 h-[calc(100svh-72px)] md:h-[calc(100svh-80px)]"
-    >
+    <section className="relative overflow-hidden bg-aubergine text-cream">
 
-      {/* ══════════════════════════════════════════════════
-          ROW 1 — TEXT  (flex-shrink-0)
-          ──────────────────────────────────────────────────
-          flex-shrink-0: this row never collapses.
-          Padding is intentionally compact — the goal is to
-          leave the maximum vertical space for the image.
-          ══════════════════════════════════════════════════ */}
+      {/*
+        GRID
+        ─────────────────────────────────────────────────────
+        Mobile:  1 column, stacked (text above, portrait below)
+        Desktop: 52% left text / 48% right portrait
+
+        min-h keeps the hero at least full-viewport-minus-navbar.
+        Uses min-h (not h) so very-tall content can grow safely.
+      */}
       <div
-        className="flex-shrink-0
-                   px-6 pt-[88px] pb-5
-                   sm:px-10
-                   md:px-14 md:pt-[92px] md:pb-6
-                   lg:px-20 lg:pt-[96px] lg:pb-7
-                   xl:px-28"
+        className="grid grid-cols-1
+                   min-h-[calc(100svh-72px)]
+                   md:min-h-[calc(100svh-80px)]
+                   lg:grid-cols-[52%_48%]"
       >
 
-        {/* ── TOP ROW: Headline left | CTAs right ──────────
-            At desktop the headline and CTAs sit on the
-            same horizontal band, filling the full width.
-            At mobile they stack vertically (flex-col).
-        ── */}
+        {/* ══════════════════════════════════════════════════
+            LEFT — editorial copy  (source-order 1 = mobile first)
+            justify-center centres the block at any grid height.
+            ══════════════════════════════════════════════════ */}
         <div
-          className="flex flex-col gap-4
-                     lg:flex-row lg:items-end lg:justify-between lg:gap-8"
-          style={{ animation: anim("0.10s") }}
+          className="flex flex-col justify-center
+                     px-6  py-20
+                     sm:px-10
+                     md:px-16 md:py-24
+                     lg:px-20 lg:py-20
+                     xl:px-28"
         >
 
-          {/* Headline */}
+          {/* ── Eyebrow — pink hairline + overline label ── */}
+          <div
+            className="mb-8 flex items-center gap-4"
+            style={{ animation: anim("0.05s") }}
+          >
+            <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
+            <p className="font-[family-name:var(--font-body)]
+                          text-[10px] font-semibold uppercase
+                          tracking-[0.34em] text-cream/60">
+              Private mentorship
+            </p>
+          </div>
+
+          {/* ── H1 ── */}
           <h1
             className="font-[family-name:var(--font-display)]
-                       text-[clamp(2.2rem,3.4vw,4.6rem)]
-                       leading-[0.9]
-                       tracking-[-0.04em]
-                       text-cream
-                       max-w-[680px]"
+                       text-[clamp(3.2rem,5.2vw,7.8rem)]
+                       leading-[0.88] tracking-[-0.055em]
+                       text-cream max-w-[680px]"
+            style={{ animation: anim("0.12s") }}
           >
-            You&rsquo;ve built a life that
-            looks{" "}
+            You&rsquo;ve built a life that looks{" "}
             <em className="italic">extraordinary</em>
             <br className="hidden md:block" />{" "}
             from&nbsp;the&nbsp;outside
           </h1>
 
-          {/* CTAs — baseline-aligned to headline bottom at lg+ */}
+          {/* ── Script accent ── */}
           <div
-            className="flex flex-col sm:flex-row gap-3 shrink-0 lg:pb-[3px]"
-            style={{ animation: anim("0.28s") }}
+            className="mt-8 flex items-center gap-5"
+            style={{ animation: anim("0.20s") }}
           >
-            <PlumButton href={heroCtaUrl}>
-              {heroCta}&nbsp;<span aria-hidden>→</span>
-            </PlumButton>
-            <GhostButton variant="light" href={heroSecondaryUrl}>
-              {heroSecondaryLabel}
-            </GhostButton>
-          </div>
-
-        </div>
-
-        {/* ── BOTTOM ROW: Script left | Body copy right ────
-            Script accent on the left.
-            Body copy on the right aligned under the CTAs.
-        ── */}
-        <div
-          className="mt-4 flex flex-col gap-3
-                     lg:flex-row lg:items-start lg:justify-between lg:gap-8"
-          style={{ animation: anim("0.22s") }}
-        >
-
-          {/* Script + pink hairline */}
-          <div className="flex items-center gap-3">
-            <span
-              aria-hidden
-              className="flex-shrink-0 h-px bg-pink"
-              style={{ width: "clamp(40px, 4vw, 64px)" }}
-            />
+            <span className="h-px w-16 shrink-0 bg-pink" aria-hidden />
             <ScriptAccent
-              className="leading-none text-[clamp(1.7rem,2.6vw,3.4rem)] text-pink"
+              className="text-[clamp(2.6rem,3.8vw,5rem)] leading-none text-pink"
             >
               and yet.
             </ScriptAccent>
           </div>
 
-          {/* Body copy — right side under the CTA buttons */}
-          <div className="lg:max-w-[420px] shrink-0">
-            <p
-              className="font-[family-name:var(--font-body)]
-                         text-[15px] md:text-[16px] leading-[1.7]"
-              style={{
-                color: "color-mix(in srgb, var(--color-cream) 68%, transparent)",
-              }}
+          {/* ── Body copy ── */}
+          <p
+            className="mt-10 max-w-[520px]
+                       font-[family-name:var(--font-body)]
+                       text-[18px] md:text-[20px] leading-[1.65]
+                       text-cream/78"
+            style={{ animation: anim("0.28s") }}
+          >
+            Private mentorship for accomplished women who are ready
+            to feel at home inside the life they built.
+          </p>
+
+          {/* ── CTAs ── */}
+          <div
+            className="mt-10 flex flex-col gap-4 sm:flex-row"
+            style={{ animation: anim("0.35s") }}
+          >
+            {/*
+              PRIMARY — cream fill + aubergine text.
+              Inside the aubergine hero, cream-on-dark is the luxury
+              editorial choice. Hover inverts to ghost.
+            */}
+            <Link
+              href={heroCtaUrl}
+              className="inline-flex h-16 items-center justify-center
+                         rounded-[1px] border border-cream bg-cream
+                         px-9 font-[family-name:var(--font-body)]
+                         text-[12px] font-semibold uppercase tracking-[0.28em]
+                         text-aubergine transition-all duration-300 ease-out
+                         hover:bg-transparent hover:text-cream
+                         focus-visible:outline focus-visible:outline-2
+                         focus-visible:outline-offset-4 focus-visible:outline-cream"
             >
-              Private mentorship for accomplished women who are ready
-              to feel at home inside the life they built.
-            </p>
-            <p
-              className="mt-3 font-[family-name:var(--font-body)]
-                         text-[10px] uppercase tracking-[0.24em]"
-              style={{
-                color: "color-mix(in srgb, var(--color-cream) 34%, transparent)",
-              }}
+              {heroCta}&nbsp;<span aria-hidden>→</span>
+            </Link>
+
+            {/*
+              SECONDARY — ghost: cream border, transparent fill.
+              Hover fills cream, text goes aubergine — mirrors primary.
+            */}
+            <Link
+              href={heroSecondaryUrl}
+              className="inline-flex h-16 items-center justify-center
+                         rounded-[1px] border border-cream/35
+                         px-9 font-[family-name:var(--font-body)]
+                         text-[12px] font-semibold uppercase tracking-[0.28em]
+                         text-cream/80 transition-all duration-300 ease-out
+                         hover:border-cream hover:bg-cream hover:text-aubergine
+                         focus-visible:outline focus-visible:outline-2
+                         focus-visible:outline-offset-4 focus-visible:outline-cream"
             >
-              Private &middot; Confidential &middot; By application
-            </p>
+              {heroSecondaryLabel}&nbsp;<span aria-hidden>→</span>
+            </Link>
           </div>
+
+          {/* ── Trust micro-copy ── */}
+          <p
+            className="mt-7 font-[family-name:var(--font-body)]
+                       text-[10px] uppercase tracking-[0.34em] text-cream/40"
+            style={{ animation: anim("0.42s") }}
+          >
+            Private &middot; Confidential &middot; By application
+          </p>
 
         </div>
 
-      </div>
+        {/* ══════════════════════════════════════════════════
+            RIGHT — portrait column  (source-order 2 = below text on mobile)
 
-      {/* ══════════════════════════════════════════════════
-          ROW 2 — FULL-WIDTH IMAGE  (flex-1)
-          ──────────────────────────────────────────────────
-          flex-1:          fills every remaining pixel after
-                           the text row — guaranteed visible.
+            min-h-[58svh]: on mobile the portrait gets a meaningful
+            height instead of collapsing.
 
-          relative:        REQUIRED for next/image fill.
+            lg:min-h-0: on desktop the grid row height dictates size —
+            the image fills the full height of the grid.
 
-          overflow-hidden: clips scaled image to bounds.
-
-          bg-[HERO_BG]:    warm cream placeholder so the
-                           panel tone matches the photo bg
-                           before the image finishes loading.
-          ══════════════════════════════════════════════════ */}
-      <div
-        className="flex-1 relative overflow-hidden"
-        style={{ backgroundColor: HERO_BG }}
-      >
-
-        <Image
-          src={HERO_IMG}
-          alt="Martina Rink — private mentor, studio portrait with roses and books"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover object-[center_22%]"
-        />
-
-        {/* Top gradient: dissolves text panel into image */}
+            object-[50%_42%]: 42% positions the anchor at the eyes
+            so face, neck, and wrist stay visible at any aspect ratio.
+            ══════════════════════════════════════════════════ */}
         <div
-          aria-hidden
-          className="absolute inset-x-0 top-0 h-16 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(35,23,39,0.55) 0%, transparent 100%)",
-          }}
-        />
+          className="relative min-h-[58svh]
+                     sm:min-h-[65svh]
+                     lg:min-h-0"
+        >
+          <Image
+            src={HERO_IMG}
+            alt="Martina Rink — private mentor, editorial studio portrait"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="(min-width: 1024px) 48vw, 100vw"
+            className="object-cover object-[50%_42%]"
+          />
 
-        {/* Bottom gradient: grounds the section */}
-        <div
-          aria-hidden
-          className="absolute inset-x-0 bottom-0 h-20 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(to top, rgba(35,23,39,0.28) 0%, transparent 100%)",
-          }}
-        />
+          {/*
+            LEFT SEAM GRADIENT — desktop only.
+            Dissolves the image's left edge into the aubergine
+            text column. Gives a clean split without a hard line.
+          */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0
+                       hidden w-24 lg:block"
+            style={{
+              background:
+                "linear-gradient(to right, var(--color-aubergine), transparent)",
+            }}
+          />
+        </div>
 
       </div>
 
