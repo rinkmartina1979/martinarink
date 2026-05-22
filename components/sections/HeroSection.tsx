@@ -67,7 +67,7 @@ export function HeroSection({
       No overflow-hidden — the cream right panel extends to
       the edge of the viewport naturally.
     */
-    <section className="bg-aubergine text-cream">
+    <section className="overflow-hidden bg-aubergine text-cream">
 
       {/*
         GRID
