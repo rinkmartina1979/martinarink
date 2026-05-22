@@ -330,7 +330,7 @@ export default async function SoberMusePage() {
       </section>
 
       {/* WHO THIS IS NOT FOR — premium qualifier */}
-      <section className="bg-violet-soft section-pad">
+      <section className="bg-blush section-pad">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>An honest filter</Eyebrow>
           <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">

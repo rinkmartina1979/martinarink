@@ -71,25 +71,7 @@ export function HeroSection({
         >
           <div className="max-w-[760px]">
 
-            {/* Overline */}
-            <p
-              className="mb-6 flex items-center gap-3
-                         font-[family-name:var(--font-body)]"
-              style={{
-                animation:     anim("0s"),
-                fontSize:      "10px",
-                letterSpacing: "0.36em",
-                textTransform: "uppercase",
-                color:         "color-mix(in srgb, var(--color-cream) 72%, transparent)",
-              }}
-            >
-              <span
-                aria-hidden
-                className="inline-block flex-shrink-0 h-px w-8"
-                style={{ backgroundColor: "#F942AA" }}
-              />
-              Private Sober Muse Mentorship
-            </p>
+            {/* Overline — removed per brand decision */}
 
             {/* ── H1 ──
                 clamp(3.4rem, 5.7vw, 7rem)
