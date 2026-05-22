@@ -1,12 +1,16 @@
 /**
  * HeroSection — server component, zero Framer Motion.
- * 2026 Vogue-style editorial split: text (55fr) | portrait (45fr).
+ * 2026 Vogue editorial diptych: dark text column | luminous portrait column.
  *
- * Layout rules enforced here:
- *  · No fill · No object-cover · No absolute image wrapper
- *  · No overflow-hidden crop on portrait · No gradients · No blur
- *  · Desktop: CSS grid, portrait pinned to bottom with object-contain
- *  · Mobile:  text first, full portrait second (h-auto, no crop)
+ * Image: square 1:1 studio portrait.
+ *   · Desktop: fill + object-cover anchored at [center_8%] — face always in frame
+ *   · Mobile:  aspect-[3/4] crop, same anchor
+ *   · Cream placeholder bg matches studio wall tone — no aubergine flash on load
+ *
+ * Layout:
+ *   · 55fr text | 45fr portrait at lg (1024 px+)
+ *   · min-h accounts for fixed navbar: 72px mobile / 80px md+
+ *   · Subtle bottom vignette ties portrait into next section
  *
  * Navbar height: h-[72px] mobile / h-[80px] md+ (Nav.tsx)
  * CSS entrance animations use @keyframes fadeUp from globals.css.
@@ -25,11 +29,10 @@ function anim(delay: string) {
 }
 
 /* ─── image source (single source of truth) ────────────────── */
-const HERO_IMG = "/images/portraits/martina-hero-editorial.png";
-// Declared at spec dimensions 1200 × 1800 (2 : 3 portrait).
-// Actual file is 1024 × 1536 — same ratio, next/image scales correctly.
-const IMG_W = 1200;
-const IMG_H = 1800;
+const HERO_IMG = "/images/portraits/martina-hero-empowerment.jpg";
+// Square 1:1 format. Uses fill mode — no explicit w/h needed.
+// object-[center_8%]: anchors crop at 8% from top so face
+// stays prominent in any container ratio.
 
 /* ─── props ─────────────────────────────────────────────────── */
 interface HeroSectionProps {
@@ -54,11 +57,12 @@ export function HeroSection({
       {/* ══════════════════════════════════════════════════════
           MAIN GRID
           · Single column on mobile / tablet
-          · 55 fr text | 45 fr portrait at lg (1024 px +)
-          · min-h accounts for fixed navbar: 72px mobile / 80px md+
+          · 55fr text | 45fr portrait at lg (1024px+)
+          · CSS grid default align-items:stretch — both columns
+            fill the full row height automatically
           ══════════════════════════════════════════════════════ */}
       <div
-        className="mx-auto grid min-h-[calc(100svh-72px)] md:min-h-[calc(100svh-80px)] max-w-[1440px]
+        className="grid min-h-[calc(100svh-72px)] md:min-h-[calc(100svh-80px)]
                    lg:grid-cols-[0.55fr_0.45fr]"
       >
 
@@ -68,29 +72,20 @@ export function HeroSection({
                      px-6 pb-14 pt-[max(90px,_9svh)]
                      sm:px-8
                      md:px-12 md:pb-16
-                     lg:px-20 lg:pb-12"
+                     lg:px-20 lg:pb-16 lg:pt-0"
         >
-          <div className="max-w-[760px]">
-
-            {/* Overline — removed per brand decision */}
+          <div className="max-w-[620px]">
 
             {/* ── H1 ──
-                clamp(3.4rem, 5.7vw, 7rem)
-                  ≈ 54 px  at 390 px  mobile
-                  ≈ 82 px  at 1440 px desktop
-                  ≈ 112 px at 1960 px (capped)
-
-                Target line-breaks at 1440 px:
-                  "You've built a"
-                  "life that looks"
-                  "extraordinary"
-                  "from the outside"
+                clamp(3.2rem, 5.2vw, 6.5rem)
+                  ≈ 51px  at 390px  mobile
+                  ≈ 75px  at 1440px desktop
             ── */}
             <h1
               className="font-[family-name:var(--font-display)]
-                         text-[clamp(3.4rem,5.7vw,7rem)]
-                         leading-[0.88]
-                         tracking-[-0.055em]
+                         text-[clamp(3.2rem,5.2vw,6.5rem)]
+                         leading-[0.9]
+                         tracking-[-0.05em]
                          text-cream"
               style={{ animation: anim("0.12s") }}
             >
@@ -103,19 +98,19 @@ export function HeroSection({
 
             {/* Pink hairline + script accent */}
             <div
-              className="mt-3 flex items-center gap-4"
+              className="mt-4 flex items-center gap-4"
               style={{ animation: anim("0.24s") }}
             >
               <span
                 aria-hidden
                 className="flex-shrink-0 h-px"
                 style={{
-                  width:           "clamp(56px, 5vw, 80px)",
+                  width:           "clamp(48px, 4.5vw, 72px)",
                   backgroundColor: "#F942AA",
                 }}
               />
               <ScriptAccent
-                className="leading-none text-[clamp(2rem,3.2vw,4rem)] text-pink"
+                className="leading-none text-[clamp(1.9rem,3vw,3.8rem)] text-pink"
               >
                 and yet.
               </ScriptAccent>
@@ -123,11 +118,11 @@ export function HeroSection({
 
             {/* Body copy */}
             <p
-              className="mt-6 max-w-[400px] font-[family-name:var(--font-body)]"
+              className="mt-7 max-w-[380px] font-[family-name:var(--font-body)]"
               style={{
                 animation:  anim("0.34s"),
                 fontSize:   "17px",
-                lineHeight: 1.72,
+                lineHeight: 1.75,
                 color:      "color-mix(in srgb, var(--color-cream) 72%, transparent)",
               }}
             >
@@ -137,10 +132,10 @@ export function HeroSection({
 
             {/* ── CTAs ─────────────────────────────────────── */}
             <div
-              className="mt-7 flex flex-col sm:flex-row gap-4 sm:items-center"
+              className="mt-8 flex flex-col sm:flex-row gap-4 sm:items-center"
               style={{ animation: anim("0.42s") }}
             >
-              {/* Primary — plum fill (brand CTA color) */}
+              {/* Primary — plum fill */}
               <PlumButton href={heroCtaUrl}>
                 {heroCta} <span aria-hidden className="ml-1">→</span>
               </PlumButton>
@@ -151,25 +146,53 @@ export function HeroSection({
               </GhostButton>
             </div>
 
+            {/* Micro trust signal */}
+            <p
+              className="mt-7 text-[11px] uppercase tracking-[0.22em] font-[family-name:var(--font-body)]"
+              style={{
+                animation: anim("0.50s"),
+                color: "color-mix(in srgb, var(--color-cream) 38%, transparent)",
+              }}
+            >
+              Private &middot; Confidential &middot; By application
+            </p>
+
           </div>
         </div>
 
         {/* ── DESKTOP IMAGE PANEL ─────────────────────────────
-            · hidden below lg — mobile image is a separate element
-            · bg-[#EDE8E0] = brand bone, matches sofa/wall tones
-            · items-end: portrait grounded at bottom of panel
-            · object-contain: full portrait, zero crop
+            · hidden below lg — mobile image handles smaller screens
+            · relative: required for next/image fill mode
+            · bg-[#EEE8E2]: warm cream placeholder matching studio wall
+            · object-[center_8%]: anchors top of face in frame on any crop
         ─────────────────────────────────────────────────────── */}
-        <div className="hidden lg:flex items-end justify-center">
+        <div className="hidden lg:block relative overflow-hidden bg-[#EEE8E2]">
           <Image
             src={HERO_IMG}
-            alt="Martina Rink — private mentor for accomplished women"
-            width={IMG_W}
-            height={IMG_H}
+            alt="Martina Rink — private mentor for accomplished women, pink blouse, studio portrait"
+            fill
             priority
             fetchPriority="high"
             sizes="(min-width: 1024px) 45vw, 100vw"
-            className="h-[calc(100svh-80px)] w-auto max-w-full object-contain"
+            className="object-cover object-[center_8%]"
+          />
+          {/* Subtle bottom vignette — ties into next section */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-28 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(35,23,39,0.22) 0%, transparent 100%)",
+            }}
+          />
+          {/* Subtle left edge fade — softens the hard grid seam */}
+          <div
+            aria-hidden
+            className="absolute inset-y-0 left-0 w-10 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(35,23,39,0.18) 0%, transparent 100%)",
+            }}
           />
         </div>
 
@@ -177,20 +200,19 @@ export function HeroSection({
 
       {/* ══════════════════════════════════════════════════════
           MOBILE IMAGE — below text, full width.
-          · lg:hidden — desktop grid image takes over at 1024 px
-          · h-auto w-full: full portrait, natural height, no crop
-          · No fill · No object-cover · No overflow-hidden
-          ══════════════════════════════════════════════════════ */}
-      <div className="lg:hidden">
+          · lg:hidden — desktop grid image takes over at 1024px
+          · aspect-[3/4]: portrait crop, no layout shift
+          · object-[center_8%]: face anchored at top of crop
+      ══════════════════════════════════════════════════════ */}
+      <div className="lg:hidden relative aspect-[3/4] overflow-hidden bg-[#EEE8E2]">
         <Image
           src={HERO_IMG}
-          alt="Martina Rink"
-          width={IMG_W}
-          height={IMG_H}
+          alt="Martina Rink — private mentor"
+          fill
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="h-auto w-full object-contain"
+          className="object-cover object-[center_8%]"
         />
       </div>
 
