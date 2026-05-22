@@ -93,16 +93,16 @@ export function HeroSection({
             ══════════════════════════════════════════════════ */}
         <div
           className="flex flex-col justify-center
-                     px-6  py-20
+                     px-6  py-12
                      sm:px-10
-                     md:px-16 md:py-24
+                     md:px-16 md:py-16
                      lg:px-20 lg:py-20
                      xl:px-28"
         >
 
           {/* ── Eyebrow — pink hairline + overline label ── */}
           <div
-            className="mb-8 flex items-center gap-4"
+            className="mb-6 flex items-center gap-4"
             style={{ animation: anim("0.05s") }}
           >
             <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
@@ -129,7 +129,7 @@ export function HeroSection({
 
           {/* ── Script accent ── */}
           <div
-            className="mt-8 flex items-center gap-5"
+            className="mt-6 flex items-center gap-5"
             style={{ animation: anim("0.20s") }}
           >
             <span className="h-px w-16 shrink-0 bg-pink" aria-hidden />
@@ -142,7 +142,7 @@ export function HeroSection({
 
           {/* ── Body copy ── */}
           <p
-            className="mt-10 max-w-[520px]
+            className="mt-7 max-w-[520px]
                        font-[family-name:var(--font-body)]
                        text-[18px] md:text-[20px] leading-[1.65]
                        text-cream/78"
@@ -154,7 +154,7 @@ export function HeroSection({
 
           {/* ── CTAs ── */}
           <div
-            className="mt-10 flex flex-col gap-4 sm:flex-row"
+            className="mt-8 flex flex-col gap-4 sm:flex-row"
             style={{ animation: anim("0.35s") }}
           >
             {/*
