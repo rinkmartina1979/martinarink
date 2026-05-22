@@ -138,8 +138,6 @@ export default async function NewsletterPage() {
                 className="w-full object-cover object-center"
                 priority
               />
-              {/* Left edge fade so it blends into hero */}
-              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-aubergine to-transparent" />
             </div>
           </div>
         </div>
