@@ -82,16 +82,25 @@ export default async function WorkWithMePage() {
             </div>
           </div>
 
-          {/* Portrait — right half, full bleed, no crop */}
-          <div className="relative min-h-[60svh] md:min-h-0 bg-bone order-1 md:order-2">
-            <Image
-              src="/images/portraits/martina-portrait-studio.jpg"
-              alt="Martina Rink — private mentor"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-top"
-              priority
-            />
+          {/* Portrait — right half, full portrait visible, no crop */}
+          <div className="flex items-center justify-center
+                          min-h-[70svh] md:min-h-0
+                          bg-[#F0EBE6]
+                          order-1 md:order-2
+                          md:pt-[80px]">
+            <div className="relative w-full h-full
+                            md:h-[calc(90svh-80px)]
+                            md:max-h-[820px] md:max-w-[620px]">
+              <Image
+                src="/images/portraits/martina-portrait-studio.jpg"
+                alt="Martina Rink — private mentor"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain object-bottom
+                           md:object-contain md:object-center"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
