@@ -172,7 +172,7 @@ export default async function AssessmentResultPage({ params }: Props) {
           {/* High-intent extra reassurance */}
           {isHighReadiness && (
             <p className="mt-6 text-[14px] leading-[1.7] text-ink-soft max-w-sm">
-              The private consultation is €450, applied in full to the programme
+              The private consultation is €350, applied in full to the programme
               if you proceed. I hold four each week.
             </p>
           )}

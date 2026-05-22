@@ -173,7 +173,7 @@ export function applicationConfirmationEmail(data: ApplicationEmailData): {
     <div style="${BODY_SECTION}">
       ${body(`Dear ${firstName},`)}
       ${body(`Thank you for applying. I read every application myself — not in a queue, not by an assistant. You will hear from me personally within 48 hours.`)}
-      ${body(`What happens next: if the fit is right, I will write to you directly with a private link to book our first conversation. That call is 45 minutes, &euro;450, and it is credited in full to the programme if you proceed.`)}
+      ${body(`What happens next: if the fit is right, I will write to you directly with a private link to book our first conversation. That call is 45 minutes, &euro;350, and it is credited in full to the programme if you proceed.`)}
       ${body(`In the meantime, if you would like to read more about the work — about how I think about these questions — three essays are below.`)}
       <hr style="${HAIRLINE}">
       ${h2("While you wait.")}

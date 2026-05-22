@@ -53,7 +53,7 @@ export default function ApplyEmpowermentPage() {
               {
                 step: "03",
                 title: "We speak",
-                body: "A 45-minute private consultation — €450, applied to the programme if you proceed.",
+                body: "A 45-minute private consultation — €350, applied to the programme if you proceed.",
               },
             ].map(({ step, title, body }) => (
               <div key={step}>

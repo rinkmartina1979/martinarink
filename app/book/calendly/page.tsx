@@ -64,7 +64,7 @@ export default async function BookCalendlyPage({ searchParams }: CalendlyPagePro
             Choose a time that suits you.
           </h1>
           <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
-            I look forward to our conversation. The €450 is confirmed — it applies
+            I look forward to our conversation. The €350 is confirmed — it applies
             in full toward the programme if you proceed.
           </p>
         </div>

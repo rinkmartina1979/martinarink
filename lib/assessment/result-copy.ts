@@ -62,7 +62,7 @@ export const ARCHETYPE_RESULTS: Record<string, ArchetypeResult> = {
     bodyParagraphs: [
       "The women who are The Return are, in my experience, the most ready — and also the most likely to underestimate themselves. Because they've tried before and not arrived where they intended, they carry a private doubt. Let me name it plainly: that doubt is not evidence of failure. It is evidence of how seriously you take this.",
       "You don't need more information. You don't need more time to consider. What you need is the right structure, with someone who knows what they're doing and will not let you disappear into the work.",
-      "The next step is a conversation. A private consultation — €450, credited to the programme if you proceed. In that hour, I will tell you exactly what I see, and we will decide together whether this is the right fit.",
+      "The next step is a conversation. A private consultation — €350, credited to the programme if you proceed. In that hour, I will tell you exactly what I see, and we will decide together whether this is the right fit.",
     ],
     closing:
       "You know what you want. The next step is a private conversation — to confirm it is the right fit, and to begin.",

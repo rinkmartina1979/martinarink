@@ -18,7 +18,7 @@ export const SITE = {
     spotify: "https://open.spotify.com/show/4ibhGsWMIZMTBBPNQqlmTv",
   },
   pricing: {
-    consultation: "€450",
+    consultation: "€350",
     soberMuseFrom: "from €5,000",
     empowermentFrom: "from €7,500",
   },

@@ -287,7 +287,7 @@ export default async function SoberMusePage() {
             <p>
               The Sober Muse Method is offered at{" "}
               <strong className="text-ink">
-                {investmentText ?? "from €5,000"}
+                {investmentText ?? "by application"}
               </strong>{" "}
               for the 90-day engagement.
             </p>
@@ -298,13 +298,12 @@ export default async function SoberMusePage() {
             ) : (
               <>
                 <p>
-                  This includes four sessions per month, daily check ins,
-                  ongoing correspondence, and a final integration
-                  session. Payment by instalment is available.
+                  Four sessions per month. Daily correspondence. A final
+                  integration session. Payment by instalment available.
                 </p>
                 <p>
-                  A private consultation — €450, applied toward the programme if you
-                  enrol — is the correct place to begin.
+                  A private consultation — €350, applied toward the programme
+                  if you enrol — is the correct place to begin.
                 </p>
               </>
             )}

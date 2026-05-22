@@ -224,23 +224,16 @@ export default async function AboutPage() {
               The Clinical Knowledge.
             </h3>
             <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
-              For clients in the Sober Muse Method Program, I maintain a close
-              and discreet professional relationship with Mrs. Ruta Nürnberger,
-              Head doctor of the My Way Betty Ford Clinic, who also acts as a
-              trusted advisor to my work.
+              For Sober Muse clients, I maintain a close professional
+              relationship with Mrs. Ruta Nürnberger, Head Physician of the
+              My Way Betty Ford Clinic — who was my own doctor and has since
+              become a trusted advisor to this work.
             </p>
             <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
-              Mrs. Nürnberger was my own doctor during my treatment for alcohol
-              addiction at the clinic, and many of the methods and tools I use
-              today were shaped through that experience and have since been
-              deeply integrated into both my personal life and professional
-              practice.
-            </p>
-            <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
-              Through The Sober Muse Method, I support women in
-              sustainably navigating their challenges by helping them apply the
-              new patterns, tools, and resources they have learned in treatment
-              to real life.
+              The methods I use were shaped through that experience. What I
+              bring is not theory — it is a framework I have lived, tested,
+              and refined over six years of practice with women navigating
+              the same question.
             </p>
           </div>
         </div>

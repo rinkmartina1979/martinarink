@@ -31,7 +31,7 @@ interface BookPageProps {
  * - With ?token=approved, the Calendly embed loads.
  *
  * This is intentional friction — see strategic plan:
- * paid €450 consultation → gate filters tyre-kickers and forces
+ * paid €350 consultation → gate filters tyre-kickers and forces
  * the application/qualification step. Determined attackers aren't
  * the buyer for a €5k+ programme; this is a soft filter, not security.
  */
@@ -65,7 +65,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
               the booking link in that email.
             </p>
             <p className="mt-8 text-[15px] text-ink-quiet">
-              Private consultation: €450, applied in full to the programme
+              Private consultation: €350, applied in full to the programme
               investment upon enrolment.
             </p>
           </div>
@@ -160,7 +160,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
             I hold four of these a week.
           </p>
           <p className="mt-6 text-[15px] text-ink-quiet">
-            €450, applied to the programme if you proceed.
+            €350, applied to the programme if you proceed.
           </p>
 
           {/* Status banners */}

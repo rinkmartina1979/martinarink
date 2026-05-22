@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "Work With Me — Martina Rink",
     description:
-      "Two programmes: The Sober Muse Method and Female Empowerment & Leadership. By application. Private consultation from €450, applied to programme investment.",
+      "Two programmes: The Sober Muse Method and Female Empowerment & Leadership. By application. Private consultation — €350, applied to programme investment.",
     path: "/work-with-me",
   });
 }
@@ -33,7 +33,7 @@ export default async function WorkWithMePage() {
   const heroHeadline = data?.heroHeadline ?? "There are two ways to begin.";
   const heroCopy =
     data?.heroCopy ??
-    "A private consultation is the right starting point for both programmes. It is 45 minutes. €450, applied to the programme if you proceed. Not a sales call — a focused conversation to establish whether the work is the right fit.";
+    "A private consultation is the right starting point for both programmes. Forty-five minutes. €350, applied to the programme if you proceed. Not a sales call — a conversation to decide together whether this is the right fit.";
   const ctaLabel = data?.ctaLabel ?? "Begin the assessment";
   const ctaUrl = data?.ctaUrl ?? "/assessment";
 
@@ -127,7 +127,7 @@ export default async function WorkWithMePage() {
               {
                 step: "03",
                 title: "Private consultation",
-                body: "Forty-five minutes. €450, applied in full to the programme if you proceed. Not a pitch.",
+                body: "Forty-five minutes. €350, applied in full to the programme if you proceed. Not a pitch.",
                 href: null,
               },
               {

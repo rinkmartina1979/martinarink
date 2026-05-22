@@ -80,7 +80,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
                       The Sober Muse Method
                     </span>
                     <span className="block text-[11px] text-cream/50 mt-1">
-                      from €5,000
+                      Private · By application
                     </span>
                   </Link>
                   <Link
@@ -95,7 +95,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
                       Female Empowerment &amp; Leadership
                     </span>
                     <span className="block text-[11px] text-cream/50 mt-1">
-                      from €7,500
+                      Private · By application
                     </span>
                   </Link>
                 </div>

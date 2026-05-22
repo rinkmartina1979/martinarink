@@ -243,7 +243,7 @@ export default async function EmpowermentPage() {
                 <p>
                   {data?.investmentText
                     ? data.investmentText
-                    : "Investment: from €7,500 for the open-ended engagement. A private consultation — €450, applied to the programme if you proceed — is the right place to begin."}
+                    : "Investment is by application. A private consultation — €350, applied to the programme if you proceed — is the right place to begin."}
                 </p>
               </>
             )}

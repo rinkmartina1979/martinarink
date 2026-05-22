@@ -379,7 +379,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
             {...register("programme")}>
             <option value="sober-muse">The Sober Muse Method — 90 days, from €5,000</option>
             <option value="empowerment">Female Empowerment & Leadership — 3–12 months, from €7,500</option>
-            <option value="consultation">Private Consultation — €450</option>
+            <option value="consultation">Private Consultation — €350</option>
           </select>
           <FieldError message={errors.programme?.message} />
         </div>

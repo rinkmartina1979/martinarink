@@ -1,7 +1,7 @@
 /**
  * POST /api/checkout/consultation
  *
- * Creates a Stripe Checkout Session for the €450 private consultation deposit.
+ * Creates a Stripe Checkout Session for the €350 private consultation deposit.
  * Returns { url } — the caller redirects to this Stripe-hosted URL.
  *
  * Upgrade path: change STRIPE_CONSULTATION_PRICE_ID to a new Stripe price

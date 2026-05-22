@@ -73,6 +73,14 @@ const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
     nda: false,
     photoPath: "/images/portraits/armina-patent-engineer.avif",
   },
+  {
+    name: "Canan Chandni Bauer",
+    role: "Miss Germany Community",
+    quote:
+      "I genuinely recommend Martina's female empowerment coaching. I was pleasantly surprised by just how much I gained. Working with Martina was empathetic and highly professional — she addressed fears, inner blocks, and career guidance on a truly personal level. This gave me much greater clarity about my own strengths and the path ahead. I found her through Miss Germany and am very grateful for that. You can tell she puts her heart and soul into this work.",
+    nda: false,
+    photoPath: "/images/portraits/canan-chandni-bauer.png",
+  },
 ];
 
 function TestimonialBlock({
@@ -195,17 +203,14 @@ export default async function HomePage() {
           </h2>
           <div className="mt-10 space-y-6 text-[17px] leading-[1.75] text-ink-soft max-w-[600px]">
             <p>
-              You may be functioning. You may be loved. You may be respected —
-              even admired. And still, something in you may know: this version
-              of your life is costing more than anyone can see.
+              You may be functioning. Loved. Respected — even admired. And
+              still, something in you knows: this version of your life is
+              costing more than anyone can see.
             </p>
             <p>
-              Not because anything has gone dramatically wrong. Because
-              something has shifted — quietly, privately, in the space between
-              who you appear to be and who you actually are.
-            </p>
-            <p>
-              That shift is what I work with.
+              Not because anything has gone wrong. Because something has
+              shifted — quietly, in the space between who you appear to be
+              and who you actually are. That shift is what I work with.
             </p>
           </div>
         </div>
