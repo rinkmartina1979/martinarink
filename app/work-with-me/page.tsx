@@ -50,25 +50,25 @@ export default async function WorkWithMePage() {
       {/* ══════════════════════════════════════════════════════
           1 — HERO
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-cream pt-28 md:pt-36 lg:pt-44 pb-0">
-        <div className="container-content grid md:grid-cols-12 gap-0 items-stretch">
-          {/* Text — 7 cols */}
-          <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
+      <section className="bg-cream pt-0 pb-0 overflow-hidden">
+        <div className="grid md:grid-cols-2 min-h-[90svh] items-stretch">
+          {/* Text — left half */}
+          <div className="flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-32 md:pt-0 pb-16 md:pb-0 order-2 md:order-1">
             <Eyebrow withLine>Work with me</Eyebrow>
             <h1
               className="mt-7 font-[family-name:var(--font-display)] text-ink leading-[0.92] tracking-[-0.04em]"
-              style={{ fontSize: "clamp(2.8rem, 5vw, 6rem)" }}
+              style={{ fontSize: "clamp(2.8rem, 4.6vw, 5.8rem)" }}
             >
               {heroHeadline}
             </h1>
-            <p className="mt-8 text-[17px] md:text-[18px] leading-[1.8] text-ink-soft max-w-[500px] font-[family-name:var(--font-body)]">
+            <p className="mt-8 text-[17px] md:text-[18px] leading-[1.8] text-ink-soft max-w-[480px] font-[family-name:var(--font-body)]">
               {heroCopy}
             </p>
 
-            {/* Availability signal */}
-            <div className="mt-8 inline-flex items-center gap-3 px-5 py-3 bg-violet-soft border border-violet-mid self-start">
-              <span className="block w-1.5 h-1.5 rounded-full bg-plum animate-pulse shrink-0" />
-              <span className="text-[11px] uppercase tracking-[0.2em] text-plum-deep font-[family-name:var(--font-body)]">
+            {/* Availability signal — rose background */}
+            <div className="mt-8 inline-flex items-center gap-3 px-5 py-3 bg-blush border border-pink/25 self-start">
+              <span className="block w-1.5 h-1.5 rounded-full bg-pink animate-pulse shrink-0" />
+              <span className="text-[11px] uppercase tracking-[0.2em] text-ink font-[family-name:var(--font-body)]">
                 Two openings &middot; next intake June 2026
               </span>
             </div>
@@ -81,14 +81,14 @@ export default async function WorkWithMePage() {
             </div>
           </div>
 
-          {/* Portrait — 5 cols, bleeds */}
-          <div className="md:col-span-5 relative min-h-[420px] md:min-h-0 bg-bone overflow-hidden">
+          {/* Portrait — right half, full bleed, no crop */}
+          <div className="relative min-h-[60svh] md:min-h-0 bg-bone order-1 md:order-2">
             <Image
               src="/images/portraits/martina-portrait-studio.jpg"
               alt="Martina Rink — private mentor"
               fill
-              sizes="(max-width: 768px) 100vw, 40vw"
-              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
               priority
             />
           </div>
@@ -177,7 +177,7 @@ export default async function WorkWithMePage() {
               <ul className="space-y-3 text-[14px] text-cream/75 font-[family-name:var(--font-body)] mb-8">
                 {[
                   "90 days, private",
-                  "3 sessions per month",
+                  "4 sessions per month, daily check ins",
                   "Written work between sessions",
                   "Direct correspondence",
                   `From ${SITE.pricing.soberMuseFrom}`,
@@ -214,7 +214,7 @@ export default async function WorkWithMePage() {
               <ul className="space-y-3 text-[14px] text-cream/75 font-[family-name:var(--font-body)] mb-8">
                 {[
                   "3–12 months, open-ended",
-                  "2 sessions per month",
+                  "4 sessions per month, daily check ins",
                   "Between-session correspondence",
                   "Quarterly reviews",
                   `From ${SITE.pricing.empowermentFrom}`,

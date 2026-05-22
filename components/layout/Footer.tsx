@@ -171,6 +171,9 @@ export function Footer() {
             <Link href="/legal/terms" className="text-cream/50 hover:text-cream">
               Terms
             </Link>
+            <Link href="/legal/cancellation" className="text-cream/50 hover:text-cream">
+              Cancellation
+            </Link>
           </div>
         </div>
 
