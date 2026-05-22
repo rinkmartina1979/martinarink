@@ -90,11 +90,11 @@ export function HeroSection({
             justify-center centres the block vertically at desktop.
             ══════════════════════════════════════════════════ */}
         <div
-          className="flex flex-col justify-center
-                     px-6  py-12
+          className="flex flex-col justify-start
+                     px-6  pt-12 pb-10
                      sm:px-10
-                     md:px-16 md:py-14
-                     lg:px-20 lg:py-16
+                     md:px-16 md:pt-14 md:pb-12
+                     lg:px-20 lg:pt-16 lg:pb-14
                      xl:px-28"
         >
 
@@ -114,7 +114,7 @@ export function HeroSection({
           {/* ── H1 ── */}
           <h1
             className="font-[family-name:var(--font-display)]
-                       text-[clamp(3rem,4.8vw,6.8rem)]
+                       text-[clamp(2.6rem,4.2vw,6.4rem)]
                        leading-[0.88] tracking-[-0.055em]
                        text-cream max-w-[680px]"
             style={{ animation: anim("0.12s") }}
