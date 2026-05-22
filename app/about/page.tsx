@@ -292,7 +292,7 @@ export default async function AboutPage() {
                     My own re-examination of alcohol began not from a crisis but
                     from a question. I was, by all external measures, doing well. I
                     had a life, a body of published work, a set of relationships I
-                    valued, and a daily glass of plum that had quietly become a
+                    valued, and a daily glass of wine that had quietly become a
                     different thing from what it started as.
                   </p>
                   <p>
