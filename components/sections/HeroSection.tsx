@@ -1,36 +1,33 @@
 /**
- * HeroSection — Premium 52/48 split editorial hero.
+ * HeroSection — Vogue editorial split hero.
  *
- * ┌────────────────────────────────┬─────────────────────┐
- * │  LEFT 52% — editorial copy     │  RIGHT 48% — portrait│
- * │                                │                      │
- * │  eyebrow (pink hairline)       │  fill + object-cover │
- * │  H1  (display, tight leading)  │  object-[50%_42%]    │
- * │  script accent "and yet."      │                      │
- * │  body copy                     │  left seam gradient  │
- * │  CTAs (cream fill / ghost)     │  (desktop only)      │
- * │  trust micro-copy              │                      │
- * └────────────────────────────────┴─────────────────────┘
+ * ┌─────────────────────────────────────┬──────────────────────────────┐
+ * │  LEFT 54% — aubergine editorial     │  RIGHT 46% — cream portrait  │
+ * │                                     │                              │
+ * │  eyebrow (pink hairline)            │  flex-centered framed image  │
+ * │  H1  (display, tight leading)       │  object-contain (no crop)    │
+ * │  script accent "and yet."           │  face / watch / body all     │
+ * │  body copy                          │  fully visible               │
+ * │  CTAs (cream fill / ghost)          │                              │
+ * │  trust micro-copy                   │  bg-[#F8F4F1]               │
+ * └─────────────────────────────────────┴──────────────────────────────┘
  *
  * KEY RULES:
- *  1. Image is a true portrait COLUMN — not a background strip.
- *     It sits in its own grid cell and bleeds to the right edge.
+ *  1. Right column is cream (#F8F4F1), NOT aubergine with a cropped image.
+ *     This gives the portrait breathing room and stops aggressive face-crop.
  *
- *  2. Primary CTA = cream fill + aubergine text.
- *     Plum is the site-wide action colour but inside the aubergine
- *     hero, cream-on-dark is the luxury editorial choice.
+ *  2. object-contain, not object-cover, on desktop.
+ *     object-cover fills the container by cropping — it treats the portrait
+ *     like wallpaper. object-contain keeps the full subject visible.
  *
- *  3. Grid uses min-h, not h, so if copy grows (e.g. translated text)
- *     the section grows rather than overflowing.
+ *  3. Image lives inside a MAX-SIZED inner frame (max-w-[600px],
+ *     max-h-[760px]) — the portrait is intentionally placed, not stretched.
  *
- *  4. object-[50%_42%]: 42% down the image keeps the face (eyes,
- *     smile, neck) visible at every container aspect ratio.
+ *  4. Mobile: stacked text-first, then a fixed-height cover crop of the
+ *     portrait (face anchor at 35%). object-cover is acceptable on mobile
+ *     because the column is narrow and the constraint is vertical, not crop.
  *
- *  5. Left seam gradient is desktop-only (lg:block) — it dissolves
- *     the image edge into the aubergine text column.
- *
- *  6. Mobile: text column first in DOM → above the portrait.
- *     Portrait gets a fixed svh height so it never disappears.
+ *  5. No seam gradient needed — the aubergine/cream colour break is the seam.
  */
 
 import Image from "next/image";
@@ -65,42 +62,43 @@ export function HeroSection({
 }: HeroSectionProps) {
   return (
     /*
-      SECTION — full width, aubergine background.
-      The grid inside is not wrapped in container-content because
-      the right image column must bleed to the viewport edge.
+      SECTION
+      ─────────────────────────────────────────────────────
+      No overflow-hidden — the cream right panel extends to
+      the edge of the viewport naturally.
     */
-    <section className="relative overflow-hidden bg-aubergine text-cream">
+    <section className="bg-aubergine text-cream">
 
       {/*
         GRID
         ─────────────────────────────────────────────────────
-        Mobile:  1 column, stacked (text above, portrait below)
-        Desktop: 52% left text / 48% right portrait
+        Mobile:  1 column — text above, cream portrait below
+        Desktop: 54% aubergine text / 46% cream portrait
 
-        min-h keeps the hero at least full-viewport-minus-navbar.
-        Uses min-h (not h) so very-tall content can grow safely.
+        min-h keeps at least one full viewport-minus-nav screen.
       */}
       <div
         className="grid grid-cols-1
                    min-h-[calc(100svh-72px)]
                    md:min-h-[calc(100svh-80px)]
-                   lg:grid-cols-[52%_48%]"
+                   lg:grid-cols-[54%_46%]"
       >
 
         {/* ══════════════════════════════════════════════════
-            LEFT — editorial copy  (source-order 1 = mobile first)
-            justify-center centres the block at any grid height.
+            LEFT — editorial copy
+            Source-order 1 = text appears above portrait on mobile.
+            justify-center centres the block vertically at desktop.
             ══════════════════════════════════════════════════ */}
         <div
           className="flex flex-col justify-center
                      px-6  py-12
                      sm:px-10
-                     md:px-16 md:py-16
-                     lg:px-20 lg:py-20
+                     md:px-16 md:py-14
+                     lg:px-20 lg:py-16
                      xl:px-28"
         >
 
-          {/* ── Eyebrow — pink hairline + overline label ── */}
+          {/* ── Eyebrow ── */}
           <div
             className="mb-6 flex items-center gap-4"
             style={{ animation: anim("0.05s") }}
@@ -109,14 +107,14 @@ export function HeroSection({
             <p className="font-[family-name:var(--font-body)]
                           text-[10px] font-semibold uppercase
                           tracking-[0.34em] text-cream/60">
-              Private mentorship
+              Private sober muse mentorship
             </p>
           </div>
 
           {/* ── H1 ── */}
           <h1
             className="font-[family-name:var(--font-display)]
-                       text-[clamp(3.2rem,5.2vw,7.8rem)]
+                       text-[clamp(3rem,4.8vw,6.8rem)]
                        leading-[0.88] tracking-[-0.055em]
                        text-cream max-w-[680px]"
             style={{ animation: anim("0.12s") }}
@@ -134,7 +132,7 @@ export function HeroSection({
           >
             <span className="h-px w-16 shrink-0 bg-pink" aria-hidden />
             <ScriptAccent
-              className="text-[clamp(2.6rem,3.8vw,5rem)] leading-none text-pink"
+              className="text-[clamp(2.4rem,3.6vw,4.8rem)] leading-none text-pink"
             >
               and yet.
             </ScriptAccent>
@@ -142,9 +140,9 @@ export function HeroSection({
 
           {/* ── Body copy ── */}
           <p
-            className="mt-7 max-w-[520px]
+            className="mt-7 max-w-[500px]
                        font-[family-name:var(--font-body)]
-                       text-[18px] md:text-[20px] leading-[1.65]
+                       text-[17px] md:text-[19px] leading-[1.65]
                        text-cream/78"
             style={{ animation: anim("0.28s") }}
           >
@@ -159,15 +157,14 @@ export function HeroSection({
           >
             {/*
               PRIMARY — cream fill + aubergine text.
-              Inside the aubergine hero, cream-on-dark is the luxury
-              editorial choice. Hover inverts to ghost.
+              min-w prevents text wrapping on one-line desktop layout.
             */}
             <Link
               href={heroCtaUrl}
-              className="inline-flex h-16 items-center justify-center
+              className="inline-flex h-14 min-w-[260px] items-center justify-center
                          rounded-[1px] border border-cream bg-cream
-                         px-9 font-[family-name:var(--font-body)]
-                         text-[12px] font-semibold uppercase tracking-[0.28em]
+                         px-8 font-[family-name:var(--font-body)]
+                         text-[11px] font-semibold uppercase tracking-[0.22em]
                          text-aubergine transition-all duration-300 ease-out
                          hover:bg-transparent hover:text-cream
                          focus-visible:outline focus-visible:outline-2
@@ -177,15 +174,15 @@ export function HeroSection({
             </Link>
 
             {/*
-              SECONDARY — ghost: cream border, transparent fill.
+              SECONDARY — ghost cream border.
               Hover fills cream, text goes aubergine — mirrors primary.
             */}
             <Link
               href={heroSecondaryUrl}
-              className="inline-flex h-16 items-center justify-center
+              className="inline-flex h-14 min-w-[260px] items-center justify-center
                          rounded-[1px] border border-cream/35
-                         px-9 font-[family-name:var(--font-body)]
-                         text-[12px] font-semibold uppercase tracking-[0.28em]
+                         px-8 font-[family-name:var(--font-body)]
+                         text-[11px] font-semibold uppercase tracking-[0.22em]
                          text-cream/80 transition-all duration-300 ease-out
                          hover:border-cream hover:bg-cream hover:text-aubergine
                          focus-visible:outline focus-visible:outline-2
@@ -197,7 +194,7 @@ export function HeroSection({
 
           {/* ── Trust micro-copy ── */}
           <p
-            className="mt-7 font-[family-name:var(--font-body)]
+            className="mt-6 font-[family-name:var(--font-body)]
                        text-[10px] uppercase tracking-[0.34em] text-cream/40"
             style={{ animation: anim("0.42s") }}
           >
@@ -207,46 +204,54 @@ export function HeroSection({
         </div>
 
         {/* ══════════════════════════════════════════════════
-            RIGHT — portrait column  (source-order 2 = below text on mobile)
+            RIGHT — cream portrait panel
 
-            min-h-[58svh]: on mobile the portrait gets a meaningful
-            height instead of collapsing.
-
-            lg:min-h-0: on desktop the grid row height dictates size —
-            the image fills the full height of the grid.
-
-            object-[50%_42%]: 42% positions the anchor at the eyes
-            so face, neck, and wrist stay visible at any aspect ratio.
+            MOBILE:  fixed height, object-cover with face anchor.
+                     Cream bg fills any letterbox area.
+            DESKTOP: flex-centered panel with generous padding.
+                     Inner frame constrains max dimensions.
+                     object-contain keeps full portrait visible —
+                     no forehead crop, no watch crop, no chin crop.
             ══════════════════════════════════════════════════ */}
         <div
-          className="relative min-h-[58svh]
-                     sm:min-h-[65svh]
-                     lg:min-h-0"
+          className="flex items-center justify-center bg-[#F8F4F1]
+                     h-[60svh] min-h-[430px]
+                     lg:h-auto lg:min-h-0
+                     lg:px-10 lg:py-8
+                     xl:px-14 xl:py-10"
         >
-          <Image
-            src={HERO_IMG}
-            alt="Martina Rink — private mentor, editorial studio portrait"
-            fill
-            priority
-            fetchPriority="high"
-            sizes="(min-width: 1024px) 48vw, 100vw"
-            className="object-cover object-[50%_42%]"
-          />
 
           {/*
-            LEFT SEAM GRADIENT — desktop only.
-            Dissolves the image's left edge into the aubergine
-            text column. Gives a clean split without a hard line.
+            IMAGE FRAME
+            ─────────────────────────────────────────
+            Mobile:  w-full h-full — inherits the fixed outer height.
+            Desktop: max-w/max-h cap the portrait so it doesn't
+                     stretch wall-to-wall on large monitors.
           */}
           <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-0
-                       hidden w-24 lg:block"
-            style={{
-              background:
-                "linear-gradient(to right, var(--color-aubergine), transparent)",
-            }}
-          />
+            className="relative w-full h-full
+                       lg:h-[calc(100svh-150px)] lg:max-h-[760px]
+                       lg:min-h-[560px] lg:max-w-[560px]"
+          >
+            <Image
+              src={HERO_IMG}
+              alt="Martina Rink — private mentor, editorial studio portrait"
+              fill
+              priority
+              fetchPriority="high"
+              sizes="(min-width: 1024px) 44vw, 100vw"
+              /*
+                Mobile:  object-cover so the portrait fills the fixed
+                         height without dead space. Face anchor at 35%.
+                Desktop: object-contain so the full subject —
+                         head, face, blouse, watch, seated posture —
+                         is visible. No crop at all.
+              */
+              className="object-cover object-[50%_35%]
+                         lg:object-contain lg:object-center"
+            />
+          </div>
+
         </div>
 
       </div>

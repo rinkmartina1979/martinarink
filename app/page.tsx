@@ -146,7 +146,7 @@ export default async function HomePage() {
 
   const heroCta = pageData?.heroCta?.label ?? "Begin the assessment";
   const heroCtaUrl = pageData?.heroCta?.url ?? "/assessment";
-  const heroSecondaryLabel = pageData?.heroSecondaryLabel ?? "Or explore the work →";
+  const heroSecondaryLabel = pageData?.heroSecondaryLabel ?? "Explore the work";
   const heroSecondaryUrl = pageData?.heroSecondaryUrl ?? "/work-with-me";
 
   const assessmentCtaHeadline =
