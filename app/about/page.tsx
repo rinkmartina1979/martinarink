@@ -196,7 +196,7 @@ export default async function AboutPage() {
               ) : (
                 <>
                   <p>
-                    I have published three books: <em>Isabella Blow</em> (a Spiegel
+                    I have published three books: <em>Isabella Blow</em> (a
                     Bestseller, written from unique proximity as her personal
                     assistant), <em>People of Deutschland</em> (a documentary
                     portrait of contemporary Germany, covered extensively in national
