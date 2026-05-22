@@ -33,7 +33,7 @@ function AmazonIcon() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BOOK COVER STAGE — large, padded, bg-bone, never cropped
+// BOOK COVER STAGE — large, padded, white bg, never cropped
 // ─────────────────────────────────────────────────────────────────────────────
 function CoverStage({
   src,
@@ -49,7 +49,7 @@ function CoverStage({
   priority?: boolean;
 }) {
   return (
-    <div className="bg-bone p-10 md:p-12 lg:p-14 flex items-center justify-center">
+    <div className="bg-white p-10 md:p-12 lg:p-14 flex items-center justify-center">
       <div
         className="relative w-full"
         style={{ maxHeight: 560 }}
