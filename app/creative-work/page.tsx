@@ -49,7 +49,10 @@ function CoverStage({
   priority?: boolean;
 }) {
   return (
-    <div className="bg-white p-10 md:p-12 lg:p-14 flex items-center justify-center">
+    <div className="bg-white p-10 md:p-12 lg:p-14 flex items-center justify-center
+                    shadow-[0_2px_20px_rgba(30,27,23,0.06)]
+                    transition-shadow duration-500
+                    hover:shadow-[0_12px_48px_rgba(30,27,23,0.13)]">
       <div
         className="relative w-full"
         style={{ maxHeight: 560 }}
@@ -61,7 +64,7 @@ function CoverStage({
           height={height}
           priority={priority}
           className="w-full h-auto object-contain max-h-[560px]"
-          style={{ filter: "drop-shadow(0 18px 35px rgba(30,27,23,0.13))" }}
+          style={{ filter: "drop-shadow(0 20px 40px rgba(30,27,23,0.20))" }}
           sizes="(min-width: 1024px) 30vw, 80vw"
         />
       </div>

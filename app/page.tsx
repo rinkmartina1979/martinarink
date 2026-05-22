@@ -393,7 +393,11 @@ export default async function HomePage() {
 
                 {/* Image stage */}
                 <div
-                  className="relative w-full bg-bone overflow-hidden transition-transform duration-500 ease-out md:group-hover:-translate-y-1"
+                  className="relative w-full bg-white overflow-hidden
+                             transition-all duration-500 ease-out
+                             md:group-hover:-translate-y-2
+                             shadow-[0_2px_20px_rgba(30,27,23,0.06)]
+                             md:group-hover:shadow-[0_12px_48px_rgba(30,27,23,0.13)]"
                   style={{ aspectRatio: "4 / 5" }}
                 >
                   <Image
@@ -401,7 +405,8 @@ export default async function HomePage() {
                     alt={book.alt}
                     fill
                     sizes="(max-width: 768px) 88vw, 30vw"
-                    className="object-contain p-10 md:p-12"
+                    className="object-contain p-10 md:p-12
+                               drop-shadow-[0_16px_32px_rgba(30,27,23,0.18)]"
                   />
                 </div>
 
