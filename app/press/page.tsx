@@ -57,6 +57,15 @@ function pressSchema() {
       },
       {
         "@type": "Book",
+        "@id": `${SITE.url}/#book-isabella-blow`,
+        name: "Isabella Blow",
+        author: { "@id": `${SITE.url}/#person` },
+        publisher: "Thames & Hudson",
+        datePublished: "2010",
+        isPartOf: { "@type": "BookSeries", name: "Spiegel Bestseller" },
+      },
+      {
+        "@type": "Book",
         "@id": `${SITE.url}/#book-people-of-deutschland`,
         name: "People of Deutschland",
         author: { "@id": `${SITE.url}/#person` },
@@ -70,15 +79,6 @@ function pressSchema() {
         author: { "@id": `${SITE.url}/#person` },
         publisher: "Prestel · Random House",
         datePublished: "2014",
-      },
-      {
-        "@type": "Book",
-        "@id": `${SITE.url}/#book-isabella-blow`,
-        name: "Isabella Blow",
-        author: { "@id": `${SITE.url}/#person` },
-        publisher: "Thames & Hudson",
-        datePublished: "2010",
-        isPartOf: { "@type": "BookSeries", name: "Spiegel Bestseller" },
       },
     ],
   };
@@ -219,7 +219,7 @@ export default async function PressPage() {
               ].map((cred) => (
                 <span
                   key={cred}
-                  className="px-4 py-2 border border-cream/20 text-[10px] uppercase tracking-[0.18em] text-cream/60 font-[family-name:var(--font-body)]"
+                  className="px-4 py-2 border border-cream/40 text-[10px] uppercase tracking-[0.18em] text-cream/60 font-[family-name:var(--font-body)] whitespace-nowrap"
                 >
                   {cred}
                 </span>
@@ -325,59 +325,6 @@ export default async function PressPage() {
             </div>
           )}
 
-          {/* ── People of Deutschland ── */}
-          <div className="mb-20 md:mb-24">
-            <div className="flex items-center gap-5 mb-8">
-              <span className="h-px w-10 bg-pink shrink-0" aria-hidden />
-              <div>
-                <p className="text-[9px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
-                  Prestel &middot; Random House &middot; 2023
-                </p>
-                <p className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] leading-tight text-ink mt-0.5">
-                  People of Deutschland
-                </p>
-              </div>
-            </div>
-
-            {/* Feature image full width */}
-            <div className="flex aspect-[16/9] items-center justify-center bg-cream p-4 md:p-6 mb-3">
-              <Image
-                src={POD_PRESS[0].src}
-                alt={POD_PRESS[0].alt}
-                width={POD_PRESS[0].w}
-                height={POD_PRESS[0].h}
-                sizes="(min-width: 1024px) 80vw, 100vw"
-                className="h-full w-full object-contain"
-                priority
-              />
-            </div>
-
-            {/* Remaining 5 in 3-col grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {POD_PRESS.slice(1).map((img, i) => (
-                <div key={i} className="flex aspect-[16/9] items-center justify-center bg-cream p-4 md:p-5">
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={img.w}
-                    height={img.h}
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="h-full w-full object-contain"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              {["Deutsche Welle", "Deutschlandfunk Nova", "SWR", "WDR", "Strive", "Perspective Daily"].map((o) => (
-                <span key={o} className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)]">
-                  {o}
-                </span>
-              ))}
-            </div>
-          </div>
-
           {/* ── Isabella Blow ── */}
           <div className="mb-20 md:mb-24">
             <div className="flex items-center gap-5 mb-8">
@@ -402,7 +349,7 @@ export default async function PressPage() {
                   height={BLOW_PRESS[0].h}
                   sizes="(min-width: 1024px) 55vw, 100vw"
                   className="h-full w-full object-contain"
-                  loading="lazy"
+                  priority
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -441,6 +388,59 @@ export default async function PressPage() {
 
             <div className="mt-5 flex flex-wrap gap-2">
               {["House Magazine", "International press", "Elle", "Vogue", "Harper's Bazaar", "Cosmopolitan"].map((o) => (
+                <span key={o} className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)]">
+                  {o}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* ── People of Deutschland ── */}
+          <div className="mb-20 md:mb-24">
+            <div className="flex items-center gap-5 mb-8">
+              <span className="h-px w-10 bg-pink shrink-0" aria-hidden />
+              <div>
+                <p className="text-[9px] uppercase tracking-[0.32em] text-ink-quiet font-[family-name:var(--font-body)]">
+                  Prestel &middot; Random House &middot; 2023
+                </p>
+                <p className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] leading-tight text-ink mt-0.5">
+                  People of Deutschland
+                </p>
+              </div>
+            </div>
+
+            {/* Feature image full width */}
+            <div className="flex aspect-[16/9] items-center justify-center bg-cream p-4 md:p-6 mb-3">
+              <Image
+                src={POD_PRESS[0].src}
+                alt={POD_PRESS[0].alt}
+                width={POD_PRESS[0].w}
+                height={POD_PRESS[0].h}
+                sizes="(min-width: 1024px) 80vw, 100vw"
+                className="h-full w-full object-contain"
+                loading="lazy"
+              />
+            </div>
+
+            {/* Remaining 5 in 3-col grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {POD_PRESS.slice(1).map((img, i) => (
+                <div key={i} className="flex aspect-[16/9] items-center justify-center bg-cream p-4 md:p-5">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={img.w}
+                    height={img.h}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="h-full w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {["Deutsche Welle", "Deutschlandfunk Nova", "SWR", "WDR", "Strive", "Perspective Daily"].map((o) => (
                 <span key={o} className="px-3 py-1.5 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)]">
                   {o}
                 </span>
@@ -859,30 +859,30 @@ export default async function PressPage() {
       {/* ══════════════════════════════════════════════════════
           11 — FINAL PRESS CTA
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-aubergine py-20 md:py-28">
+      <section className="bg-rose py-20 md:py-28">
         <div className="container-content">
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-end max-w-5xl">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-cream/50 mb-6 font-[family-name:var(--font-body)]">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
                 Press &amp; speaking enquiries
               </p>
-              <h2 className="font-[family-name:var(--font-display)] text-[32px] md:text-[42px] lg:text-[48px] leading-[1.05] tracking-[-0.02em] text-cream">
+              <h2 className="font-[family-name:var(--font-display)] text-[32px] md:text-[42px] lg:text-[48px] leading-[1.05] tracking-[-0.02em] text-ink">
                 For press interviews, podcast conversations, and speaking engagements.
               </h2>
-              <p className="mt-6 text-[17px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-xl">
+              <p className="mt-6 text-[17px] leading-[1.8] text-ink-soft font-[family-name:var(--font-body)] max-w-xl">
                 Write directly to Martina. She responds to press and speaking requests personally.
               </p>
               <div className="mt-10 space-y-3 font-[family-name:var(--font-body)]">
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="block font-[family-name:var(--font-display)] italic text-[22px] md:text-[26px] text-cream hover:text-pink transition-colors duration-200"
+                  className="block font-[family-name:var(--font-display)] italic text-[22px] md:text-[26px] text-ink hover:text-plum transition-colors duration-200"
                 >
                   {SITE.email}
                 </a>
-                <p className="text-[13px] uppercase tracking-[0.18em] text-cream/45">
+                <p className="text-[13px] uppercase tracking-[0.18em] text-ink-soft">
                   Tel: +49 (0) 172 174 1499
                 </p>
-                <p className="text-[13px] text-cream/35">
+                <p className="text-[13px] text-ink-quiet">
                   Response within 48 hours on working days.
                 </p>
               </div>
@@ -894,15 +894,15 @@ export default async function PressPage() {
             </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-cream/10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p className="text-[13px] text-cream/30 font-[family-name:var(--font-body)]">
+          <div className="mt-16 pt-8 border-t border-sand/40 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
               Martina Rink &mdash; UG (haftungsbeschr&auml;nkt), Karlsruhe
             </p>
             <div className="flex gap-6 text-[13px] font-[family-name:var(--font-body)]">
-              <Link href="/about"        className="text-cream/40 hover:text-cream/80 transition-colors">About</Link>
-              <Link href="/writing"      className="text-cream/40 hover:text-cream/80 transition-colors">Writing</Link>
-              <Link href="/assessment"   className="text-cream/40 hover:text-cream/80 transition-colors">Assessment</Link>
-              <Link href="/work-with-me" className="text-cream/40 hover:text-cream/80 transition-colors">Work with me</Link>
+              <Link href="/about"        className="text-ink-quiet hover:text-ink transition-colors">About</Link>
+              <Link href="/writing"      className="text-ink-quiet hover:text-ink transition-colors">Writing</Link>
+              <Link href="/assessment"   className="text-ink-quiet hover:text-ink transition-colors">Assessment</Link>
+              <Link href="/work-with-me" className="text-ink-quiet hover:text-ink transition-colors">Work with me</Link>
             </div>
           </div>
         </div>
