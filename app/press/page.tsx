@@ -231,10 +231,7 @@ export default async function PressPage() {
               <PlumButton href={`mailto:${SITE.email}`}>
                 Request press materials
               </PlumButton>
-              <GhostButton
-                href="#speaking"
-                className="border-cream/40 text-cream hover:bg-cream/10"
-              >
+              <GhostButton variant="light" href="#speaking">
                 Invite Martina to speak
               </GhostButton>
             </div>

@@ -25,8 +25,11 @@ export function GhostButton({
 
   const variantClasses =
     variant === "dark"
-      ? "border-ink text-ink hover:bg-ink hover:text-cream"
-      : "border-cream text-cream hover:bg-cream hover:text-ink";
+      ? // Light-surface ghost: ink border/text, fills ink on hover
+        "border-ink text-ink hover:bg-ink hover:text-cream"
+      : // Dark-surface ghost: cream border at 45% opacity, cream text at 80%,
+        // barely-there cream frost on hover — editorial, never harsh
+        "border-cream/45 text-cream/80 hover:border-cream/75 hover:text-cream hover:bg-white/[0.07]";
 
   if (href) {
     return (

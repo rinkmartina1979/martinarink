@@ -13,7 +13,8 @@
  */
 
 import Image from "next/image";
-import Link  from "next/link";
+import { PlumButton }  from "@/components/brand/PlumButton";
+import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 
 /* ─── animation helper ──────────────────────────────────────── */
@@ -139,45 +140,15 @@ export function HeroSection({
               className="mt-7 flex flex-col sm:flex-row gap-4 sm:items-center"
               style={{ animation: anim("0.42s") }}
             >
-              {/* Primary — cream fill */}
-              <Link
-                href={heroCtaUrl}
-                className="inline-flex items-center justify-center gap-2
-                           rounded-[1px] px-8 py-[13px]
-                           font-[family-name:var(--font-body)]
-                           transition-colors duration-200
-                           hover:bg-[#EDE8E0]"
-                style={{
-                  fontSize:        "12px",
-                  letterSpacing:   "0.26em",
-                  textTransform:   "uppercase",
-                  backgroundColor: "#F8F4F1",
-                  color:           "var(--color-aubergine)",
-                }}
-              >
-                {heroCta}
-                <span aria-hidden>→</span>
-              </Link>
+              {/* Primary — plum fill (brand CTA color) */}
+              <PlumButton href={heroCtaUrl}>
+                {heroCta} <span aria-hidden className="ml-1">→</span>
+              </PlumButton>
 
-              {/* Secondary — ghost border */}
-              <Link
-                href={heroSecondaryUrl}
-                className="inline-flex items-center justify-center
-                           rounded-[1px] px-8 py-[13px]
-                           font-[family-name:var(--font-body)]
-                           border transition-colors duration-200
-                           hover:border-cream/65
-                           hover:text-cream"
-                style={{
-                  fontSize:      "12px",
-                  letterSpacing: "0.26em",
-                  textTransform: "uppercase",
-                  border:        "1px solid color-mix(in srgb, var(--color-cream) 35%, transparent)",
-                  color:         "color-mix(in srgb, var(--color-cream) 75%, transparent)",
-                }}
-              >
+              {/* Secondary — editorial ghost on dark surface */}
+              <GhostButton variant="light" href={heroSecondaryUrl}>
                 {heroSecondaryLabel}
-              </Link>
+              </GhostButton>
             </div>
 
           </div>
