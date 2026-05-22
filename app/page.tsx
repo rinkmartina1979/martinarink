@@ -536,23 +536,6 @@ export default async function HomePage() {
 
       {/* ─── ASSESSMENT TEASER (DARK) ────────────────────────── */}
       <section className="relative bg-aubergine section-pad overflow-hidden">
-        {/* Centered plum bloom — editorial warmth */}
-        <div
-          aria-hidden
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        >
-          <div className="w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.15] bg-aubergine-soft" />
-        </div>
-        {/* Edge pink accent orb */}
-        <div
-          aria-hidden
-          className="absolute top-[-80px] right-[-80px] w-[500px] h-[500px] rounded-full blur-3xl opacity-[0.14] bg-pink"
-        />
-        {/* Bottom-left teal hint — depth */}
-        <div
-          aria-hidden
-          className="absolute bottom-0 left-0 w-[320px] h-[320px] rounded-full blur-3xl opacity-[0.07] bg-teal"
-        />
         <div className="container-content relative max-w-3xl mx-auto text-center">
           <Eyebrow className="justify-center">
             <span className="text-pink-soft">A private assessment</span>

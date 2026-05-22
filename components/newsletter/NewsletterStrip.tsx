@@ -218,7 +218,6 @@ export function NewsletterStrip({
             sizes="(min-width: 1024px) 25vw, 35vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-aubergine/40 via-transparent to-transparent" />
         </div>
       </div>
     </div>

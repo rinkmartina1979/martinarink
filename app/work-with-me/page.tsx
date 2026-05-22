@@ -89,7 +89,7 @@ export default async function WorkWithMePage() {
               alt="Martina Rink — private mentor"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center"
+              className="object-cover object-top"
               priority
             />
           </div>

@@ -19,10 +19,12 @@
   --color-ink-quiet:    #636260;  /* captions, metadata — CI confirmed override */
   --color-sand:         #C8B8A2;  /* hairlines, dividers */
 
-  /* CTA — plum is the ONLY button fill colour */
-  --color-plum:         #5C2D8E;  /* primary CTA fill — brand Deep Amethyst */
-  --color-plum-deep:    #451F6B;  /* button hover */
+  /* CTA — rose is the primary button fill colour */
+  --color-plum:         #5C2D8E;  /* legacy, retained for back-compat */
+  --color-plum-deep:    #451F6B;  /* legacy hover */
   --color-plum-soft:    #F3EBF5;  /* plum tint blocks (investment panels) */
+  --color-rose-btn:     #C4546B;  /* primary CTA fill — deep editorial rose */
+  --color-rose-btn-deep:#A64260;  /* CTA hover — deeper rose */
   --color-aubergine:    #231727;  /* approved editorial aubergine — dark section bg */
   --color-aubergine-soft: #2A1B30;  /* hover / lighter aubergine tint */
   --color-aubergine-deep: #17101B;  /* deepest aubergine — footer/extreme dark */

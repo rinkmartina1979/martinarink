@@ -520,7 +520,7 @@ export default async function PressPage() {
             {hasSanityPublications
               ? (publications as SanityPublication[]).map((pub) => (
                   <article key={pub._id} className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-bone p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
                       <Image
                         src={`/images/books/${pub.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}-cover.png`}
                         alt={`${pub.title} — book cover by Martina Rink`}
@@ -546,7 +546,7 @@ export default async function PressPage() {
               : (
                 <>
                   <article className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-bone p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
                       <Image
                         src="/images/books/isabella-blow-cover.png"
                         alt="Isabella Blow — A Life in Fashion, book cover by Martina Rink"
@@ -569,7 +569,7 @@ export default async function PressPage() {
                   </article>
 
                   <article className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-bone p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
                       <Image
                         src="/images/books/people-of-deutschland-cover.png"
                         alt="People of Deutschland — book cover by Martina Rink"
@@ -592,7 +592,7 @@ export default async function PressPage() {
                   </article>
 
                   <article className="flex flex-col">
-                    <div className="flex aspect-[4/5] items-center justify-center bg-bone p-10">
+                    <div className="flex aspect-[4/5] items-center justify-center bg-ink p-10">
                       <Image
                         src="/images/books/fashion-germany-cover.png"
                         alt="Fashion Germany — book cover by Martina Rink"
