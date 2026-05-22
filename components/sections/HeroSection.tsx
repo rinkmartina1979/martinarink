@@ -91,10 +91,10 @@ export function HeroSection({
             ══════════════════════════════════════════════════ */}
         <div
           className="flex flex-col justify-start
-                     px-6  pt-12 pb-10
+                     px-6  pt-[88px] pb-10
                      sm:px-10
-                     md:px-16 md:pt-14 md:pb-12
-                     lg:px-20 lg:pt-16 lg:pb-14
+                     md:px-16 md:pt-[96px] md:pb-12
+                     lg:px-20 lg:pb-14
                      xl:px-28"
         >
 
