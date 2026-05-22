@@ -94,7 +94,7 @@ export function HeroSection({
                      px-6  pt-[88px] pb-10
                      sm:px-10
                      md:px-16 md:pt-[96px] md:pb-12
-                     lg:px-20 lg:pb-14
+                     lg:justify-center lg:px-20 lg:pt-0 lg:pb-0
                      xl:px-28"
         >
 
@@ -115,7 +115,7 @@ export function HeroSection({
           <h1
             className="font-[family-name:var(--font-display)]
                        text-[clamp(2.6rem,4.2vw,6.4rem)]
-                       leading-[0.88] tracking-[-0.055em]
+                       leading-[0.90] tracking-[-0.055em]
                        text-cream max-w-[680px]"
             style={{ animation: anim("0.12s") }}
           >
@@ -149,6 +149,12 @@ export function HeroSection({
             Private mentorship for accomplished women who are ready
             to feel at home inside the life they built.
           </p>
+
+          {/* ── Editorial hairline ── */}
+          <hr
+            className="hidden lg:block mt-8 mb-0 border-none h-px w-14 bg-cream/20"
+            aria-hidden
+          />
 
           {/* ── CTAs ── */}
           <div
@@ -203,55 +209,39 @@ export function HeroSection({
 
         </div>
 
-        {/* ══════════════════════════════════════════════════
-            RIGHT — cream portrait panel
+        {/*
+          RIGHT — full-bleed portrait panel
+          ─────────────────────────────────────────────────────
+          2026 editorial rule: portrait fills the grid cell edge-to-edge —
+          no padding, no letterbox, no cream border.
+          object-cover with a top anchor (8%) keeps face + shoulders + watch
+          prominently in frame without cropping the face.
 
-            MOBILE:  fixed height, object-cover with face anchor.
-                     Cream bg fills any letterbox area.
-            DESKTOP: flex-centered panel with generous padding.
-                     Inner frame constrains max dimensions.
-                     object-contain keeps full portrait visible —
-                     no forehead crop, no watch crop, no chin crop.
-            ══════════════════════════════════════════════════ */}
+          The seam gradient (absolute, left edge, 2rem wide) softens the
+          hard aubergine / portrait cut — a hallmark of Vogue, Jacquemus,
+          and Net-a-Porter editorial splits.
+        */}
         <div
-          className="flex items-center justify-center bg-[#F8F4F1]
+          className="relative overflow-hidden bg-[#F0EBE6]
                      h-[60svh] min-h-[430px]
-                     lg:h-auto lg:min-h-0
-                     lg:px-10 lg:py-8
-                     xl:px-14 xl:py-10"
+                     lg:h-auto lg:min-h-0"
         >
+          <Image
+            src={HERO_IMG}
+            alt="Martina Rink — private mentor, editorial studio portrait"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="(min-width: 1024px) 46vw, 100vw"
+            className="object-cover object-[50%_8%]"
+          />
 
-          {/*
-            IMAGE FRAME
-            ─────────────────────────────────────────
-            Mobile:  w-full h-full — inherits the fixed outer height.
-            Desktop: max-w/max-h cap the portrait so it doesn't
-                     stretch wall-to-wall on large monitors.
-          */}
+          {/* Seam gradient — softens the aubergine / portrait edge */}
           <div
-            className="relative w-full h-full
-                       lg:h-[calc(100svh-150px)] lg:max-h-[760px]
-                       lg:min-h-[560px] lg:max-w-[560px]"
-          >
-            <Image
-              src={HERO_IMG}
-              alt="Martina Rink — private mentor, editorial studio portrait"
-              fill
-              priority
-              fetchPriority="high"
-              sizes="(min-width: 1024px) 44vw, 100vw"
-              /*
-                Mobile:  object-cover so the portrait fills the fixed
-                         height without dead space. Face anchor at 35%.
-                Desktop: object-contain so the full subject —
-                         head, face, blouse, watch, seated posture —
-                         is visible. No crop at all.
-              */
-              className="object-cover object-[50%_35%]
-                         lg:object-contain lg:object-center"
-            />
-          </div>
-
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0 w-10
+                       bg-gradient-to-r from-aubergine/25 to-transparent"
+          />
         </div>
 
       </div>
