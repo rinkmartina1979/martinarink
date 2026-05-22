@@ -5,6 +5,7 @@ import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
+import { PackageTiers } from "@/components/brand/PackageTiers";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getWorkWithMePage } from "@/sanity/lib/queries";
 import { SITE } from "@/lib/utils";
@@ -240,6 +241,27 @@ export default async function WorkWithMePage() {
           <p className="mt-10 text-center text-[13px] text-cream/35 font-[family-name:var(--font-body)]">
             Investment is confirmed in the private consultation. {SITE.pricing.consultation} — credited in full upon enrolment.
           </p>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          3b — HOW WE MEET
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-cream py-20 md:py-28 border-b border-sand/30">
+        <div className="container-content max-w-5xl">
+          <div className="mb-12">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
+              How we meet
+            </p>
+            <h2 className="font-[family-name:var(--font-display)] text-[32px] md:text-[38px] text-ink leading-tight">
+              Three formats. One standard of work.
+            </h2>
+            <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
+              The engagement format is chosen in the private consultation, based
+              on where you are and what the work requires. Investment varies by format.
+            </p>
+          </div>
+          <PackageTiers surface="cream" />
         </div>
       </section>
 

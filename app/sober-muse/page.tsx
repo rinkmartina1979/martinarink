@@ -9,6 +9,7 @@ import { getSoberMusePage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
+import { PackageTiers } from "@/components/brand/PackageTiers";
 
 const FAQS = [
   {
@@ -326,6 +327,21 @@ export default async function SoberMusePage() {
           </p>
         </div>
           </div>
+        </div>
+      </section>
+
+      {/* HOW WE MEET */}
+      <section className="bg-bone section-pad border-t border-sand/30">
+        <div className="container-content max-w-5xl">
+          <div className="mb-12">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
+              How we meet
+            </p>
+            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
+              The format is chosen to fit the work.
+            </h2>
+          </div>
+          <PackageTiers surface="cream" />
         </div>
       </section>
 

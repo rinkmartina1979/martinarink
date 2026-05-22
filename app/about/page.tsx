@@ -210,9 +210,10 @@ export default async function AboutPage() {
                     environments cost.
                   </p>
                   <p>
-                    I hold a coaching certification from the International Coaching
-                    Institute (ICI), and my practice is grounded in the intersection
-                    of psychological insight, lived experience, and literary precision.
+                    My practice draws on formal training across coaching, NLP,
+                    hypnotherapy, sobriety consulting, Transcendental Meditation,
+                    and Ayurveda — each discipline chosen not for its certificate
+                    but for what it adds to the room.
                   </p>
                 </>
               )}
@@ -304,6 +305,39 @@ export default async function AboutPage() {
                 </>
               )}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TRAINING RECORD */}
+      <section className="bg-cream py-16 md:py-20 border-t border-sand/30">
+        <div className="container-content max-w-3xl">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-10 font-[family-name:var(--font-body)]">
+            Training record
+          </p>
+          <div className="space-y-0 divide-y divide-sand/30">
+            {[
+              { year: "2024", credential: "Personal & Business Life Coach", institution: "Coaching & Training Academy, Munich" },
+              { year: "2024", credential: "Hypno-Coach", institution: "Coaching & Training Academy, Munich" },
+              { year: "2023–24", credential: "NLP Practitioner", institution: "Coaching & Training Academy, Munich" },
+              { year: "2023", credential: "Ayurveda Fach-Coach", institution: "Dr. med. Ulrich Bauhofer · Deutsche Gesellschaft für Ayurveda" },
+              { year: "2021", credential: "Sobriety Consultant", institution: "Coaching & Training Academy, Munich" },
+              { year: "2020", credential: "Transcendental Meditation", institution: "Paracelsus Academy, Munich" },
+            ].map((item) => (
+              <div key={item.credential} className="grid grid-cols-[80px_1fr] gap-6 py-5 items-baseline">
+                <span className="text-[12px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)] shrink-0">
+                  {item.year}
+                </span>
+                <div>
+                  <p className="font-[family-name:var(--font-display)] text-[17px] text-ink leading-snug">
+                    {item.credential}
+                  </p>
+                  <p className="mt-1 text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {item.institution}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
