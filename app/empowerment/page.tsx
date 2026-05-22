@@ -220,7 +220,7 @@ export default async function EmpowermentPage() {
       </section>
 
       {/* HOW IT WORKS — DARK */}
-      <section className="bg-ink section-pad">
+      <section className="bg-aubergine section-pad">
         <div className="container-content max-w-2xl mx-auto text-center">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-cream">
             An open-ended private engagement.

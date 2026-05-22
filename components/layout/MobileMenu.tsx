@@ -32,7 +32,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-0 z-[100] bg-ink flex flex-col overflow-y-auto"
+            className="fixed inset-0 z-[100] bg-aubergine flex flex-col overflow-y-auto"
           >
             {/* Header */}
             <div className="container-content flex items-center justify-between h-[88px] shrink-0">

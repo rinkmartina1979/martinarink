@@ -306,7 +306,7 @@ export default async function NewsletterPage() {
       {/* ══════════════════════════════════════════════════════
           5 — FROM THE WRITING (sample flavour)
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-ink py-20 md:py-28">
+      <section className="bg-aubergine py-20 md:py-28">
         <div className="container-content max-w-3xl">
           <Eyebrow className="text-cream/40 border-cream/15 mb-10">
             From the writing

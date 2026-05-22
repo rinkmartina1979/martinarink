@@ -156,7 +156,7 @@ export default async function WorkWithMePage() {
       {/* ══════════════════════════════════════════════════════
           3 — TWO PROGRAMMES
       ══════════════════════════════════════════════════════ */}
-      <section id="programmes" className="bg-ink py-20 md:py-28 scroll-mt-20">
+      <section id="programmes" className="bg-aubergine py-20 md:py-28 scroll-mt-20">
         <div className="container-content max-w-5xl">
           <Eyebrow className="text-cream/40 border-cream/15 mb-10">
             The two programmes
@@ -164,7 +164,7 @@ export default async function WorkWithMePage() {
 
           <div className="grid md:grid-cols-2 gap-px bg-cream/10">
             {/* Sober Muse */}
-            <div className="bg-ink p-10 md:p-12 flex flex-col">
+            <div className="bg-aubergine p-10 md:p-12 flex flex-col">
               <p className="text-[9px] uppercase tracking-[0.3em] text-cream/40 mb-6 font-[family-name:var(--font-body)]">
                 Programme one
               </p>
@@ -201,7 +201,7 @@ export default async function WorkWithMePage() {
             </div>
 
             {/* Empowerment */}
-            <div className="bg-ink p-10 md:p-12 flex flex-col border-t md:border-t-0 border-cream/10">
+            <div className="bg-aubergine p-10 md:p-12 flex flex-col border-t md:border-t-0 border-cream/10">
               <p className="text-[9px] uppercase tracking-[0.3em] text-cream/40 mb-6 font-[family-name:var(--font-body)]">
                 Programme two
               </p>

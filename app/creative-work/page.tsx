@@ -603,7 +603,7 @@ export default function CreativeWorkPage() {
       {/* ══════════════════════════════════════════════════════
           OWN THE WORK — AMAZON PURCHASE SECTION
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-ink py-24 lg:py-32">
+      <section className="bg-aubergine py-24 lg:py-32">
         <div className="container-content">
 
           {/* Header */}

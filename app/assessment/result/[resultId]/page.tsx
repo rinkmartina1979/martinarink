@@ -69,7 +69,7 @@ export default async function AssessmentResultPage({ params }: Props) {
   return (
     <>
       {/* ── RESULT HEADER ────────────────────────────────────────── */}
-      <section className="bg-ink pt-32 md:pt-44 pb-20 relative overflow-hidden">
+      <section className="bg-aubergine pt-32 md:pt-44 pb-20 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-pink/30 to-transparent" />
 
         <div className="container-content max-w-2xl mx-auto px-6">

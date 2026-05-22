@@ -247,7 +247,7 @@ export default async function AboutPage() {
       </section>
 
       {/* PERSONAL ORIGIN — DARK */}
-      <section className="bg-ink py-16 md:py-24 [transform:translateZ(0)] isolate [-webkit-font-smoothing:antialiased]">
+      <section className="bg-aubergine py-16 md:py-24 [transform:translateZ(0)] isolate [-webkit-font-smoothing:antialiased]">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>
             <span className="text-pink-soft">Where this started</span>
