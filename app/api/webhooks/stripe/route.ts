@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
     trackBrevoEvent({
       email,
       eventName: 'consultation_deposit_paid',
-      properties: { programme, amount: 450 },
+      properties: { programme, amount: session.amount_total ? session.amount_total / 100 : 0 },
       contactProperties: {
         DEPOSIT_PAID: true,
         DEPOSIT_PAID_AT: new Date().toISOString(),
