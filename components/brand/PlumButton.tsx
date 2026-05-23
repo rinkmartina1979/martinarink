@@ -15,7 +15,7 @@ const baseClasses =
   "bg-plum text-cream uppercase tracking-[0.2em] font-medium text-[0.75rem] " +
   "px-8 py-4 md:px-12 md:py-[18px] min-h-[44px] min-w-[44px] " +
   "transition-all duration-300 ease-out " +
-  "hover:bg-plum-deep hover:tracking-[0.25em] hover:shadow-[0_0_22px_rgba(196,84,107,0.45)] " +
+  "hover:bg-plum-deep hover:shadow-[0_0_22px_rgba(196,84,107,0.45)] " +
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-plum " +
   "disabled:opacity-50 disabled:cursor-not-allowed";
 

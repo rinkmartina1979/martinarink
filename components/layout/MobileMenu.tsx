@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface MobileMenuProps {
@@ -10,13 +10,52 @@ interface MobileMenuProps {
 
 export function MobileMenu({ links }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
-  const close = () => setOpen(false);
+  const triggerRef  = useRef<HTMLButtonElement>(null);
+  const closeRef    = useRef<HTMLButtonElement>(null);
+  const menuRef     = useRef<HTMLDivElement>(null);
+
+  const close = () => {
+    setOpen(false);
+    // Return focus to the hamburger that opened the menu
+    setTimeout(() => triggerRef.current?.focus(), 50);
+  };
+
+  // Focus trap + initial focus
+  useEffect(() => {
+    if (!open) return;
+    // Move initial focus to close button
+    setTimeout(() => closeRef.current?.focus(), 310); // after entrance animation
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const menu = menuRef.current;
+      if (!menu) return;
+      const focusable = Array.from(
+        menu.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => el.offsetParent !== null); // only visible elements
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+      } else {
+        if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+      }
+    };
+    document.addEventListener("keydown", handleTab);
+    return () => document.removeEventListener("keydown", handleTab);
+  }, [open]);
 
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         aria-label="Open menu"
+        aria-expanded={open}
+        aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
         className="md:hidden flex flex-col items-center justify-center gap-[5px] p-2 -mr-2 min-h-[44px] min-w-[44px]"
       >
@@ -28,6 +67,11 @@ export function MobileMenu({ links }: MobileMenuProps) {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={menuRef}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -40,12 +84,13 @@ export function MobileMenu({ links }: MobileMenuProps) {
                 MARTINA RINK<span className="text-pink">.</span>
               </span>
               <button
+                ref={closeRef}
                 type="button"
                 aria-label="Close menu"
                 onClick={close}
-                className="text-cream text-2xl min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="text-cream text-2xl min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-pink transition-colors"
               >
-                ×
+                <span aria-hidden>×</span>
               </button>
             </div>
 
@@ -71,7 +116,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
                   <Link
                     href="/sober-muse"
                     onClick={close}
-                    className="bg-cream/5 border border-sand/20 p-4 text-center"
+                    className="bg-cream/10 border border-cream/20 p-4 text-center hover:bg-cream/15 transition-colors"
                   >
                     <span className="block font-[family-name:var(--font-display)] italic text-[24px] text-pink-soft">
                       I.
@@ -86,7 +131,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
                   <Link
                     href="/empowerment"
                     onClick={close}
-                    className="bg-cream/5 border border-sand/20 p-4 text-center"
+                    className="bg-cream/10 border border-cream/20 p-4 text-center hover:bg-cream/15 transition-colors"
                   >
                     <span className="block font-[family-name:var(--font-display)] italic text-[24px] text-pink-soft">
                       II.

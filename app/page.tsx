@@ -573,8 +573,8 @@ export default async function HomePage() {
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
             {testimonials.map((t, i) => {
-              const bgMap = ["bg-rose", "bg-rose", "bg-rose", "bg-rose"];
-              const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25"];
+              const bgMap = ["bg-rose", "bg-lilac-soft", "bg-rose", "bg-lilac-soft", "bg-rose", "bg-lilac-soft"];
+              const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25", "text-plum/30", "text-pink/30"];
               const isSanity = "_id" in t;
               const item = {
                 name: t.name,

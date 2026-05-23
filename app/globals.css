@@ -212,6 +212,17 @@
   .section-wide { padding-block: 11rem; }
 }
 
+/* ── Accessibility: form inputs always show focus ring ───────────
+   Tailwind's focus:outline-none utility overrides *:focus-visible
+   in @layer base. This post-utility rule restores keyboard visibility
+   for all interactive form elements across every page. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-plum) !important;
+  outline-offset: 2px !important;
+}
+
 /* ── Accessibility: respect prefers-reduced-motion ───────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

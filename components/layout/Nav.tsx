@@ -65,7 +65,7 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
-          <PlumButton href="/assessment" className="!px-8 !py-[13px] !text-[10px] !tracking-[0.22em] hover:!tracking-[0.26em] transition-[letter-spacing]">
+          <PlumButton href="/assessment" className="!px-8 !py-[13px] !text-[10px] !tracking-[0.22em]">
             Begin the Assessment
           </PlumButton>
         </nav>
