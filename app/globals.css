@@ -19,7 +19,7 @@
   --color-ink-quiet:    #636260;  /* captions, metadata — CI confirmed override */
   --color-sand:         #C8B8A2;  /* hairlines, dividers */
 
-  /* CTA — warm blush rose, same family as review card bg-rose (#F5D0DC) */
+  /* CTA — warm blush rose, same family as review card bg-rose (#F5CFDC) */
   --color-plum:         #C4687D;  /* primary CTA fill — deep warm blush rose */
   --color-plum-deep:    #A85268;  /* CTA hover — deeper warm rose */
   --color-plum-soft:    #FAE8EC;  /* pale rose tint (investment panels) */
@@ -34,7 +34,7 @@
   --color-lilac-mid:    #EDDDF0;
   --color-lilac-deep:   #E6C7EB;
   --color-blush:        #F5E8EC;  /* soft pink wash (current, retained) */
-  --color-rose:         #F5D0DC;  /* client testimonial card bg — warm rose */
+  --color-rose:         #F5CFDC;  /* client testimonial card bg — warm rose */
   --color-mint-wash:    #C9EADE;  /* used once max per page — CI Farbe 2 */
 
   /* Accents — under 5% of page area */
