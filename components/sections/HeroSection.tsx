@@ -49,6 +49,7 @@ interface HeroSectionProps {
   heroCtaUrl?:         string;
   heroSecondaryLabel?: string;
   heroSecondaryUrl?:   string;
+  heroSubheadline?:    string;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -59,6 +60,7 @@ export function HeroSection({
   heroCtaUrl         = "/assessment",
   heroSecondaryLabel = "Explore the work",
   heroSecondaryUrl   = "/work-with-me",
+  heroSubheadline    = "",
 }: HeroSectionProps) {
   return (
     /*
@@ -150,6 +152,19 @@ export function HeroSection({
             to feel at home inside the life they built.
           </p>
 
+          {/* ── Second body paragraph (heroSubheadline) ── */}
+          {heroSubheadline && (
+            <p
+              className="mt-5 max-w-[500px]
+                         font-[family-name:var(--font-body)]
+                         text-[15px] md:text-[17px] leading-[1.7]
+                         text-cream/55"
+              style={{ animation: anim("0.33s") }}
+            >
+              {heroSubheadline}
+            </p>
+          )}
+
           {/* ── Editorial hairline ── */}
           <hr
             className="hidden lg:block mt-8 mb-0 border-none h-px w-14 bg-cream/20"
@@ -229,8 +244,8 @@ export function HeroSection({
           Warm cream bg fills the empty letterbox areas naturally.
         */}
         <div
-          className="relative overflow-hidden bg-[#F0EBE6]
-                     h-[62svh] min-h-[440px]
+          className="relative overflow-hidden
+                     h-[70svh] min-h-[480px]
                      lg:h-auto lg:min-h-0"
         >
           <Image
@@ -240,15 +255,23 @@ export function HeroSection({
             priority
             fetchPriority="high"
             sizes="(min-width: 1024px) 46vw, 100vw"
-            className="object-contain object-center
-                       lg:object-contain lg:object-[center_55%]"
+            className="object-cover object-[center_18%]
+                       lg:object-cover lg:object-[center_12%]"
           />
 
-          {/* Seam gradient — bleeds aubergine into the cream edge, removes the hard cut */}
+          {/* Seam gradient — deep editorial bleed from aubergine into the portrait */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-0 w-16
-                       bg-gradient-to-r from-aubergine/30 to-transparent"
+            className="pointer-events-none absolute inset-y-0 left-0 w-28
+                       bg-gradient-to-r from-aubergine/55 to-transparent"
+          />
+
+          {/* Bottom vignette — mobile only, fades portrait into aubergine section below */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24
+                       bg-gradient-to-t from-aubergine/60 to-transparent
+                       lg:hidden"
           />
         </div>
 

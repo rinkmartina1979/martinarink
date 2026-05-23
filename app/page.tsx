@@ -174,6 +174,7 @@ export default async function HomePage() {
         heroCtaUrl={heroCtaUrl}
         heroSecondaryLabel={heroSecondaryLabel}
         heroSecondaryUrl={heroSecondaryUrl}
+        heroSubheadline={heroSubheadline}
       />
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
