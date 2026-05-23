@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "Points of Departure — A Private Assessment",
     description:
-      "Seven questions. About four minutes. At the end, a letter — written specifically for where you are. Not a quiz. A beginning.",
+      "Ten questions. About five minutes. At the end, a private letter — written specifically for where you are. Not a quiz. A beginning.",
     path: "/assessment",
   });
 }
@@ -63,7 +63,7 @@ export default async function AssessmentPage() {
           <div className="mt-10 flex items-center gap-6">
             <div className="h-[1px] flex-1 bg-gradient-to-r from-pink/20 to-transparent" />
             <span className="text-[12px] tracking-[0.2em] uppercase text-cream/40">
-              Seven questions
+              Ten questions
             </span>
             <div className="h-[1px] flex-1 bg-gradient-to-l from-pink/20 to-transparent" />
           </div>

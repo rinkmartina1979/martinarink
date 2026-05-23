@@ -43,9 +43,10 @@ export default defineType({
       readOnly: true,
       options: {
         list: [
-          { title: "The Quiet Reckoning", value: "reckoning" },
-          { title: "The Threshold", value: "threshold" },
-          { title: "The Return", value: "return" },
+          { title: "The Emotionally Exhausted Self",    value: "exhausted" },
+          { title: "The Self-Doubting Achiever",        value: "doubting"  },
+          { title: "The Self-Abandoning People Pleaser",value: "pleasing"  },
+          { title: "The Emerging Empowered Woman",      value: "empowered" },
         ],
       },
     }),
@@ -146,9 +147,10 @@ export default defineType({
     },
     prepare({ title, subtitle }) {
       const archetypeLabels: Record<string, string> = {
-        reckoning: "Quiet Reckoning",
-        threshold: "Threshold",
-        return: "The Return",
+        exhausted: "Exhausted Self",
+        doubting:  "Self-Doubting Achiever",
+        pleasing:  "People Pleaser",
+        empowered: "Empowered Woman",
       };
       return {
         title,

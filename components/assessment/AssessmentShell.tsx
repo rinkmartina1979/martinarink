@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { QUESTIONS } from "@/lib/assessment/questions";
+import { QUESTIONS, INTRO_QUESTIONS } from "@/lib/assessment/questions";
 import { AssessmentIntro } from "./AssessmentIntro";
 import { AssessmentQuestion } from "./AssessmentQuestion";
 import { AssessmentEmailGate } from "./AssessmentEmailGate";
@@ -18,17 +18,21 @@ type Stage =
   | { kind: "submitting" }
   | { kind: "error"; message: string };
 
+/** Index of the question that triggers the email gate */
 const GATE_AFTER_INDEX = QUESTIONS.findIndex((q) => q.gateAfter === true);
+
+/** Number of intro questions (shown before scored questions) */
+const INTRO_COUNT = INTRO_QUESTIONS.length;
 
 export function AssessmentShell() {
   const router = useRouter();
-  const [stage, setStage] = useState<Stage>({ kind: "intro" });
-  const [answers, setAnswers] = useState<AnswerMap>({});
-  const [email, setEmail] = useState("");
+  const [stage, setStage]         = useState<Stage>({ kind: "intro" });
+  const [answers, setAnswers]     = useState<AnswerMap>({});
+  const [email, setEmail]         = useState("");
   const [firstName, setFirstName] = useState<string | undefined>();
   const [pendingIndex, setPendingIndex] = useState<number | null>(null);
 
-  // Current display question index (0-based)
+  /* Current 0-based question index */
   const currentQuestionIndex =
     stage.kind === "question" ? stage.questionIndex : null;
 
@@ -36,11 +40,9 @@ export function AssessmentShell() {
     currentQuestionIndex !== null ? QUESTIONS[currentQuestionIndex] : null;
 
   const selectedForCurrent =
-    currentQuestion !== null && currentQuestion !== undefined
-      ? (answers[currentQuestion.id] ?? null)
-      : null;
+    currentQuestion ? (answers[currentQuestion.id] ?? null) : null;
 
-  // ── HANDLERS ─────────────────────────────────────────────────
+  /* ── HANDLERS ──────────────────────────────────────────────── */
 
   const handleBegin = useCallback(() => {
     trackAssessment("assessment_started");
@@ -57,29 +59,26 @@ export function AssessmentShell() {
       setPendingIndex(optionIndex);
       trackAssessment("assessment_question_answered", { questionIndex });
 
-      // Brief delay so the selected state animates before advancing
       setTimeout(() => {
         setPendingIndex(null);
 
-        const isLast = questionIndex === QUESTIONS.length - 1;
+        const isLast       = questionIndex === QUESTIONS.length - 1;
         const isGateQuestion = questionIndex === GATE_AFTER_INDEX;
 
         if (isGateQuestion && !email) {
-          // Show email gate
           setStage({ kind: "emailgate", afterQuestionIndex: questionIndex });
           return;
         }
 
         if (isLast) {
-          // All done — submit
           handleSubmit(newAnswers, email, firstName);
           return;
         }
 
         setStage({ kind: "question", questionIndex: questionIndex + 1 });
-      }, 350);
+      }, 320);
     },
-    [answers, email, firstName] // eslint-disable-line react-hooks/exhaustive-deps
+    [answers, email, firstName], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const handleEmailContinue = useCallback(
@@ -95,15 +94,11 @@ export function AssessmentShell() {
         setStage({ kind: "question", questionIndex: nextIndex });
       }
     },
-    [answers] // eslint-disable-line react-hooks/exhaustive-deps
+    [answers], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const handleSubmit = useCallback(
-    async (
-      finalAnswers: AnswerMap,
-      finalEmail: string,
-      finalFirstName?: string
-    ) => {
+    async (finalAnswers: AnswerMap, finalEmail: string, finalFirstName?: string) => {
       setStage({ kind: "submitting" });
       try {
         const res = await fetch("/api/assessment", {
@@ -111,7 +106,7 @@ export function AssessmentShell() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             answers: finalAnswers,
-            email: finalEmail,
+            email:   finalEmail,
             firstName: finalFirstName,
           }),
         });
@@ -123,55 +118,55 @@ export function AssessmentShell() {
 
         const data = await res.json();
         trackAssessment("assessment_completed", {
-          archetype: data.archetype,
+          archetype:     data.archetype,
           serviceIntent: data.serviceIntent,
           readinessLevel: data.readinessLevel,
         });
         router.push(`/assessment/result/${data.resultId}`);
       } catch (err: unknown) {
-        const message =
-          err instanceof Error ? err.message : "Something went wrong.";
+        const message = err instanceof Error ? err.message : "Something went wrong.";
         setStage({ kind: "error", message });
       }
     },
-    [router]
+    [router],
   );
 
-  // ── VISIBLE QUESTION NUMBER (skips the email gate in the count) ──
-  const visibleQuestionNumber =
-    stage.kind === "question" ? stage.questionIndex + 1 : null;
+  /* ── VISIBLE QUESTION LABEL (main questions only, 1-based) ── */
+  const mainQuestionNumber =
+    stage.kind === "question" && currentQuestion && !currentQuestion.isIntro
+      ? stage.questionIndex - INTRO_COUNT + 1
+      : null;
 
-  // ── RENDER ────────────────────────────────────────────────────
+  /* ── RENDER ─────────────────────────────────────────────────── */
 
   return (
     <div className="min-h-[540px] flex flex-col">
-      {/* Progress bar — only during questions */}
+
+      {/* Progress — shown while answering questions or at email gate */}
       {(stage.kind === "question" || stage.kind === "emailgate") && (
         <div className="mb-10">
           <AssessmentProgress
-            current={
+            questionIndex={
               stage.kind === "question"
-                ? stage.questionIndex + 1
-                : GATE_AFTER_INDEX + 1
+                ? stage.questionIndex
+                : GATE_AFTER_INDEX
             }
-            total={QUESTIONS.length}
           />
         </div>
       )}
 
       {/* Stage content */}
       <div className="flex-1">
+
         {stage.kind === "intro" && (
           <AssessmentIntro onBegin={handleBegin} />
         )}
 
         {stage.kind === "question" && currentQuestion && (
-          <div key={currentQuestion.id}>
+          <div key={`q-${currentQuestion.id}`}>
             <AssessmentQuestion
               question={currentQuestion}
-              selectedIndex={
-                pendingIndex !== null ? pendingIndex : selectedForCurrent
-              }
+              selectedIndex={pendingIndex !== null ? pendingIndex : selectedForCurrent}
               onSelect={(optionIndex) =>
                 handleOptionSelect(stage.questionIndex, optionIndex)
               }
@@ -187,7 +182,7 @@ export function AssessmentShell() {
                     questionIndex: stage.questionIndex - 1,
                   })
                 }
-                className="mt-8 text-[12px] tracking-[0.15em] uppercase text-ink-quiet hover:text-ink-soft transition-colors"
+                className="mt-8 text-[11px] tracking-[0.18em] uppercase text-ink-quiet hover:text-ink-soft transition-colors font-[family-name:var(--font-body)]"
               >
                 ← Previous
               </button>
@@ -217,16 +212,18 @@ export function AssessmentShell() {
             </button>
           </div>
         )}
+
       </div>
 
-      {/* Question number label (bottom) */}
-      {visibleQuestionNumber && stage.kind === "question" && (
-        <div className="mt-12 pt-6 border-t border-sand">
-          <p className="text-[12px] tracking-[0.15em] uppercase text-ink-quiet">
-            Question {visibleQuestionNumber} of {QUESTIONS.length}
+      {/* Bottom label — main question number only */}
+      {mainQuestionNumber !== null && stage.kind === "question" && (
+        <div className="mt-12 pt-5 border-t border-sand">
+          <p className="text-[11px] tracking-[0.2em] uppercase text-ink-quiet font-[family-name:var(--font-body)]">
+            Question {mainQuestionNumber} of {QUESTIONS.length - INTRO_COUNT}
           </p>
         </div>
       )}
+
     </div>
   );
 }

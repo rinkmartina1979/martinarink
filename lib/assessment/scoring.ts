@@ -2,32 +2,31 @@
  * Points of Departure — Server-Side Scoring Engine
  *
  * NEVER run on the client. Result computed server-side only.
+ *
+ * Scoring model: tally A/B/C/D across all questions.
+ * A → exhausted, B → doubting, C → pleasing, D → empowered
  */
 
 import { QUESTIONS } from "./questions";
 import type {
   Archetype,
   AnswerMap,
+  AnswerTally,
   ScoringResult,
   ServiceIntent,
   ReadinessLevel,
   PrivacyNeed,
 } from "./types";
 
+const KEY_TO_ARCHETYPE: Record<"A" | "B" | "C" | "D", Archetype> = {
+  A: "exhausted",
+  B: "doubting",
+  C: "pleasing",
+  D: "empowered",
+};
+
 export function computeResult(answers: AnswerMap): ScoringResult {
-  const scores: Record<Archetype, number> = {
-    reckoning: 0,
-    threshold: 0,
-    return: 0,
-  };
-
-  let serviceIntent: ServiceIntent = "both";
-  let readinessLevel: ReadinessLevel = "medium";
-  let privacyNeed: PrivacyNeed = "standard";
-
-  let hasServiceIntent = false;
-  let hasReadiness = false;
-  let hasPrivacy = false;
+  const tally: AnswerTally = { A: 0, B: 0, C: 0, D: 0 };
 
   for (const question of QUESTIONS) {
     const selectedIndex = answers[question.id];
@@ -36,33 +35,39 @@ export function computeResult(answers: AnswerMap): ScoringResult {
     const option = question.options[selectedIndex];
     if (!option) continue;
 
-    const s = option.scores;
-    scores.reckoning += s.reckoning ?? 0;
-    scores.threshold += s.threshold ?? 0;
-    scores.return += s.return ?? 0;
-
-    // First definitive signal wins (most specific question takes precedence)
-    if (s.serviceIntent && !hasServiceIntent) {
-      serviceIntent = s.serviceIntent;
-      hasServiceIntent = true;
-    }
-    if (s.readiness && !hasReadiness) {
-      readinessLevel = s.readiness;
-      hasReadiness = true;
-    }
-    if (s.privacy && !hasPrivacy) {
-      privacyNeed = s.privacy;
-      hasPrivacy = true;
-    }
+    const key = option.scores.archetypeKey;
+    tally[key]++;
   }
 
-  // Tie-breaker: return > threshold > reckoning (high readiness wins ties)
-  const TIEBREAK_ORDER: Archetype[] = ["return", "threshold", "reckoning"];
-  const maxScore = Math.max(scores.reckoning, scores.threshold, scores.return);
-  const archetype = TIEBREAK_ORDER.find((a) => scores[a] === maxScore) ?? "reckoning";
+  // Winning archetype — tie-breaker: D > C > B > A (higher readiness wins ties)
+  const TIEBREAK: Array<"A" | "B" | "C" | "D"> = ["D", "C", "B", "A"];
+  const maxCount = Math.max(tally.A, tally.B, tally.C, tally.D);
+  const winnerKey = TIEBREAK.find((k) => tally[k] === maxCount) ?? "A";
+  const archetype = KEY_TO_ARCHETYPE[winnerKey];
+
+  // scores: map archetype → count (for compat with result page)
+  const scores: Record<Archetype, number> = {
+    exhausted: tally.A,
+    doubting:  tally.B,
+    pleasing:  tally.C,
+    empowered: tally.D,
+  };
+
+  // Derive secondary signals from winning archetype
+  const readinessLevel: ReadinessLevel =
+    archetype === "empowered" ? "high"
+    : archetype === "exhausted" ? "low"
+    : "medium";
+
+  // All new questions are empowerment-focused
+  const serviceIntent: ServiceIntent = "empowerment";
+
+  const privacyNeed: PrivacyNeed =
+    archetype === "exhausted" || archetype === "pleasing" ? "high" : "standard";
 
   return {
     archetype,
+    tally,
     scores,
     serviceIntent,
     readinessLevel,
@@ -70,59 +75,26 @@ export function computeResult(answers: AnswerMap): ScoringResult {
   };
 }
 
-/** Derive CTA routing from scoring result — spec-compliant labels */
+/** Derive CTA routing from scoring result */
 export function deriveRouting(result: ScoringResult): {
   primaryHref: string;
   primaryLabel: string;
   secondaryHref?: string;
   secondaryLabel?: string;
 } {
-  const { readinessLevel, serviceIntent } = result;
+  const { readinessLevel, archetype } = result;
 
   if (readinessLevel === "high") {
-    // Direct programme-specific application — labels match the offer.
-    const isEmpowerment = serviceIntent === "empowerment";
-    const isBoth = serviceIntent === "both";
-
-    const applyHref = isEmpowerment
-      ? "/apply/empowerment"
-      : isBoth
-      ? "/work-with-me"
-      : "/apply/sober-muse";
-
-    const applyLabel = isEmpowerment
-      ? "APPLY — EMPOWERMENT & LEADERSHIP"
-      : isBoth
-      ? "EXPLORE BOTH PROGRAMMES"
-      : "APPLY — THE SOBER MUSE METHOD";
-
-    const exploreHref = isEmpowerment
-      ? "/empowerment"
-      : isBoth
-      ? "/work-with-me"
-      : "/sober-muse";
-
     return {
-      primaryHref: applyHref,
-      primaryLabel: applyLabel,
-      secondaryHref: exploreHref,
+      primaryHref: "/apply/empowerment",
+      primaryLabel: "APPLY — EMPOWERMENT & LEADERSHIP",
+      secondaryHref: "/empowerment",
       secondaryLabel: "READ THE PROGRAMME PAGE",
     };
   }
 
   if (readinessLevel === "medium") {
-    // Medium readiness = the "threshold" archetype. They've already seen enough
-    // programme content to take the assessment — sending them back to read more
-    // is circular. The right CTA is a private consultation: it's the lower-risk
-    // commitment that still moves them off the threshold. Newsletter stays as a
-    // secondary safety net for the genuinely-not-yet ready.
-    const applyHref =
-      serviceIntent === "empowerment"
-        ? "/apply/empowerment"
-        : serviceIntent === "both"
-        ? "/work-with-me"
-        : "/apply/sober-muse";
-
+    const applyHref = archetype === "pleasing" ? "/book" : "/book";
     return {
       primaryHref: applyHref,
       primaryLabel: "BEGIN WITH A PRIVATE CONSULTATION",
@@ -131,7 +103,7 @@ export function deriveRouting(result: ScoringResult): {
     };
   }
 
-  // Low readiness → build trust through writing first.
+  // Low readiness (exhausted) → build trust through writing first
   return {
     primaryHref: "/newsletter",
     primaryLabel: "RECEIVE THE PRIVATE LETTERS",

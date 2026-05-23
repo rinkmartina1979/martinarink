@@ -7,29 +7,35 @@ interface Props {
 export function AssessmentIntro({ onBegin }: Props) {
   return (
     <div className="w-full animate-[fadeUp_0.5s_ease-out_both]">
-      {/* Editorial details */}
+
+      {/* Editorial eyebrow */}
       <div className="flex items-center gap-4 mb-10">
-        <div className="h-[1px] w-8 bg-pink" />
-        <span className="text-[11px] tracking-[0.22em] uppercase text-ink-quiet">
-          Seven questions — four minutes
+        <div className="h-px w-8 bg-pink shrink-0" />
+        <span className="text-[11px] tracking-[0.22em] uppercase text-ink-quiet font-[family-name:var(--font-body)]">
+          Ten questions — five minutes
         </span>
       </div>
 
-      <div className="space-y-5 max-w-lg">
+      {/* Heading */}
+      <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[36px] leading-[1.15] text-ink mb-8">
+        Discover the version of yourself<br className="hidden md:block" /> that is waiting.
+      </h2>
+
+      <div className="space-y-5 max-w-[480px]">
         <p className="text-[17px] leading-[1.75] text-ink-soft">
-          Each question has one answer — the one that lands closest to true,
+          Each question has one answer — the one that feels closest to true,
           not the one you wish were true.
         </p>
         <p className="text-[17px] leading-[1.75] text-ink-soft">
           There are no wrong answers. There is only where you are.
         </p>
         <p className="text-[17px] leading-[1.75] text-ink-soft">
-          At the end: a letter. Written for where you are, not for where
-          you think you should be.
+          At the end: a private letter written for where you are right now —
+          and a clear sense of what comes next.
         </p>
       </div>
 
-      <div className="mt-10 flex items-center gap-4">
+      <div className="mt-10 flex items-center gap-5">
         <button
           type="button"
           onClick={onBegin}
@@ -37,10 +43,11 @@ export function AssessmentIntro({ onBegin }: Props) {
         >
           Begin
         </button>
-        <span className="text-[13px] text-ink-quiet">
-          Private. Confidential.
+        <span className="text-[12px] text-ink-quiet font-[family-name:var(--font-body)]">
+          Private &middot; Confidential
         </span>
       </div>
+
     </div>
   );
 }

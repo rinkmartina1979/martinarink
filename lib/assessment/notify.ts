@@ -19,9 +19,10 @@ interface NotifyPayload {
 }
 
 const ARCHETYPE_LABELS: Record<Archetype, string> = {
-  reckoning: "The Quiet Reckoning",
-  threshold: "The Threshold",
-  return: "The Return",
+  exhausted: "The Emotionally Exhausted Self",
+  doubting:  "The Self-Doubting Achiever",
+  pleasing:  "The Self-Abandoning People Pleaser",
+  empowered: "The Emerging Empowered Woman",
 };
 
 const INTENT_LABELS: Record<ServiceIntent, string> = {

@@ -71,9 +71,10 @@ function ProgrammeLabel({ value }: { value: string }) {
 
 function ArchetypeLabel({ value }: { value: string }) {
   const labels: Record<string, string> = {
-    reckoning: "The Reckoning",
-    threshold: "The Threshold",
-    return: "The Return",
+    exhausted: "Exhausted Self",
+    doubting:  "Self-Doubting Achiever",
+    pleasing:  "People Pleaser",
+    empowered: "Empowered Woman",
   };
   return <>{labels[value] ?? value}</>;
 }

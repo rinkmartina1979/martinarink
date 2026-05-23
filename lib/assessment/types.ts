@@ -1,9 +1,12 @@
 /**
  * Points of Departure — Assessment Types
- * Server-side scoring, three archetypes, secondary segmentation signals.
+ *
+ * Four archetypes derived from A/B/C/D answer tally.
+ * Secondary signals (serviceIntent, readinessLevel, privacyNeed) are
+ * derived from the winning archetype — kept for downstream compat.
  */
 
-export type Archetype = "reckoning" | "threshold" | "return";
+export type Archetype = "exhausted" | "doubting" | "pleasing" | "empowered";
 
 export type ServiceIntent = "sober-muse" | "empowerment" | "both";
 
@@ -14,23 +17,22 @@ export type PrivacyNeed = "standard" | "high";
 /** Raw answer from a single question — the selected option index (0–3) */
 export type AnswerMap = Record<string, number>; // questionId → optionIndex
 
+/** A/B/C/D letter tally */
+export type AnswerTally = Record<"A" | "B" | "C" | "D", number>;
+
 /** Final archetype scoring result */
 export interface ScoringResult {
   archetype: Archetype;
+  tally: AnswerTally;
   scores: Record<Archetype, number>;
   serviceIntent: ServiceIntent;
   readinessLevel: ReadinessLevel;
   privacyNeed: PrivacyNeed;
 }
 
-/** Each option carries weighted scores for the three archetypes + secondary signals */
+/** Each option maps to one A/B/C/D archetype key */
 export interface OptionScores {
-  reckoning: number;
-  threshold: number;
-  return: number;
-  serviceIntent?: ServiceIntent;
-  readiness?: ReadinessLevel;
-  privacy?: PrivacyNeed;
+  archetypeKey: "A" | "B" | "C" | "D";
 }
 
 export interface AssessmentOption {
@@ -42,6 +44,8 @@ export interface AssessmentOption {
 export interface AssessmentQuestion {
   id: string;
   order: number;
+  /** true for the three "Before we begin" warm-up questions */
+  isIntro?: boolean;
   question: string;
   subtext?: string;
   options: AssessmentOption[];

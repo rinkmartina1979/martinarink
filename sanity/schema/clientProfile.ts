@@ -57,9 +57,10 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'The Reckoning', value: 'reckoning' },
-          { title: 'The Threshold', value: 'threshold' },
-          { title: 'The Return', value: 'return' },
+          { title: 'The Emotionally Exhausted Self',    value: 'exhausted' },
+          { title: 'The Self-Doubting Achiever',        value: 'doubting'  },
+          { title: 'The Self-Abandoning People Pleaser',value: 'pleasing'  },
+          { title: 'The Emerging Empowered Woman',      value: 'empowered' },
         ],
         layout: 'radio',
       },

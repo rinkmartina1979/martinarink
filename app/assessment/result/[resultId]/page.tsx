@@ -5,7 +5,7 @@ import { deriveRouting } from "@/lib/assessment/scoring";
 import { verifyAndDecodeResultId } from "@/lib/assessment/resultId";
 import { getAssessmentResult } from "@/sanity/lib/queries";
 import { InlineLetterCapture } from "@/components/assessment/InlineLetterCapture";
-import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed } from "@/lib/assessment/types";
+import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed, ScoringResult } from "@/lib/assessment/types";
 import type { Metadata } from "next";
 
 interface DecodedResult {
@@ -57,11 +57,12 @@ export default async function AssessmentResultPage({ params }: Props) {
 
   const routing = deriveRouting({
     archetype,
-    scores: { reckoning: 0, threshold: 0, return: 0 },
+    tally: { A: 0, B: 0, C: 0, D: 0 },
+    scores: { exhausted: 0, doubting: 0, pleasing: 0, empowered: 0 },
     serviceIntent,
     readinessLevel,
     privacyNeed,
-  });
+  } as ScoringResult);
 
   const isPrivacyHigh = privacyNeed === "high";
   const isHighReadiness = readinessLevel === "high";

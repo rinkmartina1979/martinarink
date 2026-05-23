@@ -11,19 +11,19 @@
 import type { ArchetypeResult } from "./types";
 
 export const ARCHETYPE_RESULTS: Record<string, ArchetypeResult> = {
-  reckoning: {
-    archetype: "reckoning",
-    name: "The Quiet Reckoning",
-    tagline: "You are at the very beginning of something true.",
+  exhausted: {
+    archetype: "exhausted",
+    name: "The Emotionally Exhausted Self",
+    tagline: "You have been carrying more than you were meant to carry alone.",
     opening:
-      "Something shifted before you had the words for it. That is what brought you here — not certainty, but the quiet insistence of a feeling you can no longer ignore.",
+      "There is a particular kind of tired that has nothing to do with sleep. It is the tiredness of holding yourself together through things that were never yours to manage alone. That is where you are.",
     bodyParagraphs: [
-      "You are not yet ready to leap. That is not a flaw. It is the accurate reading of where you are. There is intelligence in your hesitation — not cowardice. The women who do this work most deeply are often the ones who came quietly.",
-      "What I've noticed, over many years of this work: the women who call themselves \"not ready\" are frequently the ones who have already begun. The looking is the beginning. And you are already looking.",
-      "What you need right now is not a programme. It is a witness. Someone who can hold what you're seeing without asking you to resolve it before you've understood it. That is what the private letters are for.",
+      "What I notice in women who arrive here from this place: they are often the most perceptive, the most attuned to others — and the least attended to themselves. You have learned to read the room so precisely that you forgot to read yourself.",
+      "The emotional weight you carry is real. Not a character flaw. Not a weakness. Evidence of how hard you have been working to hold a life together without the right support.",
+      "What you need right now is not a programme. It is a quieter entry point — letters, writing, a space to be witnessed without immediately having to decide anything. That is what my private correspondence is for.",
     ],
     closing:
-      "When you are ready for a conversation — and you will know when you are — I am here.",
+      "When the time comes to do something more — and it will — you will know. I am here for that moment too.",
     ctaLabel: "Receive the private letters",
     ctaHref: "/newsletter",
     secondaryCta: {
@@ -32,45 +32,66 @@ export const ARCHETYPE_RESULTS: Record<string, ArchetypeResult> = {
     },
   },
 
-  threshold: {
-    archetype: "threshold",
-    name: "The Threshold",
-    tagline: "You can see the other side. You haven't crossed yet.",
+  doubting: {
+    archetype: "doubting",
+    name: "The Self-Doubting Achiever",
+    tagline: "You have built something real. And yet the voice that questions it has never gone quiet.",
     opening:
-      "You have been standing at this edge long enough to know exactly what it costs to stay. You've named it. You've sat with it. And still, here you are — which means the fear is real, and so is the readiness.",
+      "You are capable — more capable than you let yourself believe on most days. The doubt you carry is not about ability. It has never been about ability. It is about whether you are allowed to trust what you know.",
     bodyParagraphs: [
-      "The threshold is a specific kind of liminal space. You're not uncertain about what needs to change. You're uncertain about what changes when you change. That's a different question — and it deserves a different kind of support.",
-      "I work with women at exactly this point. Not to push them across, but to make the crossing feel less like a loss. Because the fear underneath isn't of the work — it's of becoming someone your current life wasn't built for.",
-      "You are ready to understand what's possible. The programme gives you that — a structure, a companion, and a clear pathway from where you are to where you already know you want to be.",
+      "From the outside, your life looks like evidence of success. And it is. But there is a gap — between what you have built and how you feel inside it — that you have been trying to close alone.",
+      "Self-doubt at this level is not fixed by more achievement. More credentials. More proof. It is a pattern that lives underneath your accomplishments, unmoved by them.",
+      "I work with women exactly here. Not to fix what is broken — because nothing is broken — but to close the distance between who you are and who you experience yourself as.",
     ],
     closing:
-      "I'd like to tell you more about what we'd do together. Come read about the programme.",
-    ctaLabel: "Read about the programme",
-    ctaHref: "/sober-muse",
+      "A private consultation is where this usually begins. An hour for me to see you clearly, and for you to understand what working together would actually look like.",
+    ctaLabel: "Begin with a private consultation",
+    ctaHref: "/book",
     secondaryCta: {
-      label: "Or request a private consultation first",
-      href: "/book",
+      label: "Learn about the work",
+      href: "/work-with-me",
     },
   },
 
-  return: {
-    archetype: "return",
-    name: "The Return",
-    tagline: "You've been here before. This time, you mean it.",
+  pleasing: {
+    archetype: "pleasing",
+    name: "The Self-Abandoning People Pleaser",
+    tagline: "You have spent a long time making yourself smaller so others could feel comfortable.",
     opening:
-      "You are not new to this. You have circled back — maybe more than once — and what has changed is not the situation, but you. The quality of your wanting is different now. More precise. Less apologetic.",
+      "You know what you want. You have known for a while. What stops you is not confusion — it is the weight of other people's needs, other people's comfort, the fear of what is lost when you finally choose yourself.",
     bodyParagraphs: [
-      "The women who are The Return are, in my experience, the most ready — and also the most likely to underestimate themselves. Because they've tried before and not arrived where they intended, they carry a private doubt. Let me name it plainly: that doubt is not evidence of failure. It is evidence of how seriously you take this.",
-      "You don't need more information. You don't need more time to consider. What you need is the right structure, with someone who knows what they're doing and will not let you disappear into the work.",
-      "The next step is a conversation. A private consultation — €350, credited to the programme if you proceed. In that hour, I will tell you exactly what I see, and we will decide together whether this is the right fit.",
+      "Self-abandonment is quiet. It does not look like crisis from the outside. It looks like kindness, like flexibility, like someone who has it together. But you feel the cost of it.",
+      "The work here is not about becoming someone who stops caring for others. It is about reclaiming the part of you that existed before you learned that your worth depended on being needed.",
+      "Women in this place often find that a private consultation is the clearest next step — a space where nothing is required of you except honesty. Where someone else holds the container for once.",
     ],
     closing:
-      "You know what you want. The next step is a private conversation — to confirm it is the right fit, and to begin.",
-    ctaLabel: "Begin the application",
-    ctaHref: "/apply/sober-muse",
+      "I would like to speak with you. Not to tell you what to do, but to reflect back what I see — which is often quite different from what you believe about yourself.",
+    ctaLabel: "Begin with a private consultation",
+    ctaHref: "/book",
     secondaryCta: {
-      label: "Request a private consultation first",
-      href: "/book",
+      label: "Explore the work",
+      href: "/work-with-me",
+    },
+  },
+
+  empowered: {
+    archetype: "empowered",
+    name: "The Emerging Empowered Woman",
+    tagline: "You know who you are. Now the question is how fully you let yourself live it.",
+    opening:
+      "You are not someone who needs convincing. You have already done the interior work to arrive at clarity about what you value and how you want to show up. What remains is embodiment — consistently living from that place.",
+    bodyParagraphs: [
+      "The gap between knowing and being is one of the most underestimated challenges of real personal development. You are not lacking insight. You are ready for the structure and support that make change irreversible.",
+      "Women at this stage often find that the biggest shifts happen not in understanding, but in the accountability — someone who holds the bar at the level you have set for yourself, week after week.",
+      "The next step for you is direct. An application — to see whether we are the right fit, and whether the timing is right to begin.",
+    ],
+    closing:
+      "I hold limited space. If you are ready, I would like to hear from you.",
+    ctaLabel: "Apply for the programme",
+    ctaHref: "/apply/empowerment",
+    secondaryCta: {
+      label: "Read the programme page",
+      href: "/empowerment",
     },
   },
 };
