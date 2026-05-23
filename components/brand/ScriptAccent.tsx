@@ -1,8 +1,10 @@
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 interface ScriptAccentProps {
   children: React.ReactNode;
   className?: string;
+  style?: CSSProperties;
   as?: "span" | "div";
 }
 
@@ -13,6 +15,7 @@ interface ScriptAccentProps {
 export function ScriptAccent({
   children,
   className,
+  style,
   as: Tag = "span",
 }: ScriptAccentProps) {
   return (
@@ -21,6 +24,7 @@ export function ScriptAccent({
         "font-[family-name:var(--font-script)] text-pink not-italic",
         className,
       )}
+      style={style}
     >
       {children}
     </Tag>

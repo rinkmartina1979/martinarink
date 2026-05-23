@@ -1,30 +1,31 @@
 /**
- * HeroSection — Vogue editorial split hero.
+ * HeroSection — full-bleed Vogue editorial split hero.
  *
- * ┌─────────────────────────────────────┬──────────────────────────────┐
- * │  LEFT 54% — aubergine editorial     │  RIGHT 46% — cream portrait  │
- * │                                     │                              │
- * │  eyebrow (pink hairline)            │  cream panel, padded         │
- * │  H1  (display, tight leading)       │  aspect-[4/3] wrapper        │
- * │  script accent "and yet."           │  object-cover object-center  │
- * │  body copy + subheadline            │  image is 4:3 landscape —    │
- * │  CTAs (cream fill / ghost)          │  matches wrapper exactly,    │
- * │  trust micro-copy                   │  zero crop guaranteed        │
- * └─────────────────────────────────────┴──────────────────────────────┘
+ * ┌─────────────────────────────────────────┬─────────────────────────────┐
+ * │  LEFT 54% — bg-aubergine editorial      │  RIGHT 46% — full-bleed     │
+ * │                                         │  portrait, no bg, no frame  │
+ * │  eyebrow · H1 · script · body · CTAs   │  fill + object-cover        │
+ * └─────────────────────────────────────────┴─────────────────────────────┘
  *
- * KEY RULES:
- *  1. The hero image (martina-women-empowerment-coach.jpg) is 2048×1529,
- *     aspect ratio ~4:3. The right panel uses aspect-[4/3] so the image
- *     fills it perfectly with object-cover — no cropping ever occurs.
+ * KEY DECISIONS:
+ *  1. The <section> is the grid — no container-content wrapper.
+ *     Container would cap at 1280px and add lateral padding, which
+ *     prevents the portrait from bleeding to the viewport edge.
  *
- *  2. The right panel has cream background + padding. The photo is framed
- *     like an editorial plate, not stretched as a background.
+ *  2. bg-aubergine lives on the LEFT div, not on the section.
+ *     This lets the right column be a raw full-bleed image panel.
  *
- *  3. No seam gradient. No blur. No vignette. The colour break between
- *     aubergine and cream IS the editorial seam.
+ *  3. objectPosition via inline style, not Tailwind arbitrary class.
+ *     Tailwind v4 doesn't reliably generate object-position utilities.
+ *     Tune in DevTools: document.querySelector('.hero-portrait').style.objectPosition = 'X% Y%'
  *
- *  4. Mobile: stacked text-first, image second. aspect-[4/3] is preserved.
- *     Padding removed so the image fills mobile width edge-to-edge.
+ *  4. Mobile: full-width image banner (h-[70svh]) BELOW the text,
+ *     with a bottom-to-aubergine vignette so the stacked sections read cleanly.
+ *
+ *  5. Fonts: Playfair Display (Bodoni sub via --font-display),
+ *     DM Sans (Brandon Grotesque sub via --font-body),
+ *     Sloop Script (premium local via --font-script).
+ *     All correct — no changes needed to lib/fonts.ts.
  */
 
 import Image from "next/image";
@@ -39,6 +40,17 @@ function anim(delay: string) {
 
 /* ─── image ──────────────────────────────────────────────────── */
 const HERO_IMG = "/images/portraits/martina-women-empowerment-coach.jpg";
+
+/**
+ * objectPosition for face-anchored crop.
+ * Image is 2400×1792 (landscape). The right column is portrait-proportioned,
+ * so the crop cuts left/right. '62% 0%' centres on Martina's face/upper body.
+ *
+ * To tune live in DevTools console:
+ *   document.querySelector('.hero-portrait').style.objectPosition = '62% 0%'
+ * Try: '58% 0%' (face left), '70% 0%' (face right), '62% 5%' (pull down)
+ */
+const OBJ_POSITION = "62% 0%";
 
 /* ─── props ──────────────────────────────────────────────────── */
 interface HeroSectionProps {
@@ -60,185 +72,200 @@ export function HeroSection({
   heroSubheadline    = "",
 }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-aubergine text-cream">
+    <section
+      aria-label="Hero"
+      className={[
+        /* Full-viewport split grid — section IS the grid */
+        "relative grid min-h-[100svh]",
+        /* Mobile: single column (portrait stacks below) */
+        "grid-cols-1",
+        /* Desktop: 54/46 split */
+        "lg:grid-cols-[54fr_46fr]",
+      ].join(" ")}
+    >
 
-      {/*
-        GRID
-        ─────────────────────────────────────────────────────
-        container-content centres and constrains the layout.
-        items-center vertically aligns both columns.
-        pt-[88px] clears the fixed nav on mobile.
-        lg:min-h lets desktop fill the viewport without forcing it.
-      */}
+      {/* ══════════════════════════════════════════════════
+          LEFT — aubergine editorial column
+          ══════════════════════════════════════════════════ */}
       <div
-        className="container-content
-                   grid grid-cols-1 lg:grid-cols-[54%_46%]
-                   items-center gap-8 lg:gap-10
-                   pt-[88px] pb-12
-                   md:pt-[96px] md:pb-14
-                   lg:min-h-[calc(100svh-80px)] lg:py-14"
+        className={[
+          "relative z-10 flex flex-col justify-center",
+          "bg-aubergine",
+          /* Mobile/tablet padding */
+          "px-8 py-20 sm:px-12 md:px-14",
+          /* Desktop: top-pad clears fixed nav (~80px) */
+          "lg:px-14 lg:py-[7rem] xl:px-20 2xl:px-24",
+        ].join(" ")}
       >
 
-        {/* ══════════════════════════════════════════════════
-            LEFT — editorial copy
-            max-w-[720px] keeps text from stretching too wide
-            on very large screens inside the 54% column.
-            ══════════════════════════════════════════════════ */}
-        <div className="max-w-[720px]">
-
-          {/* ── Eyebrow ── */}
-          <div
-            className="mb-6 flex items-center gap-4"
-            style={{ animation: anim("0.05s") }}
-          >
-            <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
-            <p className="font-[family-name:var(--font-body)]
-                          text-[10px] font-semibold uppercase
-                          tracking-[0.34em] text-cream/60">
-              Private sober muse mentorship
-            </p>
-          </div>
-
-          {/* ── H1 ── */}
-          <h1
-            className="font-[family-name:var(--font-display)]
-                       leading-[0.86] tracking-[-0.055em]
-                       text-cream"
-            style={{
-              fontSize: "clamp(3.5rem, 6.2vw, 7.4rem)",
-              animation: anim("0.12s"),
-            }}
-          >
-            You&rsquo;ve built a life that looks{" "}
-            <em className="italic">extraordinary</em>
-            <br className="hidden md:block" />{" "}
-            from&nbsp;the&nbsp;outside
-          </h1>
-
-          {/* ── Script accent ── */}
-          <div
-            className="mt-6 flex items-center gap-5"
-            style={{ animation: anim("0.20s") }}
-          >
-            <span className="h-px w-16 shrink-0 bg-pink" aria-hidden />
-            <ScriptAccent
-              className="text-[clamp(2.4rem,3.6vw,4.8rem)] leading-none text-pink"
-            >
-              and yet.
-            </ScriptAccent>
-          </div>
-
-          {/* ── Body copy ── */}
-          <p
-            className="mt-7 max-w-[500px]
-                       font-[family-name:var(--font-body)]
-                       text-[17px] md:text-[19px] leading-[1.65]
-                       text-cream/78"
-            style={{ animation: anim("0.28s") }}
-          >
-            Private mentorship for accomplished women who are ready
-            to feel at home inside the life they built.
-          </p>
-
-          {/* ── Second body paragraph (heroSubheadline) ── */}
-          {heroSubheadline && (
-            <p
-              className="mt-5 max-w-[500px]
-                         font-[family-name:var(--font-body)]
-                         text-[15px] md:text-[17px] leading-[1.7]
-                         text-cream/55"
-              style={{ animation: anim("0.33s") }}
-            >
-              {heroSubheadline}
-            </p>
-          )}
-
-          {/* ── Editorial hairline ── */}
-          <hr
-            className="hidden lg:block mt-8 mb-0 border-none h-px w-14 bg-cream/20"
-            aria-hidden
-          />
-
-          {/* ── CTAs ── */}
-          <div
-            className="mt-10 flex flex-col gap-4 sm:flex-row"
-            style={{ animation: anim("0.35s") }}
-          >
-            {/* PRIMARY — cream fill + aubergine text */}
-            <Link
-              href={heroCtaUrl}
-              className="inline-flex h-14 w-full sm:w-auto sm:min-w-[260px]
-                         items-center justify-center
-                         rounded-[1px] border border-cream bg-cream
-                         px-8 font-[family-name:var(--font-body)]
-                         text-[11px] font-semibold uppercase tracking-[0.22em]
-                         text-aubergine transition-all duration-300 ease-out
-                         hover:bg-transparent hover:text-cream
-                         focus-visible:outline focus-visible:outline-2
-                         focus-visible:outline-offset-4 focus-visible:outline-cream"
-            >
-              {heroCta}&nbsp;<span aria-hidden>→</span>
-            </Link>
-
-            {/* SECONDARY — ghost cream border */}
-            <Link
-              href={heroSecondaryUrl}
-              className="inline-flex h-14 w-full sm:w-auto sm:min-w-[260px]
-                         items-center justify-center
-                         rounded-[1px] border border-cream/35
-                         px-8 font-[family-name:var(--font-body)]
-                         text-[11px] font-semibold uppercase tracking-[0.22em]
-                         text-cream/80 transition-all duration-300 ease-out
-                         hover:border-cream hover:bg-cream hover:text-aubergine
-                         focus-visible:outline focus-visible:outline-2
-                         focus-visible:outline-offset-4 focus-visible:outline-cream"
-            >
-              {heroSecondaryLabel}&nbsp;<span aria-hidden>→</span>
-            </Link>
-          </div>
-
-          {/* ── Trust micro-copy ── */}
-          <p
-            className="mt-6 font-[family-name:var(--font-body)]
-                       text-[10px] uppercase tracking-[0.34em] text-cream/40"
-            style={{ animation: anim("0.42s") }}
-          >
-            Private &middot; Confidential &middot; By application
-          </p>
-
-        </div>
-
-        {/* ══════════════════════════════════════════════════
-            RIGHT — editorial portrait panel
-            ─────────────────────────────────────────────────
-            Cream background with padding frames the photo like
-            a magazine plate. The aspect-[4/3] wrapper matches
-            the image's native ratio (2048×1529 ≈ 4:3) exactly —
-            object-cover fills it with zero cropping.
-
-            No seam gradient. No blur. No vignette.
-            The cream/aubergine colour break IS the editorial seam.
-            ══════════════════════════════════════════════════ */}
+        {/* ── Eyebrow ── */}
         <div
-          className="bg-cream
-                     p-0 sm:p-4 lg:p-8 xl:p-10
-                     self-center"
-          style={{ animation: anim("0.15s") }}
+          className="mb-8 flex items-center gap-4"
+          style={{ animation: anim("0.05s") }}
         >
-          <div className="relative aspect-[4/3] w-full overflow-hidden">
-            <Image
-              src={HERO_IMG}
-              alt="Martina Rink — private mentor seated with books in an editorial interior"
-              fill
-              priority
-              fetchPriority="high"
-              quality={90}
-              sizes="(min-width: 1024px) 46vw, 100vw"
-              className="h-full w-full object-cover object-center"
-            />
-          </div>
+          <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
+          <p className="font-[family-name:var(--font-body)]
+                        text-[10px] font-semibold uppercase
+                        tracking-[0.34em] text-cream/60">
+            Private sober muse mentorship
+          </p>
         </div>
 
+        {/* ── H1 — Playfair Display (Bodoni sub), weight 400 ── */}
+        <h1
+          className="font-[family-name:var(--font-display)]
+                     font-normal leading-[0.96] tracking-[-0.03em]
+                     text-cream"
+          style={{
+            fontSize: "clamp(3.5rem, 6.2vw, 7.4rem)",
+            animation: anim("0.12s"),
+          }}
+        >
+          You&rsquo;ve built a life
+          <br />that looks{" "}
+          <em className="italic">extraordinary</em>
+          <br />from&nbsp;the&nbsp;outside
+        </h1>
+
+        {/* ── Script accent "and yet." — Sloop Script (premium local) ── */}
+        <div
+          className="mt-7 flex items-center gap-5"
+          style={{ animation: anim("0.20s") }}
+        >
+          <span className="h-px w-7 shrink-0 bg-pink" aria-hidden />
+          <ScriptAccent
+            className="leading-none text-pink"
+            style={{ fontSize: "clamp(2rem, 3.2vw, 4rem)" }}
+          >
+            and yet.
+          </ScriptAccent>
+          <span className="h-px w-14 shrink-0 bg-pink" aria-hidden />
+        </div>
+
+        {/* ── Body copy ── */}
+        <p
+          className="mt-8 max-w-[500px]
+                     font-[family-name:var(--font-body)]
+                     text-[17px] md:text-[19px] leading-[1.65]
+                     text-cream/75"
+          style={{ animation: anim("0.28s") }}
+        >
+          Private mentorship for accomplished women who are ready
+          to feel at home inside the life they built.
+        </p>
+
+        {/* ── Second body paragraph (heroSubheadline from Sanity/page.tsx) ── */}
+        {heroSubheadline && (
+          <p
+            className="mt-5 max-w-[500px]
+                       font-[family-name:var(--font-body)]
+                       text-[15px] md:text-[17px] leading-[1.7]
+                       text-cream/55"
+            style={{ animation: anim("0.33s") }}
+          >
+            {heroSubheadline}
+          </p>
+        )}
+
+        {/* ── Editorial hairline ── */}
+        <hr
+          className="hidden lg:block mt-9 mb-0 border-none h-px w-14 bg-cream/20"
+          aria-hidden
+        />
+
+        {/* ── CTAs ── */}
+        <div
+          className="mt-10 flex flex-col gap-4 sm:flex-row"
+          style={{ animation: anim("0.35s") }}
+        >
+          {/* PRIMARY — cream fill + aubergine text */}
+          <Link
+            href={heroCtaUrl}
+            className="inline-flex h-14 w-full sm:w-auto sm:min-w-[240px]
+                       items-center justify-center
+                       rounded-[1px] border border-cream bg-cream
+                       px-8 font-[family-name:var(--font-body)]
+                       text-[11px] font-semibold uppercase tracking-[0.22em]
+                       text-aubergine transition-all duration-300 ease-out
+                       hover:bg-transparent hover:text-cream
+                       focus-visible:outline focus-visible:outline-2
+                       focus-visible:outline-offset-4 focus-visible:outline-cream"
+          >
+            {heroCta}&nbsp;<span aria-hidden>→</span>
+          </Link>
+
+          {/* SECONDARY — ghost cream border */}
+          <Link
+            href={heroSecondaryUrl}
+            className="inline-flex h-14 w-full sm:w-auto sm:min-w-[240px]
+                       items-center justify-center
+                       rounded-[1px] border border-cream/35
+                       px-8 font-[family-name:var(--font-body)]
+                       text-[11px] font-semibold uppercase tracking-[0.22em]
+                       text-cream/80 transition-all duration-300 ease-out
+                       hover:border-cream hover:bg-cream hover:text-aubergine
+                       focus-visible:outline focus-visible:outline-2
+                       focus-visible:outline-offset-4 focus-visible:outline-cream"
+          >
+            {heroSecondaryLabel}&nbsp;<span aria-hidden>→</span>
+          </Link>
+        </div>
+
+        {/* ── Trust micro-copy ── */}
+        <p
+          className="mt-6 font-[family-name:var(--font-body)]
+                     text-[10px] uppercase tracking-[0.34em] text-cream/40"
+          style={{ animation: anim("0.42s") }}
+        >
+          Private &middot; Confidential &middot; By application
+        </p>
+
+      </div>
+
+      {/* ══════════════════════════════════════════════════
+          RIGHT — full-bleed portrait (desktop only)
+          ─────────────────────────────────────────────────
+          No bg-cream. No padding. No frame.
+          The aubergine / portrait colour break IS the seam.
+          overflow-hidden clips fill outside the column.
+          hero-portrait class for DevTools targeting.
+          ══════════════════════════════════════════════════ */}
+      <div className="relative hidden overflow-hidden lg:block">
+        <Image
+          src={HERO_IMG}
+          alt="Martina Rink — private mentor for accomplished women"
+          fill
+          priority
+          fetchPriority="high"
+          quality={90}
+          sizes="(min-width: 1024px) 46vw, 100vw"
+          className="hero-portrait object-cover"
+          style={{ objectPosition: OBJ_POSITION }}
+        />
+      </div>
+
+      {/* ══════════════════════════════════════════════════
+          MOBILE image — full-width banner below text
+          h-[70svh] gives strong presence without pushing
+          too far down on 375px screens.
+          Bottom vignette fades into the cream section below.
+          ══════════════════════════════════════════════════ */}
+      <div className="relative overflow-hidden lg:hidden h-[70svh]">
+        <Image
+          src={HERO_IMG}
+          alt="Martina Rink — private mentor for accomplished women"
+          fill
+          quality={80}
+          sizes="100vw"
+          className="hero-portrait object-cover"
+          style={{ objectPosition: OBJ_POSITION }}
+        />
+        {/* Bottom vignette — fades portrait into cream below on mobile */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24
+                     bg-gradient-to-t from-cream/70 to-transparent"
+        />
       </div>
 
     </section>
