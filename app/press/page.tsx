@@ -244,15 +244,22 @@ export default async function PressPage() {
 
           {/* Right — portrait */}
           <div className="relative lg:self-end">
-            <div className="relative bg-bone overflow-hidden mx-auto max-w-[420px] lg:max-w-none">
+            <div className="relative overflow-hidden mx-auto max-w-[420px] lg:max-w-none">
               <Image
-                src="/images/portraits/martina-bw-studio.jpg"
-                alt="Martina Rink — speaker, author, and private mentor"
+                src="/images/portraits/Martina-rink-press-photoshoot.jpeg"
+                alt="Martina Rink — press portrait, author and private mentor"
                 width={1067}
                 height={1600}
                 sizes="(max-width: 1024px) 90vw, 38vw"
                 className="w-full object-cover object-top"
                 priority
+              />
+              {/* Bottom fade — blends portrait into aubergine on desktop */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-32
+                           bg-gradient-to-t from-aubergine/70 to-transparent
+                           hidden lg:block"
               />
             </div>
           </div>
@@ -634,36 +641,72 @@ export default async function PressPage() {
       {/* ══════════════════════════════════════════════════════
           5 — ISABELLA BLOW AUTHORITY BLOCK
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-aubergine py-20 md:py-28">
+      <section className="bg-aubergine py-20 md:py-28 overflow-hidden">
         <div className="container-content">
-          <div className="max-w-3xl">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-sand/50 mb-8 font-[family-name:var(--font-body)]">
-              Background
-            </p>
-            <blockquote className="font-[family-name:var(--font-display)] italic text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-cream">
-              &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
-              and a generation of designers who changed fashion&rsquo;s course.&rdquo;
-            </blockquote>
-            <p className="mt-4 text-[13px] uppercase tracking-[0.18em] text-sand/50 font-[family-name:var(--font-body)]">
-              &mdash; Martina Rink on Isabella Blow
-            </p>
-            <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)] max-w-2xl">
-              <p>
-                For several years, Martina Rink served as personal assistant to
-                Isabella Blow &mdash; the late British fashion editor, stylist, and
-                singular talent spotter whose influence defined the avant-garde
-                of the 1990s and 2000s.
+          <div className="grid lg:grid-cols-[56%_44%] gap-14 lg:gap-20 items-center">
+
+            {/* Left — text */}
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-sand/50 mb-8 font-[family-name:var(--font-body)]">
+                Background
               </p>
-              <p>
-                That proximity to radical vision, eccentricity, and the human
-                cost of brilliance shaped the particular lens Rink brings to her
-                work with women.
+              <blockquote className="font-[family-name:var(--font-display)] italic text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-cream">
+                &ldquo;She shaped the careers of Alexander McQueen, Philip Treacy,
+                and a generation of designers who changed fashion&rsquo;s course.&rdquo;
+              </blockquote>
+              <p className="mt-4 text-[13px] uppercase tracking-[0.18em] text-sand/50 font-[family-name:var(--font-body)]">
+                &mdash; Martina Rink on Isabella Blow
               </p>
-              <p>
-                It is a perspective that cannot be acquired from a course. It is
-                earned.
+              <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-cream/65 font-[family-name:var(--font-body)]">
+                <p>
+                  For several years, Martina Rink served as personal assistant to
+                  Isabella Blow &mdash; the late British fashion editor, stylist, and
+                  singular talent spotter whose influence defined the avant-garde
+                  of the 1990s and 2000s.
+                </p>
+                <p>
+                  That proximity to radical vision, eccentricity, and the human
+                  cost of brilliance shaped the particular lens Rink brings to her
+                  work with women.
+                </p>
+                <p>
+                  It is a perspective that cannot be acquired from a course. It is
+                  earned.
+                </p>
+              </div>
+            </div>
+
+            {/* Right — editorial portrait */}
+            <div className="relative">
+              <div className="relative overflow-hidden">
+                <Image
+                  src="/images/portraits/martina-rink-showcasing-isabelle-blow-book.jpeg"
+                  alt="Martina Rink — editorial portrait at a press shoot"
+                  width={1200}
+                  height={1600}
+                  sizes="(max-width: 1024px) 90vw, 40vw"
+                  className="w-full object-cover object-top"
+                  loading="lazy"
+                />
+                {/* Top gradient — blends into aubergine section */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 top-0 h-16
+                             bg-gradient-to-b from-aubergine/60 to-transparent"
+                />
+                {/* Bottom gradient */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-24
+                             bg-gradient-to-t from-aubergine/50 to-transparent"
+                />
+              </div>
+              {/* Editorial caption */}
+              <p className="mt-4 text-[10px] uppercase tracking-[0.22em] text-sand/40 font-[family-name:var(--font-body)] text-center">
+                On set &mdash; People of Deutschland
               </p>
             </div>
+
           </div>
         </div>
       </section>
@@ -673,16 +716,46 @@ export default async function PressPage() {
       ══════════════════════════════════════════════════════ */}
       <section id="speaking" className="bg-cream py-20 md:py-28 scroll-mt-20">
         <div className="container-content">
-          <div className="max-w-4xl mb-14">
-            <Eyebrow withLine>Speaking</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
-              For entrepreneurs, founders, and creatives.
-            </h2>
-            <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-2xl font-[family-name:var(--font-body)]">
-              Martina speaks at events, conferences, retreats. Her talks are
-              conversational, precisely argued, and deliberately uncomfortable
-              in the way that useful things tend to be.
-            </p>
+
+          {/* Section header — split with interview image */}
+          <div className="grid lg:grid-cols-[55%_45%] gap-12 lg:gap-16 items-center mb-16 md:mb-20">
+            <div>
+              <Eyebrow withLine>Speaking</Eyebrow>
+              <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+                For entrepreneurs, founders, and creatives.
+              </h2>
+              <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
+                Martina speaks at events, conferences, retreats. Her talks are
+                conversational, precisely argued, and deliberately uncomfortable
+                in the way that useful things tend to be.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-2">
+                {["Panel guest", "Intimate fireside", "Podcast guest"].map((f) => (
+                  <span key={f} className="px-4 py-2 border border-sand/60 text-[10px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Interview / behind-the-scenes image */}
+            <div className="relative overflow-hidden rounded-[1px]">
+              <div className="relative aspect-[3/4] overflow-hidden bg-bone">
+                <Image
+                  src="/images/portraits/martina-rink-givinng-press-interview.jpeg"
+                  alt="Martina Rink — being filmed for a press interview"
+                  fill
+                  sizes="(max-width: 1024px) 90vw, 42vw"
+                  className="object-cover object-[center_15%]"
+                  loading="lazy"
+                />
+                {/* Subtle bottom label overlay */}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/60 to-transparent h-28 pointer-events-none" aria-hidden />
+                <p className="absolute bottom-5 left-5 text-[10px] uppercase tracking-[0.22em] text-cream/70 font-[family-name:var(--font-body)]">
+                  Press interview &mdash; on camera
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-5 max-w-5xl">
@@ -710,38 +783,50 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          7 — FORMATS / AVAILABILITY
+          7 — AVAILABILITY BAND (with press studio image)
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-bone border-y border-sand/40 py-10 md:py-12">
-        <div className="container-content">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 max-w-4xl">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-3 font-[family-name:var(--font-body)]">
-                Formats
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {["Panel guest", "Intimate fireside conversation", "Podcast guest"].map((f) => (
-                  <span key={f} className="px-4 py-2 border border-sand/60 text-[11px] text-ink-soft font-[family-name:var(--font-body)] tracking-[0.06em]">
-                    {f}
-                  </span>
-                ))}
-              </div>
-            </div>
+      <section className="bg-bone border-y border-sand/40 overflow-hidden">
+        <div className="grid lg:grid-cols-[1fr_340px]">
+
+          {/* Left — availability info */}
+          <div className="py-10 md:py-14 px-6 md:px-12 lg:px-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
             <div>
               <p className="text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-3 font-[family-name:var(--font-body)]">
                 Availability
               </p>
-              <p className="text-[15px] text-ink-soft font-[family-name:var(--font-body)]">
+              <p className="text-[16px] text-ink-soft font-[family-name:var(--font-body)] mb-1">
                 Europe-wide &middot; International on request
               </p>
-              <a
-                href={`mailto:${SITE.email}`}
-                className="mt-2 inline-block text-[12px] uppercase tracking-[0.16em] text-plum hover:text-plum-deep transition-colors font-[family-name:var(--font-body)]"
-              >
-                Send a speaking enquiry &rarr;
-              </a>
+              <p className="text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
+                Keynote &middot; Panel &middot; Podcast &middot; Fireside
+              </p>
             </div>
+            <a
+              href={`mailto:${SITE.email}`}
+              className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-ink hover:text-plum transition-colors font-[family-name:var(--font-body)] border border-sand/60 hover:border-plum/40 px-6 py-4 shrink-0"
+            >
+              Speaking enquiry <span aria-hidden>→</span>
+            </a>
           </div>
+
+          {/* Right — press studio image */}
+          <div className="relative hidden lg:block">
+            <Image
+              src="/images/portraits/martina-rink-being-ready-for-press-shot.jpeg"
+              alt="Martina Rink — preparing for a press shoot in studio"
+              fill
+              sizes="340px"
+              className="object-cover object-[center_30%]"
+              loading="lazy"
+            />
+            {/* Left edge fade into bone */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 left-0 w-16
+                         bg-gradient-to-r from-bone to-transparent"
+            />
+          </div>
+
         </div>
       </section>
 
