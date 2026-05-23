@@ -5,6 +5,8 @@ import { deriveRouting } from "@/lib/assessment/scoring";
 import { verifyAndDecodeResultId } from "@/lib/assessment/resultId";
 import { getAssessmentResult } from "@/sanity/lib/queries";
 import { InlineLetterCapture } from "@/components/assessment/InlineLetterCapture";
+import { FunnelProgress } from "@/components/funnel/FunnelProgress";
+import { WhatHappensNext } from "@/components/funnel/WhatHappensNext";
 import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed, ScoringResult } from "@/lib/assessment/types";
 import type { Metadata } from "next";
 
@@ -69,6 +71,9 @@ export default async function AssessmentResultPage({ params }: Props) {
 
   return (
     <>
+      {/* ── FUNNEL PROGRESS ──────────────────────────────────────── */}
+      <FunnelProgress activeStep={2} variant="dark" />
+
       {/* ── RESULT HEADER ────────────────────────────────────────── */}
       <section className="bg-aubergine pt-32 md:pt-44 pb-20 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-pink/30 to-transparent" />
@@ -144,6 +149,9 @@ export default async function AssessmentResultPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* ── WHAT HAPPENS NEXT ────────────────────────────────────── */}
+      <WhatHappensNext isHighReadiness={isHighReadiness} />
 
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section className="bg-bone border-t border-sand py-16 md:py-20">

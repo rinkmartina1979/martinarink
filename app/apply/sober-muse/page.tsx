@@ -1,5 +1,6 @@
 import { buildMetadata } from "@/lib/metadata";
 import { Eyebrow } from "@/components/brand/Eyebrow";
+import { FunnelProgress } from "@/components/funnel/FunnelProgress";
 import { SoberMuseApplicationForm } from "@/components/forms/ApplicationForm";
 
 export const metadata = buildMetadata({
@@ -13,6 +14,9 @@ export const metadata = buildMetadata({
 export default function ApplySoberMusePage() {
   return (
     <>
+      {/* ── FUNNEL PROGRESS ──────────────────────────────────── */}
+      <FunnelProgress activeStep={3} variant="dark" />
+
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="bg-aubergine pt-32 md:pt-44 pb-16 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-pink/30 to-transparent" />

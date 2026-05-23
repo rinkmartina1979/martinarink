@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
+import { FunnelProgress } from "@/components/funnel/FunnelProgress";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { buildMetadata } from "@/lib/metadata";
@@ -44,6 +45,9 @@ export default async function BookPage({ searchParams }: BookPageProps) {
   if (!isApproved) {
     return (
       <>
+        {/* ── FUNNEL PROGRESS ──────────────────────────────── */}
+        <FunnelProgress activeStep={4} variant="dark" />
+
         {/* ── GATE ───────────────────────────────────────────── */}
         <section className="bg-cream pt-32 md:pt-40 pb-12">
           <div className="container-content max-w-2xl mx-auto text-center">
@@ -144,6 +148,9 @@ export default async function BookPage({ searchParams }: BookPageProps) {
   // Approved — show deposit CTA + Calendly embed
   return (
     <>
+      {/* ── FUNNEL PROGRESS ──────────────────────────────────── */}
+      <FunnelProgress activeStep={4} variant="dark" />
+
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="bg-cream pt-32 md:pt-40 pb-12">
         <div className="container-content max-w-2xl mx-auto text-center">

@@ -7,6 +7,7 @@ import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { HowItWorks } from "@/components/funnel/HowItWorks";
 import { PressMarquee } from "@/components/brand/PressMarquee";
 import { buildMetadata } from "@/lib/metadata";
 import { getHomePage, getFeaturedTestimonials, getPartnerLogos, type Testimonial } from "@/sanity/lib/queries";
@@ -176,6 +177,9 @@ export default async function HomePage() {
         heroSecondaryUrl={heroSecondaryUrl}
         heroSubheadline={heroSubheadline}
       />
+
+      {/* ─── HOW IT WORKS — funnel clarity ──────────────────── */}
+      <HowItWorks />
 
       {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
       <AuthorityStrip />
