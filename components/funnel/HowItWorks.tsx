@@ -97,13 +97,6 @@ export function HowItWorks() {
                 </a>
               )}
 
-              {/* Active indicator — step 01 */}
-              {i === 0 && (
-                <span
-                  aria-hidden
-                  className="absolute top-0 left-0 md:top-auto md:bottom-0 h-full md:h-px w-px md:w-full bg-pink/30"
-                />
-              )}
             </div>
           ))}
         </div>
