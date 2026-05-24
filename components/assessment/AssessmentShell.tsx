@@ -31,6 +31,8 @@ export function AssessmentShell() {
   const [email, setEmail]         = useState("");
   const [firstName, setFirstName] = useState<string | undefined>();
   const [pendingIndex, setPendingIndex] = useState<number | null>(null);
+  /** True after the last question is answered — shows the explicit submit CTA */
+  const [showSubmitCta, setShowSubmitCta] = useState(false);
 
   /* Current 0-based question index */
   const currentQuestionIndex =
@@ -71,7 +73,8 @@ export function AssessmentShell() {
         }
 
         if (isLast) {
-          handleSubmit(newAnswers, email, firstName);
+          /* Don't auto-submit — show an explicit CTA so the user confirms */
+          setShowSubmitCta(true);
           return;
         }
 
@@ -86,6 +89,7 @@ export function AssessmentShell() {
       trackAssessment("assessment_email_submitted");
       setEmail(collectedEmail);
       setFirstName(collectedFirstName);
+      setShowSubmitCta(false);
 
       const nextIndex = GATE_AFTER_INDEX + 1;
       if (nextIndex >= QUESTIONS.length) {
@@ -172,8 +176,32 @@ export function AssessmentShell() {
               }
             />
 
+            {/* ── Submit CTA — shown after the last question is answered ── */}
+            {showSubmitCta && (
+              <div className="mt-10 animate-[fadeUp_0.4s_ease-out_both]">
+                <div className="mb-6 h-px w-full bg-sand" aria-hidden />
+                <p className="mb-5 text-[14px] leading-[1.7] text-ink-quiet font-[family-name:var(--font-display)] italic">
+                  Your letter is ready to be written.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => handleSubmit(answers, email, firstName)}
+                  className="inline-flex items-center justify-center gap-3
+                             bg-plum text-cream uppercase tracking-[0.18em]
+                             text-[12px] font-medium px-10 py-4 rounded-[1px]
+                             hover:bg-plum-deep transition-colors duration-200
+                             font-[family-name:var(--font-body)]"
+                >
+                  Receive my private letter&nbsp;<span aria-hidden>→</span>
+                </button>
+                <p className="mt-4 text-[11px] tracking-[0.14em] uppercase text-ink-quiet/60 font-[family-name:var(--font-body)]">
+                  Private &middot; Confidential &middot; Yours alone
+                </p>
+              </div>
+            )}
+
             {/* Back navigation */}
-            {stage.questionIndex > 0 && (
+            {stage.questionIndex > 0 && !showSubmitCta && (
               <button
                 type="button"
                 onClick={() =>

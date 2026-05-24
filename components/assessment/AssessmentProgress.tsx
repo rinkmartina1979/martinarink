@@ -14,10 +14,17 @@ const TOTAL       = QUESTIONS.length;
 export function AssessmentProgress({ questionIndex }: Props) {
   const isIntroPhase = questionIndex < INTRO_COUNT;
 
-  /* ── Labels ───────────────────────────────────────────────── */
+  /*
+   * Dot tracking:
+   *  - Intro phase: show a single compact "Before we begin" indicator (no numbered dots)
+   *  - Main phase: show exactly MAIN_COUNT dots — one per scored question.
+   *    This keeps the dot count and "Question N of 7" label in sync.
+   */
+  const mainQuestionIndex = isIntroPhase ? -1 : questionIndex - INTRO_COUNT; // 0-based, -1 if intro
+
   const phaseLabel = isIntroPhase
     ? `Before we begin — ${questionIndex + 1} of ${INTRO_COUNT}`
-    : `Question ${questionIndex - INTRO_COUNT + 1} of ${MAIN_COUNT}`;
+    : `Question ${mainQuestionIndex + 1} of ${MAIN_COUNT}`;
 
   return (
     <div
@@ -37,59 +44,60 @@ export function AssessmentProgress({ questionIndex }: Props) {
         </span>
       </div>
 
-      {/* Segmented dot progress */}
+      {/* Segmented dots */}
       <div className="flex items-center gap-[5px]">
-        {/* Intro dots */}
-        {Array.from({ length: INTRO_COUNT }).map((_, i) => {
-          const isActive   = i === questionIndex && isIntroPhase;
-          const isDone     = i < questionIndex && isIntroPhase
-                          || !isIntroPhase;
-          return (
-            <span
-              key={`intro-${i}`}
-              aria-hidden
-              className={[
-                "block transition-all duration-400",
-                isActive
-                  ? "h-[6px] w-6 rounded-[3px] bg-pink"
-                  : isDone
-                  ? "h-[3px] w-3 rounded-full bg-pink/40"
-                  : "h-[3px] w-3 rounded-full bg-sand",
-              ].join(" ")}
-            />
-          );
-        })}
-
-        {/* Separator dot */}
-        <span aria-hidden className="mx-1 block h-[3px] w-[3px] rounded-full bg-sand/60" />
-
-        {/* Main question dots */}
-        {Array.from({ length: MAIN_COUNT }).map((_, i) => {
-          const globalIdx  = INTRO_COUNT + i;
-          const isActive   = globalIdx === questionIndex;
-          const isDone     = globalIdx < questionIndex;
-          return (
-            <span
-              key={`main-${i}`}
-              aria-hidden
-              className={[
-                "block transition-all duration-400",
-                isActive
-                  ? "h-[6px] w-6 rounded-[3px] bg-pink"
-                  : isDone
-                  ? "h-[3px] w-3 rounded-full bg-pink/40"
-                  : "h-[3px] w-3 rounded-full bg-sand",
-              ].join(" ")}
-            />
-          );
-        })}
+        {isIntroPhase ? (
+          /* ── Intro phase: 3 compact dots, no numbered labels ── */
+          Array.from({ length: INTRO_COUNT }).map((_, i) => {
+            const isActive = i === questionIndex;
+            const isDone   = i < questionIndex;
+            return (
+              <span
+                key={`intro-${i}`}
+                aria-hidden
+                className={[
+                  "block transition-all duration-400",
+                  isActive
+                    ? "h-[6px] w-6 rounded-[3px] bg-pink"
+                    : isDone
+                    ? "h-[3px] w-3 rounded-full bg-pink/40"
+                    : "h-[3px] w-3 rounded-full bg-sand",
+                ].join(" ")}
+              />
+            );
+          })
+        ) : (
+          /* ── Main phase: exactly 7 dots — matches "Question N of 7" label ── */
+          Array.from({ length: MAIN_COUNT }).map((_, i) => {
+            const isActive = i === mainQuestionIndex;
+            const isDone   = i < mainQuestionIndex;
+            return (
+              <span
+                key={`main-${i}`}
+                aria-hidden
+                className={[
+                  "block transition-all duration-400",
+                  isActive
+                    ? "h-[6px] w-6 rounded-[3px] bg-pink"
+                    : isDone
+                    ? "h-[3px] w-3 rounded-full bg-pink/40"
+                    : "h-[3px] w-3 rounded-full bg-sand",
+                ].join(" ")}
+              />
+            );
+          })
+        )}
       </div>
 
-      {/* Thin hairline fill bar (accessibility / visual reinforcement) */}
+      {/* Thin hairline fill bar */}
       <div className="mt-3 h-px w-full bg-sand">
         <div
           className="h-px bg-pink/50 transition-all duration-500 ease-out"
-          style={{ width: `${Math.round(((questionIndex + 1) / TOTAL) * 100)}%` }}
+          style={{
+            width: isIntroPhase
+              ? `${Math.round(((questionIndex + 1) / INTRO_COUNT) * 30)}%`
+              : `${Math.round(((mainQuestionIndex + 1) / MAIN_COUNT) * 100)}%`,
+          }}
         />
       </div>
     </div>
