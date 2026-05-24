@@ -4,6 +4,7 @@ import { Eyebrow } from "@/components/brand/Eyebrow";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getAllPosts, type PostListItem } from "@/sanity/lib/queries";
+import { urlForImage } from "@/sanity/lib/image";
 
 const BREADCRUMBS = breadcrumbSchema([{ name: "Writing", path: "/writing" }]);
 
@@ -27,7 +28,6 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "The women I work with are not in crisis. They are in the much quieter problem — the one that arrives after everything has gone according to plan.",
     publishedAt: "2026-04-01T00:00:00Z",
     coverImage: null,
-    localImage: "/images/portraits/martina-ibiza-working.jpg",
   },
   {
     _id: "2",
@@ -37,7 +37,6 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "When a woman has spent two decades building a career, she often discovers that the title was never the destination — it was a container.",
     publishedAt: "2026-04-08T00:00:00Z",
     coverImage: null,
-    localImage: "/images/portraits/martina-library-pink.jpg",
   },
   {
     _id: "3",
@@ -47,7 +46,6 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "Isabella Blow wore hats that could clear a room. Not to be noticed. To exist. There is a distinction.",
     publishedAt: "2026-04-15T00:00:00Z",
     coverImage: null,
-    localImage: "/images/portraits/martina-gallery-leopard.jpg",
   },
 ];
 
@@ -97,19 +95,25 @@ export default async function WritingPage() {
                   href={`/writing/${article.slug}`}
                   className="group block"
                 >
-                  <div className="relative aspect-[3/2] mb-5 overflow-hidden bg-bone">
-                    {(article as ArticleCard).localImage ? (
-                      <Image
-                        src={(article as ArticleCard).localImage!}
-                        alt={article.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-bone group-hover:bg-blush transition-colors duration-300" />
-                    )}
-                  </div>
+                  {(() => {
+                    const localSrc = (article as ArticleCard).localImage ?? null;
+                    const sanitySrc = article.coverImage
+                      ? urlForImage(article.coverImage)
+                      : null;
+                    const src = localSrc ?? sanitySrc;
+                    if (!src) return null;
+                    return (
+                      <div className="relative aspect-[3/2] mb-5 overflow-hidden bg-bone">
+                        <Image
+                          src={src}
+                          alt={article.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+                        />
+                      </div>
+                    );
+                  })()}
                   <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet">
                     {formatDate(article.publishedAt)}
                   </p>
