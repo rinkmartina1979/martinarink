@@ -283,7 +283,7 @@ export default async function HomePage() {
             fetchPriority="high"
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
-            style={{ objectPosition: "62% 0%" }}
+            style={{ objectPosition: "40% 0%" }}
           />
 
           {/* Mobile vignette — fades portrait into cream below */}
