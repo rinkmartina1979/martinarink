@@ -276,14 +276,14 @@ export default async function HomePage() {
           overflow-hidden
         ">
           <Image
-            src="/images/portraits/martina-hero-empowerment.jpg"
+            src="/images/portraits/martina-women-empowerment-coach.jpg"
             alt="Martina Rink, private mentor and Spiegel Bestselling author"
             fill
             priority
             fetchPriority="high"
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
-            style={{ objectPosition: "center 15%" }}
+            style={{ objectPosition: "62% 0%" }}
           />
 
           {/* Mobile vignette — fades portrait into cream below */}
