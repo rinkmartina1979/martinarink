@@ -3,7 +3,7 @@
 import { QUESTIONS } from "@/lib/assessment/questions";
 
 interface Props {
-  /** 0-based question index currently active */
+  /** 0-based question index currently active (pass QUESTIONS.length for "complete") */
   questionIndex: number;
 }
 
@@ -12,25 +12,36 @@ const MAIN_COUNT  = QUESTIONS.filter((q) => !q.isIntro).length;
 const TOTAL       = QUESTIONS.length;
 
 export function AssessmentProgress({ questionIndex }: Props) {
-  const isIntroPhase = questionIndex < INTRO_COUNT;
+  const isComplete   = questionIndex >= TOTAL;
+  const isIntroPhase = !isComplete && questionIndex < INTRO_COUNT;
 
   /*
    * Dot tracking:
-   *  - Intro phase: show a single compact "Before we begin" indicator (no numbered dots)
-   *  - Main phase: show exactly MAIN_COUNT dots — one per scored question.
-   *    This keeps the dot count and "Question N of 7" label in sync.
+   *  - Intro phase  → show INTRO_COUNT compact dots only
+   *  - Main phase   → show MAIN_COUNT dots only (stays in sync with "Question N of 7")
+   *  - Complete     → show MAIN_COUNT dots all filled
    */
-  const mainQuestionIndex = isIntroPhase ? -1 : questionIndex - INTRO_COUNT; // 0-based, -1 if intro
+  const mainQuestionIndex = isIntroPhase || isComplete
+    ? (isComplete ? MAIN_COUNT : -1)
+    : questionIndex - INTRO_COUNT; // 0-based; -1 while intro
 
-  const phaseLabel = isIntroPhase
+  const phaseLabel = isComplete
+    ? `All ${MAIN_COUNT} questions complete`
+    : isIntroPhase
     ? `Before we begin — ${questionIndex + 1} of ${INTRO_COUNT}`
     : `Question ${mainQuestionIndex + 1} of ${MAIN_COUNT}`;
+
+  const fillPct = isComplete
+    ? 100
+    : isIntroPhase
+    ? Math.round(((questionIndex + 1) / INTRO_COUNT) * 30)
+    : Math.round(((mainQuestionIndex + 1) / MAIN_COUNT) * 100);
 
   return (
     <div
       className="w-full"
       role="progressbar"
-      aria-valuenow={questionIndex + 1}
+      aria-valuenow={isComplete ? TOTAL : questionIndex + 1}
       aria-valuemax={TOTAL}
       aria-label={phaseLabel}
     >
@@ -47,7 +58,7 @@ export function AssessmentProgress({ questionIndex }: Props) {
       {/* Segmented dots */}
       <div className="flex items-center gap-[5px]">
         {isIntroPhase ? (
-          /* ── Intro phase: 3 compact dots, no numbered labels ── */
+          /* ── Intro: INTRO_COUNT compact dots ── */
           Array.from({ length: INTRO_COUNT }).map((_, i) => {
             const isActive = i === questionIndex;
             const isDone   = i < questionIndex;
@@ -56,32 +67,28 @@ export function AssessmentProgress({ questionIndex }: Props) {
                 key={`intro-${i}`}
                 aria-hidden
                 className={[
-                  "block transition-all duration-400",
-                  isActive
-                    ? "h-[6px] w-6 rounded-[3px] bg-pink"
-                    : isDone
-                    ? "h-[3px] w-3 rounded-full bg-pink/40"
-                    : "h-[3px] w-3 rounded-full bg-sand",
+                  "block transition-all duration-300",
+                  isActive ? "h-[6px] w-6 rounded-[3px] bg-pink"
+                  : isDone  ? "h-[3px] w-3 rounded-full bg-pink/40"
+                  :           "h-[3px] w-3 rounded-full bg-sand",
                 ].join(" ")}
               />
             );
           })
         ) : (
-          /* ── Main phase: exactly 7 dots — matches "Question N of 7" label ── */
+          /* ── Main / Complete: exactly MAIN_COUNT dots ── */
           Array.from({ length: MAIN_COUNT }).map((_, i) => {
-            const isActive = i === mainQuestionIndex;
-            const isDone   = i < mainQuestionIndex;
+            const isActive = !isComplete && i === mainQuestionIndex;
+            const isDone   = isComplete || i < mainQuestionIndex;
             return (
               <span
                 key={`main-${i}`}
                 aria-hidden
                 className={[
-                  "block transition-all duration-400",
-                  isActive
-                    ? "h-[6px] w-6 rounded-[3px] bg-pink"
-                    : isDone
-                    ? "h-[3px] w-3 rounded-full bg-pink/40"
-                    : "h-[3px] w-3 rounded-full bg-sand",
+                  "block transition-all duration-300",
+                  isActive ? "h-[6px] w-6 rounded-[3px] bg-pink"
+                  : isDone  ? "h-[3px] w-3 rounded-full bg-pink/40"
+                  :           "h-[3px] w-3 rounded-full bg-sand",
                 ].join(" ")}
               />
             );
@@ -89,15 +96,11 @@ export function AssessmentProgress({ questionIndex }: Props) {
         )}
       </div>
 
-      {/* Thin hairline fill bar */}
+      {/* Hairline fill bar */}
       <div className="mt-3 h-px w-full bg-sand">
         <div
           className="h-px bg-pink/50 transition-all duration-500 ease-out"
-          style={{
-            width: isIntroPhase
-              ? `${Math.round(((questionIndex + 1) / INTRO_COUNT) * 30)}%`
-              : `${Math.round(((mainQuestionIndex + 1) / MAIN_COUNT) * 100)}%`,
-          }}
+          style={{ width: `${fillPct}%` }}
         />
       </div>
     </div>

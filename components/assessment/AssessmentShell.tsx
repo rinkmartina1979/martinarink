@@ -15,6 +15,7 @@ type Stage =
   | { kind: "intro" }
   | { kind: "question"; questionIndex: number }
   | { kind: "emailgate"; afterQuestionIndex: number }
+  | { kind: "complete" }
   | { kind: "submitting" }
   | { kind: "error"; message: string };
 
@@ -31,8 +32,6 @@ export function AssessmentShell() {
   const [email, setEmail]         = useState("");
   const [firstName, setFirstName] = useState<string | undefined>();
   const [pendingIndex, setPendingIndex] = useState<number | null>(null);
-  /** True after the last question is answered — shows the explicit submit CTA */
-  const [showSubmitCta, setShowSubmitCta] = useState(false);
 
   /* Current 0-based question index */
   const currentQuestionIndex =
@@ -73,8 +72,8 @@ export function AssessmentShell() {
         }
 
         if (isLast) {
-          /* Don't auto-submit — show an explicit CTA so the user confirms */
-          setShowSubmitCta(true);
+          /* Move to a dedicated complete screen — no scrolling needed */
+          setStage({ kind: "complete" });
           return;
         }
 
@@ -89,7 +88,6 @@ export function AssessmentShell() {
       trackAssessment("assessment_email_submitted");
       setEmail(collectedEmail);
       setFirstName(collectedFirstName);
-      setShowSubmitCta(false);
 
       const nextIndex = GATE_AFTER_INDEX + 1;
       if (nextIndex >= QUESTIONS.length) {
@@ -135,23 +133,19 @@ export function AssessmentShell() {
     [router],
   );
 
-  /* ── VISIBLE QUESTION LABEL (main questions only, 1-based) ── */
-  const mainQuestionNumber =
-    stage.kind === "question" && currentQuestion && !currentQuestion.isIntro
-      ? stage.questionIndex - INTRO_COUNT + 1
-      : null;
-
   /* ── RENDER ─────────────────────────────────────────────────── */
 
   return (
     <div className="min-h-[540px] flex flex-col">
 
-      {/* Progress — shown while answering questions or at email gate */}
-      {(stage.kind === "question" || stage.kind === "emailgate") && (
+      {/* Progress — shown while answering questions, at email gate, or on complete screen */}
+      {(stage.kind === "question" || stage.kind === "emailgate" || stage.kind === "complete") && (
         <div className="mb-10">
           <AssessmentProgress
             questionIndex={
-              stage.kind === "question"
+              stage.kind === "complete"
+                ? QUESTIONS.length          // signals "all done" to the progress bar
+                : stage.kind === "question"
                 ? stage.questionIndex
                 : GATE_AFTER_INDEX
             }
@@ -176,32 +170,8 @@ export function AssessmentShell() {
               }
             />
 
-            {/* ── Submit CTA — shown after the last question is answered ── */}
-            {showSubmitCta && (
-              <div className="mt-10 animate-[fadeUp_0.4s_ease-out_both]">
-                <div className="mb-6 h-px w-full bg-sand" aria-hidden />
-                <p className="mb-5 text-[14px] leading-[1.7] text-ink-quiet font-[family-name:var(--font-display)] italic">
-                  Your letter is ready to be written.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => handleSubmit(answers, email, firstName)}
-                  className="inline-flex items-center justify-center gap-3
-                             bg-plum text-cream uppercase tracking-[0.18em]
-                             text-[12px] font-medium px-10 py-4 rounded-[1px]
-                             hover:bg-plum-deep transition-colors duration-200
-                             font-[family-name:var(--font-body)]"
-                >
-                  Receive my private letter&nbsp;<span aria-hidden>→</span>
-                </button>
-                <p className="mt-4 text-[11px] tracking-[0.14em] uppercase text-ink-quiet/60 font-[family-name:var(--font-body)]">
-                  Private &middot; Confidential &middot; Yours alone
-                </p>
-              </div>
-            )}
-
             {/* Back navigation */}
-            {stage.questionIndex > 0 && !showSubmitCta && (
+            {stage.questionIndex > 0 && (
               <button
                 type="button"
                 onClick={() =>
@@ -215,6 +185,34 @@ export function AssessmentShell() {
                 ← Previous
               </button>
             )}
+          </div>
+        )}
+
+        {/* ── COMPLETE SCREEN — replaces the question entirely ── */}
+        {stage.kind === "complete" && (
+          <div className="animate-[fadeUp_0.5s_ease-out_both] flex flex-col items-start gap-6 py-4">
+            <div className="h-px w-14 bg-pink" aria-hidden />
+            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] leading-[1.15] text-ink max-w-md">
+              Your letter is ready to be written.
+            </h2>
+            <p className="text-[15px] leading-[1.75] text-ink-soft max-w-sm font-[family-name:var(--font-body)]">
+              Seven questions answered. What comes next is yours alone — a private
+              letter written specifically for where you are right now.
+            </p>
+            <button
+              type="button"
+              onClick={() => handleSubmit(answers, email, firstName)}
+              className="mt-2 inline-flex items-center justify-center gap-3
+                         bg-plum text-cream uppercase tracking-[0.18em]
+                         text-[12px] font-medium px-10 py-4 rounded-[1px]
+                         hover:bg-plum-deep transition-colors duration-200
+                         font-[family-name:var(--font-body)]"
+            >
+              Receive my private letter&nbsp;<span aria-hidden>→</span>
+            </button>
+            <p className="text-[11px] tracking-[0.14em] uppercase text-ink-quiet/60 font-[family-name:var(--font-body)]">
+              Private &middot; Confidential &middot; Yours alone
+            </p>
           </div>
         )}
 
@@ -243,14 +241,6 @@ export function AssessmentShell() {
 
       </div>
 
-      {/* Bottom label — main question number only */}
-      {mainQuestionNumber !== null && stage.kind === "question" && (
-        <div className="mt-12 pt-5 border-t border-sand">
-          <p className="text-[11px] tracking-[0.2em] uppercase text-ink-quiet font-[family-name:var(--font-body)]">
-            Question {mainQuestionNumber} of {QUESTIONS.length - INTRO_COUNT}
-          </p>
-        </div>
-      )}
 
     </div>
   );
