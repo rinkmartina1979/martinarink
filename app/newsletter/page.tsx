@@ -352,11 +352,11 @@ export default async function NewsletterPage() {
             {/* Portrait — small, intimate */}
             <div className="relative w-[140px] md:w-[180px] aspect-[3/4] bg-bone overflow-hidden shrink-0">
               <Image
-                src="/images/portraits/martina-bw-studio.jpg"
+                src="/images/portraits/Martina-rink-press-photoshoot.jpeg"
                 alt="Martina Rink"
                 fill
                 sizes="200px"
-                className="object-cover object-top"
+                className="object-cover object-[center_15%]"
               />
             </div>
             {/* Bio */}

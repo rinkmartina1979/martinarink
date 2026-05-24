@@ -843,6 +843,48 @@ export default async function PressPage() {
             ))}
           </div>
 
+          {/* Press photos */}
+          <div className="mt-14 max-w-4xl">
+            <p className="text-[10px] uppercase tracking-[0.26em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
+              Press photographs
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                {
+                  src: "/images/portraits/Martina-rink-press-photoshoot.jpeg",
+                  alt: "Martina Rink — studio press portrait",
+                  label: "Studio portrait",
+                },
+                {
+                  src: "/images/portraits/martina-rink-being-ready-for-press-shot.jpeg",
+                  alt: "Martina Rink — podcast and media studio",
+                  label: "Media studio",
+                },
+                {
+                  src: "/images/portraits/martina-rink-showcasing-isabelle-blow-book.jpeg",
+                  alt: "Martina Rink — film set, People of Deutschland",
+                  label: "On set",
+                },
+              ].map((photo) => (
+                <div key={photo.src} className="group">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-bone">
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 768px) 45vw, 30vw"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  </div>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-ink-quiet font-[family-name:var(--font-body)]">
+                    {photo.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="mt-10 flex flex-wrap gap-4 max-w-4xl">
             <GhostButton href={`mailto:${SITE.email}?subject=Headshot request`}>
               Request headshot
