@@ -167,136 +167,14 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────────────────
-          Architecture rule: section owns the height. Both columns inherit
-          it via h-full. Image uses object-cover. Never use aspect-ratio
-          on the image column — it fights object-cover and loses.
-      ──────────────────────────────────────────────────────────────────── */}
-      <section className="
-        relative grid grid-cols-1 lg:grid-cols-2
-        min-h-screen lg:min-h-[88vh]
-        overflow-hidden
-      ">
-
-        {/* ── LEFT COLUMN — text + CTAs ─────────────────────────────── */}
-        <div className="
-          relative z-10 flex flex-col justify-center
-          bg-[#231727]
-          px-8 py-20
-          sm:px-12
-          lg:px-16 lg:py-0
-          min-h-[60svh] lg:min-h-0 lg:h-full
-        ">
-
-          {/* Eyebrow */}
-          <p className="
-            text-[11px] uppercase tracking-[0.22em]
-            text-[#C4687D] mb-6
-            flex items-center gap-3
-          ">
-            <span className="inline-block w-10 h-px bg-[#C4687D]" aria-hidden="true" />
-            Private Sober Muse Mentorship
-          </p>
-
-          {/* H1 — verbatim, never change */}
-          <h1 className="
-            font-display text-[#F8F4F1] font-normal
-            text-[clamp(2.6rem,5vw,4.2rem)]
-            leading-[1.05] tracking-[-0.01em]
-            max-w-[520px]
-          ">
-            You&apos;ve built a life that looks{" "}
-            <em className="italic">extraordinary</em>{" "}
-            from the outside
-          </h1>
-
-          {/* Script accent */}
-          <p className="
-            font-script text-[#C4687D]
-            text-[clamp(1.8rem,3.5vw,2.8rem)]
-            mt-4 mb-8
-          ">
-            — and yet.
-          </p>
-
-          {/* Subline */}
-          <p className="
-            text-[#F8F4F1]/70 text-[1.0625rem] leading-relaxed
-            max-w-[380px] mb-10
-          ">
-            Private mentorship for accomplished women who are ready
-            to feel at home inside the life they built.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href="/assessment"
-              className="
-                inline-flex items-center gap-3
-                border border-[#F8F4F1]/40 text-[#F8F4F1]
-                text-[12px] uppercase tracking-[0.18em]
-                px-8 py-4 rounded-[1px]
-                hover:bg-[#F8F4F1] hover:text-[#231727]
-                transition-colors duration-300
-                focus-visible:outline focus-visible:outline-2
-                focus-visible:outline-offset-4 focus-visible:outline-[#F8F4F1]
-              "
-            >
-              Begin the assessment
-              <span aria-hidden="true">→</span>
-            </Link>
-
-            <Link
-              href="/work-with-me"
-              className="
-                inline-flex items-center gap-3
-                border border-[#F8F4F1]/20 text-[#F8F4F1]/70
-                text-[12px] uppercase tracking-[0.18em]
-                px-8 py-4 rounded-[1px]
-                hover:border-[#F8F4F1]/40 hover:text-[#F8F4F1]
-                transition-colors duration-300
-                focus-visible:outline focus-visible:outline-2
-                focus-visible:outline-offset-4 focus-visible:outline-[#F8F4F1]
-              "
-            >
-              Explore the work
-            </Link>
-          </div>
-        </div>
-
-        {/* ── RIGHT COLUMN — portrait ────────────────────────────────
-            No background. No padding. No aspect-ratio.
-            Raw overflow-hidden box that inherits the section height.
-            The image fills it completely with object-cover.
-        ─────────────────────────────────────────────────────────────── */}
-        <div className="
-          relative
-          h-[70svh] lg:h-full
-          overflow-hidden
-        ">
-          <Image
-            src="/images/portraits/martina-women-empowerment-coach.jpg"
-            alt="Martina Rink, private mentor and Spiegel Bestselling author"
-            fill
-            priority
-            fetchPriority="high"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-            style={{ objectPosition: "40% 0%" }}
-          />
-
-          {/* Mobile vignette — fades portrait into cream below */}
-          <div
-            className="absolute inset-x-0 bottom-0 h-32 lg:hidden"
-            style={{
-              background: "linear-gradient(to bottom, transparent, #F8F4F1)"
-            }}
-            aria-hidden="true"
-          />
-        </div>
-
-      </section>
+      {/* ─── HERO — 2026 editorial split hero ───────────────── */}
+      <HeroSection
+        heroCta={heroCta}
+        heroCtaUrl={heroCtaUrl}
+        heroSecondaryLabel={heroSecondaryLabel}
+        heroSecondaryUrl={heroSecondaryUrl}
+        heroSubheadline={heroSubheadline}
+      />
 
       {/* ─── HOW IT WORKS — funnel clarity ──────────────────── */}
       <HowItWorks />
