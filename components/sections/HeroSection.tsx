@@ -2,7 +2,7 @@
  * HeroSection — full-bleed Vogue editorial split hero.
  *
  * ┌─────────────────────────────────────────┬─────────────────────────────┐
- * │  LEFT 54% — bg-aubergine editorial      │  RIGHT 46% — full-bleed     │
+ * │  LEFT 54% — aubergine editorial         │  RIGHT 46% — full-bleed     │
  * │                                         │  portrait, no bg, no frame  │
  * │  eyebrow · H1 · script · body · CTAs   │  fill + object-cover        │
  * └─────────────────────────────────────────┴─────────────────────────────┘
@@ -12,20 +12,19 @@
  *     Container would cap at 1280px and add lateral padding, which
  *     prevents the portrait from bleeding to the viewport edge.
  *
- *  2. bg-aubergine lives on the LEFT div, not on the section.
+ *  2. bg-[#231727] lives on the LEFT div, not on the section.
  *     This lets the right column be a raw full-bleed image panel.
  *
  *  3. objectPosition via inline style, not Tailwind arbitrary class.
  *     Tailwind v4 doesn't reliably generate object-position utilities.
- *     Tune in DevTools: document.querySelector('.hero-portrait').style.objectPosition = 'X% Y%'
+ *     Tune live: document.querySelector('.hero-portrait').style.objectPosition = 'X% Y%'
  *
  *  4. Mobile: full-width image banner (h-[70svh]) BELOW the text,
- *     with a bottom-to-aubergine vignette so the stacked sections read cleanly.
+ *     with a bottom vignette fading to #F8F4F1 (cream) so the
+ *     stacked section below reads cleanly.
  *
- *  5. Fonts: Playfair Display (Bodoni sub via --font-display),
- *     DM Sans (Brandon Grotesque sub via --font-body),
- *     Sloop Script (premium local via --font-script).
- *     All correct — no changes needed to lib/fonts.ts.
+ *  5. Font shorthand (font-display, font-body, font-script) generated
+ *     by Tailwind v4 from --font-* CSS custom properties in @theme.
  */
 
 import Image from "next/image";
@@ -39,16 +38,12 @@ function anim(delay: string) {
 }
 
 /* ─── image ──────────────────────────────────────────────────── */
-const HERO_IMG = "/images/portraits/martina-women-empowerment-coach.jpg";
+const HERO_IMG = "/images/portraits/martina-hero-empowerment.jpg";
 
 /**
  * objectPosition for face-anchored crop.
- * Image is 2400×1792 (landscape). The right column is portrait-proportioned,
- * so the crop cuts left/right. '62% 0%' centres on Martina's face/upper body.
- *
  * To tune live in DevTools console:
  *   document.querySelector('.hero-portrait').style.objectPosition = '62% 0%'
- * Try: '58% 0%' (face left), '70% 0%' (face right), '62% 5%' (pull down)
  */
 const OBJ_POSITION = "62% 0%";
 
@@ -74,28 +69,16 @@ export function HeroSection({
   return (
     <section
       aria-label="Hero"
-      className={[
-        /* Full-viewport split grid — section IS the grid */
-        "relative grid min-h-[100svh]",
-        /* Mobile: single column (portrait stacks below) */
-        "grid-cols-1",
-        /* Desktop: 54/46 split */
-        "lg:grid-cols-[54fr_46fr]",
-      ].join(" ")}
+      className="relative grid min-h-screen grid-cols-1 lg:min-h-[88vh] lg:grid-cols-[54fr_46fr]"
     >
 
       {/* ══════════════════════════════════════════════════
           LEFT — aubergine editorial column
           ══════════════════════════════════════════════════ */}
       <div
-        className={[
-          "relative z-10 flex flex-col justify-center",
-          "bg-aubergine",
-          /* Mobile/tablet padding */
-          "px-8 py-20 sm:px-12 md:px-14",
-          /* Desktop: top-pad clears fixed nav (~80px) */
-          "lg:px-14 lg:py-[7rem] xl:px-20 2xl:px-24",
-        ].join(" ")}
+        className="relative z-10 flex flex-col justify-center bg-[#231727]
+                   px-8 py-20 sm:px-12 md:px-14
+                   lg:px-14 lg:py-[7rem] xl:px-20 2xl:px-24"
       >
 
         {/* ── Eyebrow ── */}
@@ -104,18 +87,14 @@ export function HeroSection({
           style={{ animation: anim("0.05s") }}
         >
           <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
-          <p className="font-[family-name:var(--font-body)]
-                        text-[10px] font-semibold uppercase
-                        tracking-[0.34em] text-cream/60">
+          <p className="font-body text-[10px] font-semibold uppercase tracking-[0.34em] text-cream/60">
             Private sober muse mentorship
           </p>
         </div>
 
         {/* ── H1 — Playfair Display (Bodoni sub), weight 400 ── */}
         <h1
-          className="font-[family-name:var(--font-display)]
-                     font-normal leading-[0.96] tracking-[-0.03em]
-                     text-cream"
+          className="font-display font-normal leading-[0.96] tracking-[-0.03em] text-cream"
           style={{
             fontSize: "clamp(3.5rem, 6.2vw, 7.4rem)",
             animation: anim("0.12s"),
@@ -144,10 +123,7 @@ export function HeroSection({
 
         {/* ── Body copy ── */}
         <p
-          className="mt-8 max-w-[500px]
-                     font-[family-name:var(--font-body)]
-                     text-[17px] md:text-[19px] leading-[1.65]
-                     text-cream/75"
+          className="mt-8 max-w-[500px] font-body text-[17px] leading-[1.65] text-cream/75 md:text-[19px]"
           style={{ animation: anim("0.28s") }}
         >
           Private mentorship for accomplished women who are ready
@@ -157,10 +133,7 @@ export function HeroSection({
         {/* ── Second body paragraph (heroSubheadline from Sanity/page.tsx) ── */}
         {heroSubheadline && (
           <p
-            className="mt-5 max-w-[500px]
-                       font-[family-name:var(--font-body)]
-                       text-[15px] md:text-[17px] leading-[1.7]
-                       text-cream/55"
+            className="mt-5 max-w-[500px] font-body text-[15px] leading-[1.7] text-cream/55 md:text-[17px]"
             style={{ animation: anim("0.33s") }}
           >
             {heroSubheadline}
@@ -181,15 +154,14 @@ export function HeroSection({
           {/* PRIMARY — cream fill + aubergine text */}
           <Link
             href={heroCtaUrl}
-            className="inline-flex h-14 w-full sm:w-auto sm:min-w-[240px]
-                       items-center justify-center
+            className="inline-flex h-14 w-full items-center justify-center
                        rounded-[1px] border border-cream bg-cream
-                       px-8 font-[family-name:var(--font-body)]
-                       text-[11px] font-semibold uppercase tracking-[0.22em]
-                       text-aubergine transition-all duration-300 ease-out
+                       px-8 font-body text-[11px] font-semibold uppercase tracking-[0.22em]
+                       text-[#231727] transition-all duration-300 ease-out
                        hover:bg-transparent hover:text-cream
                        focus-visible:outline focus-visible:outline-2
-                       focus-visible:outline-offset-4 focus-visible:outline-cream"
+                       focus-visible:outline-offset-4 focus-visible:outline-cream
+                       sm:w-auto sm:min-w-[240px]"
           >
             {heroCta}&nbsp;<span aria-hidden>→</span>
           </Link>
@@ -197,15 +169,14 @@ export function HeroSection({
           {/* SECONDARY — ghost cream border */}
           <Link
             href={heroSecondaryUrl}
-            className="inline-flex h-14 w-full sm:w-auto sm:min-w-[240px]
-                       items-center justify-center
+            className="inline-flex h-14 w-full items-center justify-center
                        rounded-[1px] border border-cream/35
-                       px-8 font-[family-name:var(--font-body)]
-                       text-[11px] font-semibold uppercase tracking-[0.22em]
+                       px-8 font-body text-[11px] font-semibold uppercase tracking-[0.22em]
                        text-cream/80 transition-all duration-300 ease-out
-                       hover:border-cream hover:bg-cream hover:text-aubergine
+                       hover:border-cream hover:bg-cream hover:text-[#231727]
                        focus-visible:outline focus-visible:outline-2
-                       focus-visible:outline-offset-4 focus-visible:outline-cream"
+                       focus-visible:outline-offset-4 focus-visible:outline-cream
+                       sm:w-auto sm:min-w-[240px]"
           >
             {heroSecondaryLabel}&nbsp;<span aria-hidden>→</span>
           </Link>
@@ -213,8 +184,7 @@ export function HeroSection({
 
         {/* ── Trust micro-copy ── */}
         <p
-          className="mt-6 font-[family-name:var(--font-body)]
-                     text-[10px] uppercase tracking-[0.34em] text-cream/40"
+          className="mt-6 font-body text-[10px] uppercase tracking-[0.34em] text-cream/40"
           style={{ animation: anim("0.42s") }}
         >
           Private &middot; Confidential &middot; By application
@@ -225,8 +195,8 @@ export function HeroSection({
       {/* ══════════════════════════════════════════════════
           RIGHT — full-bleed portrait (desktop only)
           ─────────────────────────────────────────────────
-          No bg-cream. No padding. No frame.
-          The aubergine / portrait colour break IS the seam.
+          No bg. No padding. No frame.
+          The #231727 / portrait colour break IS the seam.
           overflow-hidden clips fill outside the column.
           hero-portrait class for DevTools targeting.
           ══════════════════════════════════════════════════ */}
@@ -246,11 +216,10 @@ export function HeroSection({
 
       {/* ══════════════════════════════════════════════════
           MOBILE image — full-width banner below text
-          h-[70svh] gives strong presence without pushing
-          too far down on 375px screens.
-          Bottom vignette fades into the cream section below.
+          h-[70svh] gives strong presence on 375px screens.
+          Bottom vignette fades to #F8F4F1 (cream surface).
           ══════════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden lg:hidden h-[70svh]">
+      <div className="relative h-[70svh] overflow-hidden lg:hidden">
         <Image
           src={HERO_IMG}
           alt="Martina Rink — private mentor for accomplished women"
@@ -263,8 +232,10 @@ export function HeroSection({
         {/* Bottom vignette — fades portrait into cream below on mobile */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24
-                     bg-gradient-to-t from-cream/70 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+          style={{
+            background: "linear-gradient(to top, #F8F4F1, transparent)",
+          }}
         />
       </div>
 
