@@ -232,6 +232,11 @@ export default async function EmpowermentPage() {
             ) : (
               <>
                 <p>
+                  The Female Empowerment Coaching is offered{" "}
+                  <strong className="text-ink">by application</strong>{" "}
+                  for the 90-day engagement.
+                </p>
+                <p>
                   This work does not operate on a fixed timeline. It runs until the
                   work is done — usually somewhere between six months and two years.
                 </p>
@@ -265,8 +270,8 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
-      {/* LILAC CTA SECTION */}
-      <section className="bg-lilac-soft section-pad">
+      {/* CTA SECTION */}
+      <section className="bg-blush section-pad">
         <div className="container-content max-w-2xl mx-auto text-center">
           <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
             come home to yourself
@@ -318,7 +323,7 @@ export default async function EmpowermentPage() {
       </section>
 
       {/* WHO THIS IS NOT FOR — premium qualifier */}
-      <section className="bg-lilac-soft section-pad">
+      <section className="bg-bone section-pad">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>An honest filter</Eyebrow>
           <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">

@@ -24,7 +24,7 @@ export function AssessmentOption({ label, selected, onSelect, index }: Props) {
         /* States */
         selected
           ? "bg-plum border-plum text-cream shadow-[0_2px_12px_rgba(92,45,142,0.18)]"
-          : "bg-cream border-sand text-ink-soft hover:border-plum/40 hover:bg-lilac-soft",
+          : "bg-cream border-sand text-ink-soft hover:border-plum/40 hover:bg-blush/50",
       ].join(" ")}
     >
       {/* Letter badge */}

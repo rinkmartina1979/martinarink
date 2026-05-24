@@ -113,7 +113,7 @@ export default function ApplicationThankYouPage() {
               <Link
                 key={piece.slug}
                 href={`/writing/${piece.slug}`}
-                className="group block bg-bone p-6 hover:bg-lilac-soft transition-colors duration-200"
+                className="group block bg-bone p-6 hover:bg-blush transition-colors duration-200"
               >
                 <p className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet mb-3">
                   Essay

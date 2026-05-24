@@ -56,7 +56,7 @@ export function InlineLetterCapture({ archetype }: { archetype: string }) {
 
   if (status === "done") {
     return (
-      <div className="border border-sand/60 bg-violet-soft/40 px-6 py-7 md:px-8 md:py-8">
+      <div className="border border-sand/60 bg-blush/40 px-6 py-7 md:px-8 md:py-8">
         <p className="font-[family-name:var(--font-display)] italic text-[20px] text-ink mb-2">
           The first letter is on its way.
         </p>

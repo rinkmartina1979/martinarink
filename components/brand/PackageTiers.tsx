@@ -50,8 +50,6 @@ export function PackageTiers({ surface = "cream" }: PackageTiersProps) {
               ? tier.featured
                 ? "bg-aubergine"
                 : "bg-ink"
-              : tier.featured
-              ? "bg-bone border border-sand/60"
               : "bg-cream border border-sand/30",
           ].join(" ")}
         >

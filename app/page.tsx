@@ -276,14 +276,14 @@ export default async function HomePage() {
           overflow-hidden
         ">
           <Image
-            src="/images/portraits/martina-women-empowerment-coach.jpg"
+            src="/images/portraits/martina-hero-empowerment.jpg"
             alt="Martina Rink, private mentor and Spiegel Bestselling author"
             fill
             priority
             fetchPriority="high"
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
-            style={{ objectPosition: "62% 0%" }}
+            style={{ objectPosition: "center 15%" }}
           />
 
           {/* Mobile vignette — fades portrait into cream below */}
@@ -685,7 +685,7 @@ export default async function HomePage() {
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
             {testimonials.map((t, i) => {
-              const bgMap = ["bg-rose", "bg-lilac-soft", "bg-rose", "bg-lilac-soft", "bg-rose", "bg-lilac-soft"];
+              const bgMap = ["bg-rose", "bg-blush", "bg-rose", "bg-blush", "bg-rose", "bg-blush"];
               const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25", "text-plum/30", "text-pink/30"];
               const isSanity = "_id" in t;
               const item = {

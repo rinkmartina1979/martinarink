@@ -161,7 +161,7 @@ export default async function AboutPage() {
       </section>
 
       {/* PULL QUOTE — Isabella Blow specific authority */}
-      <section className="bg-lilac-soft py-14 md:py-20">
+      <section className="bg-blush py-14 md:py-20">
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
