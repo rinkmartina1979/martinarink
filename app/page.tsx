@@ -617,55 +617,42 @@ export default async function HomePage() {
       </section>
 
       {/* ─── ABOUT TEASER ────────────────────────────────────── */}
-      <section className="bg-bone section-pad">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-5">
-            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
-              <Image
-                src="/images/portraits/martina-salon-ibiza.jpg"
-                alt="Martina Rink — private mentor"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
-              />
-            </div>
+      <section className="bg-rose section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>About</Eyebrow>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.15] text-ink">
+            I am interested in the distance between how a woman appears — and
+            how she{" "}
+            <ScriptAccent className="text-[1.1em] leading-none">
+              actually feels
+            </ScriptAccent>{" "}
+            inside her own life.
+          </h2>
+          <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft">
+            <p>
+              {pageData?.aboutTeaser ||
+                "Born in Persia. Adopted by German parents. Educated in Germany and London. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
+            </p>
+            <p>
+              Before this practice: personal assistant to Isabella Blow in
+              London. Three published books, including a Spiegel Bestseller.
+              Six years sober. None of that is the work — it is simply why I
+              can sit with women who are accomplished enough to know that
+              accomplishment is not the answer.
+            </p>
           </div>
-          <div className="md:col-span-7">
-            <Eyebrow>About</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-[1.15] text-ink">
-              I am interested in the distance between how a woman appears — and
-              how she{" "}
-              <ScriptAccent className="text-[1.1em] leading-none">
-                actually feels
-              </ScriptAccent>{" "}
-              inside her own life.
-            </h2>
-            <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
-              <p>
-                {pageData?.aboutTeaser ||
-                  "Born in Persia. Adopted by German parents. Educated in Germany and London. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
-              </p>
-              <p>
-                Before this practice: personal assistant to Isabella Blow in
-                London. Three published books, including a Spiegel Bestseller.
-                Six years sober. None of that is the work — it is simply why I
-                can sit with women who are accomplished enough to know that
-                accomplishment is not the answer.
-              </p>
-            </div>
-            <div className="mt-8 flex items-center gap-6">
-              <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
-              <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
-                Author · Mentor · Ibiza · Berlin
-              </span>
-            </div>
-            <Link
-              href="/about"
-              className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
-            >
-              Read the longer version →
-            </Link>
+          <div className="mt-8 flex items-center gap-6">
+            <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
+            <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+              Author · Mentor · Ibiza · Berlin
+            </span>
           </div>
+          <Link
+            href="/about"
+            className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+          >
+            Read the longer version →
+          </Link>
         </div>
       </section>
 

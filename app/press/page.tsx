@@ -525,7 +525,12 @@ export default async function PressPage() {
 
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12 max-w-5xl">
             {hasSanityPublications
-              ? (publications as SanityPublication[]).map((pub) => (
+              ? ([...(publications as SanityPublication[])].sort((a, b) => {
+                  // Isabella Blow always first
+                  if (a.title.toLowerCase().includes("isabella")) return -1;
+                  if (b.title.toLowerCase().includes("isabella")) return 1;
+                  return 0;
+                })).map((pub) => (
                   <article key={pub._id} className="flex flex-col">
                     <div className="flex aspect-[4/5] items-center justify-center bg-white p-10
                              shadow-[0_2px_20px_rgba(30,27,23,0.06)]
@@ -786,47 +791,24 @@ export default async function PressPage() {
           7 — AVAILABILITY BAND (with press studio image)
       ══════════════════════════════════════════════════════ */}
       <section className="bg-bone border-y border-sand/40 overflow-hidden">
-        <div className="grid lg:grid-cols-[1fr_340px]">
-
-          {/* Left — availability info */}
-          <div className="py-10 md:py-14 px-6 md:px-12 lg:px-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-3 font-[family-name:var(--font-body)]">
-                Availability
-              </p>
-              <p className="text-[16px] text-ink-soft font-[family-name:var(--font-body)] mb-1">
-                Europe-wide &middot; International on request
-              </p>
-              <p className="text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
-                Keynote &middot; Panel &middot; Podcast &middot; Fireside
-              </p>
-            </div>
-            <a
-              href={`mailto:${SITE.email}`}
-              className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-ink hover:text-plum transition-colors font-[family-name:var(--font-body)] border border-sand/60 hover:border-plum/40 px-6 py-4 shrink-0"
-            >
-              Speaking enquiry <span aria-hidden>→</span>
-            </a>
+        <div className="py-10 md:py-14 px-6 md:px-12 lg:px-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8 container-content">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.24em] text-ink-quiet mb-3 font-[family-name:var(--font-body)]">
+              Availability
+            </p>
+            <p className="text-[16px] text-ink-soft font-[family-name:var(--font-body)] mb-1">
+              Europe-wide &middot; International on request
+            </p>
+            <p className="text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
+              Keynote &middot; Panel &middot; Podcast &middot; Fireside
+            </p>
           </div>
-
-          {/* Right — press studio image */}
-          <div className="relative hidden lg:block">
-            <Image
-              src="/images/portraits/martina-rink-being-ready-for-press-shot.jpeg"
-              alt="Martina Rink — preparing for a press shoot in studio"
-              fill
-              sizes="340px"
-              className="object-cover object-[center_30%]"
-              loading="lazy"
-            />
-            {/* Left edge fade into bone */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 left-0 w-16
-                         bg-gradient-to-r from-bone to-transparent"
-            />
-          </div>
-
+          <a
+            href={`mailto:${SITE.email}`}
+            className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-ink hover:text-plum transition-colors font-[family-name:var(--font-body)] border border-sand/60 hover:border-plum/40 px-6 py-4 shrink-0"
+          >
+            Speaking enquiry <span aria-hidden>→</span>
+          </a>
         </div>
       </section>
 
