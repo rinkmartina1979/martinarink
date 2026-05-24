@@ -244,7 +244,7 @@ const SOBER_MUSE_FIELDS: FormField[] = [
     label: "Investment readiness",
     type: "select",
     options: [
-      "Yes — I'm ready to invest €5,000–€7,500 in the next 60 days",
+      "Yes — I'm ready to invest €5,000–€7,500 in the next 90 days",
       "Yes, with a payment plan",
       "Not at this time — I'd like to begin with the newsletter",
     ],
@@ -298,7 +298,7 @@ const EMPOWERMENT_FIELDS: FormField[] = [
     label: "Investment readiness",
     type: "select",
     options: [
-      "Yes — I'm ready to invest €7,500–€15,000 in the next 60 days",
+      "Yes — I'm ready to invest €7,500–€15,000 in the next 90 days",
       "Yes, with a payment plan",
       "Not at this time — I'd like to begin with the newsletter",
     ],

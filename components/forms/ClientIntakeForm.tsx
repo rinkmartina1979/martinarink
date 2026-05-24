@@ -632,8 +632,8 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
             {...register("investmentReadiness")}
           >
             <option value="">Select…</option>
-            <option value="Yes — ready to invest in the next 60 days">
-              Yes — I am ready to invest in the next 60 days
+            <option value="Yes — ready to invest in the next 90 days">
+              Yes — I am ready to invest in the next 90 days
             </option>
             <option value="Yes — with a payment plan">
               Yes — with a payment plan
