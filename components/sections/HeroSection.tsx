@@ -38,7 +38,7 @@ function anim(delay: string) {
 }
 
 /* ─── image ──────────────────────────────────────────────────── */
-const HERO_IMG = "/images/portraits/martina-hero-empowerment.jpg";
+const HERO_IMG = "/images/portraits/martina-women-empowerment-coach.jpg";
 
 /**
  * objectPosition for face-anchored crop.
@@ -76,14 +76,14 @@ export function HeroSection({
           LEFT — aubergine editorial column
           ══════════════════════════════════════════════════ */}
       <div
-        className="relative z-10 flex flex-col justify-start bg-[#231727]
-                   px-8 py-20 sm:px-12 md:px-14
-                   lg:px-14 lg:pt-[7rem] lg:pb-[5rem] xl:px-20 2xl:px-24"
+        className="relative z-10 flex flex-col justify-center bg-[#231727]
+                   px-8 py-16 sm:px-12 md:px-14
+                   lg:px-14 lg:pt-[4rem] lg:pb-[2.5rem] xl:px-20 2xl:px-24"
       >
 
         {/* ── Eyebrow ── */}
         <div
-          className="mb-8 flex items-center gap-4"
+          className="mb-5 flex items-center gap-4"
           style={{ animation: anim("0.05s") }}
         >
           <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
@@ -96,7 +96,7 @@ export function HeroSection({
         <h1
           className="font-display font-normal leading-[0.96] tracking-[-0.03em] text-cream"
           style={{
-            fontSize: "clamp(3rem, 5.5vw, 5.8rem)",
+            fontSize: "clamp(2.6rem, 4vw, 3.875rem)",
             animation: anim("0.12s"),
           }}
         >
@@ -108,13 +108,13 @@ export function HeroSection({
 
         {/* ── Script accent "and yet." — Sloop Script (premium local) ── */}
         <div
-          className="mt-7 flex items-center gap-5"
+          className="mt-5 flex items-center gap-5"
           style={{ animation: anim("0.20s") }}
         >
           <span className="h-px w-7 shrink-0 bg-pink" aria-hidden />
           <ScriptAccent
             className="leading-none text-pink"
-            style={{ fontSize: "clamp(2rem, 3.2vw, 4rem)" }}
+            style={{ fontSize: "clamp(1.8rem, 2.8vw, 3.2rem)" }}
           >
             and yet.
           </ScriptAccent>
@@ -123,7 +123,7 @@ export function HeroSection({
 
         {/* ── Body copy ── */}
         <p
-          className="mt-8 max-w-[500px] font-body text-[17px] leading-[1.65] text-cream/75 md:text-[19px]"
+          className="mt-6 max-w-[500px] font-body text-[16px] leading-[1.65] text-cream/75 md:text-[18px]"
           style={{ animation: anim("0.28s") }}
         >
           Private mentorship for accomplished women who are ready
@@ -131,15 +131,9 @@ export function HeroSection({
         </p>
 
 
-        {/* ── Editorial hairline ── */}
-        <hr
-          className="hidden lg:block mt-9 mb-0 border-none h-px w-14 bg-cream/20"
-          aria-hidden
-        />
-
         {/* ── CTAs ── */}
         <div
-          className="mt-10 flex flex-col gap-4 sm:flex-row"
+          className="mt-7 flex flex-col gap-3 sm:flex-row"
           style={{ animation: anim("0.35s") }}
         >
           {/* PRIMARY — cream fill + aubergine text */}
@@ -175,7 +169,7 @@ export function HeroSection({
 
         {/* ── Trust micro-copy ── */}
         <p
-          className="mt-6 font-body text-[10px] uppercase tracking-[0.34em] text-cream/40"
+          className="mt-4 font-body text-[10px] uppercase tracking-[0.34em] text-cream/40"
           style={{ animation: anim("0.42s") }}
         >
           Private &middot; Confidential &middot; By application
@@ -202,6 +196,12 @@ export function HeroSection({
           sizes="(min-width: 1024px) 46vw, 100vw"
           className="hero-portrait object-cover"
           style={{ objectPosition: OBJ_POSITION }}
+        />
+        {/* Left-edge gradient — aubergine bleeds into portrait */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 w-20"
+          style={{ background: "linear-gradient(to right, #231727, transparent)" }}
         />
       </div>
 
