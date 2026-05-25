@@ -78,7 +78,7 @@ export function HeroSection({
       <div
         className="relative z-10 flex flex-col justify-center bg-[#231727]
                    px-8 py-16 sm:px-12 md:px-14
-                   lg:px-14 lg:pt-[4rem] lg:pb-[2.5rem] xl:px-20 2xl:px-24"
+                   lg:px-14 lg:pt-[5rem] lg:pb-[2.5rem] xl:px-20 2xl:px-24"
       >
 
         {/* ── Eyebrow ── */}
@@ -185,18 +185,29 @@ export function HeroSection({
           overflow-hidden clips fill outside the column.
           hero-portrait class for DevTools targeting.
           ══════════════════════════════════════════════════ */}
-      <div className="relative hidden overflow-hidden lg:block">
-        <Image
-          src={HERO_IMG}
-          alt="Martina Rink — private mentor for accomplished women"
-          fill
-          priority
-          fetchPriority="high"
-          quality={90}
-          sizes="(min-width: 1024px) 46vw, 100vw"
-          className="hero-portrait object-cover"
-          style={{ objectPosition: OBJ_POSITION }}
-        />
+      {/*
+          Outer div: bg-[#231727] fills the full column height including the
+          80px zone behind the fixed nav — seamless aubergine band across top.
+          Inner div: starts at top=80px (nav height), extends to bottom.
+          Image fills the inner 592px zone — face clear of nav.
+      */}
+      <div className="relative hidden lg:block bg-[#231727]">
+        <div
+          className="absolute left-0 right-0 bottom-0 overflow-hidden"
+          style={{ top: "80px" }}
+        >
+          <Image
+            src={HERO_IMG}
+            alt="Martina Rink — private mentor for accomplished women"
+            fill
+            priority
+            fetchPriority="high"
+            quality={90}
+            sizes="(min-width: 1024px) 46vw, 100vw"
+            className="hero-portrait object-cover"
+            style={{ objectPosition: OBJ_POSITION }}
+          />
+        </div>
       </div>
 
       {/* ══════════════════════════════════════════════════
