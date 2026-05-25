@@ -197,12 +197,6 @@ export function HeroSection({
           className="hero-portrait object-cover"
           style={{ objectPosition: OBJ_POSITION }}
         />
-        {/* Left-edge gradient — aubergine bleeds into portrait */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 w-20"
-          style={{ background: "linear-gradient(to right, #231727, transparent)" }}
-        />
       </div>
 
       {/* ══════════════════════════════════════════════════
