@@ -19,6 +19,7 @@ import { getVisibleCaseStudies } from "@/sanity/lib/membersQueries";
 import { CaseStudyCard } from "@/components/press/CaseStudyCard";
 import { FALLBACK_CASE_STUDIES } from "@/lib/fallback-content";
 import { CopyButton } from "@/components/press/CopyButton";
+import { VideoEmbed } from "@/components/media/VideoEmbed";
 
 /* ─── Metadata ──────────────────────────────────────────────── */
 export async function generateMetadata(): Promise<Metadata> {
@@ -784,6 +785,43 @@ export default async function PressPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          6.5 — ON SCREEN — interview & media appearances
+      ══════════════════════════════════════════════════════ */}
+      <section id="media" className="bg-[#231727] py-20 md:py-28 scroll-mt-20">
+        <div className="container-content">
+
+          {/* Section header */}
+          <div className="mb-14 md:mb-20">
+            <Eyebrow variant="light" withLine>On Screen</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[38px] md:text-[48px] leading-tight text-cream">
+              Interviews &amp; appearances.
+            </h2>
+            <p className="mt-4 text-[16px] leading-[1.8] text-cream/55 max-w-lg font-[family-name:var(--font-body)]">
+              Selected media coverage — conversations on sobriety, ambition, and what it
+              means to build a life that actually fits.
+            </p>
+          </div>
+
+          {/* Video grid — side by side, stacks on mobile */}
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
+            <VideoEmbed
+              number="01"
+              src="https://player.vimeo.com/video/25253824?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
+              title="Martina Rink — Vimeo interview"
+              caption="Vimeo · Interview"
+            />
+            <VideoEmbed
+              number="02"
+              src="https://www.youtube-nocookie.com/embed/fqqH5TDdzec?rel=0&modestbranding=1&color=white"
+              title="Martina Rink — YouTube appearance"
+              caption="YouTube · Feature"
+            />
+          </div>
+
         </div>
       </section>
 
