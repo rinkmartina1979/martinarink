@@ -69,7 +69,7 @@ export function HeroSection({
   return (
     <section
       aria-label="Hero"
-      className="relative grid min-h-screen grid-cols-1 lg:min-h-[88vh] lg:grid-cols-[54fr_46fr]"
+      className="relative grid min-h-[100svh] grid-cols-1 lg:grid-cols-[54fr_46fr]"
     >
 
       {/* ══════════════════════════════════════════════════
@@ -207,10 +207,10 @@ export function HeroSection({
 
       {/* ══════════════════════════════════════════════════
           MOBILE image — full-width banner below text
-          h-[70svh] gives strong presence on 375px screens.
+          h-[60svh] gives strong presence on 375px screens.
           Bottom vignette fades to #F8F4F1 (cream surface).
           ══════════════════════════════════════════════════ */}
-      <div className="relative h-[70svh] overflow-hidden lg:hidden">
+      <div className="relative h-[60svh] overflow-hidden lg:hidden">
         <Image
           src={HERO_IMG}
           alt="Martina Rink — private mentor for accomplished women"
