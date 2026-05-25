@@ -45,7 +45,7 @@ const HERO_IMG = "/images/portraits/martina-hero-empowerment.jpg";
  * To tune live in DevTools console:
  *   document.querySelector('.hero-portrait').style.objectPosition = '62% 0%'
  */
-const OBJ_POSITION = "62% 0%";
+const OBJ_POSITION = "40% 0%";
 
 /* ─── props ──────────────────────────────────────────────────── */
 interface HeroSectionProps {
@@ -76,9 +76,9 @@ export function HeroSection({
           LEFT — aubergine editorial column
           ══════════════════════════════════════════════════ */}
       <div
-        className="relative z-10 flex flex-col justify-center bg-[#231727]
+        className="relative z-10 flex flex-col justify-start bg-[#231727]
                    px-8 py-20 sm:px-12 md:px-14
-                   lg:px-14 lg:py-[7rem] xl:px-20 2xl:px-24"
+                   lg:px-14 lg:pt-[7rem] lg:pb-[5rem] xl:px-20 2xl:px-24"
       >
 
         {/* ── Eyebrow ── */}
@@ -96,7 +96,7 @@ export function HeroSection({
         <h1
           className="font-display font-normal leading-[0.96] tracking-[-0.03em] text-cream"
           style={{
-            fontSize: "clamp(3.5rem, 6.2vw, 7.4rem)",
+            fontSize: "clamp(3rem, 5.5vw, 5.8rem)",
             animation: anim("0.12s"),
           }}
         >
@@ -130,15 +130,6 @@ export function HeroSection({
           to feel at home inside the life they built.
         </p>
 
-        {/* ── Second body paragraph (heroSubheadline from Sanity/page.tsx) ── */}
-        {heroSubheadline && (
-          <p
-            className="mt-5 max-w-[500px] font-body text-[15px] leading-[1.7] text-cream/55 md:text-[17px]"
-            style={{ animation: anim("0.33s") }}
-          >
-            {heroSubheadline}
-          </p>
-        )}
 
         {/* ── Editorial hairline ── */}
         <hr
