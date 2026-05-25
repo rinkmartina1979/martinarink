@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
+import { PageHero } from "@/components/sections/PageHero";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getAllPosts, type PostListItem } from "@/sanity/lib/queries";
@@ -68,18 +69,12 @@ export default async function WritingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMBS) }}
       />
-      <section className="bg-cream pt-24 md:pt-32 pb-14">
-        <div className="container-content max-w-3xl">
-          <Eyebrow withLine>Writing</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[48px] md:text-[68px] lg:text-[76px] leading-[1.02] tracking-[-0.02em] text-ink">
-            Essays on the examined life.
-          </h1>
-          <p className="mt-6 text-[18px] leading-[1.65] text-ink-soft max-w-[560px]">
-            For women who have built something remarkable and are now, quietly,
-            re-reading the architecture.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Writing"
+        headline="Essays on the examined life."
+        subheadline="For women who have built something remarkable and are now, quietly, re-reading the architecture."
+        variant="dark"
+      />
 
       <section className="bg-cream py-12 md:py-16">
         <div className="container-content">

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
+import { PageHero } from "@/components/sections/PageHero";
 import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { PackageTiers } from "@/components/brand/PackageTiers";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
@@ -51,59 +51,27 @@ export default async function WorkWithMePage() {
       {/* ══════════════════════════════════════════════════════
           1 — HERO
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-cream pt-0 pb-0 overflow-hidden">
-        <div className="grid md:grid-cols-2 min-h-[90svh] items-stretch">
-          {/* Text — left half */}
-          <div className="flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-32 md:pt-0 pb-16 md:pb-0 order-2 md:order-1">
-            <Eyebrow withLine>Work with me</Eyebrow>
-            <h1
-              className="mt-7 font-[family-name:var(--font-display)] text-ink leading-[0.92] tracking-[-0.04em]"
-              style={{ fontSize: "clamp(2.8rem, 4.6vw, 5.8rem)" }}
-            >
-              {heroHeadline}
-            </h1>
-            <p className="mt-8 text-[17px] md:text-[18px] leading-[1.8] text-ink-soft max-w-[480px] font-[family-name:var(--font-body)]">
-              {heroCopy}
-            </p>
-
-            {/* Availability signal — rose background */}
-            <div className="mt-8 inline-flex items-center gap-3 px-5 py-3 bg-blush border border-pink/25 self-start">
-              <span className="block w-1.5 h-1.5 rounded-full bg-pink animate-pulse shrink-0" />
-              <span className="text-[11px] uppercase tracking-[0.2em] text-ink font-[family-name:var(--font-body)]">
-                Two openings &middot; next intake June 2026
-              </span>
-            </div>
-
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-              <GhostButton href="#programmes">
-                See the programmes
-              </GhostButton>
-            </div>
-          </div>
-
-          {/* Portrait — right half, full portrait visible, no crop */}
-          <div className="flex items-center justify-center
-                          min-h-[70svh] md:min-h-0
-                          bg-[#F0EBE6]
-                          order-1 md:order-2
-                          md:pt-[80px]">
-            <div className="relative w-full h-full
-                            md:h-[calc(90svh-80px)]
-                            md:max-h-[820px] md:max-w-[620px]">
-              <Image
-                src="/images/portraits/martina-portrait-studio.jpg"
-                alt="Martina Rink — private mentor"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain object-bottom
-                           md:object-contain md:object-center"
-                priority
-              />
-            </div>
-          </div>
+      <PageHero
+        eyebrow="Work with me"
+        headline={heroHeadline}
+        subheadline={heroCopy}
+        cta={{ label: ctaLabel, href: ctaUrl }}
+        ctaSecondary={{ label: "See the programmes", href: "#programmes" }}
+        portrait={{
+          src: "/images/portraits/martina-portrait-studio.jpg",
+          alt: "Martina Rink — private mentor",
+          objectPosition: "50% 5%",
+        }}
+        variant="dark"
+      >
+        {/* Availability badge */}
+        <div className="mt-7 inline-flex items-center gap-3 px-5 py-3 border border-cream/20 self-start">
+          <span className="block w-1.5 h-1.5 rounded-full bg-pink animate-pulse shrink-0" />
+          <span className="text-[11px] uppercase tracking-[0.2em] text-cream/55 font-[family-name:var(--font-body)]">
+            Two openings &middot; next intake June 2026
+          </span>
         </div>
-      </section>
+      </PageHero>
 
       {/* ══════════════════════════════════════════════════════
           2 — HOW IT WORKS (process strip)

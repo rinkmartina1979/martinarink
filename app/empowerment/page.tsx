@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
+import { PageHero } from "@/components/sections/PageHero";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getEmpowermentPage } from "@/sanity/lib/queries";
@@ -96,33 +97,18 @@ export default async function EmpowermentPage() {
         }}
       />
 
-      {/* HERO — DS v1 §3.1 Variant A. lg:pt-48 hits hero spec; pb-0 flows into next section. */}
-      <section className="bg-cream pt-32 md:pt-40 lg:pt-48 pb-0">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
-          <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
-            <Eyebrow withLine>Female Empowerment &amp; Leadership</Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[48px] md:text-[76px] lg:text-[88px] leading-[1.0] tracking-[-0.02em] text-ink">
-              {heroHeadline}
-            </h1>
-            <p className="mt-8 text-[19px] leading-[1.65] text-ink-soft max-w-[520px]">
-              {heroCopy}
-            </p>
-            <div className="mt-10">
-              <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-            </div>
-          </div>
-          <div className="md:col-span-5 relative min-h-[420px] md:min-h-0 bg-bone overflow-hidden">
-            <Image
-              src="/images/portraits/martina-ibiza-sunset.jpg"
-              alt="Martina Rink — Female Empowerment & Leadership"
-              fill
-              sizes="(max-width: 768px) 100vw, 35vw"
-              className="object-cover object-top"
-              priority
-            />
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Female Empowerment & Leadership"
+        headline={heroHeadline}
+        subheadline={heroCopy}
+        cta={{ label: ctaLabel, href: ctaUrl }}
+        portrait={{
+          src: "/images/portraits/martina-ibiza-sunset.jpg",
+          alt: "Martina Rink — Female Empowerment & Leadership",
+          objectPosition: "50% 20%",
+        }}
+        variant="dark"
+      />
 
       {/* WHO THIS IS FOR */}
       <section className="bg-bone section-pad">

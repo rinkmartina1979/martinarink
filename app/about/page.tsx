@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
+import { PageHero } from "@/components/sections/PageHero";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata, aboutPersonSchema, breadcrumbSchema } from "@/lib/metadata";
@@ -51,14 +52,11 @@ export default async function AboutPage() {
         }}
       />
       {/* HERO */}
-      <section className="bg-cream pt-32 md:pt-44 pb-0">
-        <div className="container-content max-w-5xl">
-          <Eyebrow withLine>About Martina Rink</Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[52px] md:text-[72px] lg:text-[80px] leading-[1.02] tracking-[-0.02em] text-ink">
-            {heroHeadline}
-          </h1>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="About Martina Rink"
+        headline={heroHeadline}
+        variant="light"
+      />
 
       {/* OPENING — flows from hero, no top padding */}
       <section className="bg-cream pb-16 md:pb-24">

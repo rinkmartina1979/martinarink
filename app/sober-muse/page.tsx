@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
+import { PageHero } from "@/components/sections/PageHero";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib/metadata";
@@ -100,33 +101,18 @@ export default async function SoberMusePage() {
         }}
       />
 
-      {/* HERO — DS v1 §3.1 Variant A. lg:pt-48 hits hero spec; pb-0 flows into next section. */}
-      <section className="bg-cream pt-32 md:pt-40 lg:pt-48 pb-0">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-0 items-stretch">
-          <div className="md:col-span-7 md:pr-16 pb-16 md:pb-24 flex flex-col justify-center">
-            <Eyebrow withLine>The Sober Muse Method</Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[48px] md:text-[72px] lg:text-[80px] leading-[1.02] tracking-[-0.02em] text-ink">
-              {heroHeadline}
-            </h1>
-            <p className="mt-8 text-[20px] leading-[1.55] text-ink-soft max-w-[520px]">
-              {heroCopy}
-            </p>
-            <div className="mt-10">
-              <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-            </div>
-          </div>
-          <div className="md:col-span-5 relative min-h-[420px] md:min-h-0 bg-bone overflow-hidden">
-            <Image
-              src="/images/portraits/martina-bw-studio.jpg"
-              alt="Martina Rink — Sober Muse Method"
-              fill
-              sizes="(max-width: 768px) 100vw, 35vw"
-              className="object-cover object-top"
-              priority
-            />
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="The Sober Muse Method"
+        headline={heroHeadline}
+        subheadline={heroCopy}
+        cta={{ label: ctaLabel, href: ctaUrl }}
+        portrait={{
+          src: "/images/portraits/martina-bw-studio.jpg",
+          alt: "Martina Rink — The Sober Muse Method",
+          objectPosition: "50% 10%",
+        }}
+        variant="dark"
+      />
 
       {/* WHAT IS / WHAT IS NOT */}
       <section className="bg-bone section-pad">
