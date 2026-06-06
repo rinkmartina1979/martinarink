@@ -7,30 +7,14 @@
  */
 
 interface Props {
-  /** High-readiness users apply directly. Others consult first. */
-  isHighReadiness: boolean;
+  readinessLevel: "high" | "medium" | "low";
 }
 
-export function WhatHappensNext({ isHighReadiness }: Props) {
-  const steps = isHighReadiness
+export function WhatHappensNext({ readinessLevel }: Props) {
+  const isLow = readinessLevel === "low";
+
+  const steps = isLow
     ? [
-        {
-          n: "01",
-          title: "Submit your application",
-          body: "Five honest questions. Takes about ten minutes. I read every one personally.",
-        },
-        {
-          n: "02",
-          title: "I reply within 48 hours",
-          body: "If we are the right fit, you receive a private booking link in that email.",
-        },
-        {
-          n: "03",
-          title: "We speak privately",
-          body: "A 45-minute conversation. €350, applied to the programme if you proceed.",
-        },
-      ]
-    : [
         {
           n: "01",
           title: "Reserve your consultation",
@@ -45,6 +29,23 @@ export function WhatHappensNext({ isHighReadiness }: Props) {
           n: "03",
           title: "You decide what comes next",
           body: "No pressure. The decision is entirely yours, and it will wait until it is ready.",
+        },
+      ]
+    : [
+        {
+          n: "01",
+          title: "Submit your application",
+          body: "Five honest questions. Takes about six minutes. I read every one personally.",
+        },
+        {
+          n: "02",
+          title: "I reply within 48 hours",
+          body: "If we are the right fit, you receive a private booking link in that email.",
+        },
+        {
+          n: "03",
+          title: "We speak privately",
+          body: "A 45-minute conversation. €350, applied to the programme if you proceed.",
         },
       ];
 
@@ -89,9 +90,9 @@ export function WhatHappensNext({ isHighReadiness }: Props) {
 
         {/* Reassurance footnote */}
         <p className="mt-10 text-[12px] leading-[1.7] text-ink-quiet border-l border-sand/60 pl-4 italic font-[family-name:var(--font-display)]">
-          {isHighReadiness
-            ? "The application is short. The conversation is private. Nothing is committed until you choose to proceed."
-            : "The consultation is a genuine conversation — not a sales call. Nothing is decided until you are ready."}
+          {isLow
+            ? "The consultation is a genuine conversation — not a sales call. Nothing is decided until you are ready."
+            : "The application is short. The conversation is private. Nothing is committed until you choose to proceed."}
         </p>
 
       </div>

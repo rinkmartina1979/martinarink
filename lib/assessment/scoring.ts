@@ -94,12 +94,11 @@ export function deriveRouting(result: ScoringResult): {
   }
 
   if (readinessLevel === "medium") {
-    const applyHref = archetype === "pleasing" ? "/book" : "/book";
     return {
-      primaryHref: applyHref,
-      primaryLabel: "BEGIN WITH A PRIVATE CONSULTATION",
-      secondaryHref: "/newsletter",
-      secondaryLabel: "RECEIVE THE PRIVATE LETTERS",
+      primaryHref: "/apply/empowerment",
+      primaryLabel: "APPLY — EMPOWERMENT & LEADERSHIP",
+      secondaryHref: "/writing",
+      secondaryLabel: "READ THE WRITING",
     };
   }
 

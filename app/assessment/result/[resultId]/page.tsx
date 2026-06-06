@@ -66,8 +66,10 @@ export default async function AssessmentResultPage({ params }: Props) {
     privacyNeed,
   } as ScoringResult);
 
-  const isPrivacyHigh = privacyNeed === "high";
-  const isHighReadiness = readinessLevel === "high";
+  const isPrivacyHigh    = privacyNeed === "high";
+  const isHighReadiness  = readinessLevel === "high";
+  const isMediumReadiness = readinessLevel === "medium";
+  const isLowReadiness   = readinessLevel === "low";
 
   return (
     <>
@@ -151,13 +153,22 @@ export default async function AssessmentResultPage({ params }: Props) {
       )}
 
       {/* ── WHAT HAPPENS NEXT ────────────────────────────────────── */}
-      <WhatHappensNext isHighReadiness={isHighReadiness} />
+      <WhatHappensNext readinessLevel={readinessLevel} />
 
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section className="bg-bone border-t border-sand py-16 md:py-20">
         <div className="container-content max-w-[640px] mx-auto px-6">
-          <p className="text-[13px] tracking-[0.2em] uppercase text-ink-quiet mb-8">
-            {isHighReadiness ? "The natural next step" : "Or — when you are ready"}
+
+          {/* Directive headline — specific per readiness */}
+          <p className="font-[family-name:var(--font-display)] italic text-[20px] text-ink mb-2 leading-snug">
+            {isLowReadiness
+              ? "The letters are a quieter beginning."
+              : "Your next step is the application."}
+          </p>
+          <p className="text-[13px] tracking-[0.14em] uppercase text-ink-quiet mb-8 font-[family-name:var(--font-body)]">
+            {isLowReadiness
+              ? "One letter, each week. No pressure."
+              : "Five questions. Six minutes. I read every one personally."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -168,7 +179,7 @@ export default async function AssessmentResultPage({ params }: Props) {
               {routing.primaryLabel}
             </a>
 
-            {routing.secondaryHref && isHighReadiness && (
+            {routing.secondaryHref && (
               <a
                 href={routing.secondaryHref}
                 className="inline-flex items-center justify-center border border-sand text-ink-soft uppercase tracking-[0.15em] text-[12px] font-medium px-8 py-4 rounded-[1px] hover:border-ink-quiet hover:text-ink transition-colors duration-200"
@@ -178,24 +189,26 @@ export default async function AssessmentResultPage({ params }: Props) {
             )}
           </div>
 
-          {/* High-intent extra reassurance */}
+          {/* Reassurance — split by readiness level */}
           {isHighReadiness && (
             <p className="mt-6 text-[14px] leading-[1.7] text-ink-soft max-w-sm">
               The private consultation is €350, applied in full to the programme
               if you proceed. I hold four each week.
             </p>
           )}
-
-          {/* Privacy high CTA reassurance */}
-          {isPrivacyHigh && isHighReadiness && (
+          {isHighReadiness && isPrivacyHigh && (
             <p className="mt-4 text-[13px] leading-[1.65] text-ink-quiet max-w-sm">
               No group room. No public record. A private conversation, if and
               when it is right.
             </p>
           )}
-
-          {/* Standard reassurance */}
-          {!isHighReadiness && (
+          {isMediumReadiness && (
+            <p className="mt-6 text-[14px] leading-[1.7] text-ink-soft max-w-sm">
+              The application is the first step. Martina reads it personally
+              and responds within 48 hours — honestly, about fit.
+            </p>
+          )}
+          {isLowReadiness && (
             <p className="mt-8 text-[13px] leading-[1.65] text-ink-quiet max-w-sm">
               There is no pressure here. Come back to this letter when you are
               ready. It will wait.
