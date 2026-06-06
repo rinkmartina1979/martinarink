@@ -112,6 +112,7 @@ export type BrevoEventName =
   // Drives the immediate applicant-facing autoresponder that bridges the
   // 48hr wait between submission and Martina's personal reply.
   | "application_submitted"
+  | "application_accepted"
   | "intake_submitted";
 
 interface BrevoEventOptions {

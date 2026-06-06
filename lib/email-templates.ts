@@ -220,12 +220,14 @@ export interface ApplicationNotificationData {
   q4: string;
   q5: string;
   submittedAt: string;
+  /** HMAC-signed URL for one-click acceptance — generated in /api/apply */
+  acceptUrl?: string;
 }
 
 export function applicationNotificationEmail(
   data: ApplicationNotificationData,
 ): { subject: string; html: string } {
-  const { firstName, email, programmeLabel, budgetTag, q1, q2, q3, q4, q5, submittedAt } = data;
+  const { firstName, email, programmeLabel, budgetTag, q1, q2, q3, q4, q5, submittedAt, acceptUrl } = data;
 
   const budgetColor =
     budgetTag === "READY"
@@ -286,7 +288,29 @@ export function applicationNotificationEmail(
         ${qaRow("Current situation", q3)}
         ${qaRow("What success looks like", q4)}
       </table>
-      ${ctaButton(`Reply to ${firstName}`, `mailto:${email}`)}
+
+      <hr style="${HAIRLINE}">
+      <p style="margin:0 0 20px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">Your decision</p>
+
+      ${acceptUrl ? `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 16px;">
+        <tr>
+          <td style="background:#5C2D8E;padding:14px 32px;">
+            <a href="${acceptUrl}" style="font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:0.18em;color:#F7F3EE;text-decoration:none;display:inline-block;">✓ Accept — send booking link to ${firstName}</a>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0 0 20px;font-size:11px;color:#8A7F72;font-family:Arial,sans-serif;">One click. The booking link email fires automatically. No further action needed.</p>
+      ` : ""}
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 8px;">
+        <tr>
+          <td style="border:1px solid #C8B8A2;padding:12px 28px;">
+            <a href="mailto:${email}?subject=Re%3A%20Your%20application&body=Dear%20${encodeURIComponent(firstName)}%2C%0A%0AThank%20you%20for%20applying.%20I%20have%20read%20your%20application%20carefully.%0A%0AAfter%20reflection%2C%20I%20don%E2%80%99t%20think%20this%20is%20the%20right%20fit%20for%20either%20of%20us%20right%20now.%20%5BAdd%20your%20honest%20reason%20here.%5D%0A%0AThis%20is%20not%20a%20reflection%20of%20you%20or%20the%20work%20you%20are%20doing%20%E2%80%94%20it%20is%20simply%20a%20matter%20of%20fit.%0A%0AI%20wish%20you%20well%20with%20what%20comes%20next.%0A%0AMartina" style="font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:#4A3728;text-decoration:none;display:inline-block;">✗ Not a fit — open decline draft</a>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0;font-size:11px;color:#8A7F72;font-family:Arial,sans-serif;">Opens your email client with a pre-written decline. Edit before sending.</p>
     </div>
   `);
 
@@ -343,6 +367,51 @@ export function newsletterWelcomeEmail(firstName?: string): {
 
   return {
     subject: `Welcome to The Sober Muse Letter`,
+    html,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   3b. ACCEPTANCE EMAIL — sent to the applicant when Martina accepts
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface AcceptanceEmailData {
+  firstName: string;
+  programme: "sober-muse" | "empowerment" | "consultation";
+  programmeLabel: string;
+}
+
+export function acceptanceEmail(data: AcceptanceEmailData): {
+  subject: string;
+  html: string;
+} {
+  const { firstName, programmeLabel } = data;
+  const bookingLink = "https://martinarink.com/book?token=approved";
+
+  const html = wrap(`
+    <div style="${HEADER_DARK}">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow("Your application")}
+      ${h1(`Dear ${firstName}.`)}
+    </div>
+
+    <div style="${BODY_SECTION}">
+      ${body(`Thank you for your patience. I have read your application carefully, and I would like to speak with you.`)}
+      ${body(`The next step is a private 45-minute conversation. It is not a sales call — it is how I understand where you are and whether the work I do is what you actually need. You leave with clarity, regardless of what comes next.`)}
+      ${body(`The consultation is &euro;350, applied in full to the programme if we decide to proceed together.`)}
+      <hr style="${HAIRLINE}">
+      ${h2("Your booking link.")}
+      ${body(`The link below is private and issued only to you. It opens the payment and booking calendar directly.`)}
+      ${ctaButton("Confirm your consultation — &euro;350", bookingLink)}
+      ${small(`Or copy this link: <a href="${bookingLink}" style="color:#5C2D8E;text-decoration:none;">${bookingLink}</a>`)}
+      <hr style="${HAIRLINE}">
+      ${body(`If the timing is not right — if something has changed since you applied — please simply write back. There is no pressure. I hold this space for you until you are ready, within reason.`)}
+      ${signature()}
+    </div>
+  `);
+
+  return {
+    subject: `Your application — next step`,
     html,
   };
 }

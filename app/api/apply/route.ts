@@ -6,6 +6,7 @@
  * Adds applicant to Brevo Assessment Leads list with APPLICATION_STATUS attribute.
  */
 
+import { createHmac } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
@@ -57,6 +58,22 @@ export async function POST(req: NextRequest) {
   };
   const programmeLabel = programmeLabels[programme];
 
+  // ── Build one-click accept URL ────────────────────────────
+  const acceptSecret = process.env.ACCEPT_SECRET;
+  let acceptUrl: string | undefined;
+  if (acceptSecret) {
+    const sig = createHmac("sha256", acceptSecret)
+      .update(`${email}|${firstName}|${programme}`)
+      .digest("hex");
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
+    const url = new URL("/api/accept", siteUrl);
+    url.searchParams.set("email", email);
+    url.searchParams.set("firstName", firstName);
+    url.searchParams.set("programme", programme);
+    url.searchParams.set("sig", sig);
+    acceptUrl = url.toString();
+  }
+
   // ── Resend: internal notification + applicant confirmation ──
   const resendKey = process.env.RESEND_API_KEY;
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO;
@@ -77,6 +94,7 @@ export async function POST(req: NextRequest) {
       q4,
       q5,
       submittedAt: new Date().toISOString(),
+      acceptUrl,
     });
 
     fetch("https://api.resend.com/emails", {
