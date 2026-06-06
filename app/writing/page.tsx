@@ -130,6 +130,33 @@ export default async function WritingPage() {
         </div>
       </section>
 
+      {/* ── PROGRAMME BRIDGE — converts reading intent into consultation intent ── */}
+      <section className="bg-[#231727] py-14 md:py-16">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <div
+            aria-hidden
+            className="h-px w-12 mx-auto mb-8"
+            style={{ background: "linear-gradient(to right, transparent, #F942AA, transparent)" }}
+          />
+          <p className="font-[family-name:var(--font-display)] italic text-[22px] md:text-[26px]
+                        text-cream leading-snug mb-4">
+            Reading is one thing. The work is another.
+          </p>
+          <p className="font-[family-name:var(--font-body)] text-[15px] text-cream/60 mb-8 max-w-sm mx-auto leading-relaxed">
+            If something in these essays named a question you have been carrying,
+            the private consultation is where that question goes next.
+          </p>
+          <a
+            href="/assessment"
+            className="inline-block px-8 py-3 bg-plum text-cream text-[12px] uppercase
+                       tracking-[0.18em] font-[family-name:var(--font-body)]
+                       hover:bg-plum-deep transition-colors rounded-[1px]"
+          >
+            Begin the assessment
+          </a>
+        </div>
+      </section>
+
       <section className="bg-bone py-16 md:py-20">
         <div className="container-content max-w-2xl mx-auto text-center">
           <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">

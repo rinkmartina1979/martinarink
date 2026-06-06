@@ -170,7 +170,7 @@ export default async function WorkWithMePage() {
                 By application
               </p>
               <div className="mt-auto flex flex-col sm:flex-row gap-3">
-                <PlumButton href="/apply/sober-muse">Apply now</PlumButton>
+                <PlumButton href="/assessment">Apply now</PlumButton>
                 <GhostButton variant="light" href="/sober-muse">
                   Learn more
                 </GhostButton>
@@ -207,7 +207,7 @@ export default async function WorkWithMePage() {
                 By application
               </p>
               <div className="mt-auto flex flex-col sm:flex-row gap-3">
-                <PlumButton href="/apply/empowerment">Apply now</PlumButton>
+                <PlumButton href="/assessment">Apply now</PlumButton>
                 <GhostButton variant="light" href="/empowerment">
                   Learn more
                 </GhostButton>
