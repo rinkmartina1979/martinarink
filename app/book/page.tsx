@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { FunnelProgress } from "@/components/funnel/FunnelProgress";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
+import { TestimonialCard } from "@/components/brand/TestimonialCard";
+import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata } from "@/lib/metadata";
 import { CalendlyEmbed } from "@/components/book/CalendlyEmbed";
 import { DepositCTA } from "@/components/book/DepositCTA";
@@ -29,12 +30,11 @@ interface BookPageProps {
  * /book is gated behind the application flow.
  * - Without ?token=approved (issued in the acceptance email), visitors see
  *   the gate explaining the application process.
- * - With ?token=approved, the Calendly embed loads.
+ * - With ?token=approved, the full consultation landing page loads.
  *
- * This is intentional friction — see strategic plan:
- * paid €350 consultation → gate filters tyre-kickers and forces
- * the application/qualification step. Determined attackers aren't
- * the buyer for a €5k+ programme; this is a soft filter, not security.
+ * This is intentional friction — paid €350 consultation → gate filters
+ * tyre-kickers and forces the application/qualification step.
+ * Determined attackers aren't the buyer for a €5k+ programme.
  */
 export default async function BookPage({ searchParams }: BookPageProps) {
   const params = await searchParams;
@@ -42,175 +42,282 @@ export default async function BookPage({ searchParams }: BookPageProps) {
   const showCancelled = params.cancelled === "1";
   const showPaymentError = params.payment_error === "1";
 
+  /* ═══════════════════════════════════════════════════════════════════
+     GATE STATE — unapproved visitors
+     Dark editorial hero → process strip → testimonial → apply CTAs
+  ═══════════════════════════════════════════════════════════════════ */
   if (!isApproved) {
     return (
       <>
         {/* ── FUNNEL PROGRESS ──────────────────────────────── */}
         <FunnelProgress activeStep={4} variant="dark" />
 
-        {/* ── GATE ───────────────────────────────────────────── */}
-        <section className="bg-cream pt-32 md:pt-40 pb-12">
+        {/* ── HERO — dark aubergine ─────────────────────────── */}
+        <section className="bg-[#231727] pt-28 md:pt-36 pb-20 md:pb-24">
           <div className="container-content max-w-2xl mx-auto text-center">
-            <Eyebrow className="justify-center" withLine>
+
+            {/* Pink gradient hairline */}
+            <div
+              aria-hidden
+              className="h-px w-16 mx-auto mb-10"
+              style={{ background: "linear-gradient(to right, transparent, #F942AA, transparent)" }}
+            />
+
+            <Eyebrow variant="light" withLine className="justify-center">
               By application
             </Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[52px] leading-tight text-ink">
-              The private consultation is offered after application.
+
+            <h1 className="mt-6 font-[family-name:var(--font-display)] italic
+                           text-[38px] md:text-[52px] leading-[1.02] tracking-[-0.03em] text-cream">
+              The consultation is offered<br className="hidden sm:block" /> after application.
             </h1>
-            <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
+
+            <p className="mt-8 text-[17px] leading-[1.8] text-cream/65 max-w-lg mx-auto
+                          font-[family-name:var(--font-body)]">
               I work with a small number of women each year. Before we speak,
               I read every application personally. It is the part of my
-              practice I take most seriously — and the reason the work itself
-              is what it is.
+              practice I take most seriously.
             </p>
-            <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
-              The application is short. Five questions, answered honestly. I
-              respond within forty-eight hours. If we are a fit, you receive
-              the booking link in that email.
+            <p className="mt-5 text-[17px] leading-[1.8] text-cream/65 max-w-lg mx-auto
+                          font-[family-name:var(--font-body)]">
+              The application is short. Five questions, answered honestly.
+              I respond within forty-eight hours. If we are a fit, you receive
+              the booking link by email.
             </p>
-            <p className="mt-8 text-[15px] text-ink-quiet">
-              Private consultation: €350, applied in full to the programme
-              investment upon enrolment.
+
+            <p className="mt-8 font-[family-name:var(--font-body)] text-[13px] uppercase
+                          tracking-[0.22em] text-cream/35">
+              Private consultation &middot; €350 &middot; credited in full upon enrolment
             </p>
           </div>
         </section>
 
-        {/* ── PROCESS ────────────────────────────────────────── */}
-        <section className="bg-bone py-12 border-t border-b border-sand/60">
+        {/* ── PROCESS STRIP ────────────────────────────────── */}
+        <section className="bg-bone py-14 border-t border-b border-sand/60">
           <div className="container-content max-w-3xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-10 md:gap-8">
               {[
                 {
                   step: "01",
-                  title: "You apply",
-                  body: "Five questions. Honestly answered. About ten minutes.",
+                  title: "Five questions.",
+                  body: "Honestly answered. I read every application personally.",
                 },
                 {
                   step: "02",
-                  title: "I read it personally",
-                  body: "Every application. Reply within 48 hours.",
+                  title: "Forty-eight hours.",
+                  body: "My reply — and my honest assessment of fit.",
                 },
                 {
                   step: "03",
-                  title: "We speak",
-                  body: "If we are a fit, you receive a private booking link.",
+                  title: "The booking link.",
+                  body: "Sent only if we are the right match for each other.",
                 },
               ].map(({ step, title, body }) => (
                 <div key={step}>
-                  <p className="text-[11px] tracking-[0.22em] uppercase text-ink-quiet mb-3">
-                    {step}
-                  </p>
-                  <p className="font-[family-name:var(--font-display)] text-[18px] text-ink mb-2">
-                    {title}
-                  </p>
-                  <p className="text-[14px] leading-[1.7] text-ink-soft">
-                    {body}
-                  </p>
+                  <p className="font-[family-name:var(--font-body)] text-[11px] tracking-[0.28em]
+                                uppercase text-pink mb-4">{step}</p>
+                  <div className="h-px w-8 bg-pink mb-5" aria-hidden />
+                  <p className="font-[family-name:var(--font-display)] italic text-[18px]
+                                text-ink mb-2">{title}</p>
+                  <p className="font-[family-name:var(--font-body)] text-[14px] leading-[1.75]
+                                text-ink-soft">{body}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── CTAs ───────────────────────────────────────────── */}
-        <section className="bg-cream py-20">
+        {/* ── TESTIMONIAL ──────────────────────────────────── */}
+        <section className="bg-cream py-16 md:py-20">
+          <div className="container-content max-w-2xl mx-auto">
+            <TestimonialCard
+              quote="Martina saw the distinction before I did. I arrived thinking I had a drinking problem. I left understanding I had a clarity problem — and the drinking had been the solution I had found for it."
+              attribution="Founder — London"
+              nda
+              className="max-w-xl mx-auto"
+            />
+          </div>
+        </section>
+
+        {/* ── CTAs ─────────────────────────────────────────── */}
+        <section className="bg-cream pb-24">
           <div className="container-content max-w-2xl mx-auto text-center">
-            <p className="font-[family-name:var(--font-display)] italic text-[22px] text-ink mb-10">
-              Choose the work that fits.
+            <p className="font-[family-name:var(--font-display)] italic text-[24px] text-ink mb-3">
+              Which work is yours?
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <p className="font-[family-name:var(--font-body)] text-[15px] text-ink-quiet mb-10">
+              Not sure? The assessment tells you in four minutes.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <PlumButton href="/apply/sober-muse">
                 Apply — Sober Muse Method
               </PlumButton>
               <PlumButton href="/apply/empowerment">
-                Apply — Empowerment & Leadership
+                Apply — Empowerment &amp; Leadership
               </PlumButton>
             </div>
-            <p className="mt-10 text-[14px] text-ink-quiet">
-              Not sure which fits?{" "}
-              <Link
-                href="/assessment"
-                className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
-              >
-                Begin with the seven-question assessment
-              </Link>
-              .
-            </p>
-            <div className="mt-10">
-              <GhostButton href="/work-with-me">Or read about the work →</GhostButton>
-            </div>
+            <GhostButton href="/assessment">
+              Begin with the assessment →
+            </GhostButton>
           </div>
         </section>
       </>
     );
   }
 
-  // Approved — show deposit CTA + Calendly embed
+  /* ═══════════════════════════════════════════════════════════════════
+     APPROVED STATE — accepted applicants
+     Dark editorial hero → 3-col "what this is" → DepositCTA → testimonial → Calendly
+  ═══════════════════════════════════════════════════════════════════ */
   return (
     <>
       {/* ── FUNNEL PROGRESS ──────────────────────────────────── */}
       <FunnelProgress activeStep={4} variant="dark" />
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="bg-cream pt-32 md:pt-40 pb-12">
+      {/* ── HERO — dark aubergine arrival ─────────────────────── */}
+      <section className="bg-[#231727] pt-28 md:pt-36 pb-20 md:pb-24">
         <div className="container-content max-w-2xl mx-auto text-center">
-          <Eyebrow className="justify-center" withLine>
+
+          {/* Pink gradient hairline */}
+          <div
+            aria-hidden
+            className="h-px w-16 mx-auto mb-10"
+            style={{ background: "linear-gradient(to right, transparent, #F942AA, transparent)" }}
+          />
+
+          <Eyebrow variant="light" withLine className="justify-center">
             A private conversation
           </Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[52px] leading-tight text-ink">
-            A forty-five minute conversation, before anything else.
+
+          <h1 className="mt-6 font-[family-name:var(--font-display)] italic
+                         text-[38px] md:text-[52px] leading-[1.02] tracking-[-0.03em] text-cream">
+            Forty-five minutes.<br className="hidden sm:block" />
+            Before anything else.
           </h1>
-          <p className="mt-8 text-[17px] leading-[1.75] text-ink-soft">
-            This is not a sales call, and it is not complimentary coaching. It
-            is a genuine conversation — about where you are, what you&rsquo;re
-            considering, and whether working together is right for both of us.
-            I hold four of these a week.
+
+          <p className="mt-8 text-[17px] leading-[1.8] text-cream/70 max-w-lg mx-auto
+                        font-[family-name:var(--font-body)]">
+            This is not a sales call, and it is not a diagnostic. It is a genuine
+            conversation — about where you are, what you are considering, and whether
+            working together is the right move for both of us.
           </p>
-          <p className="mt-6 text-[15px] text-ink-quiet">
-            €350, applied to the programme if you proceed.
+
+          <p className="mt-6 font-[family-name:var(--font-body)] text-[13px] uppercase
+                        tracking-[0.22em] text-cream/40">
+            €350 &middot; Applied in full to the programme upon enrolment
           </p>
 
           {/* Status banners */}
           {showCancelled && (
-            <p className="mt-6 text-[14px] text-ink-soft bg-bone border border-sand/50 px-5 py-3 inline-block">
+            <p className="mt-8 text-[14px] text-cream/70 bg-white/[0.06] border border-white/10
+                          px-5 py-3 inline-block font-[family-name:var(--font-body)]">
               Your payment wasn&rsquo;t completed — you can start again below.
             </p>
           )}
           {showPaymentError && (
-            <p className="mt-6 text-[14px] text-ink-soft bg-bone border border-sand/50 px-5 py-3 inline-block">
+            <p className="mt-8 text-[14px] text-cream/70 bg-white/[0.06] border border-white/10
+                          px-5 py-3 inline-block font-[family-name:var(--font-body)]">
               There was an issue verifying your payment. Please try again below.
             </p>
           )}
+        </div>
+      </section>
 
-          {/* Primary CTA — the only path forward for an approved applicant */}
-          <div className="mt-10 flex justify-center">
+      {/* ── WHAT THIS CONVERSATION IS — 3 columns ──────────────── */}
+      <section className="bg-cream py-16 md:py-20">
+        <div className="container-content max-w-3xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-10 md:gap-8">
+            {[
+              {
+                step: "01",
+                title: "Honest.",
+                body: "We talk about where you are — precisely, without softening. Not where you think I want you to be.",
+              },
+              {
+                step: "02",
+                title: "Mutual.",
+                body: "I am deciding whether this work is right for you. You are deciding whether I am the right person for it. Both matter equally.",
+              },
+              {
+                step: "03",
+                title: "A beginning — or not.",
+                body: "If we are a fit, we build the programme together from here. If we are not, I will tell you — and tell you why.",
+              },
+            ].map(({ step, title, body }) => (
+              <div key={step}>
+                <p className="font-[family-name:var(--font-body)] text-[11px] tracking-[0.28em]
+                              uppercase text-pink mb-4">{step}</p>
+                <div className="h-px w-8 bg-pink mb-5" aria-hidden />
+                <p className="font-[family-name:var(--font-display)] italic text-[20px]
+                              text-ink mb-3">{title}</p>
+                <p className="font-[family-name:var(--font-body)] text-[15px] leading-[1.75]
+                              text-ink-soft">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── DEPOSIT CTA ─────────────────────────────────────────── */}
+      <section className="bg-bone py-16 md:py-20 border-t border-b border-sand/40">
+        <div className="container-content max-w-lg mx-auto text-center">
+
+          <ScriptAccent
+            className="text-pink block mb-4"
+            style={{ fontSize: "2rem", lineHeight: 1.2 }}
+          >
+            ready.
+          </ScriptAccent>
+
+          <p className="font-[family-name:var(--font-display)] text-[22px] text-ink mb-2">
+            Confirm your consultation.
+          </p>
+          <p className="font-[family-name:var(--font-body)] text-[14px] text-ink-quiet mb-8 max-w-sm mx-auto">
+            €350 — your booking calendar opens immediately after payment,
+            in the same tab.
+          </p>
+
+          <div className="flex justify-center">
             <DepositCTA />
           </div>
-          <p className="mt-6 text-[13px] text-ink-quiet leading-relaxed max-w-md mx-auto">
-            Payment confirms the consultation. The booking calendar opens
-            immediately after, in the same browser tab.
+
+          <p className="mt-6 font-[family-name:var(--font-body)] text-[12px] text-ink-quiet
+                        leading-relaxed max-w-sm mx-auto">
+            Payment confirms your consultation slot is held. Applied in full
+            to your programme investment upon enrolment.
           </p>
         </div>
       </section>
 
-      {/* ── CALENDLY EMBED — kept here for the rare invited-back-without-deposit case
-            (e.g. rescheduling). Suppressed for first-time approved applicants by hiding
-            the section behind a small disclosure. */}
+      {/* ── TESTIMONIAL ─────────────────────────────────────────── */}
+      <section className="bg-cream py-16 md:py-20">
+        <div className="container-content max-w-2xl mx-auto">
+          <TestimonialCard
+            quote="The session with Martina was a thoroughly enriching experience — inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself in a remarkably short time."
+            attribution="Anja — Founder & Digital Business Consultant"
+            className="max-w-xl mx-auto"
+          />
+          <p className="mt-10 text-center font-[family-name:var(--font-body)] text-[13px]
+                        text-ink-quiet leading-relaxed max-w-md mx-auto">
+            If, after our conversation, the timing doesn&rsquo;t feel right — I will say
+            so, warmly. The fit matters as much to me as it does to you.
+          </p>
+        </div>
+      </section>
+
+      {/* ── CALENDLY — for rescheduling confirmed consultations only ── */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
           <details className="text-center">
-            <summary className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet cursor-pointer hover:text-ink-soft transition-colors">
+            <summary className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet
+                                cursor-pointer hover:text-ink-soft transition-colors
+                                font-[family-name:var(--font-body)]">
               Rescheduling a confirmed consultation? Open the calendar
             </summary>
             <div className="mt-8 bg-bone p-2">
               <CalendlyEmbed url={CALENDLY_URL} />
             </div>
           </details>
-          <p className="mt-12 text-center text-[14px] text-ink-quiet leading-relaxed max-w-md mx-auto">
-            If, after our conversation, the timing doesn&rsquo;t feel right — I
-            will say so, warmly. The fit matters as much to me as it does to
-            you.
-          </p>
         </div>
       </section>
     </>
