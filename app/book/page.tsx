@@ -23,6 +23,7 @@ interface BookPageProps {
     programme?: string;
     cancelled?: string;
     payment_error?: string;
+    calendar?: string;
   }>;
 }
 
@@ -41,6 +42,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
   const isApproved = params.token === "approved";
   const showCancelled = params.cancelled === "1";
   const showPaymentError = params.payment_error === "1";
+  const showCalendar = params.calendar === "1";
 
   /* ═══════════════════════════════════════════════════════════════════
      GATE STATE — unapproved visitors
@@ -77,6 +79,11 @@ export default async function BookPage({ searchParams }: BookPageProps) {
               I work with a small number of women each year. Before we speak,
               I read every application personally. It is the part of my
               practice I take most seriously.
+            </p>
+            <p className="mt-5 text-[17px] leading-[1.8] text-cream/65 max-w-lg mx-auto
+                          font-[family-name:var(--font-body)]">
+              This is not gatekeeping for its own sake. It is how I stay true to the
+              work — and how you arrive at the conversation knowing it is worth having.
             </p>
             <p className="mt-5 text-[17px] leading-[1.8] text-cream/65 max-w-lg mx-auto
                           font-[family-name:var(--font-body)]">
@@ -230,18 +237,18 @@ export default async function BookPage({ searchParams }: BookPageProps) {
             {[
               {
                 step: "01",
-                title: "Honest.",
-                body: "We talk about where you are — precisely, without softening. Not where you think I want you to be.",
+                title: "Clarity.",
+                body: "You will leave knowing whether this programme is right for you — and whether I am the right guide. The answer might be no. I will tell you if it is.",
               },
               {
                 step: "02",
                 title: "Mutual.",
-                body: "I am deciding whether this work is right for you. You are deciding whether I am the right person for it. Both matter equally.",
+                body: "I am deciding too. Both of us are choosing. That is the only way this kind of work begins correctly.",
               },
               {
                 step: "03",
-                title: "A beginning — or not.",
-                body: "If we are a fit, we build the programme together from here. If we are not, I will tell you — and tell you why.",
+                title: "A plan, if we match.",
+                body: "If we are the right fit, we build the shape of the programme together from this conversation — not after.",
               },
             ].map(({ step, title, body }) => (
               <div key={step}>
@@ -255,37 +262,6 @@ export default async function BookPage({ searchParams }: BookPageProps) {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── DEPOSIT CTA ─────────────────────────────────────────── */}
-      <section className="bg-bone py-16 md:py-20 border-t border-b border-sand/40">
-        <div className="container-content max-w-lg mx-auto text-center">
-
-          <ScriptAccent
-            className="text-pink block mb-4"
-            style={{ fontSize: "2rem", lineHeight: 1.2 }}
-          >
-            ready.
-          </ScriptAccent>
-
-          <p className="font-[family-name:var(--font-display)] text-[22px] text-ink mb-2">
-            Confirm your consultation.
-          </p>
-          <p className="font-[family-name:var(--font-body)] text-[14px] text-ink-quiet mb-8 max-w-sm mx-auto">
-            €350 — your booking calendar opens immediately after payment,
-            in the same tab.
-          </p>
-
-          <div className="flex justify-center">
-            <DepositCTA />
-          </div>
-
-          <p className="mt-6 font-[family-name:var(--font-body)] text-[12px] text-ink-quiet
-                        leading-relaxed max-w-sm mx-auto">
-            Payment confirms your consultation slot is held. Applied in full
-            to your programme investment upon enrolment.
-          </p>
         </div>
       </section>
 
@@ -305,14 +281,49 @@ export default async function BookPage({ searchParams }: BookPageProps) {
         </div>
       </section>
 
+      {/* ── DEPOSIT CTA ─────────────────────────────────────────── */}
+      <section className="bg-bone py-16 md:py-20 border-t border-b border-sand/40">
+        <div className="container-content max-w-lg mx-auto text-center">
+
+          <ScriptAccent
+            className="text-pink block mb-4"
+            style={{ fontSize: "2rem", lineHeight: 1.2 }}
+          >
+            ready.
+          </ScriptAccent>
+
+          <p className="font-[family-name:var(--font-display)] text-[22px] text-ink mb-2">
+            Confirm your consultation.
+          </p>
+          <p className="font-[family-name:var(--font-body)] text-[14px] text-ink-quiet mb-4 max-w-sm mx-auto">
+            €350 — your booking calendar opens immediately after payment,
+            in the same tab.
+          </p>
+
+          <p className="font-[family-name:var(--font-body)] text-[11px] uppercase tracking-[0.2em] text-ink-quiet/70 mb-8">
+            I hold four consultations per week &middot; current availability: this week
+          </p>
+
+          <div className="flex justify-center">
+            <DepositCTA />
+          </div>
+
+          <p className="mt-6 font-[family-name:var(--font-body)] text-[12px] text-ink-quiet
+                        leading-relaxed max-w-sm mx-auto">
+            Payment confirms your consultation slot is held. Applied in full
+            to your programme investment upon enrolment.
+          </p>
+        </div>
+      </section>
+
       {/* ── CALENDLY — for rescheduling confirmed consultations only ── */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
-          <details className="text-center">
+          <details open={showCalendar} className="text-center">
             <summary className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet
                                 cursor-pointer hover:text-ink-soft transition-colors
                                 font-[family-name:var(--font-body)]">
-              Rescheduling a confirmed consultation? Open the calendar
+              Schedule your consultation time →
             </summary>
             <div className="mt-8 bg-bone p-2">
               <CalendlyEmbed url={CALENDLY_URL} />

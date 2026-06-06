@@ -140,6 +140,46 @@ export const FALLBACK_CASE_STUDIES: MemberCaseStudy[] = [
     visibleOnSite: true,
     order: 3,
   },
+  {
+    _id: "fallback-case-clara",
+    slug: "clara",
+    pseudonym: "Clara",
+    industry: "Co-founder, B2B SaaS — Munich",
+    programme: "empowerment",
+    problemSnapshot:
+      "She had built a company to forty people, been on every panel about women in tech, and still could not shake the feeling that the whole edifice had been built in response to something rather than from something. She arrived at the first session with a detailed list of what she needed to fix. The list was the first thing we put down.",
+    workNarrative: [
+      block(
+        "c1",
+        "Not because the list was wrong. But because it was armour. She was exceptionally good at describing what she wanted in terms of outcomes. She was less practiced at sitting with what she actually felt.",
+      ),
+      block(
+        "c2",
+        "What emerged in the first weeks was simpler and harder than anything on the list: she had been building in response — to an industry that had told her she was unlikely, to investors who had funded her with visible surprise, to a version of success she had accepted because it was available. The founding story she told publicly was true. The private one was more complicated.",
+      ),
+      block(
+        "c3",
+        "We spent the first month on language. Specifically on the words she used to describe herself in rooms where she did not feel she belonged. There was a sentence she said quietly in the fourth session that became the axis of everything that followed: \"I'm building something. I'm not sure it's what they think it is.\" That sentence, finally said aloud, was the beginning of the real work.",
+      ),
+      block(
+        "c4",
+        "The question that kept surfacing was identity before title. Who was she before she became the founder of a company with a press kit and a growth rate? She had not asked herself that question in several years. She was not certain she had ever asked it precisely. The work was not to answer it but to hold it long enough that the answer could arrive on its own terms.",
+      ),
+      block(
+        "c5",
+        "The decision she had been avoiding — whether to take a significant funding round that would alter the character of what she had built — turned out not to be a business decision. It was a self-definition one. She understood that in the sixth week. She did not decide immediately. But she stopped performing the uncertainty.",
+      ),
+      block(
+        "c6",
+        "What the work uncovered was not a crisis. It was an appetite — for the version of the company that looked exactly like what she had actually meant to build, rather than what the market had been willing to fund at the beginning. That distinction, once she could hold it clearly, made the rest straightforward. Not easy. Straightforward.",
+      ),
+    ],
+    outcomeMarker:
+      "She took a smaller round from a single investor who understood what she was building. She describes this not as a decision but as a recognition.",
+    permissionGrantedAt: "2026-01-15T00:00:00Z",
+    visibleOnSite: true,
+    order: 4,
+  },
 ];
 
 /* ─── Audio drops (members portal demo) ──────────────────────── */

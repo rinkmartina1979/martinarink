@@ -8,6 +8,7 @@ import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getSoberMusePage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
+import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
@@ -398,6 +399,9 @@ export default async function SoberMusePage() {
 
         </div>
       </section>
+
+      {/* ── NEWSLETTER BRIDGE ──────────────────────────────────── */}
+      <NewsletterStrip variant="editorial" source="sober-muse-bridge" />
 
       {/* Legal disclaimer — required for mentoring/sobriety services */}
       <section className="bg-cream pb-16">

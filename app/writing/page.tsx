@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PageHero } from "@/components/sections/PageHero";
-import { NewsletterForm } from "@/components/forms/NewsletterForm";
+import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getAllPosts, type PostListItem } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
@@ -157,20 +157,7 @@ export default async function WritingPage() {
         </div>
       </section>
 
-      <section className="bg-bone py-16 md:py-20">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <h2 className="font-[family-name:var(--font-display)] text-[32px] text-ink">
-            Receive the letters.
-          </h2>
-          <p className="mt-4 text-[16px] text-ink-soft">
-            One letter, once a week. About 600 words. For women who read
-            carefully.
-          </p>
-          <div className="mt-10">
-            <NewsletterForm />
-          </div>
-        </div>
-      </section>
+      <NewsletterStrip variant="editorial" source="writing-bridge" />
     </>
   );
 }

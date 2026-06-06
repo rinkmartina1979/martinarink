@@ -7,6 +7,7 @@ import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getEmpowermentPage } from "@/sanity/lib/queries";
 import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
+import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
 
@@ -361,6 +362,9 @@ export default async function EmpowermentPage() {
           </dl>
         </div>
       </section>
+
+      {/* ── NEWSLETTER BRIDGE ──────────────────────────────────── */}
+      <NewsletterStrip variant="editorial" source="empowerment-bridge" />
 
       {/* Legal disclaimer — required for mentoring services */}
       <section className="bg-cream pb-16">
