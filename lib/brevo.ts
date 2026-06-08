@@ -113,7 +113,9 @@ export type BrevoEventName =
   // 48hr wait between submission and Martina's personal reply.
   | "application_submitted"
   | "application_accepted"
-  | "intake_submitted";
+  | "intake_submitted"
+  | "contract_sent"
+  | "contract_signed";
 
 interface BrevoEventOptions {
   email: string;

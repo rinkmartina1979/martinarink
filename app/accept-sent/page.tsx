@@ -9,11 +9,12 @@ export const metadata: Metadata = buildMetadata({
 export default async function AcceptSentPage({
   searchParams,
 }: {
-  searchParams: Promise<{ name?: string; email?: string }>;
+  searchParams: Promise<{ name?: string; email?: string; programme?: string }>;
 }) {
   const params = await searchParams;
-  const name  = params.name  ?? "the applicant";
-  const email = params.email ?? "";
+  const name      = params.name      ?? "the applicant";
+  const email     = params.email     ?? "";
+  const programme = params.programme ?? "";
 
   return (
     <section className="min-h-screen bg-aubergine flex items-center justify-center px-6">
@@ -55,7 +56,26 @@ export default async function AcceptSentPage({
           Her Brevo status has been updated to <span className="text-cream/60">accepted</span>.
         </p>
 
-        <div className="mt-12 pt-8 border-t border-cream/10">
+        {/* ── Contract shortcut ──────────────────────────────── */}
+        <div className="mt-10 pt-8 border-t border-cream/10">
+          <p className="font-[family-name:var(--font-body)] text-[11px] uppercase tracking-[0.2em] text-cream/30 mb-3">
+            Next step
+          </p>
+          <p className="text-[14px] text-cream/60 font-[family-name:var(--font-body)] leading-relaxed mb-4">
+            After the consultation, send the coaching contract.
+          </p>
+          <a
+            href={`/admin/contract${email || programme ? `?${new URLSearchParams({ ...(email && { email }), ...(name !== "the applicant" && { firstName: name }), ...(programme && { programme }) }).toString()}` : ""}`}
+            className="inline-block text-[11px] uppercase tracking-[0.2em] text-pink/70 hover:text-pink transition-colors font-[family-name:var(--font-body)]"
+          >
+            Send coaching contract &rarr;
+          </a>
+          <p className="mt-2 text-[11px] text-cream/25 font-[family-name:var(--font-body)]">
+            Add <span className="text-cream/40">?secret=…</span> from your bookmarked admin URL.
+          </p>
+        </div>
+
+        <div className="mt-10 pt-6 border-t border-cream/10">
           <p className="font-[family-name:var(--font-display)] italic text-[20px] text-cream/70">
             Martina
           </p>

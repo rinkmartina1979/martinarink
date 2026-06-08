@@ -119,6 +119,7 @@ export async function GET(req: NextRequest) {
   const confirmUrl = new URL("/accept-sent", siteUrl);
   confirmUrl.searchParams.set("name", firstName);
   confirmUrl.searchParams.set("email", email);
+  confirmUrl.searchParams.set("programme", programme);
 
   return NextResponse.redirect(confirmUrl, 302);
 }

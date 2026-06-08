@@ -491,3 +491,180 @@ export function consultationBookingEmail(
     html,
   };
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   5. CONTRACT INVITE — sent to client when Martina sends the contract
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface ContractInviteEmailData {
+  firstName: string;
+  programmeLabel: string;
+  contractUrl: string;
+}
+
+export function contractInviteEmail(data: ContractInviteEmailData): {
+  subject: string;
+  html: string;
+} {
+  const { firstName, programmeLabel, contractUrl } = data;
+
+  const html = wrap(`
+    <div style="${HEADER_DARK}">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow("Your coaching contract")}
+      ${h1(`Before we begin.`)}
+      <p style="margin:0;font-size:15px;color:#EDE8E0;opacity:0.7;font-family:Arial,sans-serif;">
+        ${programmeLabel}
+      </p>
+    </div>
+
+    <div style="${BODY_SECTION}">
+      ${body(`Dear ${firstName},`)}
+      ${body(`Before we begin, I send a short contract that sets out what we are building together &mdash; the programme, the format, the investment, and the terms I work under.`)}
+      ${body(`It takes two minutes. You read it, type your name, and confirm. That is the whole process.`)}
+
+      ${ctaButton("Review and sign your contract &rarr;", contractUrl)}
+
+      <hr style="${HAIRLINE}">
+
+      ${small(`The contract is waiting at the link above. It expires in 7 days. If you have any questions about the terms before signing, simply reply to this email.`)}
+      ${signature()}
+    </div>
+  `);
+
+  return {
+    subject: `Your coaching contract — ${firstName}`,
+    html,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   6. CONTRACT SIGNED — sent to both parties after client signs
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface ContractSignedEmailData {
+  firstName: string;
+  email: string;
+  programmeLabel: string;
+  serviceDescription: string;
+  fee: string;
+  deliveryMethod: string;
+  location?: string;
+  contractDate: string;
+  contractId: string;
+  signedAt: string;
+  signedName: string;
+  /** true = internal copy to Martina; false = client copy */
+  isInternal?: boolean;
+}
+
+export function contractSignedEmail(data: ContractSignedEmailData): {
+  subject: string;
+  html: string;
+} {
+  const {
+    firstName,
+    email,
+    programmeLabel,
+    serviceDescription,
+    fee,
+    deliveryMethod,
+    location,
+    contractDate,
+    contractId,
+    signedAt,
+    signedName,
+    isInternal = false,
+  } = data;
+
+  const signedDate = new Date(signedAt).toLocaleDateString("en-DE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const deliveryDisplay = location
+    ? `${deliveryMethod} (${location})`
+    : deliveryMethod;
+
+  function contractRow(label: string, value: string) {
+    return `
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;width:36%;vertical-align:top;">
+          <p style="margin:0;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">${label}</p>
+        </td>
+        <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;vertical-align:top;">
+          <p style="margin:0;font-size:15px;line-height:1.65;color:#1E1B17;font-family:Arial,sans-serif;">${value}</p>
+        </td>
+      </tr>
+    `;
+  }
+
+  const html = wrap(`
+    <div style="${HEADER_DARK}">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow(isInternal ? `Contract signed — ${firstName}` : "Your signed contract")}
+      ${h1(isInternal ? `${firstName} has signed.` : `Your contract is confirmed.`)}
+      <p style="margin:0;font-size:15px;color:#EDE8E0;opacity:0.7;font-family:Arial,sans-serif;">
+        ${programmeLabel}
+      </p>
+    </div>
+
+    <div style="${BODY_SECTION}">
+
+      ${isInternal ? body(`${firstName} (${email}) has signed the coaching contract. A copy has been sent to them. The record below is your reference.`) : body(`Dear ${firstName}, your coaching contract is now signed and confirmed. A copy of the agreed terms is below for your records.`)}
+
+      <!-- Signed badge -->
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+        <tr>
+          <td style="background:#5C2D8E;padding:10px 24px;">
+            <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#F7F3EE;font-family:Arial,sans-serif;">
+              &#10003; Signed digitally on ${signedDate}
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <hr style="${HAIRLINE}">
+      <p style="margin:0 0 20px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">Contract terms</p>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 32px;">
+        ${contractRow("Parties", `Concept Studio Martina Rink UG (haftungsbeschr&auml;nkt), Karlsruhe &mdash; Coach<br>${signedName} &mdash; Customer`)}
+        ${contractRow("Programme", programmeLabel)}
+        ${contractRow("Services", serviceDescription)}
+        ${contractRow("Format", deliveryDisplay)}
+        ${contractRow("Investment", fee)}
+        ${contractRow("Contract date", contractDate)}
+      </table>
+
+      <hr style="${HAIRLINE}">
+      <p style="margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">Subject matter</p>
+      ${small(`The coaching supports personal development processes, goal achievement and quality of life improvement. The coaching is based on a dialogue based on partnership. The client undertakes to actively participate in the coaching process. The coach expressly does not guarantee success.`)}
+
+      <hr style="${HAIRLINE}">
+      <p style="margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">Annexes confirmed</p>
+      ${small(`The client confirmed receipt and agreement to: General Terms &amp; Conditions, Cancellation Policy, and Privacy Policy.`)}
+
+      <hr style="${HAIRLINE}">
+      <p style="margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">Signature record</p>
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;">
+        ${contractRow("Signed by", signedName)}
+        ${contractRow("Signed at", signedDate)}
+        ${contractRow("Reference", contractId)}
+      </table>
+
+      ${isInternal ? "" : `
+      <hr style="${HAIRLINE}">
+      ${small(`This document is your record of the signed agreement. Please save it for your reference. If you have any questions, simply reply to this email.`)}
+      ${signature()}
+      `}
+    </div>
+  `);
+
+  return {
+    subject: isInternal
+      ? `[Contract signed] ${firstName} — ${programmeLabel}`
+      : `Your coaching contract — signed`,
+    html,
+  };
+}
