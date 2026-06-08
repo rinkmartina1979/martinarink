@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { put, del, head } from "@vercel/blob";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
-import { contractSignedEmail } from "@/lib/email-templates";
+import { contractSignedEmail, intakeInviteEmail } from "@/lib/email-templates";
 
 const SignSchema = z.object({
   contractId: z.string().uuid(),
@@ -193,6 +193,27 @@ export async function POST(req: NextRequest) {
         }),
       }).catch((err) => console.error("[Contract/sign] Internal email failed:", err));
     }
+
+    // 3. AUTO: Intake form invite — fires immediately after signing.
+    //    Eliminates Martina's manual "send intake link" step entirely.
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
+    const intakeUrl = `${siteUrl}/intake?programme=${encodeURIComponent(draft.programme)}`;
+    const intake = intakeInviteEmail({
+      firstName: draft.firstName,
+      programmeLabel: draft.programmeLabel,
+      intakeUrl,
+    });
+    fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
+      body: JSON.stringify({
+        from: `Martina Rink <${fromEmail}>`,
+        to: [draft.email],
+        reply_to: notifyEmail ?? fromEmail,
+        subject: intake.subject,
+        html: intake.html,
+      }),
+    }).catch((err) => console.error("[Contract/sign] Intake invite failed:", err));
   }
 
   // ── Brevo: update contact + fire event ─────────────────────────
@@ -202,6 +223,7 @@ export async function POST(req: NextRequest) {
     attributes: {
       CONTRACT_STATUS: "signed",
       CONTRACT_SIGNED_AT: signedAt,
+      INTAKE_STATUS: "invited",
     },
   }).catch((err) => console.error("[Contract/sign] Brevo contact failed:", err));
 

@@ -114,12 +114,22 @@ export async function GET(req: NextRequest) {
     },
   }).catch((err) => console.error("[Accept] Brevo event failed:", err));
 
+  // ── Generate short-lived admin_token for inline contract form ─
+  // Scoped to this accept: HMAC(email|firstName|programme|YYYY-MM-DD).
+  // Valid for today + yesterday (handles midnight edge case).
+  // Verified in /api/contract/send when adminToken is supplied.
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const adminToken = createHmac("sha256", secret)
+    .update(`${email}|${firstName}|${programme}|${dateStr}`)
+    .digest("hex");
+
   // ── Redirect Martina to confirmation ──────────────────────
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
   const confirmUrl = new URL("/accept-sent", siteUrl);
   confirmUrl.searchParams.set("name", firstName);
   confirmUrl.searchParams.set("email", email);
   confirmUrl.searchParams.set("programme", programme);
+  confirmUrl.searchParams.set("admin_token", adminToken);
 
   return NextResponse.redirect(confirmUrl, 302);
 }

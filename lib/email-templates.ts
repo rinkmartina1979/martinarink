@@ -668,3 +668,67 @@ export function contractSignedEmail(data: ContractSignedEmailData): {
     html,
   };
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   7. INTAKE INVITE — auto-sent to client after contract is signed
+      Replaces Martina's manual "send intake form link" step entirely.
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface IntakeInviteEmailData {
+  firstName: string;
+  programmeLabel: string;
+  intakeUrl: string;
+}
+
+export function intakeInviteEmail(data: IntakeInviteEmailData): {
+  subject: string;
+  html: string;
+} {
+  const { firstName, programmeLabel, intakeUrl } = data;
+
+  const html = wrap(`
+    <div style="${HEADER_DARK}">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow("Before we begin")}
+      ${h1(`One form, then we start.`)}
+      <p style="margin:0;font-size:15px;color:#EDE8E0;opacity:0.7;font-family:Arial,sans-serif;">
+        ${programmeLabel}
+      </p>
+    </div>
+
+    <div style="${BODY_SECTION}">
+      ${body(`Dear ${firstName},`)}
+      ${body(`Your contract is signed. The next step is a short intake form — it is the last piece of administration before the work begins.`)}
+      ${body(`The form takes about 20 minutes. There are no right answers. I ask what I ask because the honesty of your answers determines the quality of what we do together.`)}
+      ${body(`Everything you share is read by me only. Nothing is shared with any third party.`)}
+
+      ${ctaButton("Complete your intake form &rarr;", intakeUrl)}
+
+      <hr style="${HAIRLINE}">
+
+      ${small(`If you have any questions before completing the form, simply reply to this email. I read everything personally.`)}
+      ${signature()}
+    </div>
+  `);
+
+  return {
+    subject: `Your intake form — ${programmeLabel}`,
+    html,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SERVICE DESCRIPTION TEMPLATES
+   Used in the inline contract form (accept-sent page + admin page).
+   Martina selects a programme — this pre-fills as a professional
+   starting point she can edit before sending.
+   ═══════════════════════════════════════════════════════════════ */
+
+export const SERVICE_DESCRIPTION_TEMPLATES: Record<string, string> = {
+  "sober-muse":
+    "90-day private coaching programme — The Sober Muse Method. Includes weekly 60-minute sessions via Zoom, asynchronous support between sessions, and direct access to Martina throughout the programme. Focused on the specific work agreed in our private consultation.",
+  empowerment:
+    "Bespoke Female Empowerment & Leadership coaching programme over 3–12 months. Includes bi-weekly 60-minute sessions via Zoom, written reflection work between sessions, and sustained direct support throughout. Scope and duration as agreed in our private consultation.",
+  consultation:
+    "Single private consultation — 45 minutes via Zoom. A focused, confidential conversation on the specific questions and direction agreed between us. The fee is credited in full to the programme investment upon enrolment.",
+};

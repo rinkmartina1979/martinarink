@@ -19,6 +19,15 @@ const PROGRAMME_DEFAULTS: Record<string, { label: string; fee: string }> = {
   consultation: { label: "Private Consultation", fee: "€450" },
 };
 
+const SERVICE_TEMPLATES: Record<string, string> = {
+  "sober-muse":
+    "90-day private coaching programme — The Sober Muse Method. Includes weekly 60-minute sessions via Zoom, asynchronous support between sessions, and direct access to Martina throughout. Focused on the specific work agreed in our private consultation.",
+  empowerment:
+    "Bespoke Female Empowerment & Leadership coaching programme over 3–12 months. Includes bi-weekly 60-minute sessions via Zoom, written reflection work between sessions, and sustained direct support throughout. Scope and duration as agreed in our private consultation.",
+  consultation:
+    "Single private consultation — 45 minutes via Zoom. A focused, confidential conversation on the specific questions and direction agreed between us. Fee credited in full to the programme investment upon enrolment.",
+};
+
 const FormSchema = z.object({
   adminSecret: z.string().min(1, "Secret required"),
   email: z.string().email("Valid email required"),
@@ -84,6 +93,7 @@ export default function AdminContractPage() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       programme: "empowerment",
+      serviceDescription: SERVICE_TEMPLATES["empowerment"],
       deliveryMethod: "Online",
       contractDate: todayFormatted(),
     },
@@ -96,6 +106,7 @@ export default function AdminContractPage() {
     if (prefillProgramme) {
       setValue("programme", prefillProgramme);
       setValue("fee", PROGRAMME_DEFAULTS[prefillProgramme]?.fee ?? "");
+      setValue("serviceDescription", SERVICE_TEMPLATES[prefillProgramme] ?? "");
     }
     if (searchSecret) setValue("adminSecret", searchSecret);
     setValue("contractDate", todayFormatted());
@@ -104,10 +115,19 @@ export default function AdminContractPage() {
   const programme = watch("programme");
   const deliveryMethod = watch("deliveryMethod");
 
-  // Auto-fill fee when programme changes
+  // Auto-fill fee + service description template when programme changes
   useEffect(() => {
     if (programme) {
       setValue("fee", PROGRAMME_DEFAULTS[programme]?.fee ?? "");
+      // Only overwrite description when it's currently a known template
+      // (i.e. Martina hasn't started writing her own copy)
+      const currentDesc = (document.querySelector<HTMLTextAreaElement>('[name="serviceDescription"]'))?.value ?? "";
+      const isStillTemplate = Object.values(SERVICE_TEMPLATES).some(
+        (t) => t === currentDesc,
+      );
+      if (!currentDesc || isStillTemplate) {
+        setValue("serviceDescription", SERVICE_TEMPLATES[programme] ?? "");
+      }
     }
   }, [programme, setValue]);
 
