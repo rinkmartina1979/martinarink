@@ -810,7 +810,7 @@ export default async function PressPage() {
           <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
             <VideoEmbed
               number="01"
-              src="https://player.vimeo.com/video/25253824?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
+              src="https://player.vimeo.com/video/1200866417?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
               title="Martina Rink — Vimeo interview"
               caption="Vimeo · Interview"
             />
