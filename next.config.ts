@@ -1,4 +1,4 @@
-// cache-bust: 2026-05-22
+// cache-bust: 2026-06-12
 import type { NextConfig } from "next";
 import path from "node:path";
 
