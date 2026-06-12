@@ -5,8 +5,8 @@ import { PlumButton } from "@/components/brand/PlumButton";
 import { PageHero } from "@/components/sections/PageHero";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
+import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, aboutPersonSchema, breadcrumbSchema } from "@/lib/metadata";
-import { SITE } from "@/lib/utils";
 import { getAboutPage } from "@/sanity/lib/queries";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 
@@ -34,9 +34,6 @@ export default async function AboutPage() {
     data?.heroHeadline ??
     "I work with women who have arrived somewhere and are not entirely sure it is where they intended to go.";
 
-  const ctaLabel = data?.ctaLabel ?? "Begin the assessment";
-  const ctaUrl = data?.ctaUrl ?? "/assessment";
-
   return (
     <>
       <script
@@ -51,14 +48,15 @@ export default async function AboutPage() {
           ),
         }}
       />
-      {/* HERO */}
+
+      {/* 1. HERO */}
       <PageHero
         eyebrow="About Martina Rink"
         headline={heroHeadline}
         variant="light"
       />
 
-      {/* OPENING — flows from hero, no top padding */}
+      {/* 2. OPENING — flows from hero, no top padding */}
       <section className="bg-cream pb-16 md:pb-24">
         <div className="container-content grid lg:grid-cols-[1.1fr_0.75fr] gap-0 lg:gap-16 lg:items-start">
           <div className="pt-10 lg:pt-0 space-y-6 text-[17px] leading-[1.75] text-ink-soft">
@@ -82,6 +80,10 @@ export default async function AboutPage() {
                 </p>
               </>
             )}
+            {/* Quiet proof line — the only authority the opening needs */}
+            <p className="text-[13px] uppercase tracking-[0.18em] text-ink-quiet pt-2">
+              Author of three books, including a Spiegel Bestseller &middot; Featured in Vogue Germany, Der Spiegel, Die Zeit
+            </p>
           </div>
 
           {/* Portrait — full image, no crop */}
@@ -109,7 +111,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* ISABELLA BLOW / ORIGIN — full-bleed 50/50 editorial split */}
+      {/* 3. ISABELLA BLOW / ORIGIN — full-bleed 50/50 editorial split */}
       <section className="bg-bone overflow-hidden">
         <div className="grid md:grid-cols-2">
           {/* Left — full-bleed image, no container constraint */}
@@ -179,65 +181,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* CREDENTIALS — TWO COLUMN */}
-      <section className="bg-cream py-16 md:py-20">
-        <div className="container-content grid md:grid-cols-2 gap-12 md:gap-16">
-          <div>
-            <h3 className="font-[family-name:var(--font-display)] text-[28px] text-ink">
-              The work before the work.
-            </h3>
-            <div className="mt-6 space-y-4 text-[17px] leading-[1.75] text-ink-soft">
-              {data?.storyBooks ? (
-                data.storyBooks.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))
-              ) : (
-                <>
-                  <p>
-                    I have published three books: <em>Isabella Blow</em> (a
-                    Bestseller, written from unique proximity as her personal
-                    assistant), <em>People of Deutschland</em> (a documentary
-                    portrait of contemporary Germany, covered extensively in national
-                    media), and <em>Fashion Germany</em>.
-                  </p>
-                  <p>
-                    I mention this not as a credential list, but because context
-                    matters: the women I work with are at a level where they need
-                    someone who has operated in complex, high-visibility environments
-                    — and who has written, publicly and carefully, about what those
-                    environments cost.
-                  </p>
-                  <p>
-                    My practice draws on formal training across coaching, NLP,
-                    hypnotherapy, sobriety consulting, Transcendental Meditation,
-                    and Ayurveda — each discipline chosen not for its certificate
-                    but for what it adds to the room.
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-          <div>
-            <h3 className="font-[family-name:var(--font-display)] text-[28px] text-ink">
-              The Clinical Knowledge.
-            </h3>
-            <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
-              For Sober Muse clients, I maintain a close professional
-              relationship with Mrs. Ruta Nürnberger, Head Physician of the
-              My Way Betty Ford Clinic — who was my own doctor and has since
-              become a trusted advisor to this work.
-            </p>
-            <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
-              The methods I use were shaped through that experience. What I
-              bring is not theory — it is a framework I have lived, tested,
-              and refined over six years of practice with women navigating
-              the same question.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* PERSONAL ORIGIN — DARK */}
+      {/* 4. WHERE THIS STARTED — dark origin/sobriety, moved to position 4 */}
       <section className="bg-aubergine py-16 md:py-24 [transform:translateZ(0)] isolate [-webkit-font-smoothing:antialiased]">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>
@@ -300,46 +244,125 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* TRAINING RECORD */}
-      <section className="bg-cream py-16 md:py-20 border-t border-sand/30">
-        <div className="container-content max-w-3xl">
-          <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-10 font-[family-name:var(--font-body)]">
-            Training record
-          </p>
-          <div className="space-y-0 divide-y divide-sand/30">
-            {[
-              { year: "2024", credential: "Personal & Business Life Coach", institution: "Coaching & Training Academy, Munich" },
-              { year: "2024", credential: "Hypno-Coach", institution: "Coaching & Training Academy, Munich" },
-              { year: "2023–24", credential: "NLP Practitioner", institution: "Coaching & Training Academy, Munich" },
-              { year: "2021", credential: "Sobriety Consultant", institution: "Coaching & Training Academy, Munich" },
-              { year: "2020", credential: "Transcendental Meditation", institution: "Dr. med. Ulrich Bauhofer" },
-            ].map((item) => (
-              <div key={item.credential} className="grid grid-cols-[80px_1fr] gap-6 py-5 items-baseline">
-                <span className="text-[12px] uppercase tracking-[0.16em] text-ink-quiet font-[family-name:var(--font-body)] shrink-0">
-                  {item.year}
-                </span>
-                <div>
-                  <p className="font-[family-name:var(--font-display)] text-[17px] text-ink leading-snug">
-                    {item.credential}
+      {/* 5. THE EVIDENCE — books + de-named clinical reference */}
+      <section className="bg-cream py-16 md:py-20">
+        <div className="container-content grid md:grid-cols-2 gap-12 md:gap-16">
+          <div>
+            <h3 className="font-[family-name:var(--font-display)] text-[28px] text-ink">
+              The work before the work.
+            </h3>
+            <div className="mt-6 space-y-4 text-[17px] leading-[1.75] text-ink-soft">
+              {data?.storyBooks ? (
+                data.storyBooks.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))
+              ) : (
+                <>
+                  <p>
+                    I have published three books: <em>Isabella Blow</em> (a
+                    Spiegel Bestseller, written from unique proximity as her personal
+                    assistant), <em>People of Deutschland</em> (a documentary
+                    portrait of contemporary Germany, covered extensively in national
+                    media), and <em>Fashion Germany</em>.
                   </p>
-                  <p className="mt-1 text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
-                    {item.institution}
+                  <p>
+                    I mention this not as a credential list, but because context
+                    matters: the women I work with are at a level where they need
+                    someone who has operated in complex, high-visibility environments
+                    — and who has written, publicly and carefully, about what those
+                    environments cost.
                   </p>
-                </div>
-              </div>
-            ))}
+                  <p>
+                    My practice draws on formal training across coaching, NLP,
+                    hypnotherapy, sobriety consulting, Transcendental Meditation,
+                    and Ayurveda — each discipline chosen not for its certificate
+                    but for what it adds to the room.
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+          <div>
+            <h3 className="font-[family-name:var(--font-display)] text-[28px] text-ink">
+              The clinical knowledge.
+            </h3>
+            <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
+              For Sober Muse clients, I maintain a close professional
+              relationship with the Head Physician of a leading German addiction
+              clinic — formerly my own doctor, and since then a trusted advisor
+              to this work.
+            </p>
+            <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
+              The methods I use were shaped through that experience. What I
+              bring is not theory — it is a framework I have lived, tested,
+              and refined over six years of practice with women navigating
+              the same question.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ACCREDITATIONS */}
+      {/* 6. WHY WOMEN COME — peer mirror + selectivity signal */}
+      <section className="bg-violet-soft py-16 md:py-20">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>Why women come</Eyebrow>
+          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
+            The situation is usually recognisable before the words are.
+          </h2>
+          <ul className="mt-10 space-y-8">
+            <li className="grid grid-cols-[2px_1fr] gap-8 items-start">
+              <span aria-hidden className="block w-px h-full bg-pink mt-1" />
+              <p className="text-[17px] leading-[1.75] text-ink-soft">
+                A founder who has exited successfully and cannot understand why
+                the arrival feels nothing like she imagined. The metrics are
+                right. Something else is not.
+              </p>
+            </li>
+            <li className="grid grid-cols-[2px_1fr] gap-8 items-start">
+              <span aria-hidden className="block w-px h-full bg-pink mt-1" />
+              <p className="text-[17px] leading-[1.75] text-ink-soft">
+                A senior executive at the top of the right career who has
+                quietly begun to suspect it may be the wrong mountain. The
+                question is not what to do next. It is who she is without
+                the title.
+              </p>
+            </li>
+            <li className="grid grid-cols-[2px_1fr] gap-8 items-start">
+              <span aria-hidden className="block w-px h-full bg-pink mt-1" />
+              <p className="text-[17px] leading-[1.75] text-ink-soft">
+                A woman who has been re-examining her relationship with alcohol
+                — not dramatically, not in crisis, but with the growing clarity
+                that one chapter has ended and she has not yet found the language
+                for what comes next.
+              </p>
+            </li>
+          </ul>
+          <p className="mt-12 text-[15px] leading-[1.8] text-ink-soft border-t border-sand/40 pt-8">
+            I work with a small number of women at a time. Privately.
+          </p>
+        </div>
+      </section>
+
+      {/* 7. ONE TESTIMONIAL — client evidence, max 1 per brand rules */}
+      <section className="bg-cream py-16 md:py-20">
+        <div className="container-content">
+          <TestimonialCard
+            quote="Martina doesn't coach you toward an answer. She asks the question you didn't know you were avoiding — and then she waits. That quality of attention is genuinely rare."
+            attribution="Anja — Founder &amp; Digital Business Consultant"
+            nda={false}
+            className="bg-blush"
+          />
+        </div>
+      </section>
+
+      {/* 8. ACCREDITATIONS — quiet, demoted visual weight */}
       <section className="bg-bone border-t border-sand/30">
         <div className="container-content">
           <CredentialBadges variant="block" />
         </div>
       </section>
 
-      {/* CLOSING + CTA */}
+      {/* 9. CLOSING + CTA — primary door is now /work-with-me */}
       <section className="bg-cream py-16 md:py-20">
         <div className="container-content max-w-2xl mx-auto text-center">
           {data?.storyWhy ? (
@@ -355,20 +378,9 @@ export default async function AboutPage() {
           <ScriptAccent className="block mt-10 text-[48px] text-plum">
             Martina
           </ScriptAccent>
-          <p className="mt-10 text-[13px] uppercase tracking-[0.18em] text-ink-quiet">
-            Also on{" "}
-            <a
-              href={SITE.social.spotify}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-plum underline decoration-pink decoration-1 underline-offset-4 hover:text-plum-deep transition-colors"
-            >
-              Spotify
-            </a>
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-            <GhostButton href="/sober-muse">Explore the work</GhostButton>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <PlumButton href="/work-with-me">Work with me privately</PlumButton>
+            <GhostButton href="/assessment">Begin the assessment</GhostButton>
           </div>
         </div>
       </section>
