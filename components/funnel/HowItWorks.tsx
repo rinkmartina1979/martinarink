@@ -1,43 +1,37 @@
 /**
- * HowItWorks — Homepage conversion clarity section
+ * HowItWorks — "The path" section.
  *
- * 4-step process. Placed immediately after the hero.
- * Answers the #1 question a high-intent visitor has:
- * "Okay — but what do I actually DO?"
- *
- * No decoration. No fluff. Just the path, clearly stated.
+ * Placed late on the homepage, just before the closing CTA — after desire
+ * has been built, not before. No prices, no time-stamps, no funnel furniture.
+ * Four quiet steps in the brand voice.
  */
 
 const STEPS = [
   {
     number: "01",
-    title: "Take the assessment",
-    body: "Ten questions. Five minutes. Tells you — and me — exactly where you are and what you need.",
-    time: "5 min",
+    title: "Begin the assessment",
+    body: "Seven questions, answered privately. A letter follows — written for where you actually are.",
     href: "/assessment",
     cta: "Begin →",
   },
   {
     number: "02",
     title: "Receive your private letter",
-    body: "A letter written for where you actually are. Not a category. Not a score. A beginning.",
-    time: "Immediate",
+    body: "Not a category. Not a score. A reading of where you stand — and what the work would be.",
     href: null,
     cta: null,
   },
   {
     number: "03",
-    title: "Apply for the programme",
-    body: "Five honest questions. I read every application personally. Reply within 48 hours.",
-    time: "10 min",
+    title: "Apply",
+    body: "Five honest questions. I read every application personally and reply within 48 hours.",
     href: null,
     cta: null,
   },
   {
     number: "04",
     title: "We speak privately",
-    body: "A 45-minute consultation — €350, credited in full to the programme if we proceed together.",
-    time: "45 min · €350",
+    body: "A private conversation, offered after your application is accepted.",
     href: null,
     cta: null,
   },
@@ -52,7 +46,7 @@ export function HowItWorks() {
         <div className="flex items-center gap-5 mb-12">
           <span className="h-px w-10 bg-pink shrink-0" aria-hidden />
           <p className="text-[11px] uppercase tracking-[0.3em] text-ink-quiet font-[family-name:var(--font-body)]">
-            How it works
+            The path
           </p>
         </div>
 
@@ -68,7 +62,7 @@ export function HowItWorks() {
               ].join(" ")}
             >
               {/* Step number */}
-              <p className="text-[11px] tracking-[0.28em] uppercase text-pink font-[family-name:var(--font-body)] mb-4">
+              <p className="text-[11px] tracking-[0.28em] uppercase text-ink-quiet font-[family-name:var(--font-body)] mb-4">
                 {step.number}
               </p>
 
@@ -78,13 +72,8 @@ export function HowItWorks() {
               </h3>
 
               {/* Body */}
-              <p className="text-[14px] leading-[1.7] text-ink-soft mb-5">
+              <p className="text-[14px] leading-[1.7] text-ink-soft">
                 {step.body}
-              </p>
-
-              {/* Time/meta */}
-              <p className="text-[11px] uppercase tracking-[0.16em] text-ink-quiet/70 font-[family-name:var(--font-body)]">
-                {step.time}
               </p>
 
               {/* CTA — step 01 only */}
@@ -99,16 +88,6 @@ export function HowItWorks() {
 
             </div>
           ))}
-        </div>
-
-        {/* Connecting arrow — desktop */}
-        <div className="hidden md:flex justify-between mt-6 px-0" aria-hidden>
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="flex-1 flex justify-end pr-4">
-              <span className="text-sand text-[18px] translate-y-1">→</span>
-            </div>
-          ))}
-          <div className="flex-1" />
         </div>
 
       </div>

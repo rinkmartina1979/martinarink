@@ -1,31 +1,37 @@
 // NURNBERGER_APPROVED — flip to true only when written permission from Mrs. Nürnberger is on file.
-// Until then, the clinical partner credential is hidden. Strip renders 3 items (2-col grid).
+// Until then, the clinical partner credential is hidden.
 const NURNBERGER_APPROVED = false;
 
 const ITEMS = [
-  { label: "AUTHOR", credit: "Three Books · Spiegel Bestseller" },
-  { label: "CULTURAL WORK", credit: "Isabella Blow · London" },
-  { label: "LIVED EXPERIENCE", credit: "Six Years Sober" },
+  { label: "Author", credit: "Three Books · Spiegel Bestseller" },
+  { label: "Cultural work", credit: "Isabella Blow · London" },
+  { label: "Perspective", credit: "Six years alcohol-free" },
   ...(NURNBERGER_APPROVED
-    ? [{ label: "CLINICAL PARTNER", credit: "Mrs. Nürnberger · My Way Betty Ford" }]
+    ? [{ label: "Clinical partner", credit: "Mrs. Nürnberger · My Way Betty Ford" }]
     : []),
 ];
 
+/**
+ * AuthorityStrip — quiet credential line.
+ * Rendered directly beneath PressMarquee so press + credentials read as
+ * ONE authority band, not two competing sections.
+ */
 export function AuthorityStrip() {
-  const cols = ITEMS.length === 4 ? "md:grid-cols-4" : "md:grid-cols-3";
   return (
-    <section className="bg-bone border-y border-sand/40">
-      <div className="container-content py-8 md:py-10">
-        <ul className={`grid grid-cols-2 ${cols} gap-y-6 md:gap-y-0 md:divide-x divide-sand/60`}>
-          {ITEMS.map((item) => (
-            <li
-              key={item.label}
-              className="flex flex-col items-center text-center px-4"
-            >
-              <span className="text-[0.6875rem] uppercase tracking-[0.22em] font-medium text-ink-quiet">
+    <section className="bg-cream border-b border-sand/40">
+      <div className="container-content pb-8 pt-2">
+        <ul className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-0 text-center">
+          {ITEMS.map((item, i) => (
+            <li key={item.label} className="flex items-center">
+              {i > 0 && (
+                <span aria-hidden className="hidden md:inline-block mx-6 text-pink text-[9px]">
+                  ·
+                </span>
+              )}
+              <span className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mr-2">
                 {item.label}
               </span>
-              <span className="mt-2 font-[family-name:var(--font-display)] text-[15px] text-ink leading-tight">
+              <span className="font-[family-name:var(--font-display)] text-[14px] text-ink leading-tight">
                 {item.credit}
               </span>
             </li>

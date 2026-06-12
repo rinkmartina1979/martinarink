@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { PlumButton } from "@/components/brand/PlumButton";
 import { GhostButton } from "@/components/brand/GhostButton";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
@@ -10,7 +9,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { HowItWorks } from "@/components/funnel/HowItWorks";
 import { PressMarquee } from "@/components/brand/PressMarquee";
 import { buildMetadata } from "@/lib/metadata";
-import { getHomePage, getFeaturedTestimonials, getPartnerLogos, type Testimonial } from "@/sanity/lib/queries";
+import { getHomePage, getFeaturedTestimonials, type Testimonial } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getHomePage();
@@ -24,7 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({ path: "/" });
 }
 
-// Real client testimonials — with verified portrait photos.
+// Real client testimonials — curated to three. Peer-signal roles, quotes
+// tightened to evidence rather than praise. Full set lives in Sanity.
 interface FallbackTestimonial {
   name: string;
   role: string | null;
@@ -35,52 +35,28 @@ interface FallbackTestimonial {
 
 const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
   {
-    name: "Rebecca",
-    role: "Travel Agent & Entrepreneur",
+    name: "Anja",
+    role: "Founder & Digital Business Consultant",
     quote:
-      "A dear friend introduced me to Martina's Dry January Challenge. What began as an experiment quickly became one of the most significant months of my life. With Martina's support I not only completed the challenge but gained a much deeper understanding of my relationship with myself. Challenge accomplished.",
+      "The session with Martina was a thoroughly enriching experience — inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself in a remarkably short time.",
     nda: false,
-    photoPath: "/images/portraits/portrait-rebecca.avif",
-  },
-  {
-    name: "Harita",
-    role: "Manager · Automotive industry",
-    quote:
-      "I've had a few conversations with Martina, and her energy is truly special. The topics we discuss resonate so deeply with my own thoughts — as if taken directly from my own mind. She speaks from experience and conveys profound depth. Every interaction is simply inspiring.",
-    nda: false,
-    photoPath: "/images/portraits/portrait-harita.avif",
+    photoPath: "/images/portraits/anja-testimonial.avif",
   },
   {
     name: "Lu",
     role: "Patent Attorney",
     quote:
-      "Martina has so many wonderful attributes that it is very difficult to describe the full impact in a few sentences. She is warm, supportive, constructive and very professional — with great expertise to guide people in finding their way. Highly recommended for anyone seeking serious personal development.",
+      "Martina is warm, constructive and very professional — with great expertise in guiding people to find their way. I recommend her without hesitation to anyone serious about personal development.",
     nda: false,
     photoPath: "/images/portraits/portrait-lu.avif",
   },
   {
-    name: "Anja",
-    role: "Founder & Digital Business Consultant",
+    name: "Harita",
+    role: "Manager · Automotive industry",
     quote:
-      "The session with Martina was a thoroughly enriching experience. It was inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself — in a remarkably short time.",
+      "Her energy is truly special. The topics we discuss resonate so deeply with my own thoughts — as if taken directly from my own mind. She speaks from experience and conveys profound depth.",
     nda: false,
-    photoPath: "/images/portraits/anja-testimonial.avif",
-  },
-  {
-    name: "Armina",
-    role: "Patent Engineer",
-    quote:
-      "My experience with Martina as a life coach was life-changing. From the very first consultation, I felt understood and supported. She helped me gain clarity about my life path and clearly define my goals. Martina's dedication is noticeable in every coaching session — she supports me in discovering my own inner strength and developing my full potential. Her voice is calming and encouraging, and every conversation offers a safe space for growth. I wholeheartedly recommend Martina to anyone seeking an empathetic and committed coach.",
-    nda: false,
-    photoPath: "/images/portraits/armina-patent-engineer.avif",
-  },
-  {
-    name: "Canan Chandni Bauer",
-    role: "Miss Germany Community",
-    quote:
-      "I genuinely recommend Martina's female empowerment coaching. I was pleasantly surprised by just how much I gained. Working with Martina was empathetic and highly professional — she addressed fears, inner blocks, and career guidance on a truly personal level. This gave me much greater clarity about my own strengths and the path ahead. I found her through Miss Germany and am very grateful for that. You can tell she puts her heart and soul into this work.",
-    nda: false,
-    photoPath: "/images/portraits/canan-chandni-bauer.png",
+    photoPath: "/images/portraits/portrait-harita.avif",
   },
 ];
 
@@ -137,23 +113,22 @@ function TestimonialBlock({
 }
 
 export default async function HomePage() {
-  const [pageData, testimonialData, partnerData] = await Promise.all([
+  const [pageData, testimonialData] = await Promise.all([
     getHomePage(),
     getFeaturedTestimonials(),
-    getPartnerLogos(),
   ]);
 
   // Use Sanity testimonials if available and non-empty, else use hardcoded real testimonials
   const testimonials =
     testimonialData && testimonialData.length > 0
-      ? testimonialData.slice(0, 4)
+      ? testimonialData.slice(0, 3)
       : FALLBACK_TESTIMONIALS;
 
   const heroSubheadline =
     pageData?.heroSubheadline ??
     "The career. The recognition. The particular kind of life that, on paper, resolves. And somewhere — quietly, between the Sunday afternoons and the 4am recalibrations — something has stopped feeling like yours. I work with a small number of women at a time. Privately.";
 
-  const heroCta = pageData?.heroCta?.label ?? "Begin the assessment";
+  const heroCta = pageData?.heroCta?.label ?? "Begin the private assessment";
   const heroCtaUrl = pageData?.heroCta?.url ?? "/assessment";
   const heroSecondaryLabel = pageData?.heroSecondaryLabel ?? "Explore the work";
   const heroSecondaryUrl = pageData?.heroSecondaryUrl ?? "/work-with-me";
@@ -167,7 +142,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ─── HERO — 2026 editorial split hero ───────────────── */}
+      {/* ─── 1 · HERO — 2026 editorial split hero ────────────── */}
       <HeroSection
         heroCta={heroCta}
         heroCtaUrl={heroCtaUrl}
@@ -176,29 +151,7 @@ export default async function HomePage() {
         heroSubheadline={heroSubheadline}
       />
 
-      {/* ─── HOW IT WORKS — funnel clarity ──────────────────── */}
-      <HowItWorks />
-
-      {/* ─── AUTHORITY STRIP ─────────────────────────────────── */}
-      <AuthorityStrip />
-
-      {/* ─── ENTITY DEFINITION (Google E-A-T + Knowledge Panel) ──
-          Single sentence. Visually quiet. Parses cleanly as
-          "Martina Rink is a [job title] and [credential]". */}
-      <section className="bg-cream border-b border-sand/30 py-10">
-        <div className="container-content max-w-3xl text-center">
-          <p className="text-[15px] md:text-[16px] leading-[1.7] text-ink-quiet italic font-[family-name:var(--font-display)]">
-            Martina Rink is a Spiegel Bestselling author and private mentor
-            for accomplished women — working across Ibiza, Berlin, London and worldwide
-            on identity, sobriety, and the second chapter of a public life.
-          </p>
-        </div>
-      </section>
-
-      {/* ─── AS FEATURED IN — infinite press marquee ─────────── */}
-      <PressMarquee />
-
-      {/* ─── THE PRIVATE COST ────────────────────────────────── */}
+      {/* ─── 2 · THE PRIVATE COST — emotional continuation ───── */}
       <section className="bg-bone section-pad">
         <div className="container-content max-w-3xl">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] tracking-[-0.015em] text-ink">
@@ -219,7 +172,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── TWO WAYS IN ─────────────────────────────────────── */}
+      {/* ─── 3 · AUTHORITY BAND — press + credentials, one band ── */}
+      <PressMarquee />
+      <AuthorityStrip />
+
+      {/* ─── 4 · TWO WAYS IN ─────────────────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content">
           <div className="max-w-3xl">
@@ -239,6 +196,7 @@ export default async function HomePage() {
                 body: "Not because it has become a problem. Because it has become a question. A 90-day private engagement — no group sessions, no recovery narrative, no one-size-fits-all framework. One woman, one mentor.",
                 meta: "90 days · private · by application",
                 href: "/sober-muse",
+                link: "The method →",
               },
               {
                 roman: "II.",
@@ -247,6 +205,7 @@ export default async function HomePage() {
                 body: "There is a particular exhaustion that comes not from doing too much, but from being someone who no longer quite fits. The container you built has stopped being the same size as you are. This is information. And it is the beginning of the most interesting work available to you.",
                 meta: "3–12 months · open-ended · by application",
                 href: "/empowerment",
+                link: "The work →",
               },
             ].map((card) => (
               <Link
@@ -270,7 +229,7 @@ export default async function HomePage() {
                   {card.meta}
                 </p>
                 <p className="mt-6 text-[14px] text-plum font-medium group-hover:text-pink transition-colors">
-                  Read more →
+                  {card.link}
                 </p>
               </Link>
             ))}
@@ -278,14 +237,14 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── CULTURAL WORK TEASER ────────────────────────────── */}
+      {/* ─── 5 · ABOUT — story + creative foundation, merged ──── */}
       <section className="bg-bone section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           <div className="md:col-span-5">
             <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
               <Image
                 src="/images/portraits/martina-library-pink.jpg"
-                alt="Martina Rink — author and cultural observer"
+                alt="Martina Rink — author and private mentor"
                 fill
                 sizes="(max-width: 768px) 100vw, 35vw"
                 className="object-cover object-top"
@@ -293,37 +252,54 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="md:col-span-7">
-            <Eyebrow>Creative Work</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[42px] leading-[1.15] text-ink">
-              Before this work became private, it was cultural.
+            <Eyebrow>About</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[44px] leading-[1.15] text-ink">
+              I am interested in the distance between how a woman appears — and
+              how she{" "}
+              <ScriptAccent className="text-[1.1em] leading-none">
+                actually feels
+              </ScriptAccent>{" "}
+              inside her own life.
             </h2>
-            <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[520px]">
+            <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
               <p>
-                Three published books. A Spiegel Bestseller. Years inside the
-                fashion world at the highest level. Co-creator of People of
-                Deutschland. Personal assistant to Isabella Blow in London.
+                {pageData?.aboutTeaser ||
+                  "Born in Persia. Adopted by German parents. Educated in Germany and London. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
               </p>
               <p>
-                This is not the biography of a coach. It is the foundation of
-                a very particular kind of understanding.
+                Before this practice: personal assistant to Isabella Blow in
+                London. Three published books, including a Spiegel Bestseller.
+                Six years alcohol-free. None of that is the work — it is simply
+                why I can sit with women who are accomplished enough to know
+                that accomplishment is not the answer.
               </p>
             </div>
-            <Link
-              href="/creative-work"
-              className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
-            >
-              View the creative work →
-            </Link>
+            <div className="mt-8 flex items-center gap-6">
+              <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+                Author · Mentor · Ibiza · Berlin
+              </span>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+              <Link
+                href="/about"
+                className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+              >
+                Read the longer version →
+              </Link>
+              <Link
+                href="/creative-work"
+                className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+              >
+                The creative work →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── PUBLISHED WORKS — premium editorial book archive ───
-          White background, large display headline, publisher-style
-          card layout. Mobile: title/meta above image. */}
-      <section
-        className="py-16 md:py-24 border-t border-sand/30 bg-cream"
-      >
+      {/* ─── 6 · PUBLISHED WORK — editorial book archive ──────── */}
+      <section className="py-16 md:py-24 border-t border-sand/30 bg-cream">
         <div className="container-content max-w-7xl">
 
           {/* Header */}
@@ -337,7 +313,7 @@ export default async function HomePage() {
                 color:         "var(--color-ink-quiet)",
               }}
             >
-              Bestsellers
+              Published work
             </p>
             <h2
               className="mt-5 font-[family-name:var(--font-display)] text-ink mx-auto"
@@ -456,85 +432,39 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── PARTNER LOGOS ───────────────────────────────────── */}
-      <section className="bg-bone border-t border-sand/30 py-14">
+      {/* ─── 7 · TESTIMONIALS — three, curated ────────────────── */}
+      <section className="bg-bone border-t border-sand/30 section-pad">
         <div className="container-content">
-          <p className="text-center text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-10">
-            Selected Partners &amp; Collaborators
-          </p>
-          {partnerData && partnerData.length > 0 ? (
-            <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6">
-              {partnerData.map((p) => (
-                <span
-                  key={p._id}
-                  className="text-[13px] uppercase tracking-[0.15em] text-ink/50 font-medium"
-                >
-                  {p.name}
-                </span>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6">
-              {[
-                "Otto", "MCM", "Vogue Germany", "H&M", "Meta",
-                "About You", "Henkel", "Beiersdorf", "Telekom", "Prestel",
-              ].map((name) => (
-                <span
-                  key={name}
-                  className="text-[13px] uppercase tracking-[0.15em] text-ink/50 font-medium"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          )}
-          <p className="mt-8 text-center text-[11px] text-ink-quiet/60">
-            Corporate clients and project partners · 2009–2022
-          </p>
+          <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((t, i) => {
+              const bgMap = ["bg-rose", "bg-blush", "bg-rose"];
+              const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25"];
+              const isSanity = "_id" in t;
+              const item = {
+                name: t.name,
+                role: t.role ?? null,
+                quote: t.quote,
+                nda: t.nda,
+                photoPath: isSanity ? undefined : (t as FallbackTestimonial).photoPath,
+              };
+              return (
+                <TestimonialBlock
+                  key={isSanity ? (t as Testimonial)._id : t.name + String(i)}
+                  testimonial={item}
+                  bg={bgMap[i % bgMap.length]}
+                  accentColor={accentMap[i % accentMap.length]}
+                />
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* ─── ABOUT TEASER ────────────────────────────────────── */}
-      <section className="bg-rose section-pad">
-        <div className="container-content max-w-3xl mx-auto">
-          <Eyebrow>About</Eyebrow>
-          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.15] text-ink">
-            I am interested in the distance between how a woman appears — and
-            how she{" "}
-            <ScriptAccent className="text-[1.1em] leading-none">
-              actually feels
-            </ScriptAccent>{" "}
-            inside her own life.
-          </h2>
-          <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft">
-            <p>
-              {pageData?.aboutTeaser ||
-                "Born in Persia. Adopted by German parents. Educated in Germany and London. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
-            </p>
-            <p>
-              Before this practice: personal assistant to Isabella Blow in
-              London. Three published books, including a Spiegel Bestseller.
-              Six years sober. None of that is the work — it is simply why I
-              can sit with women who are accomplished enough to know that
-              accomplishment is not the answer.
-            </p>
-          </div>
-          <div className="mt-8 flex items-center gap-6">
-            <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
-            <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
-              Author · Mentor · Ibiza · Berlin
-            </span>
-          </div>
-          <Link
-            href="/about"
-            className="mt-8 inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
-          >
-            Read the longer version →
-          </Link>
-        </div>
-      </section>
+      {/* ─── 8 · THE PATH — process, after desire ─────────────── */}
+      <HowItWorks />
 
-      {/* ─── ASSESSMENT TEASER (DARK) ────────────────────────── */}
+      {/* ─── 9 · CLOSING — private assessment (DARK) ──────────── */}
       <section className="relative bg-aubergine section-pad overflow-hidden">
         <div className="container-content relative max-w-3xl mx-auto text-center">
           <Eyebrow className="justify-center">
@@ -554,35 +484,6 @@ export default async function HomePage() {
           <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-cream/50">
             Private · Confidential · Always
           </p>
-        </div>
-      </section>
-
-      {/* ─── TESTIMONIALS ────────────────────────────────────── */}
-      <section className="bg-cream section-pad">
-        <div className="container-content">
-          <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
-            {testimonials.map((t, i) => {
-              const bgMap = ["bg-rose", "bg-blush", "bg-rose", "bg-blush", "bg-rose", "bg-blush"];
-              const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25", "text-pink/25", "text-plum/30", "text-pink/30"];
-              const isSanity = "_id" in t;
-              const item = {
-                name: t.name,
-                role: t.role ?? null,
-                quote: t.quote,
-                nda: t.nda,
-                photoPath: isSanity ? undefined : (t as FallbackTestimonial).photoPath,
-              };
-              return (
-                <TestimonialBlock
-                  key={isSanity ? (t as Testimonial)._id : t.name + String(i)}
-                  testimonial={item}
-                  bg={bgMap[i % bgMap.length]}
-                  accentColor={accentMap[i % accentMap.length]}
-                />
-              );
-            })}
-          </div>
         </div>
       </section>
     </>

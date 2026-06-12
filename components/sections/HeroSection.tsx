@@ -60,7 +60,7 @@ interface HeroSectionProps {
    COMPONENT
 ═══════════════════════════════════════════════════════════════ */
 export function HeroSection({
-  heroCta            = "Begin the assessment",
+  heroCta            = "Begin the private assessment",
   heroCtaUrl         = "/assessment",
   heroSecondaryLabel = "Explore the work",
   heroSecondaryUrl   = "/work-with-me",
@@ -88,7 +88,7 @@ export function HeroSection({
         >
           <span className="h-px w-10 shrink-0 bg-pink" aria-hidden />
           <p className="font-body text-[10px] font-semibold uppercase tracking-[0.34em] text-cream/60">
-            Private sober muse mentorship
+            Private mentorship &middot; By application only
           </p>
         </div>
 
@@ -173,6 +173,14 @@ export function HeroSection({
           style={{ animation: anim("0.42s") }}
         >
           Private &middot; Confidential &middot; By application
+        </p>
+
+        {/* ── Proof line — the only authority the hero needs ── */}
+        <p
+          className="mt-3 font-body text-[11px] tracking-[0.08em] text-cream/50"
+          style={{ animation: anim("0.48s") }}
+        >
+          Spiegel Bestselling author &middot; Featured in Vogue Germany &amp; Der Spiegel
         </p>
 
       </div>
