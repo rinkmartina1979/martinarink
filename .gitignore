@@ -43,3 +43,6 @@ next-env.d.ts
 # Claude Code IDE artifacts — never commit
 .claude/
 martinarink-next/
+
+# generated Brevo email previews
+scripts/brevo-preview/
