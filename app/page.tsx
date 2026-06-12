@@ -438,8 +438,8 @@ export default async function HomePage() {
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((t, i) => {
-              const bgMap = ["bg-rose", "bg-blush", "bg-rose"];
-              const accentMap = ["text-plum/30", "text-pink/30", "text-plum/25"];
+              const bgMap = ["bg-rose", "bg-rose", "bg-rose"];
+              const accentMap = ["text-plum/30", "text-plum/30", "text-plum/30"];
               const isSanity = "_id" in t;
               const item = {
                 name: t.name,

@@ -161,7 +161,7 @@ export default async function AboutPage() {
       </section>
 
       {/* PULL QUOTE — Isabella Blow specific authority */}
-      <section className="bg-blush py-14 md:py-20">
+      <section className="bg-rose py-14 md:py-20">
         <div className="container-content max-w-3xl mx-auto text-center">
           <span
             aria-hidden
@@ -350,7 +350,7 @@ export default async function AboutPage() {
             quote="Martina doesn't coach you toward an answer. She asks the question you didn't know you were avoiding — and then she waits. That quality of attention is genuinely rare."
             attribution="Anja — Founder &amp; Digital Business Consultant"
             nda={false}
-            className="bg-blush"
+            className="bg-rose"
           />
         </div>
       </section>
