@@ -264,14 +264,16 @@ export default async function HomePage() {
             <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
               <p>
                 {pageData?.aboutTeaser ||
-                  "Born in Persia. Adopted by German parents. Educated in Germany and London. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
+                  "Born in Persia. Adopted by German parents. Raised between Germany, London, Paris, and Ibiza. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
               </p>
               <p>
                 Before this practice: personal assistant to Isabella Blow in
-                London. Three published books, including a Spiegel Bestseller.
-                Six years alcohol-free. None of that is the work — it is simply
-                why I can sit with women who are accomplished enough to know
-                that accomplishment is not the answer.
+                London. Years inside the international creative and fashion
+                industry, watching what success can cost the women inside it.
+                Three published books, including a Spiegel Bestseller. Six
+                years alcohol-free. None of that is the work — it is simply
+                why I understand what it takes to build a life that fits who
+                you actually are.
               </p>
             </div>
             <div className="mt-8 flex items-center gap-6">

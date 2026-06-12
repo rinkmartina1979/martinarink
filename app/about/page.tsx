@@ -78,6 +78,13 @@ export default async function AboutPage() {
                   right. Not wrong enough to name easily. Not obvious enough to
                   explain to anyone else.
                 </p>
+                <p>
+                  I know this from two directions. For several years I moved inside
+                  the international creative and fashion industry, watching women of
+                  considerable talent manage exactly that disconnect — the gap
+                  between the life they had built and what it was costing them. And
+                  then I lived my own version of it.
+                </p>
               </>
             )}
             {/* Quiet proof line — the only authority the opening needs */}
@@ -201,17 +208,22 @@ export default async function AboutPage() {
                 <>
                   <p>
                     I was born in Persia and adopted by German parents shortly after
-                    birth. I grew up in Germany and London, and attended boarding
-                    school — an education that, alongside the academic curriculum,
-                    offered a thorough introduction to what people use when the
-                    interior becomes too much.
+                    birth. I grew up between Germany, London, Paris, and eventually
+                    Ibiza — a life shaped by code-switching, by belonging nowhere
+                    and everywhere at once, and by the interior work required when
+                    the circumstances of your life do not quite fit.
+                  </p>
+                  <p>
+                    What that produced, in me, over time, was anxiety, depression,
+                    and a social phobia I managed with considerable skill for years.
+                    The management, as it tends to, became its own thing to examine.
                   </p>
                   <p>
                     I have lived, from the beginning, with a particular kind of
                     question: who am I, underneath the circumstances I was placed
-                    in? It is a question that does not have a final answer, but
-                    which can be lived in a great deal more consciously than most of
-                    us manage.
+                    in? It is a question that does not have a final answer. But it
+                    can be lived in a great deal more consciously than most of us
+                    manage.
                   </p>
                 </>
               )}
@@ -233,9 +245,12 @@ export default async function AboutPage() {
                   <p>
                     I did not need a programme. I needed a conversation — precise,
                     private, conducted between equals. I did not find one that was
-                    right for me. So eventually, I built it. Six years later, I am
-                    still building it. For women who are, in one way or another,
-                    asking the same question I was.
+                    right for me. So I built it.
+                  </p>
+                  <p>
+                    Choosing sobriety was not a treatment. It was the moment I
+                    stopped running from myself — and the moment this work was born.
+                    Not from theory. From what I lived.
                   </p>
                 </>
               )}
@@ -275,8 +290,9 @@ export default async function AboutPage() {
                   <p>
                     My practice draws on formal training across coaching, NLP,
                     hypnotherapy, sobriety consulting, Transcendental Meditation,
-                    and Ayurveda — each discipline chosen not for its certificate
-                    but for what it adds to the room.
+                    and Ayurveda — each chosen not for its certificate but for what
+                    it adds to the room. The sobriety work operates under a distinct
+                    name: The Sober Muse. A private method, built from the inside.
                   </p>
                 </>
               )}
