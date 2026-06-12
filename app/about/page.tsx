@@ -303,7 +303,7 @@ export default async function AboutPage() {
       </section>
 
       {/* 6. WHY WOMEN COME — peer mirror + selectivity signal */}
-      <section className="bg-violet-soft py-16 md:py-20">
+      <section className="bg-bone py-16 md:py-20">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>Why women come</Eyebrow>
           <h2 className="mt-6 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
