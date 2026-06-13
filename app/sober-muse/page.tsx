@@ -12,6 +12,7 @@ import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
+import { SITE } from "@/lib/utils";
 
 const FAQS = [
   {
@@ -67,7 +68,7 @@ export default async function SoberMusePage() {
     "It is about what you are finally able to see clearly, once the management strategy has been set aside.";
   const ctaLabel = data?.ctaLabel ?? "Begin with a private consultation";
   const ctaUrl = data?.ctaUrl ?? "/book";
-  const investmentText = data?.investmentText ?? null;
+  const investmentText = data?.investmentText ?? SITE.pricing.soberMuseFrom;
 
   return (
     <>
@@ -272,11 +273,9 @@ export default async function SoberMusePage() {
           </h2>
           <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-ink-soft">
             <p>
-              The Sober Muse Method is offered at{" "}
-              <strong className="text-ink">
-                {investmentText ?? "by application"}
-              </strong>{" "}
-              for the 90-day engagement.
+              The Sober Muse Method begins{" "}
+              <strong className="text-ink">{investmentText}</strong>{" "}
+              for the 90-day engagement — by application.
             </p>
             {data?.privacyCopy ? (
               data.privacyCopy.split("\n").filter(Boolean).map((para, i) => (
@@ -299,9 +298,18 @@ export default async function SoberMusePage() {
             <CredentialBadges variant="strip" />
           </div>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
-            <GhostButton href="/assessment">Begin the assessment</GhostButton>
+            <PlumButton href="/apply/sober-muse">Apply &rarr;</PlumButton>
+            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
           </div>
+          <p className="mt-5 text-center text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+            Not sure yet?{" "}
+            <a
+              href="/assessment"
+              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
+            >
+              Begin with the assessment
+            </a>
+          </p>
           <p className="mt-8 text-center text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
             Already accepted?{" "}
             <a

@@ -10,6 +10,7 @@ import { HowItWorks } from "@/components/funnel/HowItWorks";
 import { PressMarquee } from "@/components/brand/PressMarquee";
 import { buildMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
+import { HOMEPAGE_FALLBACK, type Review } from "@/lib/testimonials";
 import { getHomePage, getFeaturedTestimonials, type Testimonial } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,43 +24,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
   return buildMetadata({ path: "/" });
 }
-
-// Real client testimonials — curated to three. Peer-signal roles, quotes
-// tightened to evidence rather than praise. Full set lives in Sanity.
-interface FallbackTestimonial {
-  name: string;
-  role: string | null;
-  quote: string;
-  nda: boolean;
-  photoPath?: string; // path to /images/portraits/
-}
-
-const FALLBACK_TESTIMONIALS: FallbackTestimonial[] = [
-  {
-    name: "Anja",
-    role: "Founder & Digital Business Consultant",
-    quote:
-      "The session with Martina was a thoroughly enriching experience — inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself in a remarkably short time.",
-    nda: false,
-    photoPath: "/images/portraits/anja-testimonial.avif",
-  },
-  {
-    name: "Lu",
-    role: "Patent Attorney",
-    quote:
-      "Martina is warm, constructive and very professional — with great expertise in guiding people to find their way. I recommend her without hesitation to anyone serious about personal development.",
-    nda: false,
-    photoPath: "/images/portraits/portrait-lu.avif",
-  },
-  {
-    name: "Harita",
-    role: "Manager · Automotive industry",
-    quote:
-      "Her energy is truly special. The topics we discuss resonate so deeply with my own thoughts — as if taken directly from my own mind. She speaks from experience and conveys profound depth.",
-    nda: false,
-    photoPath: "/images/portraits/portrait-harita.avif",
-  },
-];
 
 function TestimonialBlock({
   testimonial,
@@ -123,7 +87,7 @@ export default async function HomePage() {
   const testimonials =
     testimonialData && testimonialData.length > 0
       ? testimonialData.slice(0, 3)
-      : FALLBACK_TESTIMONIALS;
+      : HOMEPAGE_FALLBACK;
 
   const heroSubheadline =
     pageData?.heroSubheadline ??
@@ -472,7 +436,7 @@ export default async function HomePage() {
                 role: t.role ?? null,
                 quote: t.quote,
                 nda: t.nda,
-                photoPath: isSanity ? undefined : (t as FallbackTestimonial).photoPath,
+                photoPath: isSanity ? undefined : (t as Review).photoPath,
               };
               return (
                 <TestimonialBlock

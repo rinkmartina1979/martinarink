@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
+import { GhostButton } from "@/components/brand/GhostButton";
 import { PageHero } from "@/components/sections/PageHero";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata, faqSchema, serviceSchema, breadcrumbSchema } from "@/lib/metadata";
@@ -10,6 +11,7 @@ import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
+import { SITE } from "@/lib/utils";
 
 const FAQS = [
   {
@@ -235,7 +237,7 @@ export default async function EmpowermentPage() {
                 <p>
                   {data?.investmentText
                     ? data.investmentText
-                    : "Investment is by application. A private consultation — €350, applied to the programme if you proceed — is the right place to begin."}
+                    : `Investment begins ${SITE.pricing.empowermentFrom} — by application. A private consultation, €350 applied to the programme if you proceed, is the right place to begin.`}
                 </p>
               </>
             )}
@@ -273,8 +275,9 @@ export default async function EmpowermentPage() {
           <div className="mt-10 pt-8 border-t border-sand/30">
             <CredentialBadges variant="strip" />
           </div>
-          <div className="mt-10">
-            <PlumButton href={ctaUrl}>{ctaLabel}</PlumButton>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <PlumButton href="/apply/empowerment">Apply &rarr;</PlumButton>
+            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
           </div>
           <p className="mt-8 text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
             Already accepted?{" "}

@@ -9,6 +9,10 @@ import { PackageTiers } from "@/components/brand/PackageTiers";
 import { buildMetadata, breadcrumbSchema } from "@/lib/metadata";
 import { getWorkWithMePage } from "@/sanity/lib/queries";
 import { SITE } from "@/lib/utils";
+import { getAvailabilityLine } from "@/lib/availability";
+
+// Daily ISR so the self-advancing intake month rolls over without a deploy.
+export const revalidate = 86400;
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getWorkWithMePage();
@@ -68,7 +72,7 @@ export default async function WorkWithMePage() {
         <div className="mt-7 inline-flex items-center gap-3 px-5 py-3 border border-cream/20 self-start">
           <span className="block w-1.5 h-1.5 rounded-full bg-pink animate-pulse shrink-0" />
           <span className="text-[11px] uppercase tracking-[0.2em] text-cream/55 font-[family-name:var(--font-body)]">
-            Two openings &middot; next intake June 2026
+            {getAvailabilityLine()}
           </span>
         </div>
       </PageHero>
