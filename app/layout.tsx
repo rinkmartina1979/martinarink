@@ -9,6 +9,7 @@ import { buildMetadata, personSchema, organizationSchema } from "@/lib/metadata"
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { NewsletterPopup } from "@/components/brand/NewsletterPopup";
+import { StickyMobileCTA } from "@/components/brand/StickyMobileCTA";
 import "./globals.css";
 
 // Root layout metadata — LIVE. noIndex: false (default). Page-level overrides this.
@@ -47,6 +48,9 @@ export default async function RootLayout({
         {/* Editorial newsletter popup — self-suppresses on /assessment, /apply,
             /book, /thank-you, /admin, and stays away for 30 days after dismissal. */}
         {!isDraftMode && <NewsletterPopup />}
+        {/* Persistent thumb-zone CTA — mobile only, appears after the hero,
+            self-suppresses on assessment/apply/book/thank-you/intake/admin. */}
+        <StickyMobileCTA />
         {/* Click-to-edit overlay — only loads when previewing inside Sanity Studio */}
         {isDraftMode && <VisualEditingClient />}
         <Analytics />
