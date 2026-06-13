@@ -11,6 +11,7 @@ import { CoachingDisclaimer } from "@/components/brand/CoachingDisclaimer";
 import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
+import { PullQuote } from "@/components/brand/PullQuote";
 import { SITE } from "@/lib/utils";
 
 const FAQS = [
@@ -146,6 +147,11 @@ export default async function EmpowermentPage() {
           </div>
         </div>
       </section>
+
+      {/* EDITORIAL PULL-QUOTE — a breath before the work */}
+      <PullQuote>
+        The question is not how to do more. It is who all of this was ever for.
+      </PullQuote>
 
       {/* THE WORK — 2 column */}
       <section className="bg-cream section-pad">

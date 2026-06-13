@@ -154,7 +154,7 @@ export function PageHero({
 
         {/* Trust micro-copy — dark + CTA only */}
         {isDark && cta && (
-          <p className="mt-4 font-[family-name:var(--font-body)] text-[10px] uppercase tracking-[0.34em] text-cream/35">
+          <p className="mt-4 font-[family-name:var(--font-body)] text-[10px] uppercase tracking-[0.34em] text-cream/55">
             Private &middot; Confidential &middot; By application
           </p>
         )}

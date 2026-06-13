@@ -96,7 +96,7 @@ export function HeroSection({
         <h1
           className="font-display font-normal leading-[0.96] tracking-[-0.03em] text-cream"
           style={{
-            fontSize: "clamp(2.6rem, 4vw, 3.875rem)",
+            fontSize: "clamp(2.4rem, 4vw, 3.875rem)",
             animation: anim("0.12s"),
           }}
         >
@@ -169,7 +169,7 @@ export function HeroSection({
 
         {/* ── Trust micro-copy ── */}
         <p
-          className="mt-4 font-body text-[10px] uppercase tracking-[0.34em] text-cream/40"
+          className="mt-4 font-body text-[10px] uppercase tracking-[0.34em] text-cream/55"
           style={{ animation: anim("0.42s") }}
         >
           Private &middot; Confidential &middot; By application

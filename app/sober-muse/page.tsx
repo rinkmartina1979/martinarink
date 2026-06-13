@@ -12,6 +12,7 @@ import { NewsletterStrip } from "@/components/newsletter/NewsletterStrip";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
+import { PullQuote } from "@/components/brand/PullQuote";
 import { SITE } from "@/lib/utils";
 
 const FAQS = [
@@ -177,6 +178,12 @@ export default async function SoberMusePage() {
           </div>
         </div>
       </section>
+
+      {/* EDITORIAL PULL-QUOTE — a breath before the method */}
+      <PullQuote>
+        Sobriety was never the point. Clarity was &mdash; and the drink had been
+        standing quietly in its place.
+      </PullQuote>
 
       {/* THE METHOD — 3 PHASES */}
       <section className="bg-cream section-pad">
