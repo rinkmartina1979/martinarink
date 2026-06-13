@@ -228,6 +228,8 @@ export function HeroSection({
           src={HERO_IMG}
           alt="Martina Rink — private mentor for accomplished women"
           fill
+          priority
+          fetchPriority="high"
           quality={80}
           sizes="100vw"
           className="hero-portrait object-cover"
