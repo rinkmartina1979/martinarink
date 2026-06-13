@@ -77,7 +77,7 @@ export function HeroSection({
           ══════════════════════════════════════════════════ */}
       <div
         className="relative z-10 flex flex-col justify-center bg-[#231727]
-                   px-8 py-16 sm:px-12 md:px-14
+                   px-8 pt-28 pb-16 sm:px-12 md:px-14
                    lg:px-14 lg:pt-[5rem] lg:pb-[2.5rem] xl:px-20 2xl:px-24"
       >
 

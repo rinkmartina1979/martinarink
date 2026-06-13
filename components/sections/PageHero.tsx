@@ -72,7 +72,7 @@ export function PageHero({
           hasPortrait
             ? [
                 isDark ? "bg-[#231727]" : "bg-cream",
-                "px-8 py-20 sm:px-12 md:px-14",
+                "px-8 pt-28 pb-20 sm:px-12 md:px-14",
                 "lg:px-14 lg:pt-[5rem] lg:pb-[2.5rem] xl:px-20 2xl:px-24",
               ].join(" ")
             : "container-content max-w-4xl",
