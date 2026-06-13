@@ -130,6 +130,10 @@
   html {
     background-color: var(--color-cream);
     color-scheme: light;
+    /* Prevent any overflow element from creating a horizontal scrollbar.
+       overflow-x:clip (unlike hidden) does NOT create a containing block,
+       so position:fixed/sticky elements are unaffected. */
+    overflow-x: clip;
   }
   body {
     background-color: var(--color-cream);

@@ -197,8 +197,8 @@ export default async function PressPage() {
             </Eyebrow>
 
             <h1
-              className="mt-7 font-[family-name:var(--font-display)] text-cream leading-[0.86] tracking-[-0.055em]"
-              style={{ fontSize: "clamp(3.5rem, 6.4vw, 7.4rem)" }}
+              className="mt-7 font-[family-name:var(--font-display)] text-cream leading-[1.0] md:leading-[0.86] tracking-[-0.03em] md:tracking-[-0.055em]"
+              style={{ fontSize: "clamp(1.9rem, 6.4vw, 7.4rem)" }}
             >
               A voice at the
               intersection of
@@ -298,7 +298,10 @@ export default async function PressPage() {
         <div className="container-content">
           <div className="max-w-4xl mb-14 md:mb-18">
             <Eyebrow withLine>Media coverage</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[40px] md:text-[52px] leading-[1.0] tracking-[-0.02em] text-ink">
+            <h2
+              className="mt-5 font-[family-name:var(--font-display)] leading-[1.0] tracking-[-0.02em] text-ink"
+              style={{ fontSize: "clamp(1.65rem, 4.5vw, 3.25rem)" }}
+            >
               Featured in the conversation.
             </h2>
             <p className="mt-5 text-[16px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
@@ -727,7 +730,10 @@ export default async function PressPage() {
           <div className="grid lg:grid-cols-[55%_45%] gap-12 lg:gap-16 items-center mb-16 md:mb-20">
             <div>
               <Eyebrow withLine>Speaking</Eyebrow>
-              <h2 className="mt-5 font-[family-name:var(--font-display)] italic text-[40px] md:text-[48px] leading-tight text-ink">
+              <h2
+                className="mt-5 font-[family-name:var(--font-display)] italic leading-tight text-ink"
+                style={{ fontSize: "clamp(1.65rem, 4.5vw, 3rem)" }}
+              >
                 For entrepreneurs, founders, and creatives.
               </h2>
               <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
@@ -1016,7 +1022,10 @@ export default async function PressPage() {
               <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-6 font-[family-name:var(--font-body)]">
                 Press &amp; speaking enquiries
               </p>
-              <h2 className="font-[family-name:var(--font-display)] text-[32px] md:text-[42px] lg:text-[48px] leading-[1.05] tracking-[-0.02em] text-ink">
+              <h2
+                className="font-[family-name:var(--font-display)] leading-[1.05] tracking-[-0.02em] text-ink"
+                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
+              >
                 For press interviews, podcast conversations, and speaking engagements.
               </h2>
               <p className="mt-6 text-[17px] leading-[1.8] text-ink-soft font-[family-name:var(--font-body)] max-w-xl">

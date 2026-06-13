@@ -12,7 +12,7 @@
  *    "Begin the Assessment" button, so the bar would be redundant.
  *  - Appears only after the user scrolls past ~60% of the first viewport
  *    (i.e. past the hero), so it never competes with the hero's own CTAs.
- *  - Suppressed on funnel-terminal / utility routes where a second CTA is noise.
+ *  - Allow-listed: only shows on /, /sober-muse, /empowerment, /work-with-me, /about.
  *  - z-40: below the nav (z-50) and the full-screen mobile menu (z-100), so an
  *    open menu cleanly covers it.
  *  - env(safe-area-inset-bottom): clears the iOS home indicator.
@@ -24,27 +24,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-/** Routes where a standing assessment CTA is redundant or intrusive. */
-const SUPPRESS_PREFIXES = [
-  "/assessment",
-  "/apply",
-  "/book",
-  "/thank-you",
-  "/intake",
-  "/admin",
-  "/studio",
-];
+/**
+ * Only show the assessment CTA on pages where conversion is the goal.
+ * Using an allow-list (not suppress-list) so new routes are hidden by default.
+ *
+ * Allow: homepage · programme pages · conversion hub · about (trust → convert)
+ * Hide: /press · /writing/* · /newsletter · /contact · /legal/* · all funnel-terminal routes
+ */
+const SHOW_PATHS = ["/", "/sober-muse", "/empowerment", "/work-with-me", "/about"];
 
 export function StickyMobileCTA() {
   const pathname = usePathname();
-  const suppressed = SUPPRESS_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  const allowed = SHOW_PATHS.some((p) =>
+    p === "/" ? pathname === "/" : pathname === p || pathname.startsWith(`${p}/`),
   );
 
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (suppressed) {
+    if (!allowed) {
       setVisible(false);
       return;
     }
@@ -60,9 +58,9 @@ export function StickyMobileCTA() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, [suppressed, pathname]);
+  }, [allowed, pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (suppressed) return null;
+  if (!allowed) return null;
 
   return (
     <div
