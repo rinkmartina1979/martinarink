@@ -14,12 +14,17 @@ export const SITE = {
   social: {
     linkedin: "https://www.linkedin.com/in/martinarink/",
     instagram: "https://www.instagram.com/martinarink_/",
-    // TODO: replace with real Spotify show URL from Martina before launch
     spotify: "https://open.spotify.com/show/4ibhGsWMIZMTBBPNQqlmTv",
   },
   pricing: {
     consultation: "€350",
     soberMuseFrom: "from €5,000",
     empowermentFrom: "from €7,500",
+  },
+  assessment: {
+    count: 10,
+    minutes: 5,
+    questionsPhrase: "Ten questions",
+    durationPhrase: "about five minutes",
   },
 } as const;

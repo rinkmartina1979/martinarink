@@ -138,7 +138,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ## Pricing (consistent across all pages)
 - Sober Muse Method: from €5,000 (90 days)
 - Female Empowerment & Leadership: from €7,500 (3–12 months)
-- Private Consultation: €450 (credited toward programme)
+- Private Consultation: €350 (credited toward programme)
 
 ## Operating rules
 1. Server Components by default — `"use client"` only for animations / forms / browser APIs

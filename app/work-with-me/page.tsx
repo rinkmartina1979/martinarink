@@ -83,7 +83,7 @@ export default async function WorkWithMePage() {
               {
                 step: "01",
                 title: "Take the assessment",
-                body: "Seven questions. Four minutes. Tells you which programme — if either — is the right conversation.",
+                body: `${SITE.assessment.questionsPhrase}. ${SITE.assessment.durationPhrase.charAt(0).toUpperCase() + SITE.assessment.durationPhrase.slice(1)}. Tells you which programme — if either — is the right conversation.`,
                 href: "/assessment",
               },
               {
@@ -170,7 +170,7 @@ export default async function WorkWithMePage() {
                 By application
               </p>
               <div className="mt-auto flex flex-col sm:flex-row gap-3">
-                <PlumButton href="/assessment">Apply now</PlumButton>
+                <PlumButton href="/apply/sober-muse">Apply &rarr;</PlumButton>
                 <GhostButton variant="light" href="/sober-muse">
                   Learn more
                 </GhostButton>
@@ -207,7 +207,7 @@ export default async function WorkWithMePage() {
                 By application
               </p>
               <div className="mt-auto flex flex-col sm:flex-row gap-3">
-                <PlumButton href="/assessment">Apply now</PlumButton>
+                <PlumButton href="/apply/empowerment">Apply &rarr;</PlumButton>
                 <GhostButton variant="light" href="/empowerment">
                   Learn more
                 </GhostButton>

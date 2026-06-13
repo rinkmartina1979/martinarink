@@ -196,7 +196,7 @@ export function AssessmentShell() {
               Your letter is ready to be written.
             </h2>
             <p className="text-[15px] leading-[1.75] text-ink-soft max-w-sm font-[family-name:var(--font-body)]">
-              Seven questions answered. What comes next is yours alone — a private
+              Ten questions answered. What comes next is yours alone — a private
               letter written specifically for where you are right now.
             </p>
             <button

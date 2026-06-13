@@ -153,7 +153,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
               Which work is yours?
             </p>
             <p className="font-[family-name:var(--font-body)] text-[15px] text-ink-quiet mb-10">
-              Not sure? The assessment tells you in four minutes.
+              Not sure? The assessment tells you in about five minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <PlumButton href="/apply/sober-muse">

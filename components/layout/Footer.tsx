@@ -143,7 +143,6 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                {/* TODO P3: update with real Spotify show URL from Martina */}
                 <a
                   href={SITE.social.spotify}
                   className="text-[14px] text-cream/85 hover:text-pink transition-colors"

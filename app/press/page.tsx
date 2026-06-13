@@ -806,20 +806,23 @@ export default async function PressPage() {
             </p>
           </div>
 
-          {/* Video grid — side by side, stacks on mobile */}
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
+          {/* Video — centred single column until video 02 URL is supplied */}
+          <div className="max-w-2xl">
             <VideoEmbed
               number="01"
               src="https://player.vimeo.com/video/1200866417?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
               title="Martina Rink — Vimeo interview"
               caption="Vimeo · Interview"
             />
+            {/* Video 02 — awaiting real URL from Martina; restore when provided:
             <VideoEmbed
               number="02"
-              src="https://www.youtube-nocookie.com/embed/fqqH5TDdzec?rel=0&modestbranding=1&color=white"
-              title="Martina Rink — YouTube appearance"
-              caption="YouTube · Feature"
+              src="REPLACE_WITH_REAL_URL"
+              title="Martina Rink — appearance"
+              caption="Feature"
             />
+            Also restore grid: className="grid md:grid-cols-2 gap-6 lg:gap-10"
+            */}
           </div>
 
         </div>

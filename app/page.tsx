@@ -9,6 +9,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { HowItWorks } from "@/components/funnel/HowItWorks";
 import { PressMarquee } from "@/components/brand/PressMarquee";
 import { buildMetadata } from "@/lib/metadata";
+import { SITE } from "@/lib/utils";
 import { getHomePage, getFeaturedTestimonials, type Testimonial } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -137,7 +138,7 @@ export default async function HomePage() {
     pageData?.assessmentCtaHeadline ?? "Which of two patterns is most alive in your life right now?";
   const assessmentCtaCopy =
     pageData?.assessmentCtaCopy ??
-    "Seven questions. About four minutes. At the end, a letter — written specifically for where you are. Not a quiz. Not a quadrant. A beginning.";
+    "Ten questions. About five minutes. At the end, a letter — written specifically for where you are. Not a quiz. Not a quadrant. A beginning.";
   const assessmentCtaLabel = pageData?.assessmentCtaLabel ?? "Begin the assessment";
 
   return (
@@ -150,6 +151,29 @@ export default async function HomePage() {
         heroSecondaryUrl={heroSecondaryUrl}
         heroSubheadline={heroSubheadline}
       />
+
+      {/* ─── 1b · QUALIFIER BAND — who it's for, by application ─ */}
+      <section className="bg-cream border-y border-sand/40 py-10 md:py-12">
+        <div className="container-content max-w-5xl flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="max-w-2xl">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
+              Who I work with
+            </p>
+            <p className="mt-3 font-[family-name:var(--font-display)] text-[20px] md:text-[24px] leading-snug text-ink">
+              Private mentoring for founders, executives, and creatives — at the
+              point where the life they built stopped feeling like theirs.
+            </p>
+          </div>
+          <div className="shrink-0 md:text-right space-y-2">
+            <p className="text-[12px] uppercase tracking-[0.18em] text-ink-quiet font-[family-name:var(--font-body)]">
+              By application &middot; {SITE.pricing.soberMuseFrom.charAt(0).toUpperCase() + SITE.pricing.soberMuseFrom.slice(1)}
+            </p>
+            <p className="text-[11px] uppercase tracking-[0.16em] text-ink-quiet/80 font-[family-name:var(--font-body)]">
+              Vogue Germany &middot; Der Spiegel &middot; Die Zeit
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ─── 2 · THE PRIVATE COST — emotional continuation ───── */}
       <section className="bg-bone section-pad">

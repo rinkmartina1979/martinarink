@@ -1,16 +1,10 @@
-/**
- * HowItWorks — "The path" section.
- *
- * Placed late on the homepage, just before the closing CTA — after desire
- * has been built, not before. No prices, no time-stamps, no funnel furniture.
- * Four quiet steps in the brand voice.
- */
+import { SITE } from "@/lib/utils";
 
 const STEPS = [
   {
     number: "01",
     title: "Begin the assessment",
-    body: "Seven questions, answered privately. A letter follows — written for where you actually are.",
+    body: `${SITE.assessment.questionsPhrase}, answered privately. A letter follows — written for where you actually are.`,
     href: "/assessment",
     cta: "Begin →",
   },
