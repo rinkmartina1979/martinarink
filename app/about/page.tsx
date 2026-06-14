@@ -9,6 +9,7 @@ import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { buildMetadata, aboutPersonSchema, breadcrumbSchema } from "@/lib/metadata";
 import { getAboutPage } from "@/sanity/lib/queries";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
+import { getReview } from "@/lib/testimonials";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getAboutPage();
@@ -29,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
   const data = await getAboutPage();
+  const aboutTestimonial = getReview("anja-about");
 
   const heroHeadline =
     data?.heroHeadline ??
@@ -361,13 +363,15 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 7. ONE TESTIMONIAL — client evidence, max 1 per brand rules */}
+      {/* 7. ONE TESTIMONIAL — client evidence, max 1 per brand rules.
+          Pulled from lib/testimonials.ts single source of truth (quote + portrait). */}
       <section className="bg-cream py-16 md:py-20">
         <div className="container-content">
           <TestimonialCard
-            quote="Martina doesn't coach you toward an answer. She asks the question you didn't know you were avoiding — and then she waits. That quality of attention is genuinely rare."
-            attribution="Anja — Founder &amp; Digital Business Consultant"
-            nda={false}
+            quote={aboutTestimonial.quote}
+            attribution={`${aboutTestimonial.name} — ${aboutTestimonial.role}`}
+            photoPath={aboutTestimonial.photoPath}
+            nda={aboutTestimonial.nda}
             className="bg-rose"
           />
         </div>
