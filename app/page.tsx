@@ -267,7 +267,7 @@ export default async function HomePage() {
             <div className="mt-8 flex items-center gap-6">
               <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
               <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
-                Author · Mentor · Ibiza · Berlin
+                Author · Mentor · Ibiza · Berlin · London · International
               </span>
             </div>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
