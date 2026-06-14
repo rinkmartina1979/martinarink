@@ -259,7 +259,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 5. THE EVIDENCE — books + de-named clinical reference */}
+      {/* 5. THE EVIDENCE — books + named clinical reference (Nürnberger permission on file 2026-06-15) */}
       <section className="bg-cream py-16 md:py-20">
         <div className="container-content grid md:grid-cols-2 gap-12 md:gap-16">
           <div>
@@ -304,9 +304,10 @@ export default async function AboutPage() {
             </h3>
             <p className="mt-6 text-[17px] leading-[1.75] text-ink-soft">
               For Sober Muse clients, I maintain a close professional
-              relationship with the Head Physician of a leading German addiction
-              clinic — formerly my own doctor, and since then a trusted advisor
-              to this work.
+              relationship with Mrs. N&uuml;rnberger, Head Physician at the
+              My Way Betty Ford Clinic — one of Germany&rsquo;s leading
+              addiction clinics. She was formerly my own doctor, and has since
+              become a trusted advisor to this work.
             </p>
             <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
               The methods I use were shaped through that experience. What I

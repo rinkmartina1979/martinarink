@@ -1,6 +1,5 @@
-// NURNBERGER_APPROVED — flip to true only when written permission from Mrs. Nürnberger is on file.
-// Until then, the clinical partner credential is hidden.
-const NURNBERGER_APPROVED = false;
+// NURNBERGER_APPROVED — written permission from Mrs. Nürnberger confirmed (client-verified 2026-06-15).
+const NURNBERGER_APPROVED = true;
 
 const ITEMS = [
   { label: "Author", credit: "Three Books · Spiegel Bestseller" },
