@@ -118,77 +118,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 3. ISABELLA BLOW / ORIGIN — full-bleed 50/50 editorial split */}
-      <section className="bg-bone overflow-hidden">
-        <div className="grid md:grid-cols-2">
-          {/* Left — full-bleed image, no container constraint */}
-          <div className="relative h-[480px] md:h-auto md:min-h-[600px] bg-[#EDE8E0]">
-            <Image
-              src="/images/portraits/martina-before-practice.jpg"
-              alt="Martina Rink — pink blouse, roses, Chanel and Vogue books"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-[center_18%]"
-            />
-          </div>
-          {/* Right — text with internal padding */}
-          <div className="px-8 py-16 md:px-16 md:py-20 lg:px-20 space-y-6">
-            <Eyebrow>The years before</Eyebrow>
-            <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
-              Before the practice.
-            </h2>
-            <div className="space-y-5 text-[17px] leading-[1.75] text-ink-soft">
-              {data?.storyIsabellaBlowEra ? (
-                data.storyIsabellaBlowEra.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))
-              ) : (
-                <>
-                  <p>
-                    I spent several formative years working as personal assistant to
-                    Isabella Blow in London. Isabella was, by any reasonable
-                    account, one of the most extraordinary women of her generation —
-                    a creator, an instigator, a woman who lived entirely from her
-                    own vision.
-                  </p>
-                  <p>
-                    What I observed, working closely with her, was something that I
-                    have spent the years since trying to articulate: the particular
-                    cost of being fully, unapologetically yourself in a world that
-                    finds that either inconvenient or consumable. The commitment to
-                    one&rsquo;s own interior, even when the exterior is being
-                    dismantled.
-                  </p>
-                  <p>It was an education that no institution offers.</p>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PULL QUOTE — Isabella Blow specific authority */}
-      <section className="bg-rose py-14 md:py-20">
-        <div className="container-content max-w-3xl mx-auto text-center">
-          <span
-            aria-hidden
-            className="block font-[family-name:var(--font-display)] italic text-plum/40 text-[80px] leading-none"
-          >
-            &ldquo;
-          </span>
-          <blockquote className="-mt-4 font-[family-name:var(--font-display)] italic text-[26px] md:text-[34px] leading-[1.25] text-ink">
-            Isabella collected people the way she collected hats — with absolute
-            precision, and an instinct for who could carry weight. She placed
-            McQueen, Treacy, the entire generation. What I learned was not how
-            to be like her. It was how to read a room the way she read it.
-          </blockquote>
-          <p className="mt-10 text-[12px] uppercase tracking-[0.22em] text-ink-quiet">
-            — Martina, on her years at Isabella Blow&rsquo;s side, London 2004–2007
-          </p>
-        </div>
-      </section>
-
-      {/* 4. WHERE THIS STARTED — dark origin/sobriety, moved to position 4 */}
+      {/* 3. WHERE THIS STARTED — her story now leads the page (client request, 2026-06-13) */}
       <section className="bg-aubergine py-16 md:py-24 [transform:translateZ(0)] isolate [-webkit-font-smoothing:antialiased]">
         <div className="container-content max-w-3xl mx-auto">
           <Eyebrow>
@@ -258,6 +188,77 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* 4. ISABELLA BLOW — 'Before the practice', full-bleed 50/50 editorial split */}
+      <section className="bg-bone overflow-hidden">
+        <div className="grid md:grid-cols-2">
+          {/* Left — full-bleed image, no container constraint */}
+          <div className="relative h-[480px] md:h-auto md:min-h-[600px] bg-[#EDE8E0]">
+            <Image
+              src="/images/portraits/martina-before-practice.jpg"
+              alt="Martina Rink — pink blouse, roses, Chanel and Vogue books"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-[center_18%]"
+            />
+          </div>
+          {/* Right — text with internal padding */}
+          <div className="px-8 py-16 md:px-16 md:py-20 lg:px-20 space-y-6">
+            <Eyebrow>The years before</Eyebrow>
+            <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
+              Before the practice.
+            </h2>
+            <div className="space-y-5 text-[17px] leading-[1.75] text-ink-soft">
+              {data?.storyIsabellaBlowEra ? (
+                data.storyIsabellaBlowEra.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))
+              ) : (
+                <>
+                  <p>
+                    I spent several formative years working as personal assistant to
+                    Isabella Blow in London. Isabella was, by any reasonable
+                    account, one of the most extraordinary women of her generation —
+                    a creator, an instigator, a woman who lived entirely from her
+                    own vision.
+                  </p>
+                  <p>
+                    What I observed, working closely with her, was something that I
+                    have spent the years since trying to articulate: the particular
+                    cost of being fully, unapologetically yourself in a world that
+                    finds that either inconvenient or consumable. The commitment to
+                    one&rsquo;s own interior, even when the exterior is being
+                    dismantled.
+                  </p>
+                  <p>It was an education that no institution offers.</p>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PULL QUOTE — Isabella Blow specific authority */}
+      <section className="bg-rose py-14 md:py-20">
+        <div className="container-content max-w-3xl mx-auto text-center">
+          <span
+            aria-hidden
+            className="block font-[family-name:var(--font-display)] italic text-plum/40 text-[80px] leading-none"
+          >
+            &ldquo;
+          </span>
+          <blockquote className="-mt-4 font-[family-name:var(--font-display)] italic text-[26px] md:text-[34px] leading-[1.25] text-ink">
+            Isabella collected people the way she collected hats — with absolute
+            precision, and an instinct for who could carry weight. She placed
+            McQueen, Treacy, the entire generation. What I learned was not how
+            to be like her. It was how to read a room the way she read it.
+          </blockquote>
+          <p className="mt-10 text-[12px] uppercase tracking-[0.22em] text-ink-quiet">
+            — Martina, on her years at Isabella Blow&rsquo;s side, London 2004–2007
+          </p>
+        </div>
+      </section>
+
 
       {/* 5. THE EVIDENCE — books + named clinical reference (Nürnberger permission on file 2026-06-15) */}
       <section className="bg-cream py-16 md:py-20">
