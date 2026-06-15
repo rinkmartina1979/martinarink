@@ -13,6 +13,7 @@ import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
 import { PullQuote } from "@/components/brand/PullQuote";
 import { SITE } from "@/lib/utils";
+import { getReview } from "@/lib/testimonials";
 
 const FAQS = [
   {
@@ -345,6 +346,49 @@ export default async function EmpowermentPage() {
           </ul>
         </div>
       </section>
+
+      {/* CLIENT VOICE — Armina */}
+      {(() => {
+        const t = getReview("armina");
+        return (
+          <section className="bg-blush section-pad">
+            <div className="container-content max-w-3xl mx-auto">
+              <span
+                aria-hidden
+                className="block font-[family-name:var(--font-display)] italic text-plum/20 text-[72px] leading-none -mb-2"
+              >
+                &ldquo;
+              </span>
+              <blockquote className="font-[family-name:var(--font-display)] italic text-[22px] md:text-[26px] leading-[1.5] text-ink">
+                {t.quote}
+              </blockquote>
+              <div className="mt-8 flex items-center gap-4">
+                {t.photoPath && (
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border border-sand/60">
+                    <Image
+                      src={t.photoPath}
+                      alt={t.name}
+                      fill
+                      sizes="56px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                )}
+                <div>
+                  <p className="text-[12px] uppercase tracking-[0.18em] text-ink font-medium">
+                    {t.name}
+                  </p>
+                  {t.role && (
+                    <p className="text-[11px] uppercase tracking-[0.14em] text-ink-quiet mt-0.5">
+                      {t.role}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* FAQ */}
       <section className="bg-bone section-pad">
