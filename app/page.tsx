@@ -139,7 +139,74 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── 2 · THE PRIVATE COST — emotional continuation ───── */}
+      {/* ─── 2 · ABOUT — who Martina is, right after the hero ── */}
+      <section className="bg-bone section-pad">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-5">
+            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
+              <Image
+                src="/images/portraits/martina-library-pink.jpg"
+                alt="Martina Rink — author and private mentor"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-7">
+            <Eyebrow>About</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[44px] leading-[1.15] text-ink">
+              I am interested in the distance between how a woman appears — and
+              how she{" "}
+              <ScriptAccent className="text-[1.1em] leading-none">
+                actually feels
+              </ScriptAccent>{" "}
+              inside her own life.
+            </h2>
+            <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
+              <p>
+                {pageData?.aboutTeaser ||
+                  "Born in Persia. Adopted by German parents. Raised between Germany, London, Paris, and Ibiza. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
+              </p>
+              <p>
+                Before this practice: personal assistant to Isabella Blow in
+                London. Years inside the international creative and fashion
+                industry, watching what success can cost the women inside it.
+                Three published books, including a Spiegel Bestseller. Six
+                years alcohol-free. None of that is the work — it is simply
+                why I understand what it takes to build a life that fits who
+                you actually are.
+              </p>
+            </div>
+            <div className="mt-8 flex items-center gap-6">
+              <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+                Author &middot; Mentor &middot; Ibiza &middot; Berlin &middot; London &middot; International
+              </span>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+              <Link
+                href="/about"
+                className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+              >
+                Read the full story →
+              </Link>
+              <Link
+                href="/work-with-me"
+                className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
+              >
+                Work with me →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 3 · AUTHORITY BAND — press + credentials ─────────── */}
+      <PressMarquee />
+      <AuthorityStrip />
+
+      {/* ─── 4 · THE PRIVATE COST — emotional continuation ───── */}
       <section className="bg-bone section-pad">
         <div className="container-content max-w-3xl">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[48px] leading-[1.1] tracking-[-0.015em] text-ink">
@@ -160,11 +227,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── 3 · AUTHORITY BAND — press + credentials, one band ── */}
-      <PressMarquee />
-      <AuthorityStrip />
-
-      {/* ─── 4 · TWO WAYS IN ─────────────────────────────────── */}
+      {/* ─── 5 · TWO WAYS IN ─────────────────────────────────── */}
       <section className="bg-cream section-pad">
         <div className="container-content">
           <div className="max-w-3xl">
@@ -221,69 +284,6 @@ export default async function HomePage() {
                 </p>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 5 · ABOUT — story + creative foundation, merged ──── */}
-      <section className="bg-bone section-pad">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-5">
-            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
-              <Image
-                src="/images/portraits/martina-library-pink.jpg"
-                alt="Martina Rink — author and private mentor"
-                fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
-              />
-            </div>
-          </div>
-          <div className="md:col-span-7">
-            <Eyebrow>About</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[44px] leading-[1.15] text-ink">
-              I am interested in the distance between how a woman appears — and
-              how she{" "}
-              <ScriptAccent className="text-[1.1em] leading-none">
-                actually feels
-              </ScriptAccent>{" "}
-              inside her own life.
-            </h2>
-            <div className="mt-8 space-y-5 text-[17px] leading-[1.7] text-ink-soft max-w-[560px]">
-              <p>
-                {pageData?.aboutTeaser ||
-                  "Born in Persia. Adopted by German parents. Raised between Germany, London, Paris, and Ibiza. I have lived, from the beginning, with the question of who I am underneath the circumstances I was placed in."}
-              </p>
-              <p>
-                Before this practice: personal assistant to Isabella Blow in
-                London. Years inside the international creative and fashion
-                industry, watching what success can cost the women inside it.
-                Three published books, including a Spiegel Bestseller. Six
-                years alcohol-free. None of that is the work — it is simply
-                why I understand what it takes to build a life that fits who
-                you actually are.
-              </p>
-            </div>
-            <div className="mt-8 flex items-center gap-6">
-              <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
-              <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
-                Author · Mentor · Ibiza · Berlin · London · International
-              </span>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-              <Link
-                href="/about"
-                className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
-              >
-                Read the longer version →
-              </Link>
-              <Link
-                href="/creative-work"
-                className="inline-block text-[14px] text-plum underline decoration-pink decoration-1 underline-offset-[6px]"
-              >
-                The creative work →
-              </Link>
-            </div>
           </div>
         </div>
       </section>
