@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface VideoEmbedProps {
@@ -19,7 +19,7 @@ interface VideoEmbedProps {
  * VideoEmbed — 2026 editorial video card.
  *
  * Features:
- *  - Pulse skeleton until iframe fires onLoad
+ *  - Pulse skeleton until iframe is ready (with 2s fallback in case onLoad misfires)
  *  - Privacy-first: Vimeo dnt=1 · YouTube youtube-nocookie.com
  *  - aspect-video (16:9) — no layout shift
  *  - Pink accent ring on hover with soft glow
@@ -27,6 +27,15 @@ interface VideoEmbedProps {
  */
 export function VideoEmbed({ src, title, number, caption, className }: VideoEmbedProps) {
   const [loaded, setLoaded] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    // Fallback: show the iframe after 2 s even if onLoad hasn't fired.
+    // This prevents a permanently invisible player when the browser suppresses
+    // cross-origin iframe load events.
+    timerRef.current = setTimeout(() => setLoaded(true), 2000);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
 
   return (
     <div className={cn("group flex flex-col", className)}>
@@ -55,10 +64,14 @@ export function VideoEmbed({ src, title, number, caption, className }: VideoEmbe
           <iframe
             src={src}
             title={title}
-            allow="autoplay; fullscreen; picture-in-picture; web-share"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; web-share"
             allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
             loading="lazy"
-            onLoad={() => setLoaded(true)}
+            onLoad={() => {
+              if (timerRef.current) clearTimeout(timerRef.current);
+              setLoaded(true);
+            }}
             className={cn(
               "absolute inset-0 w-full h-full transition-opacity duration-700",
               loaded ? "opacity-100" : "opacity-0",
