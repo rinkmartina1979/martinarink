@@ -20,19 +20,30 @@ export interface Review {
   nda: boolean;
   photoPath?: string;
   programme?: "sober-muse" | "empowerment" | "consultation";
-  /** Show in the homepage three-up proof row. */
+  /** Show in the homepage four-up proof grid. */
   featuredHome?: boolean;
 }
 
 export const REVIEWS: Review[] = [
   {
-    id: "anja",
-    name: "Anja",
-    role: "Founder & Digital Business Consultant",
+    id: "rebecca",
+    name: "Rebecca",
+    role: "Travel Agent & Entrepreneur",
     quote:
-      "The session with Martina was a thoroughly enriching experience — inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself in a remarkably short time.",
+      "A dear friend introduced me to Martina's Dry January Challenge. What began as an experiment quickly became one of the most significant months of my life. With Martina's support I not only completed the challenge but gained a much deeper understanding of my relationship with myself. Challenge accomplished.",
     nda: false,
-    photoPath: "/images/portraits/anja-testimonial.avif",
+    photoPath: "/images/portraits/portrait-rebecca.avif",
+    programme: "sober-muse",
+    featuredHome: true,
+  },
+  {
+    id: "harita",
+    name: "Harita",
+    role: "Manager · Automotive industry",
+    quote:
+      "I've had a few conversations with Martina, and her energy is truly special. The topics we discuss resonate so deeply with my own thoughts — as if taken directly from my own mind. She speaks from experience and conveys profound depth. Every interaction is deeply inspiring.",
+    nda: false,
+    photoPath: "/images/portraits/portrait-harita.avif",
     programme: "empowerment",
     featuredHome: true,
   },
@@ -41,20 +52,20 @@ export const REVIEWS: Review[] = [
     name: "Lu",
     role: "Patent Attorney",
     quote:
-      "Martina is warm, constructive and very professional — with great expertise in guiding people to find their way. I recommend her without hesitation to anyone serious about personal development.",
+      "Martina has so many wonderful attributes that it is very difficult to describe the full impact in a few sentences. She is warm, supportive, constructive and very professional — with great expertise to guide people in finding their way. Highly recommended for anyone seeking serious personal development.",
     nda: false,
     photoPath: "/images/portraits/portrait-lu.avif",
     programme: "empowerment",
     featuredHome: true,
   },
   {
-    id: "harita",
-    name: "Harita",
-    role: "Manager · Automotive industry",
+    id: "anja",
+    name: "Anja",
+    role: "Founder & Digital Business Consultant",
     quote:
-      "Her energy is truly special. The topics we discuss resonate so deeply with my own thoughts — as if taken directly from my own mind. She speaks from experience and conveys profound depth.",
+      "The session with Martina was a thoroughly enriching experience. It was inspiring, motivating, and above all extremely effective. She has a wonderful way of helping you arrive at important realisations about yourself — in a remarkably short time.",
     nda: false,
-    photoPath: "/images/portraits/portrait-harita.avif",
+    photoPath: "/images/portraits/anja-testimonial.avif",
     programme: "empowerment",
     featuredHome: true,
   },
@@ -91,7 +102,7 @@ export const REVIEWS: Review[] = [
   },
 ];
 
-/** Homepage three-up proof row (named clients with portraits). */
+/** Homepage four-up proof grid (named clients with portraits). */
 export const HOMEPAGE_FALLBACK: Review[] = REVIEWS.filter((r) => r.featuredHome);
 
 export function getReview(id: string): Review {
@@ -101,8 +112,6 @@ export function getReview(id: string): Review {
 }
 
 /*
- * PENDING — real clients, portraits ready, awaiting verified quote text from
- * Martina. Do NOT invent words; add full entries here once confirmed:
+ * PENDING — portrait ready, awaiting verified quote text from Martina:
  *   • Armina · Patent Engineer  → /images/portraits/armina-patent-engineer.avif
- *   • Rebecca                   → /images/portraits/portrait-rebecca.avif
  */

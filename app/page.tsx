@@ -86,7 +86,7 @@ export default async function HomePage() {
   // Use Sanity testimonials if available and non-empty, else use hardcoded real testimonials
   const testimonials =
     testimonialData && testimonialData.length > 0
-      ? testimonialData.slice(0, 3)
+      ? testimonialData.slice(0, 4)
       : HOMEPAGE_FALLBACK;
 
   const heroSubheadline =
@@ -426,7 +426,7 @@ export default async function HomePage() {
       <section className="bg-bone border-t border-sand/30 section-pad">
         <div className="container-content">
           <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {testimonials.map((t, i) => {
               const bgMap = ["bg-rose", "bg-rose", "bg-rose"];
               const accentMap = ["text-plum/30", "text-plum/30", "text-plum/30"];
