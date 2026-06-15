@@ -58,6 +58,76 @@ export default async function AboutPage() {
         variant="light"
       />
 
+      {/* 1.5 — IDENTITY — credentials, ICP, and mission stated for premium buyers */}
+      <section className="bg-[#0F0C10] py-20 md:py-28">
+        <div className="container-content">
+
+          {/* Role grid — 4 editorial tiles */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-white/[0.07]">
+            {([
+              { num: "01", title: "Female Empowerment Coach", sub: "Private practice" },
+              { num: "02", title: "Sober Conscious Mentor", sub: "The Sober Muse" },
+              { num: "03", title: "Bestselling Author", sub: "Spiegel · 3 published books" },
+              { num: "04", title: "Creative", sub: "Persia · Germany · London · Paris · Ibiza" },
+            ] as const).map(({ num, title, sub }) => (
+              <div
+                key={num}
+                className="border-l border-b border-white/[0.07] px-7 py-10 first:border-l-0 sm:[&:nth-child(2n+1)]:border-l-0 lg:[&:nth-child(n)]:border-l lg:first:border-l-0"
+              >
+                <span className="block text-[0.5rem] uppercase tracking-[0.38em] text-gold/70 mb-4 select-none">
+                  {num}
+                </span>
+                <p className="font-[family-name:var(--font-display)] italic text-[20px] leading-snug text-cream mb-3">
+                  {title}
+                </p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-cream/30">{sub}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Mission statement */}
+          <div className="mt-20 md:mt-24 max-w-[52rem]">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold/60 mb-8">
+              The calling
+            </p>
+            <blockquote className="font-[family-name:var(--font-display)] italic text-[36px] md:text-[52px] lg:text-[58px] leading-[1.1] text-cream">
+              I create spaces where women no longer have to lose themselves — but
+              can truly return to who they are.
+            </blockquote>
+            <div aria-hidden className="mt-10 flex items-center gap-4">
+              <div className="w-12 h-px bg-pink" />
+              <p className="text-[10px] uppercase tracking-[0.2em] text-cream/30">
+                Martina Rink
+              </p>
+            </div>
+          </div>
+
+          {/* ICP + outcome — two columns */}
+          <div className="mt-16 md:mt-20 grid md:grid-cols-2 border-t border-white/[0.07]">
+            <div className="border-r border-white/[0.07] pr-8 md:pr-16 pt-12">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-gold mb-6">
+                Who this is for
+              </p>
+              <p className="text-[17px] leading-[1.85] text-cream/70">
+                High-achieving women. Creative entrepreneurs. Founders and
+                visionaries who are ready to release old patterns, reconnect with
+                themselves, and create a more conscious and aligned life.
+              </p>
+            </div>
+            <div className="pl-0 md:pl-16 pt-12">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-gold mb-6">
+                What it creates
+              </p>
+              <p className="text-[17px] leading-[1.85] text-cream/70">
+                Greater awareness. Emotional freedom. Genuine inner strength — and
+                a life that is more conscious, more aligned, and more deeply yours.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* 2. OPENING — flows from hero, no top padding */}
       <section className="bg-cream pb-16 md:pb-24">
         <div className="container-content grid lg:grid-cols-[1.1fr_0.75fr] gap-0 lg:gap-16 lg:items-start">
