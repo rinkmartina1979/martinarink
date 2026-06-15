@@ -128,65 +128,85 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 2. OPENING — flows from hero, no top padding */}
-      <section className="bg-cream pb-16 md:pb-24">
-        <div className="container-content grid lg:grid-cols-[1.1fr_0.75fr] gap-0 lg:gap-16 lg:items-start">
-          <div className="pt-10 lg:pt-0 space-y-6 text-[17px] leading-[1.75] text-ink-soft">
-            {data?.heroCopy ? (
-              data.heroCopy.split("\n").filter(Boolean).map((para, i) => (
-                <p key={i}>{para}</p>
-              ))
-            ) : (
-              <>
-                <p>
-                  The women I work with are accomplished. They have built careers,
-                  led teams, navigated complex personal landscapes with intelligence
-                  and, usually, with some grace.
-                </p>
-                <p>
-                  What they share — the thing that brings them to this conversation
-                  — is a very specific quality of awareness. The sense that
-                  something, at the level they are now operating, is not quite
-                  right. Not wrong enough to name easily. Not obvious enough to
-                  explain to anyone else.
-                </p>
-                <p>
-                  I know this from two directions. For several years I moved inside
-                  the international creative and fashion industry, watching women of
-                  considerable talent manage exactly that disconnect — the gap
-                  between the life they had built and what it was costing them. And
-                  then I lived my own version of it.
-                </p>
-              </>
-            )}
-            {/* Quiet proof line — the only authority the opening needs */}
-            <p className="text-[13px] uppercase tracking-[0.18em] text-ink-quiet pt-2">
-              Author of three books, including a Spiegel Bestseller &middot; Featured in Vogue Germany, Der Spiegel, Die Zeit
-            </p>
-          </div>
+      {/* 2. OPENING — homepage about section design, full bio */}
+      <section className="bg-bone py-16 md:py-24">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
 
-          {/* Portrait — full image, no crop */}
-          <aside className="lg:sticky lg:top-24 lg:self-start pt-10 lg:pt-4">
-            <div className="mx-auto w-full max-w-[480px] lg:max-w-full bg-[#F8F4F1]">
+          {/* Photo — 2/3 portrait, identical to homepage */}
+          <div className="md:col-span-5">
+            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-portrait-pink-blouse.jpg"
-                alt="Martina Rink seated beside flowers"
-                width={1324}
-                height={1322}
-                sizes="(min-width: 1024px) 38vw, 92vw"
-                className="h-auto w-full object-contain"
+                src="/images/portraits/martina-library-pink.jpg"
+                alt="Martina Rink — author and private mentor"
+                fill
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover object-top"
                 priority
               />
             </div>
-          </aside>
+          </div>
+
+          {/* Text — eyebrow → headline → bio → signature */}
+          <div className="md:col-span-7">
+            <Eyebrow>About</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[46px] leading-[1.12] text-ink">
+              I am interested in the distance between how a woman appears — and
+              how she{" "}
+              <ScriptAccent className="text-[1.1em] leading-none">
+                actually feels
+              </ScriptAccent>{" "}
+              inside her own life.
+            </h2>
+
+            <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-ink-soft max-w-[560px]">
+              <p>
+                Born in Persia. Adopted by German parents. Raised between
+                Germany, London, Paris, and Ibiza. I have lived, from the
+                beginning, with the question of who I am underneath the
+                circumstances I was placed in.
+              </p>
+              <p>
+                For many years I moved within the international fashion and
+                creative industry — watching how often success, beauty, and
+                strength can hide emotional exhaustion and inner disconnection.
+                At the same time, I went through my own experiences with
+                anxiety, depression, social phobia, and a deepening relationship
+                with alcohol that asked to be examined.
+              </p>
+              <p>
+                Choosing sobriety was the moment I stopped running from myself.
+                This is where my work was born — not from theory, but from lived
+                transformation. Today I work with high-achieving women, creative
+                entrepreneurs, founders, and visionaries who are ready to release
+                old patterns and return to who they actually are.
+              </p>
+
+              {/* Quiet proof line */}
+              <p className="text-[13px] uppercase tracking-[0.18em] text-ink-quiet pt-2">
+                Three published books, including a Spiegel Bestseller &middot;
+                Featured in Vogue Germany, Der Spiegel, Die Zeit
+              </p>
+            </div>
+
+            {/* Signature */}
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <ScriptAccent className="text-[38px]">Martina</ScriptAccent>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+                Author &middot; Mentor &middot; Ibiza &middot; Berlin &middot; London &middot; International
+              </span>
+            </div>
+          </div>
         </div>
-        {/* Pull quote — full-width editorial, below the grid */}
+
+        {/* Pull quote — full-width, below the grid */}
         <div className="container-content mt-16 md:mt-20 max-w-3xl">
           <blockquote className="border-l-2 border-pink pl-8 font-[family-name:var(--font-display)] italic text-[24px] md:text-[28px] leading-snug text-ink">
             The most interesting questions available to accomplished women are
             the ones they don&rsquo;t yet have the private space to ask properly.
           </blockquote>
-          <p className="pl-8 mt-4 text-[12px] uppercase tracking-[0.18em] text-ink-quiet">— Martina Rink</p>
+          <p className="pl-8 mt-4 text-[12px] uppercase tracking-[0.18em] text-ink-quiet">
+            — Martina Rink
+          </p>
         </div>
       </section>
 
