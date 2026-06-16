@@ -59,7 +59,7 @@ export function PageHero({
           ? "relative grid min-h-[100svh] grid-cols-1 lg:grid-cols-[54fr_46fr]"
           : isDark
           ? "relative bg-[#231727] pt-[calc(80px+4rem)] pb-20 md:pb-28"
-          : "relative bg-cream pt-[calc(80px+3.5rem)] pb-0"
+          : "relative bg-cream pt-[calc(80px+3.5rem)] pb-16 md:pb-24"
       }
     >
 
