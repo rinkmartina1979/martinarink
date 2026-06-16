@@ -51,10 +51,11 @@ export default async function AboutPage() {
         }}
       />
 
-      {/* 1. HERO */}
+      {/* 1. HERO — authority framed in the first viewport (CRO: establish expert before story) */}
       <PageHero
         eyebrow="About Martina Rink"
         headline={heroHeadline}
+        subheadline="Author of three books, including a Spiegel Bestseller. Private mentor to founders, executives, and creatives — by application, and always in confidence."
         variant="light"
       />
 
@@ -447,9 +448,13 @@ export default async function AboutPage() {
               </p>
             </li>
           </ul>
-          <p className="mt-12 text-[15px] leading-[1.8] text-ink-soft border-t border-sand/40 pt-8">
-            I work with a small number of women at a time. Privately.
-          </p>
+          {/* Selectivity line becomes the mid-page door (CRO: convert at the scarcity moment) */}
+          <div className="mt-12 border-t border-sand/40 pt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+            <p className="text-[15px] leading-[1.8] text-ink-soft max-w-md">
+              I work with a small number of women at a time. Privately.
+            </p>
+            <GhostButton href="/work-with-me">Work with me privately</GhostButton>
+          </div>
         </div>
       </section>
 
