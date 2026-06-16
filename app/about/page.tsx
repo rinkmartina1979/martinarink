@@ -51,97 +51,26 @@ export default async function AboutPage() {
         }}
       />
 
-      {/* 1. HERO — authority framed in the first viewport (CRO: establish expert before story) */}
+      {/* 1. HERO */}
       <PageHero
         eyebrow="About Martina Rink"
         headline={heroHeadline}
-        subheadline="Author of three books, including a Spiegel Bestseller. Private mentor to founders, executives, and creatives — by application, and always in confidence."
         variant="light"
       />
 
-      {/* 1.5 — IDENTITY — credentials, ICP, and mission stated for premium buyers */}
-      <section className="bg-[#0F0C10] py-20 md:py-28">
-        <div className="container-content">
-
-          {/* Role grid — 4 editorial tiles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-white/[0.07]">
-            {([
-              { num: "01", title: "Female Empowerment Coach", sub: "Private practice" },
-              { num: "02", title: "Sober Conscious Mentor", sub: "The Sober Muse" },
-              { num: "03", title: "Bestselling Author", sub: "Spiegel · 3 published books" },
-              { num: "04", title: "Creative", sub: "Persia · Germany · London · Paris · Ibiza" },
-            ] as const).map(({ num, title, sub }) => (
-              <div
-                key={num}
-                className="border-l border-b border-white/[0.07] px-7 py-10 first:border-l-0 sm:[&:nth-child(2n+1)]:border-l-0 lg:[&:nth-child(n)]:border-l lg:first:border-l-0"
-              >
-                <span className="block text-[0.5rem] uppercase tracking-[0.38em] text-gold/70 mb-4 select-none">
-                  {num}
-                </span>
-                <p className="font-[family-name:var(--font-display)] italic text-[20px] leading-snug text-cream mb-3">
-                  {title}
-                </p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-cream/30">{sub}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Mission statement */}
-          <div className="mt-20 md:mt-24 max-w-[52rem]">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gold/60 mb-8">
-              The calling
-            </p>
-            <blockquote className="font-[family-name:var(--font-display)] italic text-[36px] md:text-[52px] lg:text-[58px] leading-[1.1] text-cream">
-              I create spaces where women no longer have to lose themselves — but
-              can truly return to who they are.
-            </blockquote>
-            <div aria-hidden className="mt-10 flex items-center gap-4">
-              <div className="w-12 h-px bg-pink" />
-              <p className="text-[10px] uppercase tracking-[0.2em] text-cream/30">
-                Martina Rink
-              </p>
-            </div>
-          </div>
-
-          {/* ICP + outcome — two columns */}
-          <div className="mt-16 md:mt-20 grid md:grid-cols-2 border-t border-white/[0.07]">
-            <div className="border-r border-white/[0.07] pr-8 md:pr-16 pt-12">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-gold mb-6">
-                Who this is for
-              </p>
-              <p className="text-[17px] leading-[1.85] text-cream/70">
-                High-achieving women. Creative entrepreneurs. Founders and
-                visionaries who are ready to release old patterns, reconnect with
-                themselves, and create a more conscious and aligned life.
-              </p>
-            </div>
-            <div className="pl-0 md:pl-16 pt-12">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-gold mb-6">
-                What it creates
-              </p>
-              <p className="text-[17px] leading-[1.85] text-cream/70">
-                Greater awareness. Emotional freedom. Genuine inner strength — and
-                a life that is more conscious, more aligned, and more deeply yours.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 2. OPENING — homepage about section design, full bio */}
+      {/* 2. ABOUT — Martina's full story, in her own words (client copy 2026-06-17) */}
       <section className="bg-bone py-16 md:py-24">
         <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
 
-          {/* Photo — 2/3 portrait, identical to homepage */}
+          {/* Photo — pink-blouse editorial portrait (the design Martina approved) */}
           <div className="md:col-span-5">
-            <div className="relative aspect-[2/3] bg-sand/30 overflow-hidden">
+            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
               <Image
-                src="/images/portraits/martina-library-pink.jpg"
-                alt="Martina Rink — author and private mentor"
+                src="/images/portraits/martina-portrait-pink-blouse.jpg"
+                alt="Martina Rink — Female Empowerment Coach, author and private mentor"
                 fill
-                sizes="(max-width: 768px) 100vw, 35vw"
-                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover object-center"
                 priority
               />
             </div>
@@ -161,25 +90,40 @@ export default async function AboutPage() {
 
             <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-ink-soft max-w-[560px]">
               <p>
-                Born in Persia. Adopted by German parents. Raised between
-                Germany, London, Paris, and Ibiza. I have lived, from the
-                beginning, with the question of who I am underneath the
-                circumstances I was placed in.
+                I am Martina — a Female Empowerment Coach, Sober Conscious Mentor
+                of <em>The Sober Muse</em>, a Spiegel bestselling author, and a
+                creative.
+              </p>
+              <p>
+                My story has been shaped by Persian roots, adoption, and a life
+                lived between Germany, London, Paris, and Ibiza — experiences
+                that deeply shaped my understanding of identity, belonging, and
+                inner strength.
               </p>
               <p>
                 For many years I moved within the international fashion and
-                creative industry — watching how often success, beauty, and
-                strength can hide emotional exhaustion and inner disconnection.
-                At the same time, I went through my own experiences with
-                anxiety, depression, social phobia, and a deepening relationship
-                with alcohol that asked to be examined.
+                creative industry, where I witnessed how often success, beauty,
+                and strength can hide emotional exhaustion and inner
+                disconnection. At the same time, I went through my own
+                experiences with anxiety, depression, social phobia, and
+                problematic alcohol use.
               </p>
               <p>
-                Choosing sobriety was the moment I stopped running from myself.
-                This is where my work was born — not from theory, but from lived
-                transformation. Today I work with high-achieving women, creative
+                Choosing sobriety became a profound turning point — the moment I
+                stopped running from myself. This is where my work was born: not
+                from theory, but from lived transformation.
+              </p>
+              <p>
+                Today I work primarily with high-achieving women, creative
                 entrepreneurs, founders, and visionaries who are ready to release
-                old patterns and return to who they actually are.
+                old patterns, reconnect with themselves, and create a more
+                conscious and aligned life.
+              </p>
+              <p>
+                My work is my calling. I want to create spaces where women no
+                longer have to lose themselves, but can truly return to who they
+                are — with greater awareness, emotional freedom, and genuine
+                inner strength.
               </p>
 
               {/* Quiet proof line */}
