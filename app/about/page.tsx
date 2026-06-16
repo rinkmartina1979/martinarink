@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { PageHero } from "@/components/sections/PageHero";
@@ -51,12 +52,25 @@ export default async function AboutPage() {
         }}
       />
 
-      {/* 1. HERO */}
+      {/* 1. HERO — dark editorial split: recognition + authority + action (Option A) */}
       <PageHero
         eyebrow="About Martina Rink"
         headline={heroHeadline}
-        variant="light"
-      />
+        subheadline="Private mentorship for high-achieving women whose outside life resolves on paper, but quietly no longer feels like their own."
+        cta={{ label: "Begin the assessment", href: "/assessment" }}
+        ctaSecondary={{ label: "Work with me privately", href: "/work-with-me" }}
+        variant="dark"
+        portrait={{
+          src: "/images/portraits/martina-hero.jpg",
+          alt: "Martina Rink — Female Empowerment Coach, Spiegel bestselling author and private mentor",
+          objectPosition: "50% 20%",
+        }}
+      >
+        <p className="mt-6 font-[family-name:var(--font-body)] text-[11px] uppercase tracking-[0.22em] leading-[1.9] text-cream/55">
+          Spiegel bestselling author &middot; Founder of The Sober Muse &middot;
+          Former assistant to Isabella Blow &middot; Featured in Vogue Germany
+        </p>
+      </PageHero>
 
       {/* 2. ABOUT — Martina's full story, in her own words (client copy 2026-06-17) */}
       <section className="bg-bone py-16 md:py-24">
@@ -97,39 +111,39 @@ export default async function AboutPage() {
               <p>
                 My story has been shaped by Persian roots, adoption, and a life
                 lived between Germany, London, Paris, and Ibiza — experiences
-                that deeply shaped my understanding of identity, belonging, and
-                inner strength.
+                that shaped my understanding of identity, belonging, and inner
+                strength.
               </p>
               <p>
                 For many years I moved within the international fashion and
-                creative industry, where I witnessed how often success, beauty,
-                and strength can hide emotional exhaustion and inner
-                disconnection. At the same time, I went through my own
-                experiences with anxiety, depression, social phobia, and
-                problematic alcohol use.
+                creative industry, where success, beauty, image, and strength
+                were often visible on the surface — while emotional exhaustion
+                remained carefully hidden underneath.
+              </p>
+              <p className="text-ink font-medium">I witnessed this in other women.</p>
+              <p className="text-ink font-medium">And I lived my own version of it.</p>
+              <p>
+                Behind a life that looked accomplished, I was navigating anxiety,
+                depression, social phobia, and a relationship with alcohol that
+                had quietly become something I could no longer ignore.
               </p>
               <p>
-                Choosing sobriety became a profound turning point — the moment I
-                stopped running from myself. This is where my work was born: not
-                from theory, but from lived transformation.
+                Choosing sobriety became a profound turning point. It was the
+                moment I stopped running from myself. This is where my work was
+                born — not from theory, but from lived transformation.
               </p>
               <p>
                 Today I work primarily with high-achieving women, creative
                 entrepreneurs, founders, and visionaries who are ready to release
                 old patterns, reconnect with themselves, and create a more
-                conscious and aligned life.
+                conscious, sober, and aligned life.
               </p>
               <p>
-                My work is my calling. I want to create spaces where women no
-                longer have to lose themselves, but can truly return to who they
-                are — with greater awareness, emotional freedom, and genuine
-                inner strength.
-              </p>
-
-              {/* Quiet proof line */}
-              <p className="text-[13px] uppercase tracking-[0.18em] text-ink-quiet pt-2">
-                Three published books, including a Spiegel Bestseller &middot;
-                Featured in Vogue Germany, Der Spiegel, Die Zeit
+                My work is my calling: to create spaces where women no longer
+                have to lose themselves in order to succeed, be loved, be
+                admired, or belong. Spaces where they can return to who they are
+                — with greater awareness, emotional freedom, and genuine inner
+                strength.
               </p>
             </div>
 
@@ -143,6 +157,20 @@ export default async function AboutPage() {
           </div>
         </div>
 
+        {/* Soft CTA — first private door, placed at the first emotional peak */}
+        <div className="container-content mt-12 md:mt-14">
+          <p className="font-[family-name:var(--font-display)] italic text-[20px] md:text-[24px] leading-snug text-ink-soft">
+            If this feels familiar,{" "}
+            <Link
+              href="/assessment"
+              className="text-plum underline decoration-pink/40 underline-offset-4 transition-colors hover:decoration-plum"
+            >
+              begin with the private assessment
+            </Link>
+            .
+          </p>
+        </div>
+
         {/* Pull quote — full-width, below the grid */}
         <div className="container-content mt-16 md:mt-20 max-w-3xl">
           <blockquote className="border-l-2 border-pink pl-8 font-[family-name:var(--font-display)] italic text-[24px] md:text-[28px] leading-snug text-ink">
@@ -152,6 +180,27 @@ export default async function AboutPage() {
           <p className="pl-8 mt-4 text-[12px] uppercase tracking-[0.18em] text-ink-quiet">
             — Martina Rink
           </p>
+        </div>
+      </section>
+
+      {/* 2b. PRESS STRIP — authority proof immediately after the human story */}
+      <section className="bg-cream border-y border-sand/40 py-10 md:py-12">
+        <div className="container-content">
+          <p className="mb-7 text-center text-[10px] uppercase tracking-[0.3em] text-ink-quiet">
+            As featured in
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-x-14">
+            {["Vogue Germany", "Der Spiegel", "Die Zeit", "Spiegel Bestseller"].map(
+              (name) => (
+                <span
+                  key={name}
+                  className="font-[family-name:var(--font-display)] text-[18px] md:text-[22px] tracking-wide text-ink/70"
+                >
+                  {name}
+                </span>
+              ),
+            )}
+          </div>
         </div>
       </section>
 
