@@ -16,6 +16,8 @@ The system uses **two email services with one job each**. This is the 2026 exper
 
 **The rule:** if an email must arrive *immediately* (a confirmation, a contract, a notification to Martina) → **Resend, from code**. If an email is part of a *timed nurture sequence over days* → **Brevo automation**.
 
+**Where Martina receives everything:** all user-submission notifications go **to** `RESEND_NOTIFY_EMAIL` (= `contact@martinarink.com`), and every user-facing confirmation is **BCC'd** to the same address — so `contact@` is the single inbox holding both. The login magic-link (`/api/members/send-link`) is deliberately NOT copied, for security. `contact@martinarink.com` must exist as a real mailbox in IONOS (the domain's mail host) or all of this bounces.
+
 This means: **even if every Brevo automation were broken, every critical first-touch email still sends.** That is the definition of a stable system.
 
 ---
@@ -70,8 +72,9 @@ These MUST be set in Vercel → `martinarink.com` project → Settings → Envir
 |----------|--------|-----------|
 | `BREVO_API_KEY` | ✅ set | No list/drip |
 | `RESEND_API_KEY` | ✅ set (verify it's the NEW key in Vercel) | No instant emails |
-| `RESEND_FROM_EMAIL` = `hello@martinarink.com` | ✅ | — |
-| `RESEND_NOTIFY_EMAIL` = `hello@martinarink.com` | ✅ | Martina not notified |
+| `RESEND_FROM_EMAIL` = `hello@martinarink.com` | ✅ (sending identity, unchanged) | — |
+| `RESEND_NOTIFY_EMAIL` = `contact@martinarink.com` | ⚠️ **change in Vercel** (was `hello@`) | Notifications + confirmation copies go to wrong inbox |
+| `RESEND_REPLY_TO` = `contact@martinarink.com` | ⚠️ **change in Vercel** (was `hello@`) | User replies go to wrong inbox |
 | `NEXT_PUBLIC_SITE_URL` = `https://martinarink.com` | ✅ | Wrong links in emails |
 | `ASSESSMENT_RESULT_SECRET` | ✅ set in production (placeholder only in local `.env.local`) | Assessment result page → 503 |
 | `BLOB_READ_WRITE_TOKEN` | ⚠️ verify via `/api/health` | Contracts can't be stored/signed |
