@@ -14,7 +14,6 @@
  */
 
 import { useState } from "react";
-import Image from "next/image";
 
 interface NewsletterStripProps {
   variant?: "compact" | "editorial";
@@ -113,28 +112,30 @@ export function NewsletterStrip({
     );
   }
 
-  /* ── Editorial variant ─────────────────────────────────────── */
+  /* ── Editorial variant — text-only premium module (no repeated imagery) ─── */
   return (
-    <div className={`bg-aubergine overflow-hidden ${className}`}>
-      <div className="grid md:grid-cols-[1fr_0.5fr] lg:grid-cols-[1fr_0.42fr]">
-        {/* Left — copy + form */}
-        <div className="px-10 py-14 md:px-14 md:py-16 lg:px-16 lg:py-20">
-          <span className="h-px w-10 bg-pink block mb-8" aria-hidden />
-          <p className="text-[10px] uppercase tracking-[0.28em] text-cream/50 mb-4 font-[family-name:var(--font-body)]">
+    <div className={`bg-aubergine ${className}`}>
+      <div className="container-content grid items-center gap-12 py-16 md:py-20 lg:grid-cols-2 lg:gap-20 lg:py-24">
+
+        {/* Left — editorial copy + reader voices */}
+        <div>
+          <span className="mb-8 block h-px w-10 bg-pink" aria-hidden />
+          <p className="mb-4 font-[family-name:var(--font-body)] text-[10px] uppercase tracking-[0.28em] text-cream/50">
             The Sober Muse Letter
           </p>
-          <h3 className="font-[family-name:var(--font-display)] text-[30px] md:text-[36px] lg:text-[40px] leading-[1.1] text-cream mb-5">
+          <h3 className="mb-5 font-[family-name:var(--font-display)] text-[32px] leading-[1.08] text-cream md:text-[40px] lg:text-[46px]">
             One letter.
             <br />
             Once a week.
           </h3>
-          <p className="text-[16px] leading-[1.8] text-cream/65 mb-8 max-w-[440px] font-[family-name:var(--font-body)]">
-            I write about identity, leadership, and the examined life. About the particular loneliness
-            of external success. About coming home to yourself.
+          <p className="mb-10 max-w-[460px] font-[family-name:var(--font-body)] text-[16px] leading-[1.8] text-cream/65">
+            I write about identity, leadership, and the examined life. About the
+            particular loneliness of external success. About coming home to
+            yourself.
           </p>
 
-          {/* Reader testimonials */}
-          <div className="mb-10 space-y-5">
+          {/* Reader voices */}
+          <div className="space-y-5">
             {[
               {
                 quote: "The most honest writing I have read about what it actually costs to be excellent at everything.",
@@ -146,17 +147,20 @@ export function NewsletterStrip({
               },
             ].map((t) => (
               <div key={t.name} className="border-l border-pink/40 pl-5">
-                <p className="font-[family-name:var(--font-display)] italic text-[15px] text-cream/80 leading-snug mb-2">
+                <p className="mb-2 font-[family-name:var(--font-display)] text-[15px] italic leading-snug text-cream/80">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <p className="text-[10px] uppercase tracking-[0.18em] text-cream/40 font-[family-name:var(--font-body)]">
+                <p className="font-[family-name:var(--font-body)] text-[10px] uppercase tracking-[0.18em] text-cream/40">
                   — {t.name}
                 </p>
               </div>
             ))}
           </div>
+        </div>
 
-          <form onSubmit={submit} className="space-y-4 max-w-[380px]">
+        {/* Right — the form */}
+        <div className="w-full lg:max-w-[420px] lg:justify-self-end">
+          <form onSubmit={submit} className="space-y-4">
             <div className="relative">
               <input
                 type="text"
@@ -204,20 +208,9 @@ export function NewsletterStrip({
             )}
           </form>
 
-          <p className="mt-5 text-[10px] uppercase tracking-[0.18em] text-cream/30 font-[family-name:var(--font-body)]">
+          <p className="mt-5 font-[family-name:var(--font-body)] text-[10px] uppercase tracking-[0.18em] text-cream/30">
             Small list &middot; Unsubscribe any time &middot; No third-party data sharing
           </p>
-        </div>
-
-        {/* Right — portrait */}
-        <div className="hidden md:block relative min-h-[480px]">
-          <Image
-            src="/images/portraits/martina-garden-pink.jpg"
-            alt="Martina Rink — The Sober Muse Letter"
-            fill
-            sizes="(min-width: 1024px) 25vw, 35vw"
-            className="object-cover object-center"
-          />
         </div>
       </div>
     </div>
