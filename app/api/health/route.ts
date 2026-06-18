@@ -69,6 +69,15 @@ function checkEnvVars() {
     warnings.push(`NEXT_PUBLIC_SITE_URL is ${siteUrl} — should be https://martinarink.com in production`);
   }
 
+  // Feature-specific keys — not hard-required (the site runs without them),
+  // but the linked feature is broken until set. Surfaced as warnings.
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    warnings.push("BLOB_READ_WRITE_TOKEN not set — accept/contract/intake flow cannot store contracts");
+  }
+  if (!process.env.CALENDLY_WEBHOOK_SIGNING_KEY) {
+    warnings.push("CALENDLY_WEBHOOK_SIGNING_KEY not set — Calendly booking webhook returns 503");
+  }
+
   return { missing, warnings };
 }
 

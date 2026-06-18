@@ -73,10 +73,12 @@ These MUST be set in Vercel → `martinarink.com` project → Settings → Envir
 | `RESEND_FROM_EMAIL` = `hello@martinarink.com` | ✅ | — |
 | `RESEND_NOTIFY_EMAIL` = `hello@martinarink.com` | ✅ | Martina not notified |
 | `NEXT_PUBLIC_SITE_URL` = `https://martinarink.com` | ✅ | Wrong links in emails |
-| `ASSESSMENT_RESULT_SECRET` | ❌ **placeholder** | Assessment result page → 503 |
-| `BLOB_READ_WRITE_TOKEN` | ❌ **missing** | Contracts can't be stored/signed |
-| `CALENDLY_WEBHOOK_SIGNING_KEY` | ❌ **missing** | Booking webhook → 503 |
+| `ASSESSMENT_RESULT_SECRET` | ✅ set in production (placeholder only in local `.env.local`) | Assessment result page → 503 |
+| `BLOB_READ_WRITE_TOKEN` | ⚠️ verify via `/api/health` | Contracts can't be stored/signed |
+| `CALENDLY_WEBHOOK_SIGNING_KEY` | ⚠️ verify via `/api/health` | Booking webhook → 503 |
 | `ACCEPT_SECRET` / `CONTRACT_SECRET` | ✅ set | Accept/contract links invalid |
+
+> Production env was confirmed via `/api/health` on 2026-06-19: the 10 core vars are present and `ASSESSMENT_RESULT_SECRET` is a real value (no placeholder warning). The two feature keys above are now monitored by the health endpoint.
 
 **`ASSESSMENT_RESULT_SECRET`:** generate a fresh 32-byte value — `openssl rand -hex 32` — and paste it into Vercel. Never commit it to git. (A value was generated and shared privately during setup.)
 **`BLOB_READ_WRITE_TOKEN`:** Vercel Dashboard → Storage → Blob → Create Store ("contracts") → Connect to project. Token auto-appears.
@@ -152,10 +154,10 @@ Event names are case-sensitive and defined in [`lib/brevo.ts`](lib/brevo.ts) (`B
 ---
 
 ## 8. Definition of done (production checklist)
-- [ ] Set `ASSESSMENT_RESULT_SECRET` (value in §3) in Vercel
-- [ ] Set `BLOB_READ_WRITE_TOKEN` in Vercel
+- [x] `ASSESSMENT_RESULT_SECRET` set in production (verified via `/api/health`)
+- [ ] Set `BLOB_READ_WRITE_TOKEN` in Vercel (check `/api/health` warnings)
 - [ ] Set `CALENDLY_WEBHOOK_SIGNING_KEY` in Vercel + create the Calendly webhook
-- [ ] Confirm the NEW Resend key is in Vercel (not the dead one)
+- [x] NEW Resend key live in production (verified via `/api/health`)
 - [ ] Brevo: add WAIT to newsletter automation (§4.1)
 - [ ] Brevo: fix template 44 subject + sender (§4.2)
 - [ ] Brevo: confirm all 8 automations are ON with correct triggers (§4.3)
