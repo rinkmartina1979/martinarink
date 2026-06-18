@@ -249,9 +249,15 @@ export async function POST(req: NextRequest) {
       firstName: d.firstName,
       listIds: [parseInt(listIdRaw, 10)],
       attributes: {
-        LASTNAME:           d.lastName,
-        SOURCE:             "intake",
-        APPLICATION_STATUS: "intake_submitted",
+        LASTNAME:              d.lastName,
+        PHONE:                 d.phone,
+        SOURCE:                "intake",
+        APPLICATION_PROGRAMME: d.programme,
+        APPLICATION_STATUS:    "intake_submitted",
+        PHYSICAL_HEALTH:       d.physicalHealth,
+        HAS_THERAPIST:         d.currentTherapist ? "yes" : "no",
+        EMAIL_OPT_IN:          d.emailOptIn ? "yes" : "no",
+        INTAKE_STATUS:         "submitted",
       },
     }).catch((err) => console.error("[Intake] Brevo contact failed:", err));
   }

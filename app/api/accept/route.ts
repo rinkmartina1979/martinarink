@@ -222,6 +222,7 @@ export async function GET(req: NextRequest) {
     ...(listIdRaw && { listIds: [parseInt(listIdRaw, 10)] }),
     attributes: {
       APPLICATION_STATUS: "accepted",
+      ...(contractSent && { CONTRACT_STATUS: "sent" }),
     },
     updateEnabled: true,
   }).catch((err) => console.error("[Accept] Brevo contact update failed:", err));

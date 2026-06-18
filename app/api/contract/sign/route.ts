@@ -220,7 +220,18 @@ export async function POST(req: NextRequest) {
     }).catch((err) => console.error("[Contract/sign] Intake invite failed:", err));
   }
 
-  // ── Brevo: fire contract_signed event ─────────────────────────
+  // ── Brevo: update contact + fire contract_signed event ─────────────────────────
+  addBrevoContact({
+    email: draft.email,
+    firstName: draft.firstName,
+    attributes: {
+      CONTRACT_STATUS: "signed",
+      CONTRACT_ID: contractId,
+      CONTRACT_SIGNED_AT: signedAt,
+      INTAKE_STATUS: "invited",
+    },
+  }).catch((err) => console.error("[Contract/sign] Brevo contact failed:", err));
+
   trackBrevoEvent({
     email: draft.email,
     eventName: "contract_signed",
@@ -231,6 +242,9 @@ export async function POST(req: NextRequest) {
     },
     contactProperties: {
       FIRSTNAME: draft.firstName,
+      CONTRACT_STATUS: "signed",
+      CONTRACT_ID: contractId,
+      CONTRACT_SIGNED_AT: signedAt,
     },
   }).catch((err) => console.error("[Contract/sign] Brevo event failed:", err));
 
