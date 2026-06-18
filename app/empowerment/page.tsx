@@ -228,9 +228,9 @@ export default async function EmpowermentPage() {
             ) : (
               <>
                 <p>
-                  The Female Empowerment Coaching is offered{" "}
-                  <strong className="text-ink">by application</strong>{" "}
-                  for the 90-day engagement.
+                  The Female Empowerment &amp; Leadership work is offered{" "}
+                  <strong className="font-medium text-gold">by application</strong>
+                  {" "}— to a small number of women at a time.
                 </p>
                 <p>
                   This work does not operate on a fixed timeline. It runs until the
