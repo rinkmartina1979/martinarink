@@ -295,11 +295,6 @@ export default async function EmpowermentPage() {
               Complete your confidential intake form
             </a>
           </p>
-          <p className="mt-6 italic text-[18px] text-ink-soft">
-            <ScriptAccent className="text-[28px] text-ink-soft">
-              it&rsquo;s about time, darling.
-            </ScriptAccent>
-          </p>
         </div>
       </section>
 
