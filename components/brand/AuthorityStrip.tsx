@@ -2,7 +2,7 @@
 const NURNBERGER_APPROVED = true;
 
 const ITEMS = [
-  { label: "Author", credit: "Three Books · Spiegel Bestseller" },
+  { label: "Author", credit: "Three books · Spiegel Bestseller" },
   { label: "Cultural work", credit: "Isabella Blow · London" },
   { label: "Perspective", credit: "Six years alcohol-free" },
   ...(NURNBERGER_APPROVED
@@ -11,28 +11,33 @@ const ITEMS = [
 ];
 
 /**
- * AuthorityStrip — quiet credential line.
- * Rendered directly beneath PressMarquee so press + credentials read as
- * ONE authority band, not two competing sections.
+ * AuthorityStrip — credentials presented as a quiet editorial facts grid.
+ *
+ * Sits beneath PressMarquee but on a distinct surface (bone vs cream) so it
+ * reads as its own banner, not a continuation of the press rail. Each cell
+ * stacks a small label over a display-type value with vertical dividers —
+ * the museum/luxury "facts" treatment, legible at a glance.
  */
 export function AuthorityStrip() {
   return (
-    <section className="bg-cream border-b border-sand/40">
-      <div className="container-content pb-8 pt-2">
-        <ul className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-0 text-center">
-          {ITEMS.map((item, i) => (
-            <li key={item.label} className="flex items-center">
-              {i > 0 && (
-                <span aria-hidden className="hidden md:inline-block mx-6 text-pink text-[9px]">
-                  ·
-                </span>
-              )}
-              <span className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mr-2">
+    <section className="bg-bone border-y border-sand/40">
+      <div className="container-content py-11 md:py-14">
+        <p className="mb-9 text-center text-[10px] uppercase tracking-[0.34em] text-ink-quiet md:mb-11">
+          For the record
+        </p>
+
+        <ul className="grid grid-cols-2 gap-y-10 lg:grid-cols-4">
+          {ITEMS.map((item) => (
+            <li
+              key={item.label}
+              className="border-l border-sand/50 px-5 text-center max-lg:[&:nth-child(odd)]:border-l-0 md:px-8 lg:[&:nth-child(4n+1)]:border-l-0"
+            >
+              <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-ink-quiet">
                 {item.label}
-              </span>
-              <span className="font-[family-name:var(--font-display)] text-[14px] text-ink leading-tight">
+              </p>
+              <p className="font-[family-name:var(--font-display)] text-[17px] leading-snug text-ink md:text-[19px]">
                 {item.credit}
-              </span>
+              </p>
             </li>
           ))}
         </ul>
