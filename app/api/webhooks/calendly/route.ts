@@ -189,8 +189,8 @@ export async function POST(req: NextRequest) {
         eventName: "consultation_booked",
         properties: eventProps,
         contactProperties: {
-          CONSULTATION_BOOKED: true,
-          LAST_BOOKING_AT: new Date().toISOString(),
+          BOOKING_STATUS: "booked",
+          LAST_BOOKING_DATE: new Date().toISOString(),
         },
       });
       // Email Martina — fire-and-forget so we always 200 to Calendly.
@@ -208,7 +208,7 @@ export async function POST(req: NextRequest) {
           cancellation_reason: body.payload?.cancellation?.reason || "",
         },
         contactProperties: {
-          CONSULTATION_BOOKED: false,
+          BOOKING_STATUS: "canceled",
         },
       });
       break;

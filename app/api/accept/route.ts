@@ -222,7 +222,6 @@ export async function GET(req: NextRequest) {
     ...(listIdRaw && { listIds: [parseInt(listIdRaw, 10)] }),
     attributes: {
       APPLICATION_STATUS: "accepted",
-      ...(contractSent && { CONTRACT_STATUS: "sent" }),
     },
     updateEnabled: true,
   }).catch((err) => console.error("[Accept] Brevo contact update failed:", err));
@@ -233,9 +232,8 @@ export async function GET(req: NextRequest) {
     eventName: "application_accepted",
     properties: { programme, programme_label: programmeLabel },
     contactProperties: {
-      FIRSTNAME:              firstName,
-      APPLICATION_PROGRAMME:  programme,
-      APPLICATION_STATUS:     "accepted",
+      FIRSTNAME:          firstName,
+      APPLICATION_STATUS: "accepted",
     },
   }).catch((err) => console.error("[Accept] Brevo event failed:", err));
 

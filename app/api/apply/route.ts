@@ -138,9 +138,7 @@ export async function POST(req: NextRequest) {
       listIds: [parseInt(listIdRaw, 10)],
       attributes: {
         SOURCE: "application",
-        APPLICATION_PROGRAMME: programme,
         APPLICATION_STATUS: "submitted",
-        BUDGET_READINESS: budgetTag,
       },
     }).catch((err) => console.error("[Apply] Brevo contact failed:", err));
   }
