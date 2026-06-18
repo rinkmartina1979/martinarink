@@ -133,6 +133,11 @@ export default async function AboutPage() {
                 born — not from theory, but from lived transformation.
               </p>
               <p>
+                I did not want a programme. I wanted a conversation — precise,
+                private, conducted between equals. I did not find one that felt
+                right for me, so I built it.
+              </p>
+              <p>
                 Today I work primarily with high-achieving women, creative
                 entrepreneurs, founders, and visionaries who are ready to release
                 old patterns, reconnect with themselves, and create a more
@@ -174,8 +179,8 @@ export default async function AboutPage() {
         {/* Pull quote — full-width, below the grid */}
         <div className="container-content mt-16 md:mt-20 max-w-3xl">
           <blockquote className="border-l-2 border-pink pl-8 font-[family-name:var(--font-display)] italic text-[24px] md:text-[28px] leading-snug text-ink">
-            The most interesting questions available to accomplished women are
-            the ones they don&rsquo;t yet have the private space to ask properly.
+            I have always known what it is to inhabit a life that was not quite
+            built around you.
           </blockquote>
           <p className="pl-8 mt-4 text-[12px] uppercase tracking-[0.18em] text-ink-quiet">
             — Martina Rink
@@ -200,77 +205,6 @@ export default async function AboutPage() {
                 </span>
               ),
             )}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. WHERE THIS STARTED — her story now leads the page (client request, 2026-06-13) */}
-      <section className="bg-aubergine py-16 md:py-24 [transform:translateZ(0)] isolate [-webkit-font-smoothing:antialiased]">
-        <div className="container-content max-w-3xl mx-auto">
-          <Eyebrow>
-            <span className="text-pink-soft">Where this started</span>
-          </Eyebrow>
-          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[42px] md:text-[52px] leading-tight text-cream">
-            I have always known what it is to inhabit a life that was not quite
-            built around you.
-          </h2>
-          <div className="mt-10 grid md:grid-cols-2 gap-10">
-            <div className="space-y-5 text-[17px] leading-[1.75] text-cream/85">
-              {data?.storyOrigin ? (
-                data.storyOrigin.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))
-              ) : (
-                <>
-                  <p>
-                    I was born in Persia and adopted by German parents shortly after
-                    birth. I grew up between Germany, London, Paris, and eventually
-                    Ibiza — a life shaped by code-switching, by belonging nowhere
-                    and everywhere at once, and by the interior work required when
-                    the circumstances of your life do not quite fit.
-                  </p>
-                  <p>
-                    What that produced, in me, over time, was anxiety, depression,
-                    and a social phobia I managed with considerable skill for years.
-                    The management, as it tends to, became its own thing to examine.
-                  </p>
-                  <p>
-                    I have lived, from the beginning, with a particular kind of
-                    question: who am I, underneath the circumstances I was placed
-                    in? It is a question that does not have a final answer. But it
-                    can be lived in a great deal more consciously than most of us
-                    manage.
-                  </p>
-                </>
-              )}
-            </div>
-            <div className="space-y-5 text-[17px] leading-[1.75] text-cream/85">
-              {data?.storySobriety ? (
-                data.storySobriety.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))
-              ) : (
-                <>
-                  <p>
-                    My own re-examination of alcohol began not from a crisis but
-                    from a question. I was, by all external measures, doing well. I
-                    had a life, a body of published work, a set of relationships I
-                    valued, and a daily glass of wine that had quietly become a
-                    different thing from what it started as.
-                  </p>
-                  <p>
-                    I did not need a programme. I needed a conversation — precise,
-                    private, conducted between equals. I did not find one that was
-                    right for me. So I built it.
-                  </p>
-                  <p>
-                    Choosing sobriety was not a treatment. It was the moment I
-                    stopped running from myself — and the moment this work was born.
-                    Not from theory. From what I lived.
-                  </p>
-                </>
-              )}
-            </div>
           </div>
         </div>
       </section>
