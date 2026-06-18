@@ -1,0 +1,96 @@
+/**
+ * GET /api/health
+ *
+ * Returns the status of all external service integrations.
+ * Used to diagnose broken keys without reading logs.
+ * Restrict to non-public use: add ?key=<HEALTH_CHECK_KEY> if needed.
+ */
+
+import { NextResponse } from "next/server";
+
+async function checkBrevo(): Promise<{ ok: boolean; detail: string }> {
+  const key = process.env.BREVO_API_KEY;
+  if (!key) return { ok: false, detail: "BREVO_API_KEY not set" };
+  try {
+    const res = await fetch("https://api.brevo.com/v3/account", {
+      headers: { "api-key": key },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return { ok: true, detail: `Account: ${data.email}` };
+    }
+    return { ok: false, detail: `HTTP ${res.status}` };
+  } catch (err) {
+    return { ok: false, detail: String(err) };
+  }
+}
+
+async function checkResend(): Promise<{ ok: boolean; detail: string }> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { ok: false, detail: "RESEND_API_KEY not set" };
+  try {
+    const res = await fetch("https://api.resend.com/domains", {
+      headers: { Authorization: `Bearer ${key}` },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const domains = (data.data ?? []).map((d: { name: string; status: string }) => `${d.name} (${d.status})`).join(", ");
+      return { ok: true, detail: domains || "No domains configured — verify martinarink.com" };
+    }
+    if (res.status === 401) return { ok: false, detail: "Invalid API key (401) — generate a new key at resend.com/api-keys" };
+    return { ok: false, detail: `HTTP ${res.status}` };
+  } catch (err) {
+    return { ok: false, detail: String(err) };
+  }
+}
+
+function checkEnvVars() {
+  const required = [
+    "BREVO_API_KEY",
+    "BREVO_LIST_ID_NEWSLETTER",
+    "BREVO_LIST_ID_ASSESSMENT",
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "RESEND_NOTIFY_EMAIL",
+    "NEXT_PUBLIC_SITE_URL",
+    "ASSESSMENT_RESULT_SECRET",
+    "ACCEPT_SECRET",
+    "CONTRACT_SECRET",
+  ];
+  const missing = required.filter((k) => !process.env[k]);
+  const warnings: string[] = [];
+
+  const secret = process.env.ASSESSMENT_RESULT_SECRET ?? "";
+  if (secret.includes("change-me") || secret === "dev-insecure-key-replace-in-production") {
+    warnings.push("ASSESSMENT_RESULT_SECRET is still the placeholder — set a real random value in Vercel");
+  }
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  if (siteUrl.includes("vercel.app")) {
+    warnings.push(`NEXT_PUBLIC_SITE_URL is ${siteUrl} — should be https://martinarink.com in production`);
+  }
+
+  return { missing, warnings };
+}
+
+export async function GET() {
+  const [brevo, resend] = await Promise.all([checkBrevo(), checkResend()]);
+  const env = checkEnvVars();
+
+  const allOk = brevo.ok && resend.ok && env.missing.length === 0 && env.warnings.length === 0;
+
+  return NextResponse.json(
+    {
+      status: allOk ? "ok" : "degraded",
+      services: {
+        brevo: { status: brevo.ok ? "ok" : "error", detail: brevo.detail },
+        resend: { status: resend.ok ? "ok" : "error", detail: resend.detail },
+      },
+      env: {
+        missing: env.missing,
+        warnings: env.warnings,
+      },
+      timestamp: new Date().toISOString(),
+    },
+    { status: allOk ? 200 : 503 }
+  );
+}
