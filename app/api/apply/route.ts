@@ -119,6 +119,8 @@ export async function POST(req: NextRequest) {
         from: `${fromName} <${fromEmail}>`,
         to: [email],
         reply_to: notifyEmail,
+        // Archive copy → Martina receives a copy of the applicant confirmation.
+        ...(notifyEmail && { bcc: [notifyEmail] }),
         subject: confirmation.subject,
         html: confirmation.html,
       }),

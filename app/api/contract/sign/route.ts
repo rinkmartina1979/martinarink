@@ -173,6 +173,8 @@ export async function POST(req: NextRequest) {
         from: `Martina Rink <${fromEmail}>`,
         to: [draft.email],
         reply_to: notifyEmail,
+        // Archive copy → Martina receives a copy of the client's signed contract.
+        ...(notifyEmail && { bcc: [notifyEmail] }),
         subject: clientEmail.subject,
         html: clientEmail.html,
       }),
@@ -210,6 +212,8 @@ export async function POST(req: NextRequest) {
         from: `Martina Rink <${fromEmail}>`,
         to: [draft.email],
         reply_to: notifyEmail ?? fromEmail,
+        // Archive copy → Martina receives a copy of the intake invite.
+        ...(notifyEmail && { bcc: [notifyEmail] }),
         subject: intake.subject,
         html: intake.html,
       }),

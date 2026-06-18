@@ -52,6 +52,8 @@ export async function POST(req: NextRequest) {
   const resendKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RESEND_FROM_EMAIL || "hello@martinarink.com";
   const replyTo = process.env.RESEND_REPLY_TO || process.env.RESEND_NOTIFY_EMAIL;
+  // Archive copy — Martina receives a copy of every confirmation at contact@.
+  const archiveEmail = process.env.RESEND_NOTIFY_EMAIL;
   if (resendKey) {
     const welcome = newsletterWelcomeEmail(parsed.data.firstName);
     fetch("https://api.resend.com/emails", {
@@ -61,6 +63,7 @@ export async function POST(req: NextRequest) {
         from: `Martina Rink <${fromEmail}>`,
         to: [parsed.data.email],
         ...(replyTo && { reply_to: replyTo }),
+        ...(archiveEmail && { bcc: [archiveEmail] }),
         subject: welcome.subject,
         html: welcome.html,
       }),

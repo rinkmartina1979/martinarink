@@ -28,6 +28,7 @@ async function sendDepositConfirmation(
 ): Promise<void> {
   const resendKey = process.env.RESEND_API_KEY
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'hello@martinarink.com'
+  const archiveEmail = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO
   if (!resendKey) return
 
   const html = `
@@ -64,6 +65,8 @@ async function sendDepositConfirmation(
       body: JSON.stringify({
         from: fromEmail,
         to: [email],
+        // Archive copy → Martina receives a copy of the deposit confirmation.
+        ...(archiveEmail && { bcc: [archiveEmail] }),
         subject: 'Deposit received — consultation confirmed',
         html,
       }),

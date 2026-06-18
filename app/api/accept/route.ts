@@ -72,6 +72,7 @@ async function sendEmail(
     from: string;
     to: string[];
     reply_to?: string;
+    bcc?: string[];
     subject: string;
     html: string;
   },
@@ -130,6 +131,7 @@ export async function GET(req: NextRequest) {
       from:     `Martina Rink <${fromEmail}>`,
       to:       [email],
       reply_to: notifyEmail || fromEmail,
+      ...(notifyEmail && { bcc: [notifyEmail] }),
       subject,
       html,
     }, "Acceptance");
@@ -188,6 +190,7 @@ export async function GET(req: NextRequest) {
         from:     `Martina Rink <${fromEmail}>`,
         to:       [email],
         reply_to: notifyEmail || fromEmail,
+        ...(notifyEmail && { bcc: [notifyEmail] }),
         subject:  invite.subject,
         html:     invite.html,
       }, "Contract invite").catch(() => {/* already logged inside */});
