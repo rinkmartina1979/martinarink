@@ -29,6 +29,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "The women I work with are not in crisis. They are in the much quieter problem — the one that arrives after everything has gone according to plan.",
     publishedAt: "2026-04-01T00:00:00Z",
     coverImage: null,
+    localImage: "/images/portraits/martina-ibiza-working.jpg",
   },
   {
     _id: "2",
@@ -38,6 +39,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "When a woman has spent two decades building a career, she often discovers that the title was never the destination — it was a container.",
     publishedAt: "2026-04-08T00:00:00Z",
     coverImage: null,
+    localImage: "/images/portraits/martina-portrait-studio.jpg",
   },
   {
     _id: "3",
@@ -47,6 +49,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
       "Isabella Blow wore hats that could clear a room. Not to be noticed. To exist. There is a distinction.",
     publishedAt: "2026-04-15T00:00:00Z",
     coverImage: null,
+    localImage: "/images/portraits/martina-gallery-leopard.jpg",
   },
 ];
 
