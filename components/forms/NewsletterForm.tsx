@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PlumButton } from "@/components/brand/PlumButton";
 
 interface NewsletterFormProps {
@@ -15,6 +15,9 @@ export function NewsletterForm({ source = "newsletter-form", dark = false }: New
   const [firstName, setFirstName] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  // Anti-bot: capture form-load time; honeypot ref (bots fill it, humans don't see it)
+  const loadTime = useRef(Date.now());
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +27,13 @@ export function NewsletterForm({ source = "newsletter-form", dark = false }: New
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstName, source }),
+        body: JSON.stringify({
+          email,
+          firstName,
+          source,
+          _hp: honeypotRef.current?.value ?? "",
+          _ts: loadTime.current,
+        }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -70,6 +79,16 @@ export function NewsletterForm({ source = "newsletter-form", dark = false }: New
 
   return (
     <form onSubmit={onSubmit} className="max-w-sm">
+      {/* Honeypot — invisible to real users, bots fill it in → rejected server-side */}
+      <input
+        ref={honeypotRef}
+        type="text"
+        name="website"
+        autoComplete="off"
+        aria-hidden="true"
+        tabIndex={-1}
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+      />
       <div className="space-y-6">
         {/* First name */}
         <div className="relative">
