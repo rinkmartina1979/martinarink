@@ -115,7 +115,7 @@ function footer() {
       </p>
       <p style="margin:0 0 6px;font-size:12px;color:#8A7F72;font-family:Arial,sans-serif;">
         <a href="https://martinarink.com" style="color:#8A7F72;text-decoration:none;">martinarink.com</a>
-        &nbsp;&middot;&nbsp;coaching@martinarink.com
+        &nbsp;&middot;&nbsp;contact@martinarink.com
       </p>
       <p style="margin:16px 0 0;font-size:11px;color:#C8B8A2;font-family:Arial,sans-serif;">
         Martina Rink UG (haftungsbeschr&auml;nkt), Karlsruhe, Germany.

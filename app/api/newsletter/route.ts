@@ -145,7 +145,7 @@ export async function POST(req: NextRequest) {
 
   // ── Instant welcome via Resend ────────────────────────────────────────────
   const resendKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.RESEND_FROM_EMAIL || "hello@martinarink.com";
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "contact@martinarink.com";
   const replyTo = process.env.RESEND_REPLY_TO || process.env.RESEND_NOTIFY_EMAIL;
   const archiveEmail = process.env.RESEND_NOTIFY_EMAIL;
 

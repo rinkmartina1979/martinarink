@@ -220,7 +220,7 @@ export async function POST(req: NextRequest) {
   // ── Resend — full intake to Martina ───────────────────────
   const resendKey   = process.env.RESEND_API_KEY;
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO;
-  const fromEmail   = process.env.RESEND_FROM_EMAIL   || "hello@martinarink.com";
+  const fromEmail   = process.env.RESEND_FROM_EMAIL   || "contact@martinarink.com";
 
   if (resendKey && notifyEmail) {
     fetch("https://api.resend.com/emails", {

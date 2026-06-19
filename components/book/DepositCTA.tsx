@@ -45,10 +45,10 @@ export function DepositCTA() {
     return (
       <div>
         <a
-          href="mailto:coaching@martinarink.com?subject=Private%20consultation%20—%20reservation"
+          href="mailto:contact@martinarink.com?subject=Private%20consultation%20—%20reservation"
           className="inline-flex items-center justify-center rounded-[1px] bg-plum text-cream uppercase tracking-[0.18em] font-medium text-[0.75rem] px-7 py-4 md:px-10 md:py-[18px] transition-colors duration-300 ease-out hover:bg-plum-deep"
         >
-          Reserve by email — coaching@martinarink.com
+          Reserve by email — contact@martinarink.com
         </a>
         <p className="mt-3 text-[13px] text-ink-quiet">
           Online deposit is briefly unavailable. Write to Martina directly and

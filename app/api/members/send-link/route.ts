@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'hello@martinarink.com'
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'contact@martinarink.com'
   const firstName = clientRecord.firstName
 
   const html = `

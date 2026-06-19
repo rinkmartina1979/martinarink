@@ -115,7 +115,7 @@ export async function GET(req: NextRequest) {
 
   const programmeLabel = PROGRAMME_LABELS[programme] ?? programme;
   const resendKey      = process.env.RESEND_API_KEY ?? "";
-  const fromEmail      = process.env.RESEND_FROM_EMAIL   ?? "hello@martinarink.com";
+  const fromEmail      = process.env.RESEND_FROM_EMAIL   ?? "contact@martinarink.com";
   const notifyEmail    = process.env.RESEND_NOTIFY_EMAIL ?? process.env.RESEND_REPLY_TO ?? "";
   const siteUrl        = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
 

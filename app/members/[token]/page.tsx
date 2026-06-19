@@ -52,10 +52,10 @@ function PrivateBetaPage() {
           The members area is opening to current clients in the coming weeks.
           If you are working with Martina and expected access, write to her at{" "}
           <a
-            href="mailto:coaching@martinarink.com"
+            href="mailto:contact@martinarink.com"
             className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
           >
-            coaching@martinarink.com
+            contact@martinarink.com
           </a>{" "}
           and she will send your private link.
         </p>

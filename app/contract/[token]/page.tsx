@@ -333,10 +333,10 @@ function Expired() {
           Contract links are valid for 7 days. Please write to Martina to request a new link.
         </p>
         <a
-          href="mailto:coaching@martinarink.com"
+          href="mailto:contact@martinarink.com"
           className="mt-6 inline-block text-[12px] uppercase tracking-[0.2em] text-plum font-[family-name:var(--font-body)] hover:text-plum-deep transition-colors"
         >
-          coaching@martinarink.com
+          contact@martinarink.com
         </a>
       </div>
     </div>

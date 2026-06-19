@@ -179,7 +179,7 @@ export async function GET(req: NextRequest) {
     ? `From the writing room — ${monthLabel}`
     : 'From the writing room'
 
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'hello@martinarink.com'
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'contact@martinarink.com'
 
   let campaignId = ''
   try {

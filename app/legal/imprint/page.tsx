@@ -68,10 +68,10 @@ export default async function ImprintPage() {
                 <br />
                 E-mail:{" "}
                 <a
-                  href="mailto:coaching@martinarink.com"
+                  href="mailto:contact@martinarink.com"
                   className="text-rose-btn underline underline-offset-4"
                 >
-                  coaching@martinarink.com
+                  contact@martinarink.com
                 </a>
               </p>
             </section>
