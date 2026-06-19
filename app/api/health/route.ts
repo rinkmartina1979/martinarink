@@ -44,6 +44,28 @@ async function checkResend(): Promise<{ ok: boolean; detail: string }> {
   }
 }
 
+// Validates the Calendly Personal Access Token used by the free-plan embed
+// booking automation (/api/webhooks/calendly-embed). A set-but-invalid token
+// fails silently in production, so we verify it against the live API here.
+async function checkCalendly(): Promise<{ ok: boolean; detail: string }> {
+  const pat = process.env.CALENDLY_PERSONAL_ACCESS_TOKEN;
+  if (!pat) return { ok: false, detail: "CALENDLY_PERSONAL_ACCESS_TOKEN not set — embed booking automation disabled (booking still works; Martina is notified by Calendly natively)" };
+  try {
+    const res = await fetch("https://api.calendly.com/users/me", {
+      headers: { Authorization: `Bearer ${pat}`, "Content-Type": "application/json" },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const r = data.resource ?? {};
+      return { ok: true, detail: `Authenticated as ${r.email ?? "unknown"}` };
+    }
+    if (res.status === 401) return { ok: false, detail: "Invalid token (401) — value is empty or wrong; regenerate at Calendly → Integrations & apps → API & webhooks" };
+    return { ok: false, detail: `HTTP ${res.status}` };
+  } catch (err) {
+    return { ok: false, detail: String(err) };
+  }
+}
+
 function checkEnvVars() {
   const required = [
     "BREVO_API_KEY",
@@ -71,21 +93,25 @@ function checkEnvVars() {
 
   // Feature-specific keys — not hard-required (the site runs without them),
   // but the linked feature is broken until set. Surfaced as warnings.
+  // Blob auth: @vercel/blob 2.3.0 needs the static read-write token. (OIDC
+  // auth — BLOB_STORE_ID alone — requires @vercel/blob ≥2.4, which currently
+  // breaks the Next 16 build, so we stay on the static token.)
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     warnings.push("BLOB_READ_WRITE_TOKEN not set — accept/contract/intake flow cannot store contracts");
   }
-  if (!process.env.CALENDLY_WEBHOOK_SIGNING_KEY) {
-    warnings.push("CALENDLY_WEBHOOK_SIGNING_KEY not set — Calendly booking webhook returns 503");
-  }
+  // Booking is on free Calendly: webhooks are paid-only, so the site uses the
+  // embed postMessage → /api/webhooks/calendly-embed flow, which needs the PAT
+  // (validated live in checkCalendly above). The webhook signing key is NOT
+  // expected on the free plan, so its absence is not a warning.
 
   return { missing, warnings };
 }
 
 export async function GET() {
-  const [brevo, resend] = await Promise.all([checkBrevo(), checkResend()]);
+  const [brevo, resend, calendly] = await Promise.all([checkBrevo(), checkResend(), checkCalendly()]);
   const env = checkEnvVars();
 
-  const allOk = brevo.ok && resend.ok && env.missing.length === 0 && env.warnings.length === 0;
+  const allOk = brevo.ok && resend.ok && calendly.ok && env.missing.length === 0 && env.warnings.length === 0;
 
   return NextResponse.json(
     {
@@ -93,6 +119,7 @@ export async function GET() {
       services: {
         brevo: { status: brevo.ok ? "ok" : "error", detail: brevo.detail },
         resend: { status: resend.ok ? "ok" : "error", detail: resend.detail },
+        calendly: { status: calendly.ok ? "ok" : "error", detail: calendly.detail },
       },
       env: {
         missing: env.missing,
