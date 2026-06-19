@@ -1,15 +1,8 @@
 "use client";
 
-/**
- * EditorialTestimonials — full 2026 Vogue editorial layout.
- *
- * All reviews are shown. Layout adapts by type:
- *   Named reviews  → hero · pair · centered pull-quote · editorial single
- *   NDA reviews    → violet-soft panel, no portraits, large italic
- *   Marquee strip  → ink background, scrolling anonymous quotes
- */
-
 import Image from "next/image";
+import { useState, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface TestimonialItem {
   key: string;
@@ -24,319 +17,167 @@ interface Props {
   testimonials: TestimonialItem[];
 }
 
-const MARQUEE_QUOTES = [
-  "I came in thinking I had a drinking problem. I left understanding I had a clarity problem.",
-  "The work was not a rebuild. It was the return of a capacity I had quietly stopped believing in.",
-  "She asked the question I didn't know I was avoiding — and then she waited.",
-  "Something about her quality of attention made it impossible to stay vague with myself.",
-  "In a remarkably short time, she helped me arrive at realisations I'd been circling for years.",
-];
-
-// ─── Shared primitives ────────────────────────────────────────────────────────
-
-function QuoteMark({ size = "lg" }: { size?: "lg" | "md" | "sm" }) {
-  const px = size === "lg" ? "clamp(80px,12vw,160px)" : size === "md" ? "clamp(60px,8vw,100px)" : "clamp(44px,5vw,72px)";
+function ChevronLeft() {
   return (
-    <span
-      aria-hidden
-      className="block font-[family-name:var(--font-display)] italic text-pink/30 leading-none select-none"
-      style={{ fontSize: px }}
-    >
-      &ldquo;
-    </span>
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M11 4L6 9L11 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
-function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function ChevronRight() {
   return (
-    <p className={`text-[9px] uppercase tracking-[0.28em] font-[family-name:var(--font-body)] ${className}`}>
-      {children}
-    </p>
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M7 4L12 9L7 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
-function Nameplate({ item, align = "left" }: { item: TestimonialItem; align?: "left" | "center" }) {
-  const display = item.nda ? item.role : item.name;
-  const sub = item.nda ? null : item.role;
-  return (
-    <div className={align === "center" ? "text-center" : ""}>
-      {display && (
-        <p className="text-[10px] uppercase tracking-[0.22em] text-ink font-medium">{display}</p>
-      )}
-      {sub && (
-        <p className="text-[9px] uppercase tracking-[0.16em] text-ink-quiet mt-0.5">{sub}</p>
-      )}
-      {item.nda && (
-        <p className="text-[9px] uppercase tracking-[0.16em] text-ink-quiet/55 mt-0.5">Identity withheld · NDA</p>
-      )}
-    </div>
-  );
-}
+const VARIANTS = {
+  enter: (d: number) => ({ x: d > 0 ? 60 : -60, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (d: number) => ({ x: d > 0 ? -60 : 60, opacity: 0 }),
+};
 
-function SmallPortrait({ item }: { item: TestimonialItem }) {
-  if (!item.photoPath || item.nda) return null;
-  return (
-    <div className="relative w-[48px] h-[64px] flex-shrink-0 overflow-hidden">
-      <Image
-        src={item.photoPath}
-        alt={item.name}
-        fill
-        sizes="48px"
-        className="object-cover object-top grayscale"
-      />
-    </div>
-  );
-}
-
-// ─── Layout blocks ────────────────────────────────────────────────────────────
-
-/**
- * HERO — full-width 2-col. Giant italic quote left, tall B&W portrait right.
- * Used for the first named review (strongest / longest narrative).
- */
-function HeroReview({ item }: { item: TestimonialItem }) {
-  return (
-    <div className="container-content pb-16 md:pb-24">
-      <div className="grid md:grid-cols-[1fr_300px] xl:grid-cols-[1fr_380px] gap-10 xl:gap-20 items-start">
-        <figure>
-          <QuoteMark size="lg" />
-          <blockquote
-            className="font-[family-name:var(--font-display)] italic text-ink leading-[1.28] -mt-4"
-            style={{ fontSize: "clamp(22px,3vw,38px)" }}
-          >
-            {item.quote}
-          </blockquote>
-          <div className="mt-10 pt-6 border-t border-pink/25">
-            <Nameplate item={item} />
-          </div>
-        </figure>
-
-        {item.photoPath && !item.nda && (
-          <div className="relative w-full aspect-[3/4] overflow-hidden hidden md:block">
-            <Image
-              src={item.photoPath}
-              alt={item.name}
-              fill
-              sizes="(max-width: 1280px) 300px, 380px"
-              className="object-cover object-top grayscale hover:grayscale-0 transition-[filter] duration-700"
-              priority={false}
-            />
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/**
- * PAIR — 2-col, each with small portrait, medium-size italic quote.
- * Used for the 2nd and 3rd named reviews.
- */
-function PairedReviews({ items }: { items: [TestimonialItem, TestimonialItem] }) {
-  return (
-    <div className="container-content pb-16 md:pb-24">
-      <div className="grid md:grid-cols-2 gap-x-12 xl:gap-x-20 gap-y-14">
-        {items.map((item) => (
-          <article key={item.key}>
-            <Eyebrow className="text-pink/55 mb-6">Client review</Eyebrow>
-            <blockquote
-              className="font-[family-name:var(--font-display)] italic text-ink leading-[1.55]"
-              style={{ fontSize: "clamp(17px,1.8vw,22px)" }}
-            >
-              &ldquo;{item.quote}&rdquo;
-            </blockquote>
-            <div className="mt-7 pt-5 border-t border-sand/50 flex items-center gap-4">
-              <SmallPortrait item={item} />
-              <Nameplate item={item} />
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/**
- * CENTERED — full-width, centred on page. No portrait column.
- * Used for a shorter, punchier named quote — gives the eye a rest.
- */
-function CenteredPullQuote({ item }: { item: TestimonialItem }) {
-  return (
-    <div className="container-content pb-20 md:pb-28">
-      <div className="max-w-2xl mx-auto text-center">
-        <QuoteMark size="md" />
-        <blockquote
-          className="font-[family-name:var(--font-display)] italic text-ink leading-[1.42] -mt-3"
-          style={{ fontSize: "clamp(20px,2.4vw,30px)" }}
-        >
-          {item.quote}
-        </blockquote>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <SmallPortrait item={item} />
-          <Nameplate item={item} align="center" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * EDITORIAL SINGLE — 2-col with portrait on right, slightly smaller text.
- * Used for Armina and any overflow named reviews.
- */
-function EditorialSingle({ item }: { item: TestimonialItem }) {
-  return (
-    <div className="container-content pb-16 md:pb-24">
-      <div className="grid md:grid-cols-[1fr_260px] xl:grid-cols-[1fr_320px] gap-10 xl:gap-16 items-start">
-        <figure>
-          <Eyebrow className="text-pink/55 mb-6">Client review</Eyebrow>
-          <blockquote
-            className="font-[family-name:var(--font-display)] italic text-ink leading-[1.62]"
-            style={{ fontSize: "clamp(16px,1.6vw,20px)" }}
-          >
-            &ldquo;{item.quote}&rdquo;
-          </blockquote>
-          <div className="mt-7 pt-5 border-t border-sand/50">
-            <Nameplate item={item} />
-          </div>
-        </figure>
-
-        {item.photoPath && !item.nda && (
-          <div className="relative w-full aspect-[3/4] overflow-hidden hidden md:block">
-            <Image
-              src={item.photoPath}
-              alt={item.name}
-              fill
-              sizes="(max-width: 1280px) 260px, 320px"
-              className="object-cover object-top grayscale hover:grayscale-0 transition-[filter] duration-700"
-            />
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/**
- * NDA BLOCK — violet-soft wash, no portraits, larger italic text.
- * Signals a different register: anonymous voices, protected identity.
- */
-function NdaBlock({ items }: { items: TestimonialItem[] }) {
-  if (items.length === 0) return null;
-  return (
-    <div className="bg-violet-soft border-y border-violet-mid/50">
-      <div className="container-content py-20 md:py-28">
-        <Eyebrow className="text-ink-quiet/60 mb-14">
-          Private voices · identity withheld by request
-        </Eyebrow>
-        <div className={`grid gap-x-16 xl:gap-x-24 gap-y-16 ${items.length >= 2 ? "md:grid-cols-2" : "max-w-2xl"}`}>
-          {items.map((item, i) => (
-            <article key={item.key}>
-              <QuoteMark size="sm" />
-              <blockquote
-                className="font-[family-name:var(--font-display)] italic text-ink leading-[1.4] -mt-2"
-                style={{ fontSize: i === 0 ? "clamp(20px,2.2vw,28px)" : "clamp(18px,2vw,24px)" }}
-              >
-                {item.quote}
-              </blockquote>
-              <p className="mt-6 pt-4 border-t border-pink/20 text-[9px] uppercase tracking-[0.22em] text-ink-quiet/70">
-                {item.role} · NDA
-              </p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * MARQUEE — ink strip, scrolling NDA quotes, pauses on hover.
- */
-function Marquee() {
-  const doubled = [...MARQUEE_QUOTES, ...MARQUEE_QUOTES];
-  return (
-    <div className="bg-ink overflow-hidden py-7 border-t border-white/5" aria-hidden="true">
-      <div
-        className="flex will-change-transform"
-        style={{ animation: "editorial-ticker 60s linear infinite" }}
-        onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLDivElement).style.animationPlayState = "paused")
-        }
-        onMouseLeave={(e) =>
-          ((e.currentTarget as HTMLDivElement).style.animationPlayState = "running")
-        }
-      >
-        {doubled.map((q, i) => (
-          <span key={i} className="flex items-center flex-shrink-0">
-            <span className="font-[family-name:var(--font-display)] italic text-cream/50 text-[13px] leading-snug px-10 whitespace-nowrap">
-              &ldquo;{q}&rdquo;
-            </span>
-            <span className="text-pink/35 text-[7px] flex-shrink-0">◆</span>
-          </span>
-        ))}
-      </div>
-      <style>{`
-        @keyframes editorial-ticker {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-// ─── Main export ──────────────────────────────────────────────────────────────
+const pad = (n: number) => String(n + 1).padStart(2, "0");
 
 export function EditorialTestimonials({ testimonials }: Props) {
-  const named = testimonials.filter((t) => !t.nda);
-  const anonymous = testimonials.filter((t) => t.nda);
+  const [idx, setIdx] = useState(0);
+  const [dir, setDir] = useState(1);
+  const total = testimonials.length;
 
-  const hero = named[0];
-  const pair = named.slice(1, 3) as [TestimonialItem, TestimonialItem] | [];
-  const centered = named[3] ?? null;
-  const extras = named.slice(4); // Armina and beyond
+  const go = useCallback(
+    (next: number) => {
+      setDir(next > idx ? 1 : -1);
+      setIdx((next + total) % total);
+    },
+    [idx, total]
+  );
+
+  const item = testimonials[idx];
 
   return (
-    <section className="bg-cream border-t border-sand/30">
-      {/* ── Eyebrow ── */}
-      <div className="container-content pt-20 md:pt-28 pb-16 md:pb-20">
-        <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet font-[family-name:var(--font-body)]">
+    <section className="bg-blush py-20 md:py-28 overflow-hidden">
+      {/* ── Header row ── */}
+      <div className="container-content flex items-baseline justify-between mb-10 md:mb-14">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-ink-quiet font-[family-name:var(--font-body)]">
           Women who have done this work
+        </p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet/60 font-[family-name:var(--font-body)]">
+          {pad(idx)} / {pad(total - 1)}
         </p>
       </div>
 
-      {/* ── 1. Hero ── */}
-      {hero && <HeroReview item={hero} />}
-
-      {/* ── Divider ── */}
+      {/* ── Slide ── */}
       <div className="container-content">
-        <div className="border-t border-sand/40 mb-16 md:mb-24" />
+        <AnimatePresence custom={dir} mode="wait">
+          <motion.div
+            key={idx}
+            custom={dir}
+            variants={VARIANTS}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.38, ease: [0.32, 0, 0.2, 1] }}
+          >
+            <div className="grid md:grid-cols-[300px_1fr] xl:grid-cols-[380px_1fr] bg-cream">
+              {/* Portrait — B&W, fills left column */}
+              <div className="relative aspect-[3/4] md:aspect-auto md:min-h-[420px] overflow-hidden">
+                {item.photoPath && !item.nda ? (
+                  <Image
+                    src={item.photoPath}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 380px"
+                    className="object-cover object-top grayscale"
+                    priority={idx === 0}
+                  />
+                ) : (
+                  /* NDA placeholder — violet-soft with large italic mark */
+                  <div className="w-full h-full bg-violet-soft flex items-end justify-start p-8 min-h-[280px]">
+                    <span
+                      className="font-[family-name:var(--font-display)] italic text-plum/20 leading-none select-none"
+                      style={{ fontSize: "clamp(80px, 14vw, 140px)" }}
+                    >
+                      &ldquo;
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Quote panel */}
+              <div className="p-8 md:p-12 xl:p-16 flex flex-col justify-center">
+                {/* Decorative opening mark */}
+                <span
+                  aria-hidden
+                  className="block font-[family-name:var(--font-display)] italic text-pink/30 leading-none select-none -mb-4"
+                  style={{ fontSize: "clamp(64px, 8vw, 108px)" }}
+                >
+                  &ldquo;
+                </span>
+
+                <blockquote
+                  className="font-[family-name:var(--font-display)] italic text-ink leading-[1.45]"
+                  style={{ fontSize: "clamp(17px, 1.9vw, 26px)" }}
+                >
+                  {item.quote}
+                </blockquote>
+
+                <div className="mt-8 pt-6 border-t border-pink/25">
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-ink font-medium">
+                    {item.nda ? item.role : item.name}
+                  </p>
+                  {!item.nda && item.role && (
+                    <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-ink-quiet">
+                      {item.role}
+                    </p>
+                  )}
+                  {item.nda && (
+                    <p className="mt-1 text-[9px] uppercase tracking-[0.18em] text-ink-quiet/55">
+                      Identity withheld · NDA
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* ── 2. Pair ── */}
-      {pair.length === 2 && <PairedReviews items={pair as [TestimonialItem, TestimonialItem]} />}
-
-      {/* ── 3. Centered pull-quote ── */}
-      {centered && <CenteredPullQuote item={centered} />}
-
-      {/* ── 4. Editorial singles (Armina etc.) ── */}
-      {extras.length > 0 && (
-        <>
-          <div className="container-content">
-            <div className="border-t border-sand/40 mb-16 md:mb-24" />
-          </div>
-          {extras.map((item) => (
-            <EditorialSingle key={item.key} item={item} />
+      {/* ── Navigation ── */}
+      <div className="container-content flex items-center justify-between mt-6 md:mt-8">
+        {/* Progress bars */}
+        <div className="flex gap-1.5 items-center">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              aria-label={`Review ${i + 1}`}
+              className={`h-[2px] rounded-none transition-all duration-400 ${
+                i === idx ? "w-8 bg-ink" : "w-3 bg-ink/20 hover:bg-ink/40"
+              }`}
+            />
           ))}
-        </>
-      )}
+        </div>
 
-      {/* ── 5. NDA block ── */}
-      <NdaBlock items={anonymous} />
-
-      {/* ── 6. Marquee ── */}
-      <Marquee />
+        {/* Arrow buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => go(idx - 1)}
+            aria-label="Previous review"
+            className="w-10 h-10 border border-ink/20 flex items-center justify-center text-ink hover:bg-ink hover:text-cream hover:border-ink transition-colors duration-200"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            onClick={() => go(idx + 1)}
+            aria-label="Next review"
+            className="w-10 h-10 border border-ink/20 flex items-center justify-center text-ink hover:bg-ink hover:text-cream hover:border-ink transition-colors duration-200"
+          >
+            <ChevronRight />
+          </button>
+        </div>
+      </div>
     </section>
   );
 }
