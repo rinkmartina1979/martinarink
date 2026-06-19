@@ -11,7 +11,7 @@ import { PressMarquee } from "@/components/brand/PressMarquee";
 import { EditorialTestimonials } from "@/components/sections/EditorialTestimonials";
 import { buildMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
-import { HOMEPAGE_FALLBACK, type Review } from "@/lib/testimonials";
+import { REVIEWS, type Review } from "@/lib/testimonials";
 import { getHomePage, getFeaturedTestimonials, type Testimonial } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,11 +33,11 @@ export default async function HomePage() {
     getFeaturedTestimonials(),
   ]);
 
-  // Use Sanity testimonials if available and non-empty, else use hardcoded real testimonials
+  // Use Sanity testimonials if available and non-empty, else all real reviews except page-specific ones
   const testimonials =
     testimonialData && testimonialData.length > 0
-      ? testimonialData.slice(0, 4)
-      : HOMEPAGE_FALLBACK;
+      ? testimonialData
+      : REVIEWS.filter((r) => r.id !== "anja-about");
 
   const heroSubheadline =
     pageData?.heroSubheadline ??
