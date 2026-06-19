@@ -8,6 +8,7 @@
 
 import { createHmac } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions";
 import { z } from "zod";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
 import {
@@ -97,34 +98,38 @@ export async function POST(req: NextRequest) {
       acceptUrl,
     });
 
-    fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
-      body: JSON.stringify({
-        from: `${fromName} <${fromEmail}>`,
-        to: [notifyEmail],
-        reply_to: email,
-        subject: notification.subject,
-        html: notification.html,
-      }),
-    }).catch((err) => console.error("[Apply] Resend notification failed:", err));
+    waitUntil(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
+        body: JSON.stringify({
+          from: `${fromName} <${fromEmail}>`,
+          to: [notifyEmail],
+          reply_to: email,
+          subject: notification.subject,
+          html: notification.html,
+        }),
+      }).catch((err) => console.error("[Apply] Resend notification failed:", err))
+    );
 
     // 2. Confirmation to the applicant — bridges the 48-hour wait
     const confirmation = applicationConfirmationEmail({ firstName, programme, programmeLabel });
 
-    fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
-      body: JSON.stringify({
-        from: `${fromName} <${fromEmail}>`,
-        to: [email],
-        reply_to: notifyEmail,
-        // Archive copy → Martina receives a copy of the applicant confirmation.
-        ...(notifyEmail && { bcc: [notifyEmail] }),
-        subject: confirmation.subject,
-        html: confirmation.html,
-      }),
-    }).catch((err) => console.error("[Apply] Resend confirmation failed:", err));
+    waitUntil(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
+        body: JSON.stringify({
+          from: `${fromName} <${fromEmail}>`,
+          to: [email],
+          reply_to: notifyEmail,
+          // Archive copy → Martina receives a copy of the applicant confirmation.
+          ...(notifyEmail && { bcc: [notifyEmail] }),
+          subject: confirmation.subject,
+          html: confirmation.html,
+        }),
+      }).catch((err) => console.error("[Apply] Resend confirmation failed:", err))
+    );
   } else {
     console.warn("[Apply] RESEND_API_KEY or RESEND_NOTIFY_EMAIL not configured — emails skipped.");
   }
@@ -132,17 +137,19 @@ export async function POST(req: NextRequest) {
   // ── Brevo: add applicant to Assessment Leads list ────────
   const listIdRaw = process.env.BREVO_LIST_ID_ASSESSMENT;
   if (listIdRaw) {
-    addBrevoContact({
-      email,
-      firstName,
-      listIds: [parseInt(listIdRaw, 10)],
-      attributes: {
-        SOURCE:               "application",
-        APPLICATION_STATUS:   "submitted",
-        APPLICATION_PROGRAMME: programme,
-        BUDGET_READINESS:     budgetTag,
-      },
-    }).catch((err) => console.error("[Apply] Brevo contact failed:", err));
+    waitUntil(
+      addBrevoContact({
+        email,
+        firstName,
+        listIds: [parseInt(listIdRaw, 10)],
+        attributes: {
+          SOURCE:               "application",
+          APPLICATION_STATUS:   "submitted",
+          APPLICATION_PROGRAMME: programme,
+          BUDGET_READINESS:     budgetTag,
+        },
+      }).catch((err) => console.error("[Apply] Brevo contact failed:", err))
+    );
   }
 
   // ── Brevo: fire application_submitted event ───────────────
@@ -150,21 +157,23 @@ export async function POST(req: NextRequest) {
   // an immediate, personal-feeling confirmation that bridges the 48hr wait.
   // Without this, applicants sit in silence and second-guess. Largest
   // single conversion leak in the funnel prior to this hook.
-  trackBrevoEvent({
-    email,
-    eventName: "application_submitted",
-    properties: {
-      programme,
-      programme_label: programmeLabel,
-      budget_readiness: budgetTag,
-    },
-    contactProperties: {
-      FIRSTNAME: firstName,
-      APPLICATION_PROGRAMME: programme,
-      APPLICATION_STATUS: "submitted",
-      BUDGET_READINESS: budgetTag,
-    },
-  }).catch((err) => console.error("[Apply] Brevo event failed:", err));
+  waitUntil(
+    trackBrevoEvent({
+      email,
+      eventName: "application_submitted",
+      properties: {
+        programme,
+        programme_label: programmeLabel,
+        budget_readiness: budgetTag,
+      },
+      contactProperties: {
+        FIRSTNAME: firstName,
+        APPLICATION_PROGRAMME: programme,
+        APPLICATION_STATUS: "submitted",
+        BUDGET_READINESS: budgetTag,
+      },
+    }).catch((err) => console.error("[Apply] Brevo event failed:", err))
+  );
 
   return NextResponse.json({ success: true });
 }

@@ -23,6 +23,7 @@
     "@types/vimeo__player": "^2.18.3",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.3.0",
+    "@vercel/functions": "^3.7.1",
     "@vercel/speed-insights": "^2.0.0",
     "@vimeo/player": "^2.30.4",
     "class-variance-authority": "^0.7.1",
