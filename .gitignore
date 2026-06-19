@@ -49,3 +49,5 @@ scripts/brevo-preview/
 
 # Local backups of pre-optimisation source images (Week 3)
 _originals/
+
+.env*.local
