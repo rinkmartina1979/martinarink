@@ -8,6 +8,7 @@ import { AuthorityStrip } from "@/components/brand/AuthorityStrip";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { HowItWorks } from "@/components/funnel/HowItWorks";
 import { PressMarquee } from "@/components/brand/PressMarquee";
+import { EditorialTestimonials } from "@/components/sections/EditorialTestimonials";
 import { buildMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/utils";
 import { HOMEPAGE_FALLBACK, type Review } from "@/lib/testimonials";
@@ -25,57 +26,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({ path: "/" });
 }
 
-function TestimonialBlock({
-  testimonial,
-  bg,
-  accentColor,
-}: {
-  testimonial: { name: string; role: string | null; quote: string; nda: boolean; photoPath?: string };
-  bg: string;
-  accentColor: string;
-}) {
-  const displayName = testimonial.nda ? testimonial.role : testimonial.name;
-  const role = testimonial.nda ? null : testimonial.role;
-  return (
-    <div className={`${bg} p-10 flex flex-col`}>
-      <span
-        aria-hidden
-        className={`block font-[family-name:var(--font-display)] italic ${accentColor} text-[60px] leading-none -mt-2 mb-2`}
-      >
-        &ldquo;
-      </span>
-      <blockquote className="font-[family-name:var(--font-display)] italic text-[20px] leading-[1.5] text-ink flex-1">
-        {testimonial.quote}
-      </blockquote>
-      {/* Portrait + attribution */}
-      <div className="mt-8 flex items-center gap-4">
-        {testimonial.photoPath && (
-          <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border border-sand/60">
-            <Image
-              src={testimonial.photoPath}
-              alt={displayName ?? "Client"}
-              fill
-              sizes="64px"
-              className="object-cover object-top"
-            />
-          </div>
-        )}
-        <div>
-          {displayName && (
-            <p className="text-[12px] uppercase tracking-[0.18em] text-ink font-medium">
-              {displayName}
-            </p>
-          )}
-          {role && (
-            <p className="text-[11px] uppercase tracking-[0.14em] text-ink-quiet mt-0.5">
-              {role}
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default async function HomePage() {
   const [pageData, testimonialData] = await Promise.all([
@@ -422,34 +372,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── 7 · TESTIMONIALS — three, curated ────────────────── */}
-      <section className="bg-bone border-t border-sand/30 section-pad">
-        <div className="container-content">
-          <Eyebrow className="mb-14">Women who have done this work</Eyebrow>
-          <div className="grid md:grid-cols-2 gap-8">
-            {testimonials.map((t, i) => {
-              const bgMap = ["bg-rose", "bg-rose", "bg-rose"];
-              const accentMap = ["text-plum/30", "text-plum/30", "text-plum/30"];
-              const isSanity = "_id" in t;
-              const item = {
-                name: t.name,
-                role: t.role ?? null,
-                quote: t.quote,
-                nda: t.nda,
-                photoPath: isSanity ? undefined : (t as Review).photoPath,
-              };
-              return (
-                <TestimonialBlock
-                  key={isSanity ? (t as Testimonial)._id : t.name + String(i)}
-                  testimonial={item}
-                  bg={bgMap[i % bgMap.length]}
-                  accentColor={accentMap[i % accentMap.length]}
-                />
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* ─── 7 · TESTIMONIALS — editorial 2026 ───────────────── */}
+      <EditorialTestimonials
+        testimonials={testimonials.map((t, i) => {
+          const isSanity = "_id" in t;
+          return {
+            key: isSanity ? (t as Testimonial)._id : (t as Review).id ?? t.name + i,
+            name: t.name,
+            role: t.role ?? null,
+            quote: t.quote,
+            nda: t.nda,
+            photoPath: isSanity ? undefined : (t as Review).photoPath,
+          };
+        })}
+      />
 
       {/* ─── 8 · THE PATH — process, after desire ─────────────── */}
       <HowItWorks />
