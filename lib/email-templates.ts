@@ -119,8 +119,8 @@ function footer() {
       </p>
       <p style="margin:16px 0 0;font-size:11px;color:#C8B8A2;font-family:Arial,sans-serif;">
         Martina Rink UG (haftungsbeschr&auml;nkt), Karlsruhe, Germany.
-        You are receiving this because you subscribed or submitted an application.
-        <a href="{{unsubscribeLink}}" style="color:#C8B8A2;">Unsubscribe</a>
+        You are receiving this because you applied or subscribed.
+        To unsubscribe, reply with &ldquo;unsubscribe&rdquo; in the subject line.
       </p>
     </div>
   `.trim();

@@ -72,13 +72,8 @@ export async function POST(req: NextRequest) {
   const { contractId, sig, signedName } = parsed.data;
 
   // ── Fetch draft from Vercel Blob ────────────────────────────────
-  const blobBase = process.env.BLOB_READ_WRITE_TOKEN
-    ? undefined
-    : undefined; // token is picked up from env automatically by @vercel/blob
-
   let draft: ContractDraft;
   try {
-    const blobUrl = `${process.env.BLOB_STORE_URL ?? ""}/contracts/drafts/${contractId}.json`;
     // Use head() to check existence, then fetch the content
     const meta = await head(`contracts/drafts/${contractId}.json`).catch(() => null);
     if (!meta) {

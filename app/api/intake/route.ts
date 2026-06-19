@@ -230,7 +230,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from:     fromEmail,
+        from:     `Martina Rink <${fromEmail}>`,
         to:       [notifyEmail],
         reply_to: d.email,
         subject:  `[Intake] ${fullName} — ${programmeLabels[d.programme]}`,
