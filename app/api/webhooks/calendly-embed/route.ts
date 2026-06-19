@@ -192,8 +192,9 @@ async function notifyMartina(opts: {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: fromEmail,
+        from: `Martina Rink <${fromEmail}>`,
         to: [notifyEmail],
+        reply_to: opts.inviteeEmail,
         subject: `[Booking] ${opts.eventName} — ${opts.inviteeName}`,
         html,
       }),

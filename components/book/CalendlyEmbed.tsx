@@ -114,7 +114,7 @@ export function CalendlyEmbed({ url, onBooked }: CalendlyEmbedProps) {
   embedUrl.searchParams.set("hide_event_type_details", "0");
   embedUrl.searchParams.set("hide_gdpr_banner", "1");
   // Brand colours — primary_color is used for CTAs inside the widget
-  embedUrl.searchParams.set("primary_color", "C4546B"); // rose
+  embedUrl.searchParams.set("primary_color", "5C2D8E"); // plum — primary CTA fill
   embedUrl.searchParams.set("text_color", "1E1B17");
   embedUrl.searchParams.set("background_color", "F7F3EE"); // cream
 
