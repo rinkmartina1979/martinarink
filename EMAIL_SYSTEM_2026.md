@@ -72,16 +72,16 @@ These MUST be set in Vercel → `martinarink.com` project → Settings → Envir
 |----------|--------|-----------|
 | `BREVO_API_KEY` | ✅ set | No list/drip |
 | `RESEND_API_KEY` | ✅ set (verify it's the NEW key in Vercel) | No instant emails |
-| `RESEND_FROM_EMAIL` = `hello@martinarink.com` | ✅ (sending identity, unchanged) | — |
-| `RESEND_NOTIFY_EMAIL` = `contact@martinarink.com` | ⚠️ **change in Vercel** (was `hello@`) | Notifications + confirmation copies go to wrong inbox |
-| `RESEND_REPLY_TO` = `contact@martinarink.com` | ⚠️ **change in Vercel** (was `hello@`) | User replies go to wrong inbox |
+| `RESEND_FROM_EMAIL` = `contact@martinarink.com` | ✅ set in Vercel (2026-06-20) | — |
+| `RESEND_NOTIFY_EMAIL` = `contact@martinarink.com` | ✅ set in Vercel (2026-06-20) | Notifications + confirmation copies go to wrong inbox |
+| `RESEND_REPLY_TO` = `contact@martinarink.com` | ✅ set in Vercel (2026-06-20) | User replies go to wrong inbox |
 | `NEXT_PUBLIC_SITE_URL` = `https://martinarink.com` | ✅ | Wrong links in emails |
 | `ASSESSMENT_RESULT_SECRET` | ✅ set in production (placeholder only in local `.env.local`) | Assessment result page → 503 |
-| `BLOB_READ_WRITE_TOKEN` | ⚠️ verify via `/api/health` | Contracts can't be stored/signed |
-| `CALENDLY_WEBHOOK_SIGNING_KEY` | ⚠️ verify via `/api/health` | Booking webhook → 503 |
+| `BLOB_READ_WRITE_TOKEN` | ✅ set via Vercel Blob connection (2026-06-20) | Contracts can't be stored/signed |
+| `CALENDLY_PERSONAL_ACCESS_TOKEN` | ✅ set + validated live (2026-06-20) | Embed booking automation disabled |
 | `ACCEPT_SECRET` / `CONTRACT_SECRET` | ✅ set | Accept/contract links invalid |
 
-> Production env was confirmed via `/api/health` on 2026-06-19: the 10 core vars are present and `ASSESSMENT_RESULT_SECRET` is a real value (no placeholder warning). The two feature keys above are now monitored by the health endpoint.
+> **`contact@martinarink.com` is the single source of truth** — sending, reply-to, and notifications all route through it. **Never use `hello@martinarink.com`**: it has no mailbox, hard-bounced, and is now on Resend's suppression list, so any email sent to it is silently *suppressed* — this caused the 2026-06-20 "Martina didn't receive the application" incident (production `RESEND_NOTIFY_EMAIL` was still `hello@`). Note: `CALENDLY_WEBHOOK_SIGNING_KEY` is NOT used — free Calendly has no webhooks, so booking runs via the embed + PAT. Verify all integrations live at `/api/health`.
 
 **`ASSESSMENT_RESULT_SECRET`:** generate a fresh 32-byte value — `openssl rand -hex 32` — and paste it into Vercel. Never commit it to git. (A value was generated and shared privately during setup.)
 **`BLOB_READ_WRITE_TOKEN`:** Vercel Dashboard → Storage → Blob → Create Store ("contracts") → Connect to project. Token auto-appears.
