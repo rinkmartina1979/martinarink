@@ -94,7 +94,7 @@ export function EditorialTestimonials({ testimonials }: Props) {
                   />
                 ) : (
                   /* NDA placeholder — violet-soft with large italic mark */
-                  <div className="w-full h-full bg-violet-soft flex items-end justify-start p-8 min-h-[280px]">
+                  <div className="w-full h-full bg-blush flex items-end justify-start p-8 min-h-[280px]">
                     <span
                       className="font-[family-name:var(--font-display)] italic text-plum/20 leading-none select-none"
                       style={{ fontSize: "clamp(80px, 14vw, 140px)" }}
