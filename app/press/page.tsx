@@ -138,11 +138,11 @@ const SPEAKING_TOPICS = [
 
 const BIOS = [
   {
-    length: "25 words",
+    length: "Short bio — 28 words",
     text: "Martina Rink is a private mentor, Spiegel Bestseller author, and former personal assistant to Isabella Blow. She works with female entrepreneurs, founders, and creatives on identity and sobriety.",
   },
   {
-    length: "75 words",
+    length: "Full bio — 73 words",
     text: "Martina Rink is a private mentor and Spiegel Bestseller author whose work sits at the intersection of identity, leadership, and the examined life. A former personal assistant to the late Isabella Blow — one of the defining figures of twentieth-century fashion — she brings a rare cultural eye to the question of who female entrepreneurs, founders, and creatives become after they have built the life. She works by application, across Europe and internationally.",
   },
 ];
@@ -268,6 +268,32 @@ export default async function PressPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
+          1b — IN-PAGE JUMP NAV
+      ══════════════════════════════════════════════════════ */}
+      <nav aria-label="Press page sections" className="bg-cream border-b border-sand/30 py-4 sticky top-[64px] z-30 hidden md:block">
+        <div className="container-content">
+          <ul className="flex items-center gap-8 overflow-x-auto scrollbar-none">
+            {[
+              { label: "Media coverage", href: "#coverage" },
+              { label: "Books",          href: "#books" },
+              { label: "Speaking",       href: "#speaking" },
+              { label: "On screen",      href: "#media" },
+              { label: "Press bios",     href: "#bios" },
+            ].map(({ label, href }) => (
+              <li key={href} className="shrink-0">
+                <a
+                  href={href}
+                  className="text-[10px] uppercase tracking-[0.2em] text-ink-quiet hover:text-ink transition-colors duration-150 font-[family-name:var(--font-body)] whitespace-nowrap"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
+      {/* ══════════════════════════════════════════════════════
           2 — AUTHORITY STRIP
       ══════════════════════════════════════════════════════ */}
       <section className="bg-cream border-y border-sand/40 py-8 md:py-10 overflow-hidden">
@@ -275,14 +301,14 @@ export default async function PressPage() {
           <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet text-center mb-6 font-[family-name:var(--font-body)]">
             {hasSanityLogos ? "Partners & affiliates" : "As featured in"}
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-3 md:gap-x-12">
+          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 md:gap-x-14">
             {(hasSanityLogos
               ? (partnerLogos as SanityPartnerLogo[]).map((l) => l.name)
               : AUTHORITY_OUTLETS
             ).map((name) => (
               <span
                 key={name}
-                className="font-[family-name:var(--font-display)] text-[14px] md:text-[15px] text-ink/40 tracking-[0.04em] whitespace-nowrap"
+                className="font-[family-name:var(--font-display)] text-[16px] md:text-[18px] text-ink/70 tracking-[0.02em] whitespace-nowrap"
               >
                 {name}
               </span>
@@ -294,7 +320,7 @@ export default async function PressPage() {
       {/* ══════════════════════════════════════════════════════
           3 — FEATURED MEDIA MOSAIC
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-bone py-20 md:py-28">
+      <section id="coverage" className="bg-bone py-20 md:py-28 scroll-mt-20">
         <div className="container-content">
           <div className="max-w-4xl mb-14 md:mb-18">
             <Eyebrow withLine>Media coverage</Eyebrow>
@@ -518,7 +544,7 @@ export default async function PressPage() {
       {/* ══════════════════════════════════════════════════════
           4 — PUBLISHED WORK
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-cream py-20 md:py-28">
+      <section id="books" className="bg-cream py-20 md:py-28 scroll-mt-20">
         <div className="container-content">
           <div className="max-w-4xl mb-14">
             <Eyebrow withLine>Books</Eyebrow>
@@ -797,7 +823,7 @@ export default async function PressPage() {
       {/* ══════════════════════════════════════════════════════
           6.5 — ON SCREEN — interview & media appearances
       ══════════════════════════════════════════════════════ */}
-      <section id="media" className="bg-[#231727] py-20 md:py-28 scroll-mt-20">
+      <section id="media" className="bg-aubergine py-20 md:py-28 scroll-mt-20">
         <div className="container-content">
 
           {/* Section header */}
@@ -862,7 +888,7 @@ export default async function PressPage() {
       {/* ══════════════════════════════════════════════════════
           8 — PRESS MATERIALS / BIOS
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-cream py-20 md:py-28">
+      <section id="bios" className="bg-cream py-20 md:py-28 scroll-mt-20">
         <div className="container-content">
           <div className="max-w-4xl mb-14">
             <Eyebrow withLine>Press materials</Eyebrow>
@@ -876,16 +902,19 @@ export default async function PressPage() {
 
           <div className="space-y-4 max-w-4xl">
             {BIOS.map((bio) => (
-              <div key={bio.length} className="bg-[#FFFCF8] border border-sand/40 p-8 md:p-10">
-                <div className="flex items-start justify-between gap-4 mb-5">
-                  <p className="text-[10px] uppercase tracking-[0.26em] text-ink-quiet font-[family-name:var(--font-body)]">
-                    {bio.length} bio
+              <div key={bio.length} className="bg-bone border border-sand/60 p-8 md:p-10">
+                <p className="text-[10px] uppercase tracking-[0.26em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
+                  {bio.length}
+                </p>
+                <p className="text-[15px] md:text-[17px] leading-[1.85] text-ink-soft font-[family-name:var(--font-body)] whitespace-pre-line">
+                  {bio.text}
+                </p>
+                <div className="mt-6 flex items-center justify-between border-t border-sand/40 pt-5">
+                  <p className="text-[11px] text-ink-quiet/60 font-[family-name:var(--font-body)]">
+                    For editorial use — do not edit without prior approval
                   </p>
                   <CopyButton text={bio.text} label="Copy bio" />
                 </div>
-                <p className="text-[15px] md:text-[16px] leading-[1.85] text-ink-soft font-[family-name:var(--font-body)] whitespace-pre-line">
-                  {bio.text}
-                </p>
               </div>
             ))}
           </div>
