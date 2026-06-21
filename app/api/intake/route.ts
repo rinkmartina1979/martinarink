@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { waitUntil } from "@vercel/functions";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
 
 const IntakeSchema = z.object({
@@ -223,20 +224,22 @@ export async function POST(req: NextRequest) {
   const fromEmail   = process.env.RESEND_FROM_EMAIL   || "contact@martinarink.com";
 
   if (resendKey && notifyEmail) {
-    fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendKey}`,
-      },
-      body: JSON.stringify({
-        from:     `Martina Rink <${fromEmail}>`,
-        to:       [notifyEmail],
-        reply_to: d.email,
-        subject:  `[Intake] ${fullName} — ${programmeLabels[d.programme]}`,
-        html:     buildEmail(d),
-      }),
-    }).catch((err) => console.error("[Intake] Resend failed:", err));
+    waitUntil(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${resendKey}`,
+        },
+        body: JSON.stringify({
+          from:     `Martina Rink <${fromEmail}>`,
+          to:       [notifyEmail],
+          reply_to: d.email,
+          subject:  `[Intake] ${fullName} — ${programmeLabels[d.programme]}`,
+          html:     buildEmail(d),
+        }),
+      }).catch((err) => console.error("[Intake] Resend failed:", err))
+    );
   } else {
     console.warn("[Intake] RESEND_API_KEY or RESEND_NOTIFY_EMAIL not set — email skipped.");
   }

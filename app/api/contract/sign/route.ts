@@ -11,6 +11,7 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { put, del, head } from "@vercel/blob";
+import { waitUntil } from "@vercel/functions";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
 import { contractSignedEmail, intakeInviteEmail } from "@/lib/email-templates";
 
@@ -161,38 +162,40 @@ export async function POST(req: NextRequest) {
   if (resendKey) {
     // 1. Client copy
     const clientEmail = contractSignedEmail({ ...emailData, isInternal: false });
-    fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
-      body: JSON.stringify({
-        from: `Martina Rink <${fromEmail}>`,
-        to: [draft.email],
-        reply_to: notifyEmail,
-        // Archive copy → Martina receives a copy of the client's signed contract.
-        ...(notifyEmail && { bcc: [notifyEmail] }),
-        subject: clientEmail.subject,
-        html: clientEmail.html,
-      }),
-    }).catch((err) => console.error("[Contract/sign] Client email failed:", err));
-
-    // 2. Internal copy to Martina
-    if (notifyEmail) {
-      const internalEmail = contractSignedEmail({ ...emailData, isInternal: true });
+    waitUntil(
       fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
         body: JSON.stringify({
           from: `Martina Rink <${fromEmail}>`,
-          to: [notifyEmail],
-          reply_to: draft.email,
-          subject: internalEmail.subject,
-          html: internalEmail.html,
+          to: [draft.email],
+          reply_to: notifyEmail,
+          ...(notifyEmail && { bcc: [notifyEmail] }),
+          subject: clientEmail.subject,
+          html: clientEmail.html,
         }),
-      }).catch((err) => console.error("[Contract/sign] Internal email failed:", err));
+      }).catch((err) => console.error("[Contract/sign] Client email failed:", err))
+    );
+
+    // 2. Internal copy to Martina
+    if (notifyEmail) {
+      const internalEmail = contractSignedEmail({ ...emailData, isInternal: true });
+      waitUntil(
+        fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
+          body: JSON.stringify({
+            from: `Martina Rink <${fromEmail}>`,
+            to: [notifyEmail],
+            reply_to: draft.email,
+            subject: internalEmail.subject,
+            html: internalEmail.html,
+          }),
+        }).catch((err) => console.error("[Contract/sign] Internal email failed:", err))
+      );
     }
 
     // 3. AUTO: Intake form invite — fires immediately after signing.
-    //    Eliminates Martina's manual "send intake link" step entirely.
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
     const intakeUrl = `${siteUrl}/intake?programme=${encodeURIComponent(draft.programme)}`;
     const intake = intakeInviteEmail({
@@ -200,48 +203,53 @@ export async function POST(req: NextRequest) {
       programmeLabel: draft.programmeLabel,
       intakeUrl,
     });
-    fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
-      body: JSON.stringify({
-        from: `Martina Rink <${fromEmail}>`,
-        to: [draft.email],
-        reply_to: notifyEmail ?? fromEmail,
-        // Archive copy → Martina receives a copy of the intake invite.
-        ...(notifyEmail && { bcc: [notifyEmail] }),
-        subject: intake.subject,
-        html: intake.html,
-      }),
-    }).catch((err) => console.error("[Contract/sign] Intake invite failed:", err));
+    waitUntil(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` },
+        body: JSON.stringify({
+          from: `Martina Rink <${fromEmail}>`,
+          to: [draft.email],
+          reply_to: notifyEmail ?? fromEmail,
+          ...(notifyEmail && { bcc: [notifyEmail] }),
+          subject: intake.subject,
+          html: intake.html,
+        }),
+      }).catch((err) => console.error("[Contract/sign] Intake invite failed:", err))
+    );
   }
 
   // ── Brevo: update contact + fire contract_signed event ─────────────────────────
-  addBrevoContact({
-    email: draft.email,
-    firstName: draft.firstName,
-    attributes: {
-      CONTRACT_STATUS: "signed",
-      CONTRACT_ID: contractId,
-      CONTRACT_SIGNED_AT: signedAt,
-      INTAKE_STATUS: "invited",
-    },
-  }).catch((err) => console.error("[Contract/sign] Brevo contact failed:", err));
+  waitUntil(
+    addBrevoContact({
+      email: draft.email,
+      firstName: draft.firstName,
+      attributes: {
+        CONTRACT_STATUS: "signed",
+        CONTRACT_ID: contractId,
+        CONTRACT_SIGNED_AT: signedAt,
+        INTAKE_STATUS: "invited",
+      },
+    }).catch((err) => console.error("[Contract/sign] Brevo contact failed:", err))
+  );
 
-  trackBrevoEvent({
-    email: draft.email,
-    eventName: "contract_signed",
-    properties: {
-      programme: draft.programme,
-      contract_id: contractId,
-      signed_name: signedName,
-    },
-    contactProperties: {
-      FIRSTNAME: draft.firstName,
-      CONTRACT_STATUS: "signed",
-      CONTRACT_ID: contractId,
-      CONTRACT_SIGNED_AT: signedAt,
-    },
-  }).catch((err) => console.error("[Contract/sign] Brevo event failed:", err));
+  waitUntil(
+    trackBrevoEvent({
+      email: draft.email,
+      eventName: "contract_signed",
+      properties: {
+        programme: draft.programme,
+        contract_id: contractId,
+        signed_name: signedName,
+      },
+      contactProperties: {
+        FIRSTNAME: draft.firstName,
+        CONTRACT_STATUS: "signed",
+        CONTRACT_ID: contractId,
+        CONTRACT_SIGNED_AT: signedAt,
+      },
+    }).catch((err) => console.error("[Contract/sign] Brevo event failed:", err))
+  );
 
   return NextResponse.json({ success: true, contractId });
 }

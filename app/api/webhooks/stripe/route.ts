@@ -17,6 +17,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { waitUntil } from '@vercel/functions'
 import { trackBrevoEvent, addBrevoContact } from '@/lib/brevo'
 
 export const runtime = 'nodejs'
@@ -146,36 +147,40 @@ export async function POST(req: NextRequest) {
 
     const programme = (session.metadata?.programme as string) || ''
 
-    // Brevo event + contact update — fire-and-forget, never block the 200 to Stripe
-    trackBrevoEvent({
-      email,
-      eventName: 'consultation_deposit_paid',
-      properties: { programme, amount: session.amount_total ? session.amount_total / 100 : 0 },
-      contactProperties: {
-        DEPOSIT_PAID: true,
-        DEPOSIT_PAID_AT: new Date().toISOString(),
-      },
-    }).catch((err) => console.error('[stripe webhook] Brevo event failed:', err))
+    const depositPaidAt = new Date().toISOString()
 
-    addBrevoContact({
-      email,
-      attributes: {
-        DEPOSIT_PAID: true,
-        DEPOSIT_PAID_AT: new Date().toISOString(),
-      },
-      updateEnabled: true,
-    }).catch((err) =>
-      console.error('[stripe webhook] Brevo contact update failed:', err),
+    waitUntil(
+      trackBrevoEvent({
+        email,
+        eventName: 'consultation_deposit_paid',
+        properties: { programme, amount: session.amount_total ? session.amount_total / 100 : 0 },
+        contactProperties: {
+          DEPOSIT_PAID: true,
+          DEPOSIT_PAID_AT: depositPaidAt,
+        },
+      }).catch((err) => console.error('[stripe webhook] Brevo event failed:', err))
     )
 
-    // Confirmation email — derive first name from customer name if available
+    waitUntil(
+      addBrevoContact({
+        email,
+        attributes: {
+          DEPOSIT_PAID: true,
+          DEPOSIT_PAID_AT: depositPaidAt,
+        },
+        updateEnabled: true,
+      }).catch((err) => console.error('[stripe webhook] Brevo contact update failed:', err))
+    )
+
     const firstName =
       typeof session.customer_details?.name === 'string'
         ? session.customer_details.name.split(' ')[0]
         : ''
 
-    sendDepositConfirmation(email, firstName).catch((err) =>
-      console.error('[stripe webhook] Confirmation email failed:', err),
+    waitUntil(
+      sendDepositConfirmation(email, firstName).catch((err) =>
+        console.error('[stripe webhook] Confirmation email failed:', err),
+      )
     )
   }
 
