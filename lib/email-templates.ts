@@ -718,6 +718,54 @@ export function intakeInviteEmail(data: IntakeInviteEmailData): {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   8. PORTAL INVITATION — auto-sent immediately after intake is submitted
+      Client receives their private portal link with no further action from Martina.
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface PortalInvitationEmailData {
+  firstName: string;
+  programmeLabel: string;
+  portalUrl: string;
+}
+
+export function portalInvitationEmail(data: PortalInvitationEmailData): {
+  subject: string;
+  html: string;
+} {
+  const { firstName, programmeLabel, portalUrl } = data;
+
+  const html = wrap(`
+    <div style="${HEADER_DARK}">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow("Your private portal")}
+      ${h1(`Everything we build<br>together.`)}
+      <p style="margin:0;font-size:15px;color:#EDE8E0;opacity:0.7;font-family:Arial,sans-serif;">
+        ${programmeLabel}
+      </p>
+    </div>
+
+    <div style="${BODY_SECTION}">
+      ${body(`Dear ${firstName},`)}
+      ${body(`Your intake form is received. I have everything I need to begin.`)}
+      ${body(`The link below opens your private portal — it is where you will find session recordings, milestones, and everything that belongs to our work together. It is yours for the duration of the programme and beyond.`)}
+      ${body(`The link is private. Please do not share it.`)}
+
+      ${ctaButton("OPEN YOUR PORTAL", portalUrl)}
+
+      <hr style="${HAIRLINE}">
+
+      ${small(`Bookmark the link or save this email. You can return at any time — there is no login, no password. The link is your key.`)}
+      ${signature()}
+    </div>
+  `);
+
+  return {
+    subject: `Your private portal — ${programmeLabel}`,
+    html,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SERVICE DESCRIPTION TEMPLATES
    Used in the inline contract form (accept-sent page + admin page).
    Martina selects a programme — this pre-fills as a professional

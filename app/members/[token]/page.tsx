@@ -14,6 +14,12 @@ interface MembersPageProps {
   params: Promise<{ token: string }>;
 }
 
+const PROGRAMME_LABELS: Record<string, string> = {
+  "sober-muse": "The Sober Muse Method",
+  empowerment: "Female Empowerment & Leadership",
+  consultation: "Private Consultation",
+};
+
 interface VerifyResponse {
   valid: boolean;
   reason?: string;
@@ -21,6 +27,8 @@ interface VerifyResponse {
   firstName?: string;
   programme?: string;
   archetype?: string | null;
+  enrolledAt?: string | null;
+  expectedCompletionAt?: string | null;
 }
 
 function formatDate(iso: string): string {
@@ -159,15 +167,20 @@ function Dashboard({
   drops,
   milestones,
   token,
+  enrolledAt,
+  expectedCompletionAt,
 }: {
   firstName: string;
   programme: string | null;
   drops: MemberAudioDrop[] | null;
   milestones: MemberMilestone[] | null;
   token: string;
+  enrolledAt: string | null;
+  expectedCompletionAt: string | null;
 }) {
   const latestDrops = (drops ?? []).slice(0, 3);
   const latestMilestones = (milestones ?? []).slice(0, 5);
+  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/martinarink";
 
   return (
     <div className="bg-cream min-h-screen">
@@ -176,7 +189,7 @@ function Dashboard({
         <div className="max-w-3xl mx-auto">
           {programme && (
             <Eyebrow className="mb-5">
-              {programme.toUpperCase()}
+              {PROGRAMME_LABELS[programme] ?? programme}
             </Eyebrow>
           )}
           <p className="font-[family-name:var(--font-script)] text-[40px] md:text-[52px] text-ink leading-none">
@@ -186,6 +199,79 @@ function Dashboard({
       </section>
 
       <div className="max-w-3xl mx-auto px-6">
+
+        {/* ── Onboarding status strip ──────────────────────────── */}
+        <section className="pt-10 pb-6">
+          <div className="bg-bone border border-sand/40 px-6 py-5">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">
+              Your onboarding
+            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+              <div className="flex items-center gap-2.5">
+                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-plum flex items-center justify-center">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="#F7F3EE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <span className="text-[14px] text-ink-soft">Contract signed</span>
+              </div>
+              <div className="hidden sm:block w-8 h-[1px] bg-sand/50 flex-shrink-0" aria-hidden="true" />
+              <div className="flex items-center gap-2.5">
+                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-plum flex items-center justify-center">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="#F7F3EE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <span className="text-[14px] text-ink-soft">Intake complete</span>
+              </div>
+              <div className="hidden sm:block w-8 h-[1px] bg-sand/50 flex-shrink-0" aria-hidden="true" />
+              <div className="flex items-center gap-2.5">
+                <span className="flex-shrink-0 w-4 h-4 rounded-full border border-sand flex items-center justify-center">
+                  <span className="block w-1.5 h-1.5 rounded-full bg-sand/60" />
+                </span>
+                <a
+                  href={calendlyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[14px] text-plum hover:text-plum-deep transition-colors"
+                >
+                  Book your first session →
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Programme details card ───────────────────────────── */}
+        {enrolledAt && (
+          <section className="pb-10">
+            <div className="bg-bone border border-sand/40 p-6">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-5">
+                Programme details
+              </p>
+              <dl className="space-y-3">
+                {programme && (
+                  <div className="flex gap-4">
+                    <dt className="text-[12px] text-ink-quiet w-32 flex-shrink-0 pt-0.5">Programme</dt>
+                    <dd className="text-[15px] text-ink leading-snug">
+                      {PROGRAMME_LABELS[programme] ?? programme}
+                    </dd>
+                  </div>
+                )}
+                <div className="flex gap-4">
+                  <dt className="text-[12px] text-ink-quiet w-32 flex-shrink-0 pt-0.5">Enrolled</dt>
+                  <dd className="text-[15px] text-ink">{formatDate(enrolledAt)}</dd>
+                </div>
+                {expectedCompletionAt && (
+                  <div className="flex gap-4">
+                    <dt className="text-[12px] text-ink-quiet w-32 flex-shrink-0 pt-0.5">Expected end</dt>
+                    <dd className="text-[15px] text-ink">{formatDate(expectedCompletionAt)}</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </section>
+        )}
         {/* ── Audio drops ──────────────────────────────────────── */}
         <section className="py-12 border-b border-sand/30">
           <div className="flex items-center justify-between mb-8">
@@ -333,7 +419,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
     return <ExpiredPage />;
   }
 
-  const { clientId, firstName, programme } = verify;
+  const { clientId, firstName, programme, enrolledAt, expectedCompletionAt } = verify;
 
   // Fetch portal data in parallel
   const [drops, milestones] = await Promise.all([
@@ -348,6 +434,8 @@ export default async function MembersPage({ params }: MembersPageProps) {
       drops={drops}
       milestones={milestones}
       token={token}
+      enrolledAt={enrolledAt ?? null}
+      expectedCompletionAt={expectedCompletionAt ?? null}
     />
   );
 }

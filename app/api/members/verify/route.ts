@@ -50,5 +50,7 @@ export async function POST(req: NextRequest) {
     firstName: client.firstName,
     programme: client.programme,
     archetype: client.archetype,
+    enrolledAt: client.enrolledAt ?? null,
+    expectedCompletionAt: client.expectedCompletionAt ?? null,
   })
 }

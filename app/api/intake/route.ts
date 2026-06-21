@@ -10,6 +10,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { waitUntil } from "@vercel/functions";
 import { addBrevoContact, trackBrevoEvent } from "@/lib/brevo";
+import { writeClient, hasWriteClient } from "@/sanity/lib/writeClient";
+import { generateMemberToken } from "@/lib/members/token";
+import { portalInvitationEmail } from "@/lib/email-templates";
 
 const IntakeSchema = z.object({
   // ── Personal ────────────────────────────────────────────────
@@ -280,6 +283,94 @@ export async function POST(req: NextRequest) {
       APPLICATION_STATUS:  "intake_submitted",
     },
   }).catch((err) => console.error("[Intake] Brevo event failed:", err));
+
+  // ── Auto-portal: create Sanity profile + send portal invite ───
+  // Fires after response is returned. Uses waitUntil so Vercel
+  // does not kill the function before the async work completes.
+  if (resendKey && hasWriteClient(writeClient)) {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
+    const programmeLabel = programmeLabels[d.programme];
+    const wc = writeClient;
+
+    waitUntil(
+      (async () => {
+        try {
+          // A: check for an existing profile to avoid duplicate Sanity docs
+          const existing = await wc
+            .fetch<{ _id: string; clientId: string } | null>(
+              `*[_type == "clientProfile" && email == $email][0]{ _id, clientId }`,
+              { email: d.email },
+            )
+            .catch(() => null);
+
+          const clientId = existing?.clientId ?? crypto.randomUUID();
+
+          // B: idempotent create — won't overwrite an existing document
+          await wc.createIfNotExists({
+            _type: "clientProfile",
+            _id: `client-${clientId}`,
+            clientId,
+            firstName: d.firstName,
+            lastName: d.lastName,
+            email: d.email,
+            programme: d.programme,
+            status: "active",
+            enrolledAt: new Date().toISOString(),
+            tokenIssuedAt: new Date().toISOString(),
+          });
+
+          // C: generate portal URL
+          const token = generateMemberToken(clientId, "all");
+          const portalUrl = `${siteUrl}/members/${token}`;
+
+          const { subject, html } = portalInvitationEmail({
+            firstName: d.firstName,
+            programmeLabel,
+            portalUrl,
+          });
+
+          const fromEmail = process.env.RESEND_FROM_EMAIL ?? "contact@martinarink.com";
+          const notifyEmail = process.env.RESEND_NOTIFY_EMAIL ?? process.env.RESEND_REPLY_TO;
+
+          // D: send invitation + track Brevo event in parallel
+          await Promise.all([
+            fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${resendKey}`,
+              },
+              body: JSON.stringify({
+                from: `Martina Rink <${fromEmail}>`,
+                to: [d.email],
+                reply_to: notifyEmail ?? fromEmail,
+                ...(notifyEmail && { bcc: [notifyEmail] }),
+                subject,
+                html,
+              }),
+            }).then((res) => {
+              if (!res.ok) console.error("[Intake/portal] Resend failed:", res.status);
+              else console.log("[Intake/portal] Portal invitation sent to", d.email);
+            }),
+
+            trackBrevoEvent({
+              email: d.email,
+              eventName: "portal_invited",
+              properties: { programme: d.programme, client_id: clientId },
+              contactProperties: {
+                PORTAL_STATUS: "invited",
+                CLIENT_ID: clientId,
+              },
+            }).catch((err) =>
+              console.error("[Intake/portal] Brevo portal_invited failed:", err),
+            ),
+          ]);
+        } catch (err) {
+          console.error("[Intake/portal] Auto-portal block failed:", err);
+        }
+      })(),
+    );
+  }
 
   return NextResponse.json({ success: true });
 }
