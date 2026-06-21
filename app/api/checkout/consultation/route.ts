@@ -2,10 +2,8 @@
  * POST /api/checkout/consultation
  *
  * Creates a Stripe Checkout Session for the €350 private consultation deposit.
+ * Uses inline price_data — no Stripe Price ID required.
  * Returns { url } — the caller redirects to this Stripe-hosted URL.
- *
- * Upgrade path: change STRIPE_CONSULTATION_PRICE_ID to a new Stripe price
- * object to change the amount. No code change required.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -23,19 +21,11 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const priceId = process.env.STRIPE_CONSULTATION_PRICE_ID
-  if (!priceId) {
-    return NextResponse.json(
-      { error: 'Payment not configured — STRIPE_CONSULTATION_PRICE_ID is missing' },
-      { status: 503 },
-    )
-  }
-
   let body: { email?: string; programme?: string } = {}
   try {
     body = await req.json()
   } catch {
-    // Body is optional — both fields are optional
+    // Body is optional
   }
 
   const { email, programme } = body
@@ -50,9 +40,22 @@ export async function POST(req: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [
+        {
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: 'Private Consultation — Martina Rink',
+              description:
+                '45-minute private consultation. €350 applied in full toward programme enrolment.',
+            },
+            unit_amount: 35000, // €350.00
+          },
+          quantity: 1,
+        },
+      ],
       success_url: `${origin}/book/calendly?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/book?cancelled=1`,
+      cancel_url: `${origin}/book?token=approved&cancelled=1`,
       ...(email ? { customer_email: email } : {}),
       metadata: {
         programme: programme || '',
