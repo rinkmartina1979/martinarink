@@ -63,7 +63,7 @@ async function sendDepositConfirmation(
         Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: fromEmail,
+        from: `Martina Rink <${fromEmail}>`,
         to: [email],
         // Archive copy → Martina receives a copy of the deposit confirmation.
         ...(archiveEmail && { bcc: [archiveEmail] }),
@@ -119,8 +119,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, skipped: 'not_paid' })
     }
 
-    // Resolve customer email
-    let email = session.customer_email ?? ''
+    // Resolve customer email.
+    // Priority: customer_details.email (always set after checkout) →
+    //           customer_email (pre-fill, only set if passed at session creation) →
+    //           Customer object email (only if customer_creation: 'always')
+    let email =
+      session.customer_details?.email ??
+      session.customer_email ??
+      ''
+
     if (!email && session.customer && typeof session.customer === 'string') {
       try {
         const customer = await stripe.customers.retrieve(session.customer)
