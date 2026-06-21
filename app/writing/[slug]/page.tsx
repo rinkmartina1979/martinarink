@@ -228,16 +228,17 @@ export default async function ArticlePage({
             ),
           }}
         />
-        <article className="bg-cream pt-32 md:pt-40 pb-16">
+        <article className="bg-cream pt-24 md:pt-40 pb-16">
           <div className="container-read">
             <Eyebrow>
               {formatDate(sanityPost.publishedAt)} · {readingMinutes} min read
             </Eyebrow>
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[56px] leading-tight text-ink">
+            <h1 className="mt-4 font-[family-name:var(--font-display)] text-[28px] sm:text-[38px] md:text-[56px] leading-[1.15] text-ink">
               {sanityPost.title}
             </h1>
+          </div>
             {sanityPost.coverImage && urlForImage(sanityPost.coverImage) && (
-              <div className="relative mt-10 aspect-[16/9] overflow-hidden bg-bone">
+              <div className="relative mt-8 aspect-[4/3] md:aspect-[3/2] overflow-hidden bg-bone">
                 <Image
                   src={urlForImage(sanityPost.coverImage)!}
                   alt={sanityPost.coverImage.alt ?? sanityPost.title}
@@ -248,8 +249,9 @@ export default async function ArticlePage({
                 />
               </div>
             )}
+          <div className="container-read">
             {sanityPost.body && (
-              <div className="mt-12 space-y-6">
+              <div className="mt-8 space-y-6">
                 <PortableText
                   value={sanityPost.body as Parameters<typeof PortableText>[0]["value"]}
                   components={ptComponents}
@@ -323,27 +325,29 @@ export default async function ArticlePage({
           ),
         }}
       />
-      <article className="bg-cream pt-32 md:pt-40 pb-16">
+      <article className="bg-cream pt-24 md:pt-40 pb-16">
         <div className="container-read">
           <Eyebrow>
             {formatDate(hardcoded.publishedAt)} · {readingMinutes} min read
           </Eyebrow>
-          <h1 className="mt-6 font-[family-name:var(--font-display)] text-[40px] md:text-[56px] leading-tight text-ink">
+          <h1 className="mt-4 font-[family-name:var(--font-display)] text-[28px] sm:text-[38px] md:text-[56px] leading-[1.15] text-ink">
             {hardcoded.title}
           </h1>
-          {hardcoded.heroImage && (
-            <div className="relative mt-10 aspect-[16/9] overflow-hidden bg-bone">
-              <Image
-                src={hardcoded.heroImage}
-                alt={hardcoded.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 760px"
-                className="object-cover object-[50%_20%]"
-                priority
-              />
-            </div>
-          )}
-          <div className="mt-12 space-y-6">
+        </div>
+        {hardcoded.heroImage && (
+          <div className="relative mt-8 aspect-[4/3] md:aspect-[3/2] overflow-hidden bg-bone">
+            <Image
+              src={hardcoded.heroImage}
+              alt={hardcoded.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 760px"
+              className="object-cover object-[50%_20%]"
+              priority
+            />
+          </div>
+        )}
+        <div className="container-read">
+          <div className="mt-8 space-y-6">
             {paragraphs.map((p, i) => (
               <p key={i} className="text-[18px] leading-[1.75] text-ink-soft">
                 {p}
