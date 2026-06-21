@@ -10,13 +10,14 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function StripeTestSuccessPage({
+export default async function StripeTestSuccessPage({
   searchParams,
 }: {
-  searchParams: { session_id?: string; amount?: string };
+  searchParams: Promise<{ session_id?: string; amount?: string }>;
 }) {
-  const sessionId = searchParams.session_id ?? "—";
-  const amountCents = parseInt(searchParams.amount ?? "100", 10);
+  const params = await searchParams;
+  const sessionId = params.session_id ?? "—";
+  const amountCents = parseInt(params.amount ?? "100", 10);
   const amountLabel = amountCents === 500 ? "€5.00" : "€1.00";
 
   return (
