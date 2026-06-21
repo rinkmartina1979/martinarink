@@ -74,11 +74,11 @@ export default async function AboutPage() {
 
       {/* 2. ABOUT — Martina's full story, in her own words (client copy 2026-06-17) */}
       <section className="bg-bone py-16 md:py-24">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-start">
 
-          {/* Photo — pink-blouse editorial portrait (the design Martina approved) */}
-          <div className="md:col-span-5">
-            <div className="relative aspect-[4/5] bg-sand/30 overflow-hidden">
+          {/* Photo — full-frame square portrait, sticky while bio scrolls past */}
+          <div className="md:col-span-5 md:sticky md:top-28 self-start">
+            <div className="relative aspect-square overflow-hidden">
               <Image
                 src="/images/portraits/martina-portrait-pink-blouse.jpg"
                 alt="Martina Rink — Female Empowerment Coach, author and private mentor"
