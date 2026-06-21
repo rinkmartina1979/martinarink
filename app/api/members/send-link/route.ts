@@ -9,17 +9,25 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { generateTokenEmail } from '@/lib/members/token'
+import { generateMemberToken } from '@/lib/members/token'
+import { portalInvitationEmail } from '@/lib/email-templates'
 import { client as sanityClient } from '@/sanity/lib/client'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+
+const PROGRAMME_LABELS: Record<string, string> = {
+  'sober-muse': 'The Sober Muse Method',
+  empowerment: 'Female Empowerment & Leadership',
+  consultation: 'Private Consultation',
+}
 
 interface ClientRecord {
   _id: string
   firstName: string
   email: string
   clientId: string
+  programme: string | null
 }
 
 export async function POST(req: NextRequest) {
@@ -60,7 +68,7 @@ export async function POST(req: NextRequest) {
   try {
     clientRecord = await sanityClient.fetch<ClientRecord | null>(
       `*[_type == "clientProfile" && clientId == $clientId][0] {
-        _id, firstName, email, clientId
+        _id, firstName, email, clientId, programme
       }`,
       { clientId },
     )
@@ -73,15 +81,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Client not found' }, { status: 404 })
   }
 
+  // Fix: parentheses required — without them || binds before ?: and baseUrl
+  // resolves to https://{VERCEL_URL} even when NEXT_PUBLIC_SITE_URL is set.
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.VERCEL_URL
+    (process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : 'https://martinarink.com'
+      : 'https://martinarink.com')
 
-  let portalUrl: string
+  let token: string
   try {
-    portalUrl = generateTokenEmail(clientRecord.clientId, baseUrl)
+    token = generateMemberToken(clientRecord.clientId, 'all')
   } catch (err) {
     console.error('[send-link] Token generation failed:', err)
     return NextResponse.json(
@@ -90,37 +100,14 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  const portalUrl = `${baseUrl}/members/${token}`
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'contact@martinarink.com'
+  const notifyEmail = process.env.RESEND_NOTIFY_EMAIL ?? process.env.RESEND_REPLY_TO
   const firstName = clientRecord.firstName
+  const programmeLabel =
+    PROGRAMME_LABELS[clientRecord.programme ?? ''] ?? 'Private Coaching Programme'
 
-  const html = `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#F7F3EE;padding:48px 40px;color:#1E1B17;">
-      <p style="font-size:17px;line-height:1.7;margin:0 0 24px;">
-        ${firstName},
-      </p>
-      <p style="font-size:17px;line-height:1.7;margin:0 0 24px;color:#4A3728;">
-        Your private space is ready.
-      </p>
-      <p style="font-size:17px;line-height:1.7;margin:0 0 32px;color:#4A3728;">
-        You'll find your audio drops, milestones, and everything we've been building
-        together — all in one place, accessible only to you.
-      </p>
-      <a
-        href="${portalUrl}"
-        style="display:inline-block;background:#5C2D8E;color:#F7F3EE;font-family:Georgia,serif;font-size:15px;letter-spacing:0.06em;text-decoration:none;padding:14px 32px;border-radius:1px;"
-      >
-        OPEN YOUR PORTAL
-      </a>
-      <p style="font-size:13px;line-height:1.6;margin:40px 0 0;color:#8A7F72;">
-        This link is personal — it signs you in automatically. Please don't share it.
-        If you ever need a new link, write to me directly.
-      </p>
-      <hr style="border:none;border-top:1px solid #C8B8A2;margin:32px 0;" />
-      <p style="font-size:13px;color:#8A7F72;margin:0;">
-        Martina Rink &nbsp;·&nbsp; martinarink.com
-      </p>
-    </div>
-  `
+  const { subject, html } = portalInvitationEmail({ firstName, programmeLabel, portalUrl })
 
   try {
     const resendRes = await fetch('https://api.resend.com/emails', {
@@ -130,9 +117,11 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: fromEmail,
+        from: `Martina Rink <${fromEmail}>`,
         to: [clientRecord.email],
-        subject: 'Your private portal',
+        reply_to: notifyEmail ?? fromEmail,
+        ...(notifyEmail && { bcc: [notifyEmail] }),
+        subject,
         html,
       }),
     })
