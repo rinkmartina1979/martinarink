@@ -17,7 +17,7 @@ export const metadata = buildMetadata({
 });
 
 /* ── Extended type for cards that have a local image path ─────── */
-type ArticleCard = PostListItem & { localImage?: string };
+type ArticleCard = PostListItem & { localImage?: string; focalPoint?: string };
 
 /* ── Hardcoded fallback articles (shown when Sanity is not yet connected) */
 const FALLBACK_ARTICLES: ArticleCard[] = [
@@ -30,6 +30,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
     publishedAt: "2026-04-01T00:00:00Z",
     coverImage: null,
     localImage: "/images/portraits/martina-ibiza-working.jpg",
+    focalPoint: "center 22%", // 1200×1600 portrait — Martina's face is in upper quarter
   },
   {
     _id: "2",
@@ -40,6 +41,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
     publishedAt: "2026-04-08T00:00:00Z",
     coverImage: null,
     localImage: "/images/portraits/martina-portrait-studio.jpg",
+    focalPoint: "center 12%", // 853×1280 portrait — face sits in top third of frame
   },
   {
     _id: "3",
@@ -50,6 +52,7 @@ const FALLBACK_ARTICLES: ArticleCard[] = [
     publishedAt: "2026-04-15T00:00:00Z",
     coverImage: null,
     localImage: "/images/portraits/martina-gallery-leopard.jpg",
+    focalPoint: "center 18%", // 1090×1186 near-square — subject sits in upper half
   },
 ];
 
@@ -101,13 +104,14 @@ export default async function WritingPage() {
                     const src = localSrc ?? sanitySrc;
                     if (!src) return null;
                     return (
-                      <div className="relative aspect-[3/2] mb-5 overflow-hidden bg-bone">
+                      <div className="relative aspect-[3/4] mb-5 overflow-hidden bg-bone">
                         <Image
                           src={src}
                           alt={article.title}
                           fill
                           sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+                          className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                          style={{ objectPosition: (article as ArticleCard).focalPoint ?? "center 20%" }}
                         />
                       </div>
                     );
