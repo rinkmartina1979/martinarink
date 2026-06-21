@@ -229,7 +229,7 @@ export default async function EmpowermentPage() {
               <>
                 <p>
                   The Female Empowerment &amp; Leadership work is offered{" "}
-                  <strong className="font-medium text-gold">by application</strong>
+                  <strong className="font-medium text-pink">by application</strong>
                   {" "}— to a small number of women at a time.
                 </p>
                 <p>
