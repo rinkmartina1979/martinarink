@@ -44,6 +44,14 @@ export async function POST(req: NextRequest) {
     })
   }
 
+  // Revocation: blocked if access revoked or the link is an older token version.
+  if (client.revokedAt) {
+    return NextResponse.json({ valid: false, reason: 'revoked' })
+  }
+  if ((payload.tv ?? 1) < (client.tokenVersion ?? 1)) {
+    return NextResponse.json({ valid: false, reason: 'superseded' })
+  }
+
   return NextResponse.json({
     valid: true,
     clientId: payload.clientId,
@@ -52,5 +60,11 @@ export async function POST(req: NextRequest) {
     archetype: client.archetype,
     enrolledAt: client.enrolledAt ?? null,
     expectedCompletionAt: client.expectedCompletionAt ?? null,
+    portalStage: client.portalStage ?? null,
+    nextStepTitle: client.nextStepTitle ?? null,
+    nextStepDescription: client.nextStepDescription ?? null,
+    nextStepCtaLabel: client.nextStepCtaLabel ?? null,
+    nextStepHref: client.nextStepHref ?? null,
+    nextStepDueAt: client.nextStepDueAt ?? null,
   })
 }

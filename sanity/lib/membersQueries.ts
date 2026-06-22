@@ -24,6 +24,12 @@ export interface MemberClientProfile {
   expectedCompletionAt: string | null
   revokedAt: string | null
   tokenVersion: number | null
+  portalStage: string | null
+  nextStepTitle: string | null
+  nextStepDescription: string | null
+  nextStepCtaLabel: string | null
+  nextStepHref: string | null
+  nextStepDueAt: string | null
 }
 
 export interface MemberAudioDrop {
@@ -80,7 +86,13 @@ export async function getClientByToken(
         enrolledAt,
         expectedCompletionAt,
         revokedAt,
-        tokenVersion
+        tokenVersion,
+        portalStage,
+        nextStepTitle,
+        nextStepDescription,
+        nextStepCtaLabel,
+        nextStepHref,
+        nextStepDueAt
       }
       `,
       { clientId },

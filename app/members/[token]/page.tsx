@@ -1,12 +1,19 @@
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
-import { Eyebrow } from "@/components/brand/Eyebrow";
 import {
   getAudioDropsForClient,
   getMilestonesForClient,
+  getJournalMonthProgress,
   type MemberAudioDrop,
-  type MemberMilestone,
 } from "@/sanity/lib/membersQueries";
+import { monthIndexFor, toDateKey } from "@/lib/journal/prompts";
+import { PortalDashboardHero } from "@/components/portal/PortalDashboardHero";
+import { CurrentStageTimeline } from "@/components/portal/CurrentStageTimeline";
+import { NextActionCard } from "@/components/portal/NextActionCard";
+import { JournalStatusCard } from "@/components/portal/JournalStatusCard";
+import { SessionCard } from "@/components/portal/SessionCard";
+import { ResourceShelf } from "@/components/portal/ResourceShelf";
+import { SupportRequestCard } from "@/components/portal/SupportRequestCard";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -20,6 +27,15 @@ const PROGRAMME_LABELS: Record<string, string> = {
   consultation: "Private Consultation",
 };
 
+const STAGE_SUBLINE: Record<string, string> = {
+  accepted: "Your programme is being prepared.",
+  consultation: "Your consultation phase.",
+  onboarding: "Settling in.",
+  active: "Your programme is underway.",
+  integration: "Your final month together.",
+  completed: "Your programme has concluded.",
+};
+
 interface VerifyResponse {
   valid: boolean;
   reason?: string;
@@ -29,20 +45,21 @@ interface VerifyResponse {
   archetype?: string | null;
   enrolledAt?: string | null;
   expectedCompletionAt?: string | null;
+  portalStage?: string | null;
+  nextStepTitle?: string | null;
+  nextStepDescription?: string | null;
+  nextStepCtaLabel?: string | null;
+  nextStepHref?: string | null;
+  nextStepDueAt?: string | null;
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
 function formatDuration(seconds: number | null): string {
   if (!seconds) return "";
-  const m = Math.ceil(seconds / 60);
-  return `${m} min`;
+  return `${Math.ceil(seconds / 60)} min`;
 }
 
 /* ── Private beta state — shown when env not configured ───────── */
@@ -50,27 +67,19 @@ function PrivateBetaPage() {
   return (
     <section className="bg-cream min-h-screen flex items-center justify-center px-6">
       <div className="max-w-lg text-center">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6">
-          Members portal
-        </p>
+        <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6">Members portal</p>
         <p className="font-[family-name:var(--font-script)] text-[40px] text-ink leading-none mb-6">
           In private beta.
         </p>
         <p className="text-[17px] leading-[1.75] text-ink-soft mb-8">
-          The members area is opening to current clients in the coming weeks.
-          If you are working with Martina and expected access, write to her at{" "}
-          <a
-            href="mailto:contact@martinarink.com"
-            className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
-          >
+          The members area is opening to current clients in the coming weeks. If you are working with
+          Martina and expected access, write to her at{" "}
+          <a href="mailto:contact@martinarink.com" className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors">
             contact@martinarink.com
           </a>{" "}
           and she will send your private link.
         </p>
-        <Link
-          href="/"
-          className="inline-block text-[14px] text-ink-quiet hover:text-ink transition-colors underline underline-offset-4"
-        >
+        <Link href="/" className="inline-block text-[14px] text-ink-quiet hover:text-ink transition-colors underline underline-offset-4">
           Return home
         </Link>
       </div>
@@ -83,17 +92,11 @@ function ExpiredPage() {
   return (
     <section className="bg-cream min-h-screen flex items-center justify-center px-6">
       <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
+        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">Unavailable.</p>
         <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active. If you believe this is an
-          error, please{" "}
-          <Link
-            href="/contact"
-            className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
-          >
-            get in touch
+          This link has expired or is no longer active. You can request a fresh one at{" "}
+          <Link href="/portal" className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors">
+            martinarink.com/portal
           </Link>
           .
         </p>
@@ -103,14 +106,7 @@ function ExpiredPage() {
 }
 
 /* ── Archived (completed) state ────────────────────────────────── */
-function ArchivedPage({
-  firstName,
-  drops,
-}: {
-  firstName: string;
-  drops: MemberAudioDrop[] | null;
-  token: string;
-}) {
+function ArchivedPage({ firstName, drops }: { firstName: string; drops: MemberAudioDrop[] | null; token: string }) {
   return (
     <div className="bg-cream min-h-screen">
       <section className="pt-28 md:pt-36 pb-12 px-6">
@@ -119,37 +115,24 @@ function ArchivedPage({
             {firstName}.
           </p>
           <p className="text-[17px] leading-[1.75] text-ink-soft max-w-xl">
-            Your programme has concluded. These recordings remain yours — they
-            are here whenever you need them.
+            Your programme has concluded. These recordings remain yours — they are here whenever you need them.
           </p>
         </div>
       </section>
-
       {drops && drops.length > 0 && (
         <section className="pb-20 px-6">
           <div className="max-w-3xl mx-auto">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-8">
-              Your recordings
-            </p>
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-8">Your recordings</p>
             <div className="space-y-4">
               {drops.map((drop) => (
-                <div
-                  key={drop._id}
-                  className="bg-bone border border-sand/40 p-6 flex items-center justify-between gap-4"
-                >
+                <div key={drop._id} className="bg-bone border border-sand/40 p-6 flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-[16px] text-ink leading-snug">
-                      {drop.title}
-                    </p>
+                    <p className="text-[16px] text-ink leading-snug">{drop.title}</p>
                     {drop.durationSeconds && (
-                      <p className="text-[13px] text-ink-quiet mt-1">
-                        {formatDuration(drop.durationSeconds)}
-                      </p>
+                      <p className="text-[13px] text-ink-quiet mt-1">{formatDuration(drop.durationSeconds)}</p>
                     )}
                   </div>
-                  <p className="text-[12px] text-ink-quiet flex-shrink-0">
-                    {formatDate(drop.releasedAt)}
-                  </p>
+                  <p className="text-[12px] text-ink-quiet flex-shrink-0">{formatDate(drop.releasedAt)}</p>
                 </div>
               ))}
             </div>
@@ -160,258 +143,17 @@ function ArchivedPage({
   );
 }
 
-/* ── Dashboard ─────────────────────────────────────────────────── */
-function Dashboard({
-  firstName,
-  programme,
-  drops,
-  milestones,
-  token,
-  enrolledAt,
-  expectedCompletionAt,
-}: {
-  firstName: string;
-  programme: string | null;
-  drops: MemberAudioDrop[] | null;
-  milestones: MemberMilestone[] | null;
-  token: string;
-  enrolledAt: string | null;
-  expectedCompletionAt: string | null;
-}) {
-  const latestDrops = (drops ?? []).slice(0, 3);
-  const latestMilestones = (milestones ?? []).slice(0, 5);
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/martinarink";
-
-  return (
-    <div className="bg-cream min-h-screen">
-      {/* ── Greeting ─────────────────────────────────────────── */}
-      <section className="bg-cream pt-28 md:pt-36 pb-12 px-6 border-b border-sand/30">
-        <div className="max-w-3xl mx-auto">
-          {programme && (
-            <Eyebrow className="mb-5">
-              {PROGRAMME_LABELS[programme] ?? programme}
-            </Eyebrow>
-          )}
-          <p className="font-[family-name:var(--font-script)] text-[40px] md:text-[52px] text-ink leading-none">
-            Good to see you, {firstName}.
-          </p>
-        </div>
-      </section>
-
-      <div className="max-w-3xl mx-auto px-6">
-
-        {/* ── Onboarding status strip ──────────────────────────── */}
-        <section className="pt-10 pb-6">
-          <div className="bg-bone border border-sand/40 px-6 py-5">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">
-              Your onboarding
-            </p>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
-              <div className="flex items-center gap-2.5">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-plum flex items-center justify-center">
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="#F7F3EE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <span className="text-[14px] text-ink-soft">Contract signed</span>
-              </div>
-              <div className="hidden sm:block w-8 h-[1px] bg-sand/50 flex-shrink-0" aria-hidden="true" />
-              <div className="flex items-center gap-2.5">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-plum flex items-center justify-center">
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="#F7F3EE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <span className="text-[14px] text-ink-soft">Intake complete</span>
-              </div>
-              <div className="hidden sm:block w-8 h-[1px] bg-sand/50 flex-shrink-0" aria-hidden="true" />
-              <div className="flex items-center gap-2.5">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full border border-sand flex items-center justify-center">
-                  <span className="block w-1.5 h-1.5 rounded-full bg-sand/60" />
-                </span>
-                <a
-                  href={calendlyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[14px] text-plum hover:text-plum-deep transition-colors"
-                >
-                  Book your first session →
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Programme details card ───────────────────────────── */}
-        {enrolledAt && (
-          <section className="pb-10">
-            <div className="bg-bone border border-sand/40 p-6">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-5">
-                Programme details
-              </p>
-              <dl className="space-y-3">
-                {programme && (
-                  <div className="flex gap-4">
-                    <dt className="text-[12px] text-ink-quiet w-32 flex-shrink-0 pt-0.5">Programme</dt>
-                    <dd className="text-[15px] text-ink leading-snug">
-                      {PROGRAMME_LABELS[programme] ?? programme}
-                    </dd>
-                  </div>
-                )}
-                <div className="flex gap-4">
-                  <dt className="text-[12px] text-ink-quiet w-32 flex-shrink-0 pt-0.5">Enrolled</dt>
-                  <dd className="text-[15px] text-ink">{formatDate(enrolledAt)}</dd>
-                </div>
-                {expectedCompletionAt && (
-                  <div className="flex gap-4">
-                    <dt className="text-[12px] text-ink-quiet w-32 flex-shrink-0 pt-0.5">Expected end</dt>
-                    <dd className="text-[15px] text-ink">{formatDate(expectedCompletionAt)}</dd>
-                  </div>
-                )}
-              </dl>
-            </div>
-          </section>
-        )}
-        {/* ── 3-Month Journal ──────────────────────────────────── */}
-        <section className="py-12 border-b border-sand/30">
-          <Link
-            href={`/members/${token}/journal`}
-            className="group block bg-bone border border-sand/40 p-6 rounded-[1px] hover:border-aubergine transition-colors duration-200"
-          >
-            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-3">
-              Your private space
-            </p>
-            <p className="font-[family-name:var(--font-display)] text-[24px] text-ink leading-snug">
-              The 3-Month Journal
-            </p>
-            <p className="mt-3 text-[14px] leading-[1.7] text-ink-soft max-w-xl">
-              A daily ritual — morning and evening — and a monthly look back. Private to
-              you unless you choose to share it.
-            </p>
-            <p className="mt-4 text-[13px] text-plum group-hover:text-plum-deep transition-colors">
-              Open your journal →
-            </p>
-          </Link>
-        </section>
-
-        {/* ── Audio drops ──────────────────────────────────────── */}
-        <section className="py-12 border-b border-sand/30">
-          <div className="flex items-center justify-between mb-8">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet">
-              Latest recordings
-            </p>
-            {drops && drops.length > 3 && (
-              <Link
-                href={`/members/${token}/audio`}
-                className="text-[13px] text-plum hover:text-plum-deep transition-colors"
-              >
-                All recordings →
-              </Link>
-            )}
-          </div>
-
-          {latestDrops.length === 0 ? (
-            <p className="text-[15px] text-ink-soft">
-              No recordings have been released yet.
-            </p>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-5">
-              {latestDrops.map((drop) => (
-                <div
-                  key={drop._id}
-                  className="bg-bone border border-sand/40 p-6 flex flex-col"
-                >
-                  <div className="flex-1">
-                    {drop.durationSeconds && (
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-ink-quiet mb-2">
-                        {formatDuration(drop.durationSeconds)}
-                      </p>
-                    )}
-                    <p className="font-[family-name:var(--font-display)] text-[18px] leading-snug text-ink">
-                      {drop.title}
-                    </p>
-                    {drop.description && (
-                      <p className="mt-3 text-[14px] leading-[1.7] text-ink-soft line-clamp-2">
-                        {drop.description}
-                      </p>
-                    )}
-                  </div>
-                  <Link
-                    href={`/members/${token}/audio/${drop.slug}`}
-                    className="mt-5 self-start text-[13px] text-plum hover:text-plum-deep transition-colors"
-                  >
-                    Listen →
-                  </Link>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {drops && drops.length > 3 && (
-            <div className="mt-8">
-              <Link
-                href={`/members/${token}/audio`}
-                className="text-[14px] text-plum hover:text-plum-deep transition-colors"
-              >
-                All recordings →
-              </Link>
-            </div>
-          )}
-        </section>
-
-        {/* ── Milestones ────────────────────────────────────────── */}
-        {latestMilestones.length > 0 && (
-          <section className="py-12">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-8">
-              Your milestones
-            </p>
-            <div className="space-y-8">
-              {latestMilestones.map((milestone) => (
-                <div key={milestone._id} className="flex gap-6">
-                  <div className="flex-shrink-0 pt-1">
-                    <span className="block w-[1px] self-stretch bg-sand/40" aria-hidden />
-                  </div>
-                  <div className="flex-1 pb-8 border-b border-sand/20 last:border-0 last:pb-0">
-                    <p className="text-[12px] text-ink-quiet mb-2">
-                      {formatDate(milestone.achievedAt)}
-                    </p>
-                    <p className="font-[family-name:var(--font-display)] text-[20px] text-ink leading-snug">
-                      {milestone.title}
-                    </p>
-                    {milestone.note && (
-                      <p className="mt-2 text-[15px] leading-[1.7] text-ink-soft">
-                        {milestone.note}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
-    </div>
-  );
-}
-
 /* ── Page ──────────────────────────────────────────────────────── */
 export default async function MembersPage({ params }: MembersPageProps) {
   const { token } = await params;
 
-  // If the portal is not configured (env vars missing), show polished beta page
-  // instead of the bleak "expired" view. This keeps the URL graceful in
-  // private-beta and during environment changes.
-  if (!process.env.MEMBERS_TOKEN_SECRET) {
-    return <PrivateBetaPage />;
-  }
+  if (!process.env.MEMBERS_TOKEN_SECRET) return <PrivateBetaPage />;
 
-  // Verify token via API route
   let verify: VerifyResponse;
   try {
     const baseUrl =
       process.env.NEXT_PUBLIC_SITE_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
     const res = await fetch(`${baseUrl}/api/members/verify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -423,41 +165,91 @@ export default async function MembersPage({ params }: MembersPageProps) {
     return <ExpiredPage />;
   }
 
-  // Archived / completed programme
   if (!verify.valid && verify.reason === "archived") {
-    // Fetch all drops for archived view — we need programme but it isn't in the error response.
-    // Show a read-only list without audio links (no programme known).
-    return (
-      <ArchivedPage
-        firstName={verify.firstName ?? ""}
-        drops={null}
-        token={token}
-      />
-    );
+    return <ArchivedPage firstName={verify.firstName ?? ""} drops={null} token={token} />;
   }
-
-  // Invalid / expired
   if (!verify.valid || !verify.clientId || !verify.firstName) {
     return <ExpiredPage />;
   }
 
-  const { clientId, firstName, programme, enrolledAt, expectedCompletionAt } = verify;
+  const { clientId, firstName, programme, enrolledAt, portalStage } = verify;
 
-  // Fetch portal data in parallel
-  const [drops, milestones] = await Promise.all([
+  const [drops, milestones, progress] = await Promise.all([
     programme ? getAudioDropsForClient(clientId, programme) : Promise.resolve(null),
     getMilestonesForClient(clientId),
+    getJournalMonthProgress(clientId),
   ]);
 
+  const journalHref = `/members/${token}/journal`;
+  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/martinarink";
+  const monthIndex = enrolledAt ? monthIndexFor(enrolledAt, toDateKey(new Date())) : 1;
+  const latestMilestones = (milestones ?? []).slice(0, 5);
+
+  // Single primary action — Martina's set next step, else a calm journal default.
+  const next = verify.nextStepTitle
+    ? {
+        title: verify.nextStepTitle,
+        description: verify.nextStepDescription ?? null,
+        ctaLabel: verify.nextStepCtaLabel ?? "Continue",
+        ctaHref: verify.nextStepHref ?? journalHref,
+        dueAt: verify.nextStepDueAt ?? null,
+      }
+    : {
+        title: "Continue your journal",
+        description: "A few quiet minutes — morning or evening. Return whenever you're ready.",
+        ctaLabel: "Open your journal",
+        ctaHref: journalHref,
+        dueAt: null,
+      };
+
   return (
-    <Dashboard
-      firstName={firstName}
-      programme={programme ?? null}
-      drops={drops}
-      milestones={milestones}
-      token={token}
-      enrolledAt={enrolledAt ?? null}
-      expectedCompletionAt={expectedCompletionAt ?? null}
-    />
+    <div className="bg-cream min-h-screen">
+      <PortalDashboardHero
+        firstName={firstName}
+        programmeLabel={programme ? (PROGRAMME_LABELS[programme] ?? programme) : null}
+        stageLabel={STAGE_SUBLINE[portalStage ?? ""] ?? null}
+      />
+
+      <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
+        <NextActionCard
+          title={next.title}
+          description={next.description}
+          ctaLabel={next.ctaLabel}
+          ctaHref={next.ctaHref}
+          dueAt={next.dueAt}
+        />
+
+        <CurrentStageTimeline portalStage={portalStage ?? null} />
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <JournalStatusCard
+            monthIndex={monthIndex}
+            mornings={progress.mornings}
+            evenings={progress.evenings}
+            href={journalHref}
+          />
+          <SessionCard calendlyUrl={calendlyUrl} />
+        </div>
+
+        <ResourceShelf drops={drops} token={token} />
+
+        <SupportRequestCard token={token} />
+
+        {latestMilestones.length > 0 && (
+          <section className="pt-4">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-8">Your milestones</p>
+            <div className="space-y-8">
+              {latestMilestones.map((m) => (
+                <div key={m._id} className="pb-8 border-b border-sand/20 last:border-0 last:pb-0">
+                  <p className="text-[12px] text-ink-quiet mb-2">{formatDate(m.achievedAt)}</p>
+                  <p className="font-[family-name:var(--font-display)] text-[20px] text-ink leading-snug">{m.title}</p>
+                  {m.note && <p className="mt-2 text-[15px] leading-[1.7] text-ink-soft">{m.note}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </div>
   );
 }
