@@ -124,10 +124,30 @@ export async function POST(req: NextRequest) {
     return GENERIC;
   }
 
-  // ── Issue a FRESH link and send it ──
+  // ── Issue a FRESH link and INVALIDATE all previous links ──
+  // Bumping tokenVersion means every previously issued link (lower tv) fails
+  // verification. The new link is minted at the new version. We AWAIT this
+  // bump before responding so revocation of old links is effective immediately.
+  const newTokenVersion = (profile.tokenVersion ?? 1) + 1;
+  try {
+    await wc
+      .patch(profile._id)
+      .setIfMissing({ portalLinkResendCount: 0 })
+      .inc({ portalLinkResendCount: 1 })
+      .set({
+        tokenVersion: newTokenVersion,
+        portalLinkLastSentAt: new Date().toISOString(),
+        tokenIssuedAt: new Date().toISOString(),
+      })
+      .commit();
+  } catch {
+    // If the bump fails we still respond generically; old links simply remain
+    // valid until a successful issue. No information leaks to the caller.
+  }
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
   const token = generateMemberToken(profile.clientId, "all", {
-    tokenVersion: profile.tokenVersion ?? 1,
+    tokenVersion: newTokenVersion,
   });
   const portalUrl = `${siteUrl}/members/${token}`;
   const programmeLabel = PROGRAMME_LABELS[profile.programme ?? ""] ?? "Private Coaching Programme";
@@ -153,16 +173,6 @@ export async function POST(req: NextRequest) {
 
   waitUntil(record(wc, email, ip, ua, "sent"));
   waitUntil(logAuditEvent("link_requested", { clientId: profile.clientId, ip, meta: "recovery" }));
-  waitUntil(
-    wc
-      .patch(profile._id)
-      .setIfMissing({ portalLinkResendCount: 0 })
-      .inc({ portalLinkResendCount: 1 })
-      .set({ portalLinkLastSentAt: new Date().toISOString(), tokenIssuedAt: new Date().toISOString() })
-      .commit()
-      .then(() => undefined)
-      .catch(() => undefined),
-  );
 
   return GENERIC;
 }

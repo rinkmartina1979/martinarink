@@ -1,22 +1,16 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals.js";
-import nextTs from "eslint-config-next/typescript.js";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
-// NOTE: eslint-config-next has partial ESLint 9 flat-config support in 15.x.
-// "Plugin not found" / "not iterable" warnings are upstream issues.
-// TypeScript (tsc --noEmit) is the authoritative type-safety check.
-// Use `npm run typecheck` before deploying.
+// eslint-config-next ships legacy "extends" presets. ESLint 9 flat config can't
+// spread them directly (it throws "Plugin '' not found"), so we bridge them with
+// FlatCompat. tsc --noEmit (`npm run typecheck`) remains the authoritative
+// type-safety gate; production builds run with `next build --no-lint`.
+const compat = new FlatCompat({ baseDirectory: dirname(fileURLToPath(import.meta.url)) });
 
-function toArray(cfg) {
-  if (Array.isArray(cfg)) return cfg;
-  if (cfg && typeof cfg === "object") return [cfg];
-  return [];
-}
-
-const eslintConfig = defineConfig([
-  ...toArray(nextVitals),
-  ...toArray(nextTs),
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
-]);
+const eslintConfig = [
+  ...compat.config({ extends: ["next/core-web-vitals", "next/typescript"] }),
+  { ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"] },
+];
 
 export default eslintConfig;
