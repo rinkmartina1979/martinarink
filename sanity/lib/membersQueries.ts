@@ -182,6 +182,110 @@ export async function getMilestonesForClient(
   }
 }
 
+/* ─── Journal ───────────────────────────────────────────────── */
+
+export interface JournalEntryContent {
+  feeling?: string
+  sleepQuality?: string
+  gratefulFor?: string
+  todayGreatIf?: string
+  goalsToday?: string
+  highlights?: string
+  difficultSituations?: string
+  goodForMyself?: string
+  didConsume?: boolean
+  consumeWhat?: string
+  consumeHowMuch?: string
+  trigger?: string
+  noticedChanges?: string
+  tomorrowAffirmations?: string
+  goalsTomorrow?: string
+}
+
+export interface JournalMonthProgress {
+  mornings: number
+  evenings: number
+}
+
+/**
+ * Fetch one client's journal entry for a date + type (for editor prefill).
+ * Always scoped by clientId — never returns another client's entry.
+ */
+export async function getJournalEntry(
+  clientId: string,
+  date: string,
+  type: 'morning' | 'evening',
+): Promise<{ visibility: string; content: JournalEntryContent } | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<{ visibility: string; content: JournalEntryContent } | null>(
+      `
+      *[
+        _type == "journalEntry" &&
+        clientId == $clientId &&
+        entryDate == $date &&
+        entryType == $type
+      ][0] { visibility, content }
+      `,
+      { clientId, date, type },
+    )
+  } catch {
+    return null
+  }
+}
+
+export interface MonthlyReviewContent {
+  accomplished?: string
+  whatWorked?: string
+  improveNext?: string
+  towardGoals?: string
+  celebrate?: string
+}
+
+/** Fetch a client's monthly review for prefill. Scoped by clientId. */
+export async function getMonthlyReview(
+  clientId: string,
+  monthIndex: number,
+): Promise<{ visibility: string; content: MonthlyReviewContent } | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<{ visibility: string; content: MonthlyReviewContent } | null>(
+      `
+      *[
+        _type == "monthlyReview" &&
+        clientId == $clientId &&
+        monthIndex == $monthIndex
+      ][0] {
+        visibility,
+        "content": { accomplished, whatWorked, improveNext, towardGoals, celebrate }
+      }
+      `,
+      { clientId, monthIndex },
+    )
+  } catch {
+    return null
+  }
+}
+
+/** Count of morning/evening entries for a client (portal progress card). */
+export async function getJournalMonthProgress(
+  clientId: string,
+): Promise<JournalMonthProgress> {
+  if (!IS_SANITY_CONFIGURED) return { mornings: 0, evenings: 0 }
+  try {
+    const res = await client.fetch<JournalMonthProgress>(
+      `{
+        "mornings": count(*[_type == "journalEntry" && clientId == $clientId && entryType == "morning"]),
+        "evenings": count(*[_type == "journalEntry" && clientId == $clientId && entryType == "evening"])
+      }`,
+      { clientId },
+    )
+    return res ?? { mornings: 0, evenings: 0 }
+  } catch {
+    return { mornings: 0, evenings: 0 }
+  }
+}
+
 export async function getVisibleCaseStudies(): Promise<MemberCaseStudy[] | null> {
   if (!IS_SANITY_CONFIGURED) return null
   try {

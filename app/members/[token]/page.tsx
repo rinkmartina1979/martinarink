@@ -272,6 +272,28 @@ function Dashboard({
             </div>
           </section>
         )}
+        {/* ── 3-Month Journal ──────────────────────────────────── */}
+        <section className="py-12 border-b border-sand/30">
+          <Link
+            href={`/members/${token}/journal`}
+            className="group block bg-bone border border-sand/40 p-6 rounded-[1px] hover:border-aubergine transition-colors duration-200"
+          >
+            <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-3">
+              Your private space
+            </p>
+            <p className="font-[family-name:var(--font-display)] text-[24px] text-ink leading-snug">
+              The 3-Month Journal
+            </p>
+            <p className="mt-3 text-[14px] leading-[1.7] text-ink-soft max-w-xl">
+              A daily ritual — morning and evening — and a monthly look back. Private to
+              you unless you choose to share it.
+            </p>
+            <p className="mt-4 text-[13px] text-plum group-hover:text-plum-deep transition-colors">
+              Open your journal →
+            </p>
+          </Link>
+        </section>
+
         {/* ── Audio drops ──────────────────────────────────────── */}
         <section className="py-12 border-b border-sand/30">
           <div className="flex items-center justify-between mb-8">

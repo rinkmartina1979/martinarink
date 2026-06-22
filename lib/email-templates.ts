@@ -766,6 +766,49 @@ export function portalInvitationEmail(data: PortalInvitationEmailData): {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   9. NEEDS-SUPPORT NOTIFICATION — internal, to Martina only.
+      Fires when a client flags a journal entry "I'd like support".
+      Carries NO journal content — only who, when, and a link in.
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface NeedsSupportEmailData {
+  firstName: string;
+  entryDate: string;
+  studioUrl: string;
+}
+
+export function needsSupportNotification(data: NeedsSupportEmailData): {
+  subject: string;
+  html: string;
+} {
+  const { firstName, entryDate, studioUrl } = data;
+
+  const html = wrap(`
+    <div style="${HEADER_DARK}">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow("Journal — support requested")}
+      ${h1(`${firstName} would<br>like support.`)}
+    </div>
+
+    <div style="${BODY_SECTION}">
+      ${body(`${firstName} flagged a journal entry from ${entryDate} as "I'd like support."`)}
+      ${body(`The entry stays in her private space — it is not included here. Open the journal view to read what she chose to share.`)}
+
+      ${ctaButton("OPEN JOURNAL VIEW", studioUrl)}
+
+      <hr style="${HAIRLINE}">
+      ${small(`This is not an emergency alert. If you are concerned for her immediate safety, contact her directly.`)}
+      ${signature()}
+    </div>
+  `);
+
+  return {
+    subject: `Support requested — ${firstName} (${entryDate})`,
+    html,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SERVICE DESCRIPTION TEMPLATES
    Used in the inline contract form (accept-sent page + admin page).
    Martina selects a programme — this pre-fills as a professional

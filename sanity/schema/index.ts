@@ -40,6 +40,8 @@ import audioDrop from './audioDrop'
 import clientMilestone from './clientMilestone'
 import caseStudy from './caseStudy'
 import emailDigestLog from './emailDigestLog'
+import journalEntry from './journalEntry'
+import monthlyReview from './monthlyReview'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects (must come before document types that reference them)
@@ -80,4 +82,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   clientMilestone,
   caseStudy,
   emailDigestLog,
+  journalEntry,
+  monthlyReview,
 ]

@@ -57,6 +57,8 @@ const EXPLICIT_TYPES = new Set([
   'clientMilestone',
   'caseStudy',
   'emailDigestLog',
+  'journalEntry',
+  'monthlyReview',
   // seoMeta is an object type, not a document — it won't appear anyway
 ])
 
@@ -229,6 +231,45 @@ export default defineConfig({
                         S.documentTypeList('emailDigestLog')
                           .title('Email Digest Log')
                           .defaultOrdering([{ field: 'sentAt', direction: 'desc' }]),
+                      ),
+
+                    // ── 3-Month Journal ────────────────────────
+                    // Privacy by design: NO browse view for private entries.
+                    // Only entries the client chose to share / flag appear here.
+                    // (A dataset owner can still open any document directly — see
+                    //  journalEntry.ts privacy note. Full secrecy needs encryption.)
+                    S.listItem()
+                      .title('3-Month Journal')
+                      .icon(BookIcon)
+                      .child(
+                        S.list()
+                          .title('3-Month Journal')
+                          .items([
+                            S.listItem()
+                              .title('Needs Support')
+                              .child(
+                                S.documentTypeList('journalEntry')
+                                  .title('Needs Support')
+                                  .filter('_type == "journalEntry" && visibility == "needs-support"')
+                                  .defaultOrdering([{ field: 'entryDate', direction: 'desc' }]),
+                              ),
+                            S.listItem()
+                              .title('Shared with Martina')
+                              .child(
+                                S.documentTypeList('journalEntry')
+                                  .title('Shared with Martina')
+                                  .filter('_type == "journalEntry" && visibility == "shared"')
+                                  .defaultOrdering([{ field: 'entryDate', direction: 'desc' }]),
+                              ),
+                            S.listItem()
+                              .title('Monthly Reviews (shared)')
+                              .child(
+                                S.documentTypeList('monthlyReview')
+                                  .title('Monthly Reviews')
+                                  .filter('_type == "monthlyReview" && visibility != "private"')
+                                  .defaultOrdering([{ field: 'monthIndex', direction: 'asc' }]),
+                              ),
+                          ]),
                       ),
                   ]),
               ),
