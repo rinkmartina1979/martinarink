@@ -42,6 +42,10 @@ import caseStudy from './caseStudy'
 import emailDigestLog from './emailDigestLog'
 import journalEntry from './journalEntry'
 import monthlyReview from './monthlyReview'
+import portalLinkRequest from './portalLinkRequest'
+import portalAuditEvent from './portalAuditEvent'
+import sessionRequest from './sessionRequest'
+import clientUpdate from './clientUpdate'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects (must come before document types that reference them)
@@ -84,4 +88,8 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   emailDigestLog,
   journalEntry,
   monthlyReview,
+  portalLinkRequest,
+  portalAuditEvent,
+  sessionRequest,
+  clientUpdate,
 ]

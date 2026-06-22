@@ -20,6 +20,7 @@ import { verifyMemberToken } from "@/lib/members/token";
 import { writeClient, hasWriteClient } from "@/sanity/lib/writeClient";
 import { trackBrevoEvent } from "@/lib/brevo";
 import { needsSupportNotification } from "@/lib/email-templates";
+import { logAuditEvent, clientIp } from "@/lib/members/audit";
 import {
   MorningEntrySchema,
   EveningEntrySchema,
@@ -62,6 +63,8 @@ interface ProfileRef {
   firstName: string;
   email: string | null;
   enrolledAt: string | null;
+  revokedAt: string | null;
+  tokenVersion: number | null;
 }
 
 export async function POST(req: NextRequest) {
@@ -100,7 +103,7 @@ export async function POST(req: NextRequest) {
   let profile: ProfileRef | null;
   try {
     profile = await wc.fetch<ProfileRef | null>(
-      `*[_type == "clientProfile" && clientId == $clientId][0]{ _id, firstName, email, enrolledAt }`,
+      `*[_type == "clientProfile" && clientId == $clientId][0]{ _id, firstName, email, enrolledAt, revokedAt, tokenVersion }`,
       { clientId },
     );
   } catch {
@@ -108,6 +111,11 @@ export async function POST(req: NextRequest) {
   }
   if (!profile) {
     return NextResponse.json({ error: "Client not found" }, { status: 404 });
+  }
+
+  // Revocation: blocked if access revoked or the link is an older token version.
+  if (profile.revokedAt || (payload.tv ?? 1) < (profile.tokenVersion ?? 1)) {
+    return NextResponse.json({ error: "Invalid or expired link" }, { status: 401 });
   }
 
   const now = new Date().toISOString();
@@ -156,6 +164,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not save your entry" }, { status: 502 });
   }
 
+  // ── Audit (no journal body) + activity timestamps ──
+  const ip = clientIp(req.headers);
+  const auditMeta = data.kind === "monthly" ? `monthly m${data.monthIndex}` : `${data.kind} ${data.date}`;
+  waitUntil(logAuditEvent("journal_saved", { clientId, meta: auditMeta, ip }));
+  waitUntil(
+    wc
+      .patch(profile._id)
+      .set({ lastUsedAt: new Date().toISOString(), lastClientUpdateAt: new Date().toISOString() })
+      .commit()
+      .then(() => undefined)
+      .catch(() => undefined),
+  );
+
   // ── needs-support → notify Martina (no content) + Brevo event ──
   if (data.visibility === "needs-support") {
     const resendKey = process.env.RESEND_API_KEY;
@@ -163,6 +184,8 @@ export async function POST(req: NextRequest) {
     const notifyEmail = process.env.RESEND_NOTIFY_EMAIL ?? process.env.RESEND_REPLY_TO;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://martinarink.com";
     const entryDate = data.kind === "monthly" ? now.slice(0, 10) : data.date;
+
+    waitUntil(logAuditEvent("needs_support", { clientId, meta: entryDate, ip }));
 
     if (resendKey && notifyEmail) {
       const { subject, html } = needsSupportNotification({

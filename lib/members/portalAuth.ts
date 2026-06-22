@@ -20,12 +20,17 @@ export interface PortalAccess {
 export async function verifyPortalAccess(
   token: string,
 ): Promise<PortalAccess | null> {
-  const payload = verifyMemberToken(token);
+  const payload = verifyMemberToken(token); // HMAC + expiry
   if (!payload) return null;
 
   const profile = await getClientByToken(payload.clientId);
   if (!profile) return null;
   if (profile.status === "completed") return null;
+
+  // Revocation: a set revokedAt blocks all access; bumping tokenVersion on the
+  // profile invalidates every link issued at an older version.
+  if (profile.revokedAt) return null;
+  if ((payload.tv ?? 1) < (profile.tokenVersion ?? 1)) return null;
 
   return { clientId: payload.clientId, profile };
 }

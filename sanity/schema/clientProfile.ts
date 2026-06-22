@@ -114,6 +114,55 @@ export default defineType({
       description: 'Set when first member token is generated. Used for audit only.',
     }),
 
+    // ── Portal dashboard (client-facing) ─────────────────────────
+    defineField({
+      name: 'portalStage',
+      title: 'Portal stage',
+      type: 'string',
+      description: 'Drives the "current stage" timeline on the client dashboard.',
+      options: {
+        list: [
+          { title: 'Accepted', value: 'accepted' },
+          { title: 'Consultation', value: 'consultation' },
+          { title: 'Onboarding (contract + intake)', value: 'onboarding' },
+          { title: 'Programme active', value: 'active' },
+          { title: 'Final month', value: 'integration' },
+          { title: 'Completed', value: 'completed' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'onboarding',
+    }),
+    defineField({ name: 'nextStepTitle', title: 'Next step — title', type: 'string',
+      description: 'The single primary action shown to the client. Keep it calm.' }),
+    defineField({ name: 'nextStepDescription', title: 'Next step — description', type: 'text', rows: 2 }),
+    defineField({ name: 'nextStepCtaLabel', title: 'Next step — button label', type: 'string' }),
+    defineField({ name: 'nextStepHref', title: 'Next step — link', type: 'string',
+      description: 'Relative path (e.g. /book) or full URL.' }),
+    defineField({ name: 'nextStepDueAt', title: 'Next step — due', type: 'datetime' }),
+    defineField({ name: 'journalStartDate', title: 'Journal start date', type: 'date' }),
+    defineField({ name: 'timezone', title: 'Timezone', type: 'string', description: 'IANA, e.g. Europe/Berlin' }),
+    defineField({ name: 'lastClientUpdateAt', title: 'Last client update', type: 'datetime', readOnly: true }),
+    defineField({ name: 'lastMartinaUpdateAt', title: 'Last note from Martina', type: 'datetime', readOnly: true }),
+
+    // ── Token security & link recovery ───────────────────────────
+    defineField({
+      name: 'tokenVersion',
+      title: 'Token version',
+      type: 'number',
+      initialValue: 1,
+      description: 'Increment to instantly revoke every previously issued portal link for this client.',
+    }),
+    defineField({
+      name: 'revokedAt',
+      title: 'Access revoked at',
+      type: 'datetime',
+      description: 'Set to immediately block ALL portal access for this client (e.g. lost device).',
+    }),
+    defineField({ name: 'lastUsedAt', title: 'Portal last used', type: 'datetime', readOnly: true }),
+    defineField({ name: 'portalLinkResendCount', title: 'Portal link resends', type: 'number', readOnly: true }),
+    defineField({ name: 'portalLinkLastSentAt', title: 'Portal link last sent', type: 'datetime', readOnly: true }),
+
     defineField({
       name: 'privateNotes',
       title: 'Private notes',

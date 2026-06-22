@@ -59,6 +59,10 @@ const EXPLICIT_TYPES = new Set([
   'emailDigestLog',
   'journalEntry',
   'monthlyReview',
+  'portalLinkRequest',
+  'portalAuditEvent',
+  'sessionRequest',
+  'clientUpdate',
   // seoMeta is an object type, not a document — it won't appear anyway
 ])
 
@@ -270,6 +274,69 @@ export default defineConfig({
                                   .defaultOrdering([{ field: 'monthIndex', direction: 'asc' }]),
                               ),
                           ]),
+                      ),
+
+                    // ── Operations: sessions, updates, recovery, audit ──
+                    S.listItem()
+                      .title('Session Requests')
+                      .icon(CalendarIcon)
+                      .child(
+                        S.documentTypeList('sessionRequest')
+                          .title('Session Requests')
+                          .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Client Updates')
+                      .icon(EditIcon)
+                      .child(
+                        S.documentTypeList('clientUpdate')
+                          .title('Client Updates')
+                          .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Lost Link Requests')
+                      .icon(SearchIcon)
+                      .child(
+                        S.documentTypeList('portalLinkRequest')
+                          .title('Lost Link Requests')
+                          .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Audit Events')
+                      .icon(DocumentTextIcon)
+                      .child(
+                        S.documentTypeList('portalAuditEvent')
+                          .title('Audit Events')
+                          .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Clients by Stage')
+                      .icon(UserIcon)
+                      .child(
+                        S.list()
+                          .title('Clients by Stage')
+                          .items(
+                            ['accepted', 'consultation', 'onboarding', 'active', 'integration', 'completed'].map((stage) =>
+                              S.listItem()
+                                .id(`stage-${stage}`)
+                                .title(stage.charAt(0).toUpperCase() + stage.slice(1))
+                                .child(
+                                  S.documentTypeList('clientProfile')
+                                    .title(stage)
+                                    .filter('_type == "clientProfile" && portalStage == $stage')
+                                    .params({ stage })
+                                    .defaultOrdering([{ field: 'enrolledAt', direction: 'desc' }]),
+                                ),
+                            ),
+                          ),
+                      ),
+                    S.listItem()
+                      .title('Recently Active Clients')
+                      .icon(UserIcon)
+                      .child(
+                        S.documentTypeList('clientProfile')
+                          .title('Recently Active')
+                          .defaultOrdering([{ field: 'lastUsedAt', direction: 'desc' }]),
                       ),
                   ]),
               ),

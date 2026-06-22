@@ -22,6 +22,8 @@ export interface MemberClientProfile {
   status: string
   enrolledAt: string
   expectedCompletionAt: string | null
+  revokedAt: string | null
+  tokenVersion: number | null
 }
 
 export interface MemberAudioDrop {
@@ -76,7 +78,9 @@ export async function getClientByToken(
         programme,
         status,
         enrolledAt,
-        expectedCompletionAt
+        expectedCompletionAt,
+        revokedAt,
+        tokenVersion
       }
       `,
       { clientId },

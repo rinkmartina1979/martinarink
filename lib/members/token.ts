@@ -13,8 +13,13 @@ export interface MemberTokenPayload {
   clientId: string
   scope: 'all' | 'audio' | 'milestones'
   iat: number // issued at (unix seconds)
-  v: number   // version — v=1 for this scheme
+  v: number   // scheme version — v=1
+  exp?: number // expiry (unix seconds). Absent on legacy tokens = non-expiring.
+  tv?: number  // token version — bump clientProfile.tokenVersion to revoke older links.
 }
+
+/** Default lifetime for newly issued member tokens. */
+export const DEFAULT_TOKEN_TTL_DAYS = 120
 
 function base64urlEncode(str: string): string {
   return Buffer.from(str)
@@ -37,15 +42,21 @@ function hmac(secret: string, data: string): string {
 export function generateMemberToken(
   clientId: string,
   scope: MemberTokenPayload['scope'] = 'all',
+  opts: { ttlDays?: number; tokenVersion?: number } = {},
 ): string {
   const secret = process.env.MEMBERS_TOKEN_SECRET
   if (!secret) throw new Error('MEMBERS_TOKEN_SECRET is not set')
 
+  const iat = Math.floor(Date.now() / 1000)
+  const ttlDays = opts.ttlDays ?? DEFAULT_TOKEN_TTL_DAYS
+
   const payload: MemberTokenPayload = {
     clientId,
     scope,
-    iat: Math.floor(Date.now() / 1000),
+    iat,
     v: 1,
+    exp: iat + ttlDays * 86_400,
+    tv: opts.tokenVersion ?? 1,
   }
 
   const encoded = base64urlEncode(JSON.stringify(payload))
@@ -81,6 +92,11 @@ export function verifyMemberToken(token: string): MemberTokenPayload | null {
   try {
     const payload = JSON.parse(base64urlDecode(encoded)) as MemberTokenPayload
     if (payload.v !== 1) return null
+    // Enforce expiry when present. Legacy tokens (no exp) remain valid so we
+    // never lock out clients issued before token TTLs existed.
+    if (typeof payload.exp === 'number' && Math.floor(Date.now() / 1000) > payload.exp) {
+      return null
+    }
     return payload
   } catch {
     return null
