@@ -111,9 +111,7 @@ export async function verifySession(
   ).toISOString();
 
   try {
-    const rows = await db<
-      { client_id: string; tv: number }[]
-    >`
+    const rows = (await db`
       UPDATE mr_sessions
       SET last_seen  = ${now},
           expires_at = ${newExpiry}
@@ -121,7 +119,7 @@ export async function verifySession(
         AND expires_at > ${now}
         AND revoked_at IS NULL
       RETURNING client_id, tv
-    `;
+    `) as { client_id: string; tv: number }[];
 
     if (!rows.length) return null;
     return { clientId: rows[0].client_id, tokenVersion: rows[0].tv };

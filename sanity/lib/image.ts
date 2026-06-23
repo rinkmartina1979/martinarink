@@ -15,3 +15,8 @@ export function urlForImage(
     return null
   }
 }
+
+/** Raw builder — use when you need width/height/crop control. */
+export function urlFor(source: { asset: { _ref: string } }) {
+  return builder.image(source)
+}
