@@ -20,6 +20,18 @@ export const STRIPE_PRODUCTS = {
     serviceDescription:
       'The Sober Muse Method — 3-month private mentoring programme, Monday to Friday. 4 sessions per month, daily written correspondence, and direct access during business hours.',
   },
+  soberMuse3m7days: {
+    stripeProductId: 'prod_UkL9QHFndFZH8z',
+    programme: 'sober-muse' as const,
+    name: 'The Sober Muse Mentorship — 3 months, 7 days/week',
+    shortLabel: '3 months · 7 days/week',
+    duration: '3 months',
+    format: '7days' as const,
+    price: 6500,
+    priceDisplay: '€6,500',
+    serviceDescription:
+      'The Sober Muse Method — 3-month private mentoring programme, 7 days a week. 4 sessions per month, daily written correspondence, and direct access 8 a.m.–10 p.m. every day.',
+  },
   soberMuse6mWeekdays: {
     stripeProductId: 'prod_UkL6o1RqoNWPP1',
     programme: 'sober-muse' as const,
@@ -77,6 +89,7 @@ export type ProgrammeId = 'sober-muse' | 'empowerment'
 
 export const SOBER_MUSE_TIERS = [
   STRIPE_PRODUCTS.soberMuse3mWeekdays,
+  STRIPE_PRODUCTS.soberMuse3m7days,
   STRIPE_PRODUCTS.soberMuse6mWeekdays,
   STRIPE_PRODUCTS.soberMuse6m7days,
 ] as const

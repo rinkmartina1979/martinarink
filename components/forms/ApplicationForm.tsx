@@ -287,6 +287,7 @@ const SOBER_MUSE_FIELDS: FormField[] = [
     type: "tier-radio",
     options: [
       { value: "3 months · weekdays only", label: "3 months, weekdays only", price: "€5,000" },
+      { value: "3 months · 7 days/week", label: "3 months, 7 days/week", price: "€6,500" },
       { value: "6 months · weekdays only", label: "6 months, weekdays only", price: "€10,000" },
       { value: "6 months · 7 days/week", label: "6 months, 7 days/week", price: "€13,000" },
       { value: "Not sure yet", label: "Not sure yet — I'd like to discuss", price: "" },

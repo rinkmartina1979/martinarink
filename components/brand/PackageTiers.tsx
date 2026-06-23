@@ -21,7 +21,7 @@ const TIERS = [
     description:
       "Support from 8 a.m. to 10 p.m., seven days a week. For women navigating something that does not observe office hours.",
     detail: "Daily · 8 a.m. – 10 p.m.",
-    priceFrom: "From €13,000",
+    priceFrom: "From €6,500",
     featured: true,
   },
   {
