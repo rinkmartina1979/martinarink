@@ -30,6 +30,17 @@ export interface MemberClientProfile {
   nextStepCtaLabel: string | null
   nextStepHref: string | null
   nextStepDueAt: string | null
+  // Billing & entitlement fields — written only by webhooks or Martina in Studio
+  stripeCustomerId: string | null
+  depositPaidAt: string | null
+  manualDepositPaidAt: string | null
+  finalFeeDueAt: string | null
+  finalFeePaidAt: string | null
+  manualFinalFeePaidAt: string | null
+  programmeActiveAt: string | null
+  programmeCompletedAt: string | null
+  accessSuspendedAt: string | null
+  adminAccessOverride: boolean | null
 }
 
 export interface MemberAudioDrop {
@@ -92,7 +103,17 @@ export async function getClientByToken(
         nextStepDescription,
         nextStepCtaLabel,
         nextStepHref,
-        nextStepDueAt
+        nextStepDueAt,
+        stripeCustomerId,
+        depositPaidAt,
+        manualDepositPaidAt,
+        finalFeeDueAt,
+        finalFeePaidAt,
+        manualFinalFeePaidAt,
+        programmeActiveAt,
+        programmeCompletedAt,
+        accessSuspendedAt,
+        adminAccessOverride
       }
       `,
       { clientId },

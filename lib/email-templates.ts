@@ -213,6 +213,7 @@ export interface ApplicationNotificationData {
   email: string;
   programme: string;
   programmeLabel: string;
+  tier: string;
   budgetTag: string;
   q1: string;
   q2: string;
@@ -227,7 +228,7 @@ export interface ApplicationNotificationData {
 export function applicationNotificationEmail(
   data: ApplicationNotificationData,
 ): { subject: string; html: string } {
-  const { firstName, email, programmeLabel, budgetTag, q1, q2, q3, q4, q5, submittedAt, acceptUrl } = data;
+  const { firstName, email, programmeLabel, tier, budgetTag, q1, q2, q3, q4, q5, submittedAt, acceptUrl } = data;
 
   const budgetColor =
     budgetTag === "READY"
@@ -272,6 +273,14 @@ export function applicationNotificationEmail(
           </td>
           <td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">
             <a href="mailto:${email}" style="font-size:15px;color:#5C2D8E;font-family:Arial,sans-serif;text-decoration:none;">${email}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">
+            <p style="margin:0;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A7F72;font-family:Arial,sans-serif;">Format</p>
+          </td>
+          <td style="padding:8px 0;border-bottom:1px solid #C8B8A2;">
+            <p style="margin:0;font-size:15px;color:#1E1B17;font-family:Arial,sans-serif;">${tier}</p>
           </td>
         </tr>
         <tr>

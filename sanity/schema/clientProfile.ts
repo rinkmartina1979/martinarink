@@ -171,5 +171,77 @@ export default defineType({
       validation: (Rule) =>
         Rule.warning('This note is private and never shown to the client.'),
     }),
+
+    // ── Billing & entitlement (written only by Stripe webhooks or Martina in Studio) ──
+    defineField({
+      name: 'stripeCustomerId',
+      title: 'Stripe customer ID',
+      type: 'string',
+      description: 'Set at checkout — used to create billing-portal sessions and attach invoices.',
+      readOnly: true,
+    }),
+    defineField({
+      name: 'depositPaidAt',
+      title: 'Deposit paid at',
+      type: 'datetime',
+      description: 'Set by Stripe webhook (checkout.session.completed). Never set manually — use manualDepositPaidAt instead.',
+      readOnly: true,
+    }),
+    defineField({
+      name: 'manualDepositPaidAt',
+      title: 'Manual deposit paid at',
+      type: 'datetime',
+      description: 'Use when payment received outside Stripe (bank transfer, etc.). Treated identically to depositPaidAt for access.',
+    }),
+    defineField({
+      name: 'finalFeeDueAt',
+      title: 'Final fee due at',
+      type: 'datetime',
+      description: 'Set by Martina when issuing the final-fee Stripe invoice.',
+    }),
+    defineField({
+      name: 'finalFeePaidAt',
+      title: 'Final fee paid at',
+      type: 'datetime',
+      description: 'Set by Stripe webhook (invoice.paid). Never set manually — use manualFinalFeePaidAt instead.',
+      readOnly: true,
+    }),
+    defineField({
+      name: 'manualFinalFeePaidAt',
+      title: 'Manual final fee paid at',
+      type: 'datetime',
+      description: 'Use when final fee received outside Stripe. Treated identically to finalFeePaidAt.',
+    }),
+    defineField({
+      name: 'programmeStartDate',
+      title: 'Programme start date',
+      type: 'date',
+      description: 'Confirmed kickoff date.',
+    }),
+    defineField({
+      name: 'programmeActiveAt',
+      title: 'Programme active at',
+      type: 'datetime',
+      description: 'Set when the programme formally begins (admin-confirmed or invoice-triggered). Grants programme-level portal access.',
+    }),
+    defineField({
+      name: 'programmeCompletedAt',
+      title: 'Programme completed at',
+      type: 'datetime',
+      description: 'Set when the programme concludes. Portal moves to archived view.',
+    }),
+    defineField({
+      name: 'accessSuspendedAt',
+      title: 'Access suspended at',
+      type: 'datetime',
+      description: 'Hard kill-switch. Overrides all other access. Set to block ALL portal access immediately (e.g. dispute, safeguarding).',
+    }),
+    defineField({
+      name: 'adminAccessOverride',
+      title: 'Admin access override',
+      type: 'boolean',
+      description: 'Grants full portal + programme access without payment (scholarship, comp, manual arrangement). Use sparingly.',
+      initialValue: false,
+    }),
   ],
 })

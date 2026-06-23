@@ -19,6 +19,7 @@ import {
 const ApplySchema = z.object({
   firstName: z.string().min(1),
   email: z.string().email(),
+  tier: z.string().min(1),
   q1: z.string().min(10),
   q2: z.string().min(10),
   q3: z.string().min(1),
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { firstName, email, q1, q2, q3, q4, q5, programme } = parsed.data;
+  const { firstName, email, tier, q1, q2, q3, q4, q5, programme } = parsed.data;
 
   // Derive a quick-glance budget tag for the notification
   const budgetTag = q5.startsWith("Yes —")
@@ -88,6 +89,7 @@ export async function POST(req: NextRequest) {
       email,
       programme,
       programmeLabel,
+      tier,
       budgetTag,
       q1,
       q2,
@@ -146,6 +148,7 @@ export async function POST(req: NextRequest) {
           SOURCE:               "application",
           APPLICATION_STATUS:   "submitted",
           APPLICATION_PROGRAMME: programme,
+          APPLICATION_TIER:     tier,
           BUDGET_READINESS:     budgetTag,
         },
       }).catch((err) => console.error("[Apply] Brevo contact failed:", err))
@@ -164,11 +167,13 @@ export async function POST(req: NextRequest) {
       properties: {
         programme,
         programme_label: programmeLabel,
+        tier,
         budget_readiness: budgetTag,
       },
       contactProperties: {
         FIRSTNAME: firstName,
         APPLICATION_PROGRAMME: programme,
+        APPLICATION_TIER: tier,
         APPLICATION_STATUS: "submitted",
         BUDGET_READINESS: budgetTag,
       },

@@ -14,6 +14,8 @@ import { JournalStatusCard } from "@/components/portal/JournalStatusCard";
 import { SessionCard } from "@/components/portal/SessionCard";
 import { ResourceShelf } from "@/components/portal/ResourceShelf";
 import { SupportRequestCard } from "@/components/portal/SupportRequestCard";
+import { BillingCard } from "@/components/portal/BillingCard";
+import { deriveEntitlement } from "@/lib/members/entitlements";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -51,6 +53,15 @@ interface VerifyResponse {
   nextStepCtaLabel?: string | null;
   nextStepHref?: string | null;
   nextStepDueAt?: string | null;
+  depositPaidAt?: string | null;
+  manualDepositPaidAt?: string | null;
+  finalFeeDueAt?: string | null;
+  finalFeePaidAt?: string | null;
+  manualFinalFeePaidAt?: string | null;
+  programmeActiveAt?: string | null;
+  programmeCompletedAt?: string | null;
+  accessSuspendedAt?: string | null;
+  adminAccessOverride?: boolean | null;
 }
 
 function formatDate(iso: string): string {
@@ -174,6 +185,19 @@ export default async function MembersPage({ params }: MembersPageProps) {
 
   const { clientId, firstName, programme, enrolledAt, portalStage } = verify;
 
+  const billingFields = {
+    depositPaidAt: verify.depositPaidAt ?? null,
+    manualDepositPaidAt: verify.manualDepositPaidAt ?? null,
+    finalFeeDueAt: verify.finalFeeDueAt ?? null,
+    finalFeePaidAt: verify.finalFeePaidAt ?? null,
+    manualFinalFeePaidAt: verify.manualFinalFeePaidAt ?? null,
+    programmeActiveAt: verify.programmeActiveAt ?? null,
+    programmeCompletedAt: verify.programmeCompletedAt ?? null,
+    accessSuspendedAt: verify.accessSuspendedAt ?? null,
+    adminAccessOverride: verify.adminAccessOverride ?? null,
+  };
+  const entitlement = deriveEntitlement(billingFields);
+
   const [drops, milestones, progress] = await Promise.all([
     programme ? getAudioDropsForClient(clientId, programme) : Promise.resolve(null),
     getMilestonesForClient(clientId),
@@ -230,6 +254,10 @@ export default async function MembersPage({ params }: MembersPageProps) {
           />
           <SessionCard calendlyUrl={calendlyUrl} />
         </div>
+
+        {entitlement.portalAccess && (
+          <BillingCard token={token} billing={billingFields} variant="summary" />
+        )}
 
         <ResourceShelf drops={drops} token={token} />
 

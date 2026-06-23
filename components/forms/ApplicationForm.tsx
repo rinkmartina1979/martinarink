@@ -11,11 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const baseSchema = z.object({
   firstName: z.string().min(1, "Please enter your first name."),
   email: z.string().email("Please enter a valid email address."),
+  tier: z.string().min(1, "Please select a programme format."),
   q1: z.string().min(20, "Please tell us a little more — at least a sentence."),
   q2: z.string().min(20, "Please tell us a little more — at least a sentence."),
   q3: z.string().min(1, "Please make a selection."),
   q4: z.string().min(10, "Please share a little more."),
-  // Budget readiness — qualifies fit before the call. Honest filter, not gatekeeping.
   q5: z.string().min(1, "Please make a selection."),
   consent: z.literal(true, {
     error: "Please confirm you have read the privacy note.",
@@ -27,10 +27,70 @@ type BaseFormValues = z.infer<typeof baseSchema>;
 interface FormField {
   id: keyof BaseFormValues;
   label: string;
-  type: "text" | "email" | "textarea" | "select" | "checkbox";
+  type: "text" | "email" | "textarea" | "select" | "checkbox" | "tier-radio";
   placeholder?: string;
-  options?: string[];
+  options?: Array<{ value: string; label: string; price: string }> | string[];
   required?: boolean;
+}
+
+// ── Tier radio group ──────────────────────────────────────────
+
+function TierRadioGroup({
+  options,
+  value,
+  onChange,
+  error,
+}: {
+  options: Array<{ value: string; label: string; price: string }>;
+  value: string;
+  onChange: (v: string) => void;
+  error?: string;
+}) {
+  return (
+    <div>
+      <div className="space-y-3" role="radiogroup">
+        {options.map((opt) => (
+          <label
+            key={opt.value}
+            className={[
+              "flex items-center justify-between gap-4 px-4 py-3.5 border cursor-pointer transition-colors duration-150 rounded-[1px]",
+              value === opt.value
+                ? "border-plum bg-plum/5"
+                : "border-sand bg-cream hover:border-ink-soft",
+            ].join(" ")}
+          >
+            <span className="flex items-center gap-3">
+              <span
+                className={[
+                  "w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 transition-colors",
+                  value === opt.value ? "border-plum bg-plum" : "border-sand",
+                ].join(" ")}
+                aria-hidden
+              />
+              <span className="text-[14px] text-ink font-[family-name:var(--font-body)]">
+                {opt.label}
+              </span>
+            </span>
+            <span className="text-[13px] text-ink-quiet font-[family-name:var(--font-body)] flex-shrink-0">
+              {opt.price}
+            </span>
+            <input
+              type="radio"
+              className="sr-only"
+              value={opt.value}
+              checked={value === opt.value}
+              onChange={() => onChange(opt.value)}
+            />
+          </label>
+        ))}
+      </div>
+      {error && (
+        <p role="alert" aria-live="polite" className="mt-2 text-[13px] text-plum">
+          {error}
+        </p>
+      )}
+    </div>
+  );
 }
 
 // ── Shared form shell ─────────────────────────────────────────
@@ -50,10 +110,14 @@ function ApplicationFormShell({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<BaseFormValues>({
     resolver: zodResolver(baseSchema),
   });
+
+  const tierValue = watch("tier") ?? "";
 
   const onSubmit = async (data: BaseFormValues) => {
     setServerError("");
@@ -67,9 +131,6 @@ function ApplicationFormShell({
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.error ?? "Something went wrong. Please try again.");
       }
-      // Redirect to the dedicated application thank-you page —
-      // gives applicants weight-appropriate acknowledgement, sets 48hr
-      // expectation, and bridges the silent wait with reading material.
       router.push("/thank-you/application");
     } catch (err: unknown) {
       setServerError(
@@ -82,15 +143,28 @@ function ApplicationFormShell({
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-8">
       {fields.map((field) => (
         <div key={field.id}>
-          <label
-            htmlFor={`field-${field.id}`}
-            className="block text-[12px] tracking-[0.18em] uppercase text-ink-quiet mb-2"
-          >
-            {field.label}
-            {field.required !== false && (
-              <span className="text-plum ml-1">*</span>
-            )}
-          </label>
+          {field.type !== "checkbox" && (
+            <label
+              htmlFor={`field-${field.id}`}
+              className="block text-[12px] tracking-[0.18em] uppercase text-ink-quiet mb-2"
+            >
+              {field.label}
+              {field.required !== false && (
+                <span className="text-plum ml-1">*</span>
+              )}
+            </label>
+          )}
+
+          {field.type === "tier-radio" && (
+            <TierRadioGroup
+              options={
+                (field.options as Array<{ value: string; label: string; price: string }>) ?? []
+              }
+              value={tierValue}
+              onChange={(v) => setValue("tier", v, { shouldValidate: true })}
+              error={errors.tier?.message}
+            />
+          )}
 
           {field.type === "textarea" && (
             <textarea
@@ -150,7 +224,7 @@ function ApplicationFormShell({
               {...register(field.id)}
             >
               <option value="">Select one…</option>
-              {field.options.map((opt) => (
+              {(field.options as string[]).map((opt) => (
                 <option key={opt} value={opt}>
                   {opt}
                 </option>
@@ -173,7 +247,7 @@ function ApplicationFormShell({
             </label>
           )}
 
-          {errors[field.id] && (
+          {field.type !== "tier-radio" && errors[field.id] && (
             <p
               role="alert"
               aria-live="polite"
@@ -194,7 +268,7 @@ function ApplicationFormShell({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-12 py-4 rounded-[1px] hover:bg-plum-deep transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-12 py-4 rounded-[1px] hover:bg-plum-deep transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
         {isSubmitting ? "Sending…" : submitLabel}
       </button>
@@ -207,6 +281,17 @@ function ApplicationFormShell({
 const SOBER_MUSE_FIELDS: FormField[] = [
   { id: "firstName", label: "First name", type: "text", placeholder: "Your first name" },
   { id: "email", label: "Email address", type: "email", placeholder: "you@example.com" },
+  {
+    id: "tier",
+    label: "Programme format",
+    type: "tier-radio",
+    options: [
+      { value: "3 months · weekdays only", label: "3 months, weekdays only", price: "€5,000" },
+      { value: "6 months · weekdays only", label: "6 months, weekdays only", price: "€10,000" },
+      { value: "6 months · 7 days/week", label: "6 months, 7 days/week", price: "€13,000" },
+      { value: "Not sure yet", label: "Not sure yet — I'd like to discuss", price: "" },
+    ],
+  },
   {
     id: "q1",
     label: "What brought you to this programme?",
@@ -244,7 +329,7 @@ const SOBER_MUSE_FIELDS: FormField[] = [
     label: "Investment readiness",
     type: "select",
     options: [
-      "Yes — I'm ready to invest €5,000–€7,500 in the next 90 days",
+      "Yes — I'm ready to invest €5,000 – €13,000",
       "Yes, with a payment plan",
       "Not at this time — I'd like to begin with the newsletter",
     ],
@@ -261,6 +346,16 @@ const SOBER_MUSE_FIELDS: FormField[] = [
 const EMPOWERMENT_FIELDS: FormField[] = [
   { id: "firstName", label: "First name", type: "text", placeholder: "Your first name" },
   { id: "email", label: "Email address", type: "email", placeholder: "you@example.com" },
+  {
+    id: "tier",
+    label: "Programme format",
+    type: "tier-radio",
+    options: [
+      { value: "3 months", label: "3 months", price: "€7,000" },
+      { value: "6 months", label: "6 months", price: "€14,000" },
+      { value: "Not sure yet", label: "Not sure yet — I'd like to discuss", price: "" },
+    ],
+  },
   {
     id: "q1",
     label: "What is the gap you are trying to close?",
@@ -298,7 +393,7 @@ const EMPOWERMENT_FIELDS: FormField[] = [
     label: "Investment readiness",
     type: "select",
     options: [
-      "Yes — I'm ready to invest €5,000–€7,500 in the next 90 days",
+      "Yes — I'm ready to invest €7,000 – €14,000",
       "Yes, with a payment plan",
       "Not at this time — I'd like to begin with the newsletter",
     ],

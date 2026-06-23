@@ -8,13 +8,13 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { stripe, hasStripe } from '@/lib/stripe'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
-  const stripeKey = process.env.STRIPE_SECRET_KEY
-  if (!stripeKey) {
+  if (!hasStripe(stripe)) {
     return NextResponse.json(
       { error: 'Payment not configured — STRIPE_SECRET_KEY is missing' },
       { status: 503 },
@@ -30,14 +30,28 @@ export async function POST(req: NextRequest) {
 
   const { email, programme } = body
 
-  const stripe = new Stripe(stripeKey, { apiVersion: '2026-04-22.dahlia' })
-
   const origin =
     req.headers.get('origin') ||
     process.env.NEXT_PUBLIC_SITE_URL ||
     'https://martinarink.com'
 
   try {
+    // Create a Stripe Customer so the billing portal can be used later.
+    // If an email is supplied, search for an existing Customer first to avoid duplicates.
+    let customerId: string | undefined
+    if (email) {
+      const existing = await stripe.customers.list({ email, limit: 1 })
+      if (existing.data.length > 0) {
+        customerId = existing.data[0].id
+      } else {
+        const customer = await stripe.customers.create({
+          email,
+          metadata: { programme: programme || '', source: 'consultation-deposit' },
+        })
+        customerId = customer.id
+      }
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [
@@ -56,10 +70,11 @@ export async function POST(req: NextRequest) {
       ],
       success_url: `${origin}/book/calendly?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/book?token=approved&cancelled=1`,
-      ...(email ? { customer_email: email } : {}),
+      ...(customerId ? { customer: customerId } : email ? { customer_email: email } : {}),
       metadata: {
         programme: programme || '',
         source: 'consultation-deposit',
+        ...(customerId ? { stripeCustomerId: customerId } : {}),
       },
       allow_promotion_codes: false,
     })

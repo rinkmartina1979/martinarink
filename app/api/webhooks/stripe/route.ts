@@ -4,21 +4,18 @@
  * Handles Stripe webhook events.
  *
  * Events handled:
- *   - checkout.session.completed
+ *   - checkout.session.completed → sets depositPaidAt + stripeCustomerId on clientProfile
+ *   - invoice.paid              → sets finalFeePaidAt on clientProfile
  *
- * On payment confirmed:
- *   1. Fire Brevo event (consultation_deposit_paid)
- *   2. Update Brevo contact attributes
- *   3. Send Resend confirmation email to the client
- *
- * Uses raw body for Stripe signature verification — same pattern as
- * the Calendly webhook route.
+ * Pattern: fast 2xx immediately, then waitUntil for side effects (Brevo, Resend, Sanity).
+ * All Sanity writes are idempotent (setIfMissing for paid timestamps).
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { waitUntil } from '@vercel/functions'
 import { trackBrevoEvent, addBrevoContact } from '@/lib/brevo'
+import { writeClient, hasWriteClient } from '@/sanity/lib/writeClient'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -66,7 +63,6 @@ async function sendDepositConfirmation(
       body: JSON.stringify({
         from: `Martina Rink <${fromEmail}>`,
         to: [email],
-        // Archive copy → Martina receives a copy of the deposit confirmation.
         ...(archiveEmail && { bcc: [archiveEmail] }),
         subject: 'Deposit received — consultation confirmed',
         html,
@@ -77,25 +73,80 @@ async function sendDepositConfirmation(
   }
 }
 
+/**
+ * Patch depositPaidAt + stripeCustomerId on the clientProfile that matches
+ * this email. Uses setIfMissing so repeated events are safe.
+ */
+async function patchDepositPaid(
+  email: string,
+  stripeCustomerId: string | null,
+  paidAt: string,
+): Promise<void> {
+  if (!hasWriteClient(writeClient)) return
+  try {
+    const profile = await writeClient.fetch<{ _id: string } | null>(
+      `*[_type == "clientProfile" && email == $email][0] { _id }`,
+      { email },
+    )
+    if (!profile) {
+      console.warn('[stripe webhook] No clientProfile found for email:', email)
+      return
+    }
+    const patch = writeClient.patch(profile._id).setIfMissing({ depositPaidAt: paidAt })
+    if (stripeCustomerId) patch.setIfMissing({ stripeCustomerId })
+    await patch.commit()
+  } catch (err) {
+    console.error('[stripe webhook] Sanity deposit patch failed:', err)
+  }
+}
+
+/**
+ * Patch finalFeePaidAt on the clientProfile whose stripeCustomerId matches.
+ * Falls back to email lookup if customer metadata is available.
+ */
+async function patchFinalFeePaid(
+  stripeCustomerId: string | null,
+  customerEmail: string | null,
+  paidAt: string,
+): Promise<void> {
+  if (!hasWriteClient(writeClient)) return
+  try {
+    let profile: { _id: string } | null = null
+
+    if (stripeCustomerId) {
+      profile = await writeClient.fetch<{ _id: string } | null>(
+        `*[_type == "clientProfile" && stripeCustomerId == $cid][0] { _id }`,
+        { cid: stripeCustomerId },
+      )
+    }
+    if (!profile && customerEmail) {
+      profile = await writeClient.fetch<{ _id: string } | null>(
+        `*[_type == "clientProfile" && email == $email][0] { _id }`,
+        { email: customerEmail },
+      )
+    }
+    if (!profile) {
+      console.warn('[stripe webhook] No clientProfile found for final-fee invoice')
+      return
+    }
+    await writeClient.patch(profile._id).setIfMissing({ finalFeePaidAt: paidAt }).commit()
+  } catch (err) {
+    console.error('[stripe webhook] Sanity final-fee patch failed:', err)
+  }
+}
+
 export async function POST(req: NextRequest) {
   const stripeKey = process.env.STRIPE_SECRET_KEY
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
   if (!stripeKey) {
-    return NextResponse.json(
-      { error: 'STRIPE_SECRET_KEY not configured' },
-      { status: 503 },
-    )
+    return NextResponse.json({ error: 'STRIPE_SECRET_KEY not configured' }, { status: 503 })
   }
-
   if (!webhookSecret) {
-    return NextResponse.json(
-      { error: 'STRIPE_WEBHOOK_SECRET not configured' },
-      { status: 503 },
-    )
+    return NextResponse.json({ error: 'STRIPE_WEBHOOK_SECRET not configured' }, { status: 503 })
   }
 
-  const stripe = new Stripe(stripeKey, { apiVersion: '2026-04-22.dahlia' })
+  const stripeClient = new Stripe(stripeKey, { apiVersion: '2026-04-22.dahlia' })
 
   const rawBody = await req.text()
   const sig = req.headers.get('stripe-signature')
@@ -106,32 +157,31 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret)
+    event = stripeClient.webhooks.constructEvent(rawBody, sig, webhookSecret)
   } catch (err) {
     console.warn('[stripe webhook] Signature verification failed:', err)
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
+  // ── checkout.session.completed → deposit paid ─────────────────
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
 
-    // Only act on confirmed payments
     if (session.payment_status !== 'paid') {
       return NextResponse.json({ ok: true, skipped: 'not_paid' })
     }
 
-    // Resolve customer email.
-    // Priority: customer_details.email (always set after checkout) →
-    //           customer_email (pre-fill, only set if passed at session creation) →
-    //           Customer object email (only if customer_creation: 'always')
     let email =
       session.customer_details?.email ??
       session.customer_email ??
       ''
 
-    if (!email && session.customer && typeof session.customer === 'string') {
+    const stripeCustomerId =
+      typeof session.customer === 'string' ? session.customer : null
+
+    if (!email && stripeCustomerId) {
       try {
-        const customer = await stripe.customers.retrieve(session.customer)
+        const customer = await stripeClient.customers.retrieve(stripeCustomerId)
         if (!customer.deleted && customer.email) {
           email = customer.email
         }
@@ -146,8 +196,18 @@ export async function POST(req: NextRequest) {
     }
 
     const programme = (session.metadata?.programme as string) || ''
-
     const depositPaidAt = new Date().toISOString()
+
+    const firstName =
+      typeof session.customer_details?.name === 'string'
+        ? session.customer_details.name.split(' ')[0]
+        : ''
+
+    waitUntil(
+      patchDepositPaid(email, stripeCustomerId, depositPaidAt).catch((err) =>
+        console.error('[stripe webhook] Sanity patch failed:', err),
+      ),
+    )
 
     waitUntil(
       trackBrevoEvent({
@@ -158,7 +218,7 @@ export async function POST(req: NextRequest) {
           DEPOSIT_PAID: true,
           DEPOSIT_PAID_AT: depositPaidAt,
         },
-      }).catch((err) => console.error('[stripe webhook] Brevo event failed:', err))
+      }).catch((err) => console.error('[stripe webhook] Brevo event failed:', err)),
     )
 
     waitUntil(
@@ -169,18 +229,28 @@ export async function POST(req: NextRequest) {
           DEPOSIT_PAID_AT: depositPaidAt,
         },
         updateEnabled: true,
-      }).catch((err) => console.error('[stripe webhook] Brevo contact update failed:', err))
+      }).catch((err) => console.error('[stripe webhook] Brevo contact update failed:', err)),
     )
-
-    const firstName =
-      typeof session.customer_details?.name === 'string'
-        ? session.customer_details.name.split(' ')[0]
-        : ''
 
     waitUntil(
       sendDepositConfirmation(email, firstName).catch((err) =>
         console.error('[stripe webhook] Confirmation email failed:', err),
-      )
+      ),
+    )
+  }
+
+  // ── invoice.paid → final fee paid ────────────────────────────
+  if (event.type === 'invoice.paid') {
+    const invoice = event.data.object as Stripe.Invoice
+    const stripeCustomerId =
+      typeof invoice.customer === 'string' ? invoice.customer : null
+    const customerEmail = invoice.customer_email ?? null
+    const finalFeePaidAt = new Date().toISOString()
+
+    waitUntil(
+      patchFinalFeePaid(stripeCustomerId, customerEmail, finalFeePaidAt).catch((err) =>
+        console.error('[stripe webhook] Final-fee patch failed:', err),
+      ),
     )
   }
 

@@ -1,9 +1,9 @@
 /**
- * PackageTiers — three engagement formats presented in Martina's brand voice.
+ * PackageTiers — three engagement formats with pricing.
  *
- * Weekday     Mon–Fri, structured schedule
- * The open line   Daily 8 a.m.–10 p.m., seven days
- * Alongside   In-person, travel, worldwide
+ * Weekday       Mon–Fri · from €5,000 (Sober Muse) / from €7,000 (Empowerment)
+ * The open line Daily 8 a.m.–10 p.m., seven days · from €13,000
+ * Alongside     In-person, travel, worldwide · by arrangement
  */
 
 const TIERS = [
@@ -13,6 +13,7 @@ const TIERS = [
     description:
       "Sessions and correspondence Monday to Friday. For women who prefer the work to live inside existing rhythms — contained, unhurried, and precise.",
     detail: "Weekdays only · video or in person",
+    priceFrom: "From €5,000",
   },
   {
     name: "The open line",
@@ -20,6 +21,7 @@ const TIERS = [
     description:
       "Support from 8 a.m. to 10 p.m., seven days a week. For women navigating something that does not observe office hours.",
     detail: "Daily · 8 a.m. – 10 p.m.",
+    priceFrom: "From €13,000",
     featured: true,
   },
   {
@@ -28,6 +30,7 @@ const TIERS = [
     description:
       "In-person sessions, travel, and worldwide meetings. For women who want the work to be genuinely close — in the room, in the city, on the road.",
     detail: "In person · travel · worldwide",
+    priceFrom: "By arrangement",
   },
 ];
 
@@ -86,6 +89,14 @@ export function PackageTiers({ surface = "cream" }: PackageTiersProps) {
             isDark ? "text-cream/35" : "text-ink-quiet",
           ].join(" ")}>
             {tier.detail}
+          </p>
+
+          {/* Price */}
+          <p className={[
+            "text-[13px] font-[family-name:var(--font-body)] border-t pt-4",
+            isDark ? "text-cream/55 border-cream/10" : "text-ink-soft border-sand/40",
+          ].join(" ")}>
+            {tier.priceFrom}
           </p>
         </div>
       ))}

@@ -19,7 +19,9 @@ export const SITE = {
   pricing: {
     consultation: "€350",
     soberMuseFrom: "from €5,000",
-    empowermentFrom: "from €7,500",
+    empowermentFrom: "from €7,000",
+    soberMuseRange: "€5,000 – €13,000",
+    empowermentRange: "€7,000 – €14,000",
   },
   assessment: {
     count: 10,

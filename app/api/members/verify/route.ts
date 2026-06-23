@@ -66,5 +66,16 @@ export async function POST(req: NextRequest) {
     nextStepCtaLabel: client.nextStepCtaLabel ?? null,
     nextStepHref: client.nextStepHref ?? null,
     nextStepDueAt: client.nextStepDueAt ?? null,
+    // Entitlement fields — used server-side by billing page; never gate access on these alone
+    depositPaidAt: client.depositPaidAt ?? null,
+    manualDepositPaidAt: client.manualDepositPaidAt ?? null,
+    finalFeeDueAt: client.finalFeeDueAt ?? null,
+    finalFeePaidAt: client.finalFeePaidAt ?? null,
+    manualFinalFeePaidAt: client.manualFinalFeePaidAt ?? null,
+    programmeActiveAt: client.programmeActiveAt ?? null,
+    programmeCompletedAt: client.programmeCompletedAt ?? null,
+    accessSuspendedAt: client.accessSuspendedAt ?? null,
+    adminAccessOverride: client.adminAccessOverride ?? null,
+    // stripeCustomerId is NOT returned — used server-side only
   })
 }
