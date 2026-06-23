@@ -323,6 +323,121 @@ export async function getJournalMonthProgress(
   }
 }
 
+/* ─── P2: Care Team + Programme + Resources ─────────────────── */
+
+export interface CareTeamMember {
+  _id: string
+  name: string
+  role: string
+  bio: string
+  photo: { asset: { _ref: string }; alt?: string } | null
+  availability: string | null
+  sortOrder: number
+}
+
+export interface ProgrammeDefinition {
+  _id: string
+  name: string
+  programmeId: string
+  tagline: string | null
+  durationDisplay: string | null
+  includedItems: string[] | null
+}
+
+export interface ProgrammeResource {
+  _id: string
+  title: string
+  description: string | null
+  type: 'document' | 'workbook' | 'link' | 'video'
+  assetUrl: string | null
+  externalUrl: string | null
+  programme: string
+  publishedAt: string
+}
+
+export async function getCareTeamForProgramme(
+  programme: string,
+): Promise<CareTeamMember[] | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<CareTeamMember[]>(
+      `
+      *[
+        _type == "careTeamMember" &&
+        (programme == $programme || programme == "both")
+      ] | order(sortOrder asc) {
+        _id,
+        name,
+        role,
+        bio,
+        photo { asset, alt },
+        availability,
+        sortOrder
+      }
+      `,
+      { programme },
+    )
+  } catch {
+    return null
+  }
+}
+
+export async function getProgrammeDefinition(
+  programmeId: string,
+): Promise<ProgrammeDefinition | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<ProgrammeDefinition | null>(
+      `
+      *[_type == "programme" && programmeId == $programmeId][0] {
+        _id,
+        name,
+        programmeId,
+        tagline,
+        durationDisplay,
+        includedItems
+      }
+      `,
+      { programmeId },
+    )
+  } catch {
+    return null
+  }
+}
+
+export async function getProgrammeResources(
+  programme: string,
+  portalStage: string,
+  clientSanityId: string,
+): Promise<ProgrammeResource[] | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<ProgrammeResource[]>(
+      `
+      *[
+        _type == "programmeResource" &&
+        publishedAt <= now() &&
+        (programme == $programme || programme == "both") &&
+        (count(gatedByStage) == 0 || $portalStage in gatedByStage) &&
+        (count(visibleTo) == 0 || $clientSanityId in visibleTo[]._ref)
+      ] | order(publishedAt desc) {
+        _id,
+        title,
+        description,
+        type,
+        "assetUrl": asset.asset->url,
+        externalUrl,
+        programme,
+        publishedAt
+      }
+      `,
+      { programme, portalStage, clientSanityId },
+    )
+  } catch {
+    return null
+  }
+}
+
 export async function getVisibleCaseStudies(): Promise<MemberCaseStudy[] | null> {
   if (!IS_SANITY_CONFIGURED) return null
   try {

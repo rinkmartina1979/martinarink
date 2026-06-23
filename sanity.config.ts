@@ -338,6 +338,31 @@ export default defineConfig({
                           .title('Recently Active')
                           .defaultOrdering([{ field: 'lastUsedAt', direction: 'desc' }]),
                       ),
+                    S.divider(),
+                    S.listItem()
+                      .title('Care Team')
+                      .icon(UserIcon)
+                      .child(
+                        S.documentTypeList('careTeamMember')
+                          .title('Care Team')
+                          .defaultOrdering([{ field: 'sortOrder', direction: 'asc' }]),
+                      ),
+                    S.listItem()
+                      .title('Programme Definitions')
+                      .icon(DocumentTextIcon)
+                      .child(
+                        S.documentTypeList('programme')
+                          .title('Programmes')
+                          .defaultOrdering([{ field: 'name', direction: 'asc' }]),
+                      ),
+                    S.listItem()
+                      .title('Programme Resources')
+                      .icon(DocumentTextIcon)
+                      .child(
+                        S.documentTypeList('programmeResource')
+                          .title('Programme Resources')
+                          .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }]),
+                      ),
                   ]),
               ),
 

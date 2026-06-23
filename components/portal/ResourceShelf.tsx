@@ -39,9 +39,9 @@ export function ResourceShelf({
         </ul>
       )}
 
-      {drops && drops.length > 4 && (
+      {drops && drops.length >= 4 && (
         <Link
-          href={`/members/${token}/audio`}
+          href={`/members/${token}/resources`}
           className="mt-5 inline-block text-[13px] text-plum hover:text-plum-deep transition-colors"
         >
           All resources →

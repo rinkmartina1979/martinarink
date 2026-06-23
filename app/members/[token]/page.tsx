@@ -4,6 +4,8 @@ import {
   getAudioDropsForClient,
   getMilestonesForClient,
   getJournalMonthProgress,
+  getCareTeamForProgramme,
+  getProgrammeDefinition,
   type MemberAudioDrop,
 } from "@/sanity/lib/membersQueries";
 import { monthIndexFor, toDateKey } from "@/lib/journal/prompts";
@@ -15,6 +17,8 @@ import { SessionCard } from "@/components/portal/SessionCard";
 import { ResourceShelf } from "@/components/portal/ResourceShelf";
 import { SupportRequestCard } from "@/components/portal/SupportRequestCard";
 import { BillingCard } from "@/components/portal/BillingCard";
+import { ProgrammeCard } from "@/components/portal/ProgrammeCard";
+import { CareTeamBlock } from "@/components/portal/CareTeamBlock";
 import { deriveEntitlement } from "@/lib/members/entitlements";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -198,14 +202,15 @@ export default async function MembersPage({ params }: MembersPageProps) {
   };
   const entitlement = deriveEntitlement(billingFields);
 
-  const [drops, milestones, progress] = await Promise.all([
+  const [drops, milestones, progress, careTeam, programmeDef] = await Promise.all([
     programme ? getAudioDropsForClient(clientId, programme) : Promise.resolve(null),
     getMilestonesForClient(clientId),
     getJournalMonthProgress(clientId),
+    programme ? getCareTeamForProgramme(programme) : Promise.resolve(null),
+    programme ? getProgrammeDefinition(programme) : Promise.resolve(null),
   ]);
 
   const journalHref = `/members/${token}/journal`;
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/martinarink";
   const monthIndex = enrolledAt ? monthIndexFor(enrolledAt, toDateKey(new Date())) : 1;
   const latestMilestones = (milestones ?? []).slice(0, 5);
 
@@ -245,6 +250,15 @@ export default async function MembersPage({ params }: MembersPageProps) {
 
         <CurrentStageTimeline portalStage={portalStage ?? null} />
 
+        {programmeDef && (
+          <ProgrammeCard
+            programme={programmeDef}
+            enrolledAt={verify.enrolledAt ?? null}
+            expectedCompletionAt={verify.expectedCompletionAt ?? null}
+            token={token}
+          />
+        )}
+
         <div className="grid md:grid-cols-2 gap-6">
           <JournalStatusCard
             monthIndex={monthIndex}
@@ -252,7 +266,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
             evenings={progress.evenings}
             href={journalHref}
           />
-          <SessionCard calendlyUrl={calendlyUrl} />
+          <SessionCard token={token} />
         </div>
 
         {entitlement.portalAccess && (
@@ -262,6 +276,10 @@ export default async function MembersPage({ params }: MembersPageProps) {
         <ResourceShelf drops={drops} token={token} />
 
         <SupportRequestCard token={token} />
+
+        {careTeam && careTeam.length > 0 && (
+          <CareTeamBlock members={careTeam} />
+        )}
 
         {latestMilestones.length > 0 && (
           <section className="pt-4">

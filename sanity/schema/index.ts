@@ -47,6 +47,11 @@ import portalAuditEvent from './portalAuditEvent'
 import sessionRequest from './sessionRequest'
 import clientUpdate from './clientUpdate'
 
+// Documents — Portal P2: Programme + Care Team + Resources
+import careTeamMember from './careTeamMember'
+import programmeResource from './programmeResource'
+import programme from './programme'
+
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects (must come before document types that reference them)
   seoMeta,
@@ -92,4 +97,9 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   portalAuditEvent,
   sessionRequest,
   clientUpdate,
+
+  // Documents — Portal P2: Programme + Care Team + Resources
+  careTeamMember,
+  programmeResource,
+  programme,
 ]
