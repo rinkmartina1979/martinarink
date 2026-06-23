@@ -17,6 +17,7 @@ import { writeClient, hasWriteClient } from "@/sanity/lib/writeClient";
 import { generateMemberToken } from "@/lib/members/token";
 import { portalInvitationEmail } from "@/lib/email-templates";
 import { logAuditEvent, clientIp } from "@/lib/members/audit";
+import { checkRateLimit, emailRateLimitKey, ipRateLimitKey } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,7 +81,16 @@ export async function POST(req: NextRequest) {
   const email = (parsed.data.email ?? "").trim().toLowerCase();
   if (!email) return GENERIC;
 
-  // ── Rate limiting (last hour), by email and IP ──
+  // ── Rate limiting — KV atomic counters (primary), Sanity counts (fallback) ──
+  const HOUR_SECS = 3600;
+  const kvEmailAllowed = await checkRateLimit(emailRateLimitKey(email), PER_EMAIL_HOUR, HOUR_SECS);
+  const kvIpAllowed = await checkRateLimit(ipRateLimitKey(ip), PER_IP_HOUR, HOUR_SECS);
+  if (!kvEmailAllowed || !kvIpAllowed) {
+    await record(wc, email, ip, ua, "rate-limited");
+    return GENERIC;
+  }
+
+  // Sanity fallback: still counts even when KV allowed (belt-and-suspenders)
   const sinceIso = new Date(Date.now() - 3_600_000).toISOString();
   try {
     const [byEmail, byIp] = await Promise.all([
@@ -98,7 +108,7 @@ export async function POST(req: NextRequest) {
       return GENERIC;
     }
   } catch {
-    /* if counting fails, fail open but still record below */
+    /* if Sanity count fails, KV check above is sufficient */
   }
 
   // ── Look up the client by email (server-side only) ──

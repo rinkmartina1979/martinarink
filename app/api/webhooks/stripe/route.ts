@@ -247,11 +247,27 @@ export async function POST(req: NextRequest) {
     const customerEmail = invoice.customer_email ?? null
     const finalFeePaidAt = new Date().toISOString()
 
+    // Idempotency: Stripe may retry events. patchFinalFeePaid uses setIfMissing
+    // so repeated calls for the same invoice are safe.
     waitUntil(
       patchFinalFeePaid(stripeCustomerId, customerEmail, finalFeePaidAt).catch((err) =>
         console.error('[stripe webhook] Final-fee patch failed:', err),
       ),
     )
+  }
+
+  // ── invoice.payment_failed → notify Martina only ──────────────
+  // Never auto-suspend a client on a failed payment. Suspensions are a human
+  // decision. This event logs a warning so Martina can follow up manually.
+  if (event.type === 'invoice.payment_failed') {
+    const invoice = event.data.object as Stripe.Invoice
+    const customerEmail = invoice.customer_email ?? 'unknown'
+    const amount = invoice.amount_due ? `€${(invoice.amount_due / 100).toFixed(2)}` : 'unknown amount'
+    console.warn(
+      `[stripe webhook] invoice.payment_failed — ${customerEmail} — ${amount} — invoice ${invoice.id}`,
+    )
+    // TODO P3b: send Resend notification to contact@martinarink.com with invoice link.
+    // No portal change here — Martina decides next step.
   }
 
   return NextResponse.json({ ok: true })

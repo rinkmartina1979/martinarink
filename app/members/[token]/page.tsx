@@ -19,6 +19,7 @@ import { SupportRequestCard } from "@/components/portal/SupportRequestCard";
 import { BillingCard } from "@/components/portal/BillingCard";
 import { ProgrammeCard } from "@/components/portal/ProgrammeCard";
 import { CareTeamBlock } from "@/components/portal/CareTeamBlock";
+import { SessionBootstrap } from "@/components/portal/SessionBootstrap";
 import { deriveEntitlement } from "@/lib/members/entitlements";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -296,6 +297,9 @@ export default async function MembersPage({ params }: MembersPageProps) {
           </section>
         )}
       </div>
+
+      {/* Phase A: issue HttpOnly session cookie in background for future /dashboard access */}
+      <SessionBootstrap token={token} />
     </div>
   );
 }
