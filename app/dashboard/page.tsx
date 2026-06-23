@@ -34,6 +34,7 @@ import { SupportRequestCard } from "@/components/portal/SupportRequestCard";
 import { BillingCard } from "@/components/portal/BillingCard";
 import { ProgrammeCard } from "@/components/portal/ProgrammeCard";
 import { CareTeamBlock } from "@/components/portal/CareTeamBlock";
+import { SuspendedAccessView } from "@/components/portal/SuspendedAccessView";
 import type { MemberAudioDrop } from "@/sanity/lib/membersQueries";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -109,6 +110,11 @@ export default async function DashboardPage() {
   };
   const entitlement = deriveEntitlement(billingFields);
 
+  // Suspended clients see a calm pause notice — never the full dashboard.
+  if (entitlement.suspended) {
+    return <SuspendedAccessView firstName={profile.firstName} />;
+  }
+
   // ── Data ──────────────────────────────────────────────────────
   const [drops, milestones, progress, careTeam, programmeDef] = await Promise.all([
     programme ? getAudioDropsForClient(clientId, programme) : Promise.resolve(null),
@@ -155,7 +161,7 @@ export default async function DashboardPage() {
           dueAt={next.dueAt}
         />
 
-        <CurrentStageTimeline portalStage={portalStage ?? null} />
+        <CurrentStageTimeline portalStage={portalStage ?? null} enrolledAt={enrolledAt ?? null} />
 
         {programmeDef && (
           <ProgrammeCard

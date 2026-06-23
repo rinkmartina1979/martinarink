@@ -42,9 +42,9 @@ export function NextActionCard({
   );
 
   return (
-    <div className="bg-bone border border-sand/40 p-6 md:p-8 rounded-[1px]">
-      <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-3">Your next step</p>
-      <p className="font-[family-name:var(--font-display)] text-[24px] md:text-[28px] text-ink leading-snug">
+    <div className="bg-bone border-y border-r border-sand/40 border-l-[3px] border-l-aubergine p-6 md:p-8 md:py-9">
+      <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">Your next step</p>
+      <p className="font-[family-name:var(--font-display)] text-[26px] md:text-[32px] text-ink leading-[1.2]">
         {title}
       </p>
       {description && (
@@ -52,7 +52,7 @@ export function NextActionCard({
           {description}
         </p>
       )}
-      <div className="mt-6">{cta}</div>
+      <div className="mt-7">{cta}</div>
       {due && (
         <p className="mt-4 text-[13px] text-ink-quiet font-[family-name:var(--font-body)]">
           When you&rsquo;re ready — by {due}.

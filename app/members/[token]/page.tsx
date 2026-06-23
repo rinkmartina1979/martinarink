@@ -20,6 +20,7 @@ import { BillingCard } from "@/components/portal/BillingCard";
 import { ProgrammeCard } from "@/components/portal/ProgrammeCard";
 import { CareTeamBlock } from "@/components/portal/CareTeamBlock";
 import { SessionBootstrap } from "@/components/portal/SessionBootstrap";
+import { SuspendedAccessView } from "@/components/portal/SuspendedAccessView";
 import { deriveEntitlement } from "@/lib/members/entitlements";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -203,6 +204,11 @@ export default async function MembersPage({ params }: MembersPageProps) {
   };
   const entitlement = deriveEntitlement(billingFields);
 
+  // Suspended clients see a calm pause notice before any data is fetched.
+  if (entitlement.suspended) {
+    return <SuspendedAccessView firstName={verify.firstName!} />;
+  }
+
   const [drops, milestones, progress, careTeam, programmeDef] = await Promise.all([
     programme ? getAudioDropsForClient(clientId, programme) : Promise.resolve(null),
     getMilestonesForClient(clientId),
@@ -249,7 +255,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
           dueAt={next.dueAt}
         />
 
-        <CurrentStageTimeline portalStage={portalStage ?? null} />
+        <CurrentStageTimeline portalStage={portalStage ?? null} enrolledAt={enrolledAt ?? null} />
 
         {programmeDef && (
           <ProgrammeCard
