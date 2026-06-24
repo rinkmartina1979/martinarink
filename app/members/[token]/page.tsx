@@ -123,7 +123,7 @@ function ExpiredPage() {
 }
 
 /* ── Archived (completed) state ────────────────────────────────── */
-function ArchivedPage({ firstName, drops }: { firstName: string; drops: MemberAudioDrop[] | null; token: string }) {
+function ArchivedPage({ firstName, drops }: { firstName: string; drops: MemberAudioDrop[] | null }) {
   return (
     <div className="bg-cream min-h-screen">
       <section className="pt-28 md:pt-36 pb-12 px-6">
@@ -183,7 +183,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
   }
 
   if (!verify.valid && verify.reason === "archived") {
-    return <ArchivedPage firstName={verify.firstName ?? ""} drops={null} token={token} />;
+    return <ArchivedPage firstName={verify.firstName ?? ""} drops={null} />;
   }
   if (!verify.valid || !verify.clientId || !verify.firstName) {
     return <ExpiredPage />;

@@ -11,7 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateMemberToken } from '@/lib/members/token'
 import { portalInvitationEmail } from '@/lib/email-templates'
-import { client as sanityClient } from '@/sanity/lib/client'
+import { writeClient, hasWriteClient } from '@/sanity/lib/writeClient'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -38,6 +38,14 @@ export async function POST(req: NextRequest) {
       { status: 503 },
     )
   }
+
+  if (!hasWriteClient(writeClient)) {
+    return NextResponse.json(
+      { error: 'SANITY_API_WRITE_TOKEN not configured' },
+      { status: 503 },
+    )
+  }
+  const wc = writeClient
 
   const resendKey = process.env.RESEND_API_KEY
   if (!resendKey) {
@@ -66,7 +74,7 @@ export async function POST(req: NextRequest) {
   // Fetch the client record — email + firstName needed for the email
   let clientRecord: ClientRecord | null
   try {
-    clientRecord = await sanityClient.fetch<ClientRecord | null>(
+    clientRecord = await wc.fetch<ClientRecord | null>(
       `*[_type == "clientProfile" && clientId == $clientId][0] {
         _id, firstName, email, clientId, programme
       }`,
@@ -140,8 +148,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Record token issuance time in Sanity (fire-and-forget, non-blocking for response)
-  sanityClient
-    .patch(clientRecord._id)
+  wc.patch(clientRecord._id)
     .set({ tokenIssuedAt: new Date().toISOString() })
     .commit()
     .catch((err: unknown) => console.error('[send-link] Sanity patch failed:', err))

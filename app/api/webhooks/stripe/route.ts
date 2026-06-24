@@ -240,8 +240,15 @@ export async function POST(req: NextRequest) {
   }
 
   // ── invoice.paid → final fee paid ────────────────────────────
+  // Only process invoices explicitly tagged type=final_fee in Stripe metadata.
+  // Martina must set this when creating the final-fee invoice in the Stripe dashboard.
   if (event.type === 'invoice.paid') {
     const invoice = event.data.object as Stripe.Invoice
+
+    if ((invoice.metadata as Record<string, string> | null)?.type !== 'final_fee') {
+      return NextResponse.json({ ok: true, skipped: 'not_final_fee' })
+    }
+
     const stripeCustomerId =
       typeof invoice.customer === 'string' ? invoice.customer : null
     const customerEmail = invoice.customer_email ?? null
