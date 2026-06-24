@@ -6,6 +6,8 @@ interface ProgrammeCardProps {
   enrolledAt: string | null;
   expectedCompletionAt: string | null;
   token: string;
+  /** Programme key from clientProfile — used as fallback when no Sanity doc exists */
+  programmeKey?: string | null;
 }
 
 function formatDate(iso: string): string {
@@ -16,7 +18,6 @@ function formatDate(iso: string): string {
   });
 }
 
-// Inline SVG — checkmark tick
 function Tick() {
   return (
     <svg
@@ -38,13 +39,47 @@ function Tick() {
   );
 }
 
+// Fallback data — shown automatically when no Sanity programme document exists yet.
+// Copy is Martina-voice compliant: no banned words, no exclamation marks.
+const FALLBACKS: Record<string, Omit<ProgrammeDefinition, "_id" | "programmeId">> = {
+  "sober-muse": {
+    name: "The Sober Muse Method",
+    tagline: "90 days of private 1:1 support — structured, personal, unhurried.",
+    durationDisplay: "90 days",
+    includedItems: [
+      "Weekly private sessions with Martina",
+      "90-day personal journal with daily prompts",
+      "Personalised audio drops released throughout",
+      "Direct WhatsApp support between sessions",
+      "Final integration session and transition plan",
+    ],
+  },
+  empowerment: {
+    name: "Female Empowerment & Leadership",
+    tagline: "3–12 months of leadership and identity work — for women who want to lead on their own terms.",
+    durationDisplay: "3–12 months",
+    includedItems: [
+      "Bi-weekly private sessions with Martina",
+      "Leadership identity framework and workbook",
+      "Private journal and audio drops",
+      "Clinical partnership with Ruta (patent engineer & coach)",
+      "WhatsApp support and session recordings",
+    ],
+  },
+};
+
 export function ProgrammeCard({
   programme,
   enrolledAt,
   expectedCompletionAt,
   token,
+  programmeKey,
 }: ProgrammeCardProps) {
-  if (!programme) return null;
+  // Use Sanity doc if available; otherwise fall back to hardcoded data by key.
+  const fallback = programmeKey ? FALLBACKS[programmeKey] : null;
+  const data: Partial<ProgrammeDefinition> | null = programme ?? fallback ?? null;
+
+  if (!data) return null;
 
   return (
     <section className="bg-bone border border-sand/30 p-6 md:p-8">
@@ -54,25 +89,28 @@ export function ProgrammeCard({
             Your programme
           </p>
           <h2 className="font-[family-name:var(--font-display)] text-[22px] md:text-[26px] text-ink leading-snug">
-            {programme.name}
+            {data.name}
           </h2>
-          {programme.tagline && (
+          {data.tagline && (
             <p className="mt-1 text-[15px] text-ink-soft leading-[1.7]">
-              {programme.tagline}
+              {data.tagline}
             </p>
           )}
         </div>
-        {programme.durationDisplay && (
+        {data.durationDisplay && (
           <span className="flex-shrink-0 text-[11px] uppercase tracking-[0.18em] text-ink-quiet border border-sand/60 px-3 py-1.5 rounded-[1px]">
-            {programme.durationDisplay}
+            {data.durationDisplay}
           </span>
         )}
       </div>
 
-      {programme.includedItems && programme.includedItems.length > 0 && (
+      {data.includedItems && data.includedItems.length > 0 && (
         <ul className="space-y-2 mb-6">
-          {programme.includedItems.map((item, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-[14px] text-ink-soft leading-[1.65]">
+          {data.includedItems.map((item, i) => (
+            <li
+              key={i}
+              className="flex items-start gap-2.5 text-[14px] text-ink-soft leading-[1.65]"
+            >
               <Tick />
               <span>{item}</span>
             </li>

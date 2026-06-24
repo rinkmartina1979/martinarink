@@ -163,14 +163,13 @@ export default async function DashboardPage() {
 
         <CurrentStageTimeline portalStage={portalStage ?? null} enrolledAt={enrolledAt ?? null} />
 
-        {programmeDef && (
-          <ProgrammeCard
-            programme={programmeDef}
-            enrolledAt={enrolledAt ?? null}
-            expectedCompletionAt={profile.expectedCompletionAt ?? null}
-            token={navToken}
-          />
-        )}
+        <ProgrammeCard
+          programme={programmeDef ?? null}
+          programmeKey={programme ?? null}
+          enrolledAt={enrolledAt ?? null}
+          expectedCompletionAt={profile.expectedCompletionAt ?? null}
+          token={navToken}
+        />
 
         <div className="grid md:grid-cols-2 gap-6">
           <JournalStatusCard
@@ -183,7 +182,12 @@ export default async function DashboardPage() {
         </div>
 
         {entitlement.portalAccess && (
-          <BillingCard token={navToken} billing={billingFields} variant="summary" />
+          <BillingCard
+            token={navToken}
+            billing={billingFields}
+            variant="summary"
+            programme={programme ?? null}
+          />
         )}
 
         <ResourceShelf drops={drops} token={navToken} />

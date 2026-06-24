@@ -257,14 +257,13 @@ export default async function MembersPage({ params }: MembersPageProps) {
 
         <CurrentStageTimeline portalStage={portalStage ?? null} enrolledAt={enrolledAt ?? null} />
 
-        {programmeDef && (
-          <ProgrammeCard
-            programme={programmeDef}
-            enrolledAt={verify.enrolledAt ?? null}
-            expectedCompletionAt={verify.expectedCompletionAt ?? null}
-            token={token}
-          />
-        )}
+        <ProgrammeCard
+          programme={programmeDef ?? null}
+          programmeKey={programme ?? null}
+          enrolledAt={verify.enrolledAt ?? null}
+          expectedCompletionAt={verify.expectedCompletionAt ?? null}
+          token={token}
+        />
 
         <div className="grid md:grid-cols-2 gap-6">
           <JournalStatusCard
@@ -277,7 +276,12 @@ export default async function MembersPage({ params }: MembersPageProps) {
         </div>
 
         {entitlement.portalAccess && (
-          <BillingCard token={token} billing={billingFields} variant="summary" />
+          <BillingCard
+            token={token}
+            billing={billingFields}
+            variant="summary"
+            programme={programme ?? null}
+          />
         )}
 
         <ResourceShelf drops={drops} token={token} />
