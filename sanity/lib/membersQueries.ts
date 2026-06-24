@@ -323,6 +323,108 @@ export async function getJournalMonthProgress(
   }
 }
 
+/* ─── Foundation Workbook ───────────────────────────────────── */
+
+export interface WorkbookSectionContent {
+  becoming?: string
+  visionDescription?: string
+  whyChange?: string
+  goalWhat?: string
+  goalWhy?: string
+  goalWho?: string
+  goalWhen?: string
+  goalWhere?: string
+  fearList?: string
+  prosChange?: string
+  consChange?: string
+  voidToFill?: string
+  letterPast?: string
+  letterFuture?: string
+  letterFamily?: string
+  contractText?: string
+  contractLocation?: string
+  contractSignature?: string
+  affirmations?: string
+  dailyMindset?: string
+  newLifeMeaning?: string
+  freeJournaling?: string
+  notes?: string
+}
+
+export interface WorkbookSectionRecord {
+  visibility: string
+  content: WorkbookSectionContent
+  signedAt: string | null
+}
+
+/**
+ * Fetch one client's workbook section for editor prefill. Scoped by clientId —
+ * never returns another client's section.
+ */
+export async function getWorkbookSection(
+  clientId: string,
+  sectionKey: string,
+): Promise<WorkbookSectionRecord | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<WorkbookSectionRecord | null>(
+      `
+      *[
+        _type == "workbookSection" &&
+        clientId == $clientId &&
+        sectionKey == $sectionKey
+      ][0] { visibility, content, signedAt }
+      `,
+      { clientId, sectionKey },
+    )
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Section keys this client has started (a doc exists). Length = progress count;
+ * the array drives completion ticks on the workbook hub.
+ */
+export async function getWorkbookProgress(
+  clientId: string,
+): Promise<{ startedKeys: string[] }> {
+  if (!IS_SANITY_CONFIGURED) return { startedKeys: [] }
+  try {
+    const keys = await client.fetch<string[]>(
+      `*[_type == "workbookSection" && clientId == $clientId].sectionKey`,
+      { clientId },
+    )
+    return { startedKeys: keys ?? [] }
+  } catch {
+    return { startedKeys: [] }
+  }
+}
+
+/**
+ * Sections a client has chosen to share (shared / needs-support) — for Martina.
+ * Private sections are never returned. Scoped by clientId.
+ */
+export async function getSharedWorkbookForClient(
+  clientId: string,
+): Promise<(WorkbookSectionRecord & { sectionKey: string })[] | null> {
+  if (!IS_SANITY_CONFIGURED) return null
+  try {
+    return await client.fetch<(WorkbookSectionRecord & { sectionKey: string })[]>(
+      `
+      *[
+        _type == "workbookSection" &&
+        clientId == $clientId &&
+        visibility != "private"
+      ] | order(sectionKey asc) { sectionKey, visibility, content, signedAt }
+      `,
+      { clientId },
+    )
+  } catch {
+    return null
+  }
+}
+
 /* ─── P2: Care Team + Programme + Resources ─────────────────── */
 
 export interface CareTeamMember {

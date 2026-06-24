@@ -19,6 +19,7 @@ import {
   getAudioDropsForClient,
   getMilestonesForClient,
   getJournalMonthProgress,
+  getWorkbookProgress,
   getCareTeamForProgramme,
   getProgrammeDefinition,
 } from "@/sanity/lib/membersQueries";
@@ -28,6 +29,7 @@ import { PortalDashboardHero } from "@/components/portal/PortalDashboardHero";
 import { CurrentStageTimeline } from "@/components/portal/CurrentStageTimeline";
 import { NextActionCard } from "@/components/portal/NextActionCard";
 import { JournalStatusCard } from "@/components/portal/JournalStatusCard";
+import { WorkbookCard } from "@/components/portal/WorkbookCard";
 import { SessionCard } from "@/components/portal/SessionCard";
 import { ResourceShelf } from "@/components/portal/ResourceShelf";
 import { SupportRequestCard } from "@/components/portal/SupportRequestCard";
@@ -116,10 +118,11 @@ export default async function DashboardPage() {
   }
 
   // ── Data ──────────────────────────────────────────────────────
-  const [drops, milestones, progress, careTeam, programmeDef] = await Promise.all([
+  const [drops, milestones, progress, workbookProgress, careTeam, programmeDef] = await Promise.all([
     programme ? getAudioDropsForClient(clientId, programme) : Promise.resolve(null),
     getMilestonesForClient(clientId),
     getJournalMonthProgress(clientId),
+    getWorkbookProgress(clientId),
     programme ? getCareTeamForProgramme(programme) : Promise.resolve(null),
     programme ? getProgrammeDefinition(programme) : Promise.resolve(null),
   ]);
@@ -178,8 +181,13 @@ export default async function DashboardPage() {
             evenings={progress.evenings}
             href={journalHref}
           />
-          <SessionCard token={navToken} />
+          <WorkbookCard
+            startedKeys={workbookProgress.startedKeys}
+            href={`/members/${navToken}/workbook`}
+          />
         </div>
+
+        <SessionCard token={navToken} />
 
         {entitlement.portalAccess && (
           <BillingCard

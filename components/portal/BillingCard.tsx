@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { deriveEntitlement, type ClientEntitlementFields } from "@/lib/members/entitlements";
+import { DEPOSIT, PROGRAMME_FEES } from "@/lib/pricing";
 
 function formatDate(iso: string | null): string | null {
   if (!iso) return null;
@@ -10,18 +11,9 @@ function formatDate(iso: string | null): string | null {
   });
 }
 
-function formatEur(cents: number): string {
-  return `€${cents.toLocaleString("en-IE")}`;
+function formatEur(amount: number): string {
+  return `€${amount.toLocaleString("de-DE")}`;
 }
-
-// Programme fee constants — source of truth for billing display.
-// Deposit (€350) is credited toward these totals.
-const PROGRAMME_FEES: Record<string, { total: number; label: string }> = {
-  "sober-muse":   { total: 5000, label: "The Sober Muse Method" },
-  empowerment:    { total: 7500, label: "Female Empowerment & Leadership" },
-  consultation:   { total: 350,  label: "Private Consultation" },
-};
-const DEPOSIT = 350;
 
 interface BillingCardProps {
   token: string;

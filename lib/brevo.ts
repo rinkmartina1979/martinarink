@@ -117,7 +117,8 @@ export type BrevoEventName =
   | "contract_sent"
   | "contract_signed"
   | "portal_invited"
-  | "journal_needs_support";
+  | "journal_needs_support"
+  | "workbook_needs_support";
 
 interface BrevoEventOptions {
   email: string;

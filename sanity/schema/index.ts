@@ -42,6 +42,7 @@ import caseStudy from './caseStudy'
 import emailDigestLog from './emailDigestLog'
 import journalEntry from './journalEntry'
 import monthlyReview from './monthlyReview'
+import workbookSection from './workbookSection'
 import portalLinkRequest from './portalLinkRequest'
 import portalAuditEvent from './portalAuditEvent'
 import sessionRequest from './sessionRequest'
@@ -93,6 +94,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   emailDigestLog,
   journalEntry,
   monthlyReview,
+  workbookSection,
   portalLinkRequest,
   portalAuditEvent,
   sessionRequest,
