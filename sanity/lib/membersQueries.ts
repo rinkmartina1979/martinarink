@@ -540,6 +540,56 @@ export async function getProgrammeResources(
   }
 }
 
+/* ─── W3: Clinical Education (Learn) ────────────────────────── */
+
+export interface LearnArticle {
+  _id: string
+  title: string
+  titleDe: string | null
+  slug: string
+  category: string
+  bodyEn: string
+  bodyDe: string | null
+  attribution: string | null
+  programme: string
+  sortOrder: number
+}
+
+/**
+ * Fetch learn articles visible to a client's programme.
+ * programme = "sober-muse" | "empowerment"
+ * Returns articles where programme matches or programme == "both".
+ */
+export async function getLearnArticles(
+  programme: string,
+): Promise<LearnArticle[]> {
+  if (!IS_SANITY_CONFIGURED) return []
+  try {
+    return await client.fetch<LearnArticle[]>(
+      `
+      *[
+        _type == "learnArticle" &&
+        (programme == $programme || programme == "both")
+      ] | order(sortOrder asc) {
+        _id,
+        title,
+        titleDe,
+        "slug": slug.current,
+        category,
+        bodyEn,
+        bodyDe,
+        attribution,
+        programme,
+        sortOrder
+      }
+      `,
+      { programme },
+    )
+  } catch {
+    return []
+  }
+}
+
 export async function getVisibleCaseStudies(): Promise<MemberCaseStudy[] | null> {
   if (!IS_SANITY_CONFIGURED) return null
   try {

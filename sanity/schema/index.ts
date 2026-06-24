@@ -53,6 +53,9 @@ import careTeamMember from './careTeamMember'
 import programmeResource from './programmeResource'
 import programme from './programme'
 
+// Documents — Portal W3: Clinical Education
+import learnArticle from './learnArticle'
+
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects (must come before document types that reference them)
   seoMeta,
@@ -104,4 +107,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   careTeamMember,
   programmeResource,
   programme,
+
+  // Documents — Portal W3: Clinical Education
+  learnArticle,
 ]

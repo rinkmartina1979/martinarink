@@ -59,10 +59,16 @@ const EXPLICIT_TYPES = new Set([
   'emailDigestLog',
   'journalEntry',
   'monthlyReview',
+  'workbookSection',
   'portalLinkRequest',
   'portalAuditEvent',
   'sessionRequest',
   'clientUpdate',
+  // W2/W3
+  'careTeamMember',
+  'programme',
+  'programmeResource',
+  'learnArticle',
   // seoMeta is an object type, not a document — it won't appear anyway
 ])
 
@@ -338,6 +344,35 @@ export default defineConfig({
                           .title('Recently Active')
                           .defaultOrdering([{ field: 'lastUsedAt', direction: 'desc' }]),
                       ),
+                    // ── Foundation Workbook ────────────────────
+                    // Privacy by design: only shared / needs-support entries shown.
+                    // Private workbook sections never appear in any Studio browse view.
+                    S.listItem()
+                      .title('Foundation Workbook')
+                      .icon(BookIcon)
+                      .child(
+                        S.list()
+                          .title('Foundation Workbook')
+                          .items([
+                            S.listItem()
+                              .title('Needs Support')
+                              .child(
+                                S.documentTypeList('workbookSection')
+                                  .title('Needs Support')
+                                  .filter('_type == "workbookSection" && visibility == "needs-support"')
+                                  .defaultOrdering([{ field: 'updatedAt', direction: 'desc' }]),
+                              ),
+                            S.listItem()
+                              .title('Shared with Martina')
+                              .child(
+                                S.documentTypeList('workbookSection')
+                                  .title('Shared with Martina')
+                                  .filter('_type == "workbookSection" && visibility == "shared"')
+                                  .defaultOrdering([{ field: 'updatedAt', direction: 'desc' }]),
+                              ),
+                          ]),
+                      ),
+
                     S.divider(),
                     S.listItem()
                       .title('Care Team')
@@ -362,6 +397,14 @@ export default defineConfig({
                         S.documentTypeList('programmeResource')
                           .title('Programme Resources')
                           .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }]),
+                      ),
+                    S.listItem()
+                      .title('Learn Articles')
+                      .icon(BookIcon)
+                      .child(
+                        S.documentTypeList('learnArticle')
+                          .title('Learn Articles')
+                          .defaultOrdering([{ field: 'sortOrder', direction: 'asc' }]),
                       ),
                   ]),
               ),

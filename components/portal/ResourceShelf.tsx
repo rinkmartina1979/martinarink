@@ -39,14 +39,22 @@ export function ResourceShelf({
         </ul>
       )}
 
-      {drops && drops.length >= 4 && (
+      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-1 border-t border-sand/30 pt-4">
+        {drops && drops.length >= 4 && (
+          <Link
+            href={`/members/${token}/resources`}
+            className="text-[13px] text-plum hover:text-plum-deep transition-colors"
+          >
+            All resources →
+          </Link>
+        )}
         <Link
-          href={`/members/${token}/resources`}
-          className="mt-5 inline-block text-[13px] text-plum hover:text-plum-deep transition-colors"
+          href={`/members/${token}/learn`}
+          className="text-[13px] text-ink-quiet hover:text-ink transition-colors"
         >
-          All resources →
+          Facts about Alcohol & Women →
         </Link>
-      )}
+      </div>
     </div>
   );
 }

@@ -38,6 +38,7 @@
   ],
   "exclude": [
     "node_modules",
+    "scripts",
     "distracted-mendel-5c548b",
     "martinarink-next/distracted-mendel-5c548b",
     "**/distracted-mendel-5c548b/**"
