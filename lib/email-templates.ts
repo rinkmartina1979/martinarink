@@ -12,7 +12,7 @@
  *   - Body: Arial, 16px, #4A3728 (ink-soft)
  *   - Hairline: #C8B8A2 (sand)
  *   - Accent: #F942AA (pink) for lines/rules
- *   - CTA buttons: #5C2D8E (plum) on cream text
+ *   - CTA buttons: #231727 (aubergine) on cream text — matches hero section
  *   - Eyebrow labels: #8A7F72 (ink-quiet), 10px, UPPERCASE, letter-spacing
  *   - Script signature: font-style italic, larger, Georgia
  *
@@ -32,7 +32,7 @@ const INNER = `
 `.trim();
 
 const HEADER_DARK = `
-  background:#2B1A3A;padding:40px 48px 36px;
+  background:#231727;padding:40px 48px 36px;
 `.trim();
 
 const HEADER_CREAM = `
@@ -79,7 +79,7 @@ function ctaButton(label: string, href: string) {
   return `
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:28px 0 0;">
       <tr>
-        <td style="background:#5C2D8E;padding:14px 32px;">
+        <td style="background:#231727;padding:14px 32px;">
           <a href="${href}" style="font-family:Arial,sans-serif;font-size:12px;font-weight:normal;text-transform:uppercase;letter-spacing:0.18em;color:#F7F3EE;text-decoration:none;display:inline-block;">${label}</a>
         </td>
       </tr>
@@ -314,7 +314,7 @@ export function applicationNotificationEmail(
       ${acceptUrl ? `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 16px;">
         <tr>
-          <td style="background:#5C2D8E;padding:14px 32px;">
+          <td style="background:#231727;padding:14px 32px;">
             <a href="${acceptUrl}" style="font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:0.18em;color:#F7F3EE;text-decoration:none;display:inline-block;">✓ Accept — send booking link to ${firstName}</a>
           </td>
         </tr>
@@ -634,7 +634,7 @@ export function contractSignedEmail(data: ContractSignedEmailData): {
       <!-- Signed badge -->
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
         <tr>
-          <td style="background:#5C2D8E;padding:10px 24px;">
+          <td style="background:#231727;padding:10px 24px;">
             <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#F7F3EE;font-family:Arial,sans-serif;">
               &#10003; Signed digitally on ${signedDate}
             </p>
