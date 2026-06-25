@@ -96,6 +96,7 @@ export default async function DashboardPage() {
 
   const { clientId } = session;
   const programme = profile.programme ?? undefined;
+  const programmeVariant = profile.programmeVariant ?? null;
   const portalStage = profile.portalStage;
   const enrolledAt = profile.enrolledAt;
 
@@ -195,6 +196,7 @@ export default async function DashboardPage() {
             billing={billingFields}
             variant="summary"
             programme={programme ?? null}
+            programmeVariant={programmeVariant}
           />
         )}
 

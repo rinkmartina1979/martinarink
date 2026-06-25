@@ -52,6 +52,7 @@ interface VerifyResponse {
   clientId?: string;
   firstName?: string;
   programme?: string;
+  programmeVariant?: string | null;
   archetype?: string | null;
   enrolledAt?: string | null;
   expectedCompletionAt?: string | null;
@@ -191,7 +192,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
     return <ExpiredPage />;
   }
 
-  const { clientId, firstName, programme, enrolledAt, portalStage } = verify;
+  const { clientId, firstName, programme, programmeVariant, enrolledAt, portalStage } = verify;
 
   const billingFields = {
     depositPaidAt: verify.depositPaidAt ?? null,
@@ -289,6 +290,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
             billing={billingFields}
             variant="summary"
             programme={programme ?? null}
+            programmeVariant={programmeVariant ?? null}
           />
         )}
 

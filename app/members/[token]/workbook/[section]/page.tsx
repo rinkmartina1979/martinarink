@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/metadata";
 import { verifyPortalAccess } from "@/lib/members/portalAuth";
+import { deriveEntitlement } from "@/lib/members/entitlements";
 import { getWorkbookSection } from "@/sanity/lib/membersQueries";
 import {
   getWorkbookSectionDef,
@@ -51,6 +52,10 @@ export default async function WorkbookSectionPage({ params }: PageProps) {
   if (!access) return <Unavailable />;
 
   const { clientId, profile } = access;
+
+  const entitlement = deriveEntitlement(profile);
+  if (!entitlement.portalAccess) return <Unavailable />;
+
   const sectionDef = getWorkbookSectionDef(sectionKey);
   if (!sectionDef) notFound();
 

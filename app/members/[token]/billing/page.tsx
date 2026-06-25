@@ -15,6 +15,7 @@ interface VerifyResponse {
   reason?: string;
   firstName?: string;
   programme?: string | null;
+  programmeVariant?: string | null;
   depositPaidAt?: string | null;
   manualDepositPaidAt?: string | null;
   finalFeeDueAt?: string | null;
@@ -138,7 +139,7 @@ export default async function BillingPage({ params }: BillingPageProps) {
       {/* Content */}
       <section className="py-12 px-6">
         <div className="max-w-3xl mx-auto space-y-10">
-          <BillingCard token={token} billing={billingFields} variant="full" programme={verify.programme ?? null} />
+          <BillingCard token={token} billing={billingFields} variant="full" programme={verify.programme ?? null} programmeVariant={verify.programmeVariant ?? null} />
           <CustomerPortalButton token={token} />
         </div>
       </section>

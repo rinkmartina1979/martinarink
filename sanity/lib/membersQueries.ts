@@ -19,6 +19,7 @@ export interface MemberClientProfile {
   firstName: string
   archetype: string | null
   programme: string | null
+  programmeVariant: string | null
   status: string
   enrolledAt: string
   expectedCompletionAt: string | null
@@ -93,6 +94,7 @@ export async function getClientByToken(
         firstName,
         archetype,
         programme,
+        programmeVariant,
         status,
         enrolledAt,
         expectedCompletionAt,

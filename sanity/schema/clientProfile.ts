@@ -80,6 +80,23 @@ export default defineType({
     }),
 
     defineField({
+      name: 'programmeVariant',
+      title: 'Programme variant',
+      type: 'string',
+      description: 'Set when onboarding — drives the exact fee amount shown in the client billing card.',
+      options: {
+        list: [
+          { title: 'Sober Muse — 3 months (€5,000)', value: 'sober-muse-3m' },
+          { title: 'Sober Muse — 6 months · Weekdays (€10,000)', value: 'sober-muse-6m-weekdays' },
+          { title: 'Sober Muse — 6 months · 7 days (€13,000)', value: 'sober-muse-6m-7days' },
+          { title: 'Empowerment — 3 months (€7,000)', value: 'empowerment-3m' },
+          { title: 'Empowerment — 6 months (€14,000)', value: 'empowerment-6m' },
+        ],
+        layout: 'radio',
+      },
+    }),
+
+    defineField({
       name: 'status',
       title: 'Status',
       type: 'string',

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { deriveEntitlement, type ClientEntitlementFields } from "@/lib/members/entitlements";
-import { DEPOSIT, PROGRAMME_FEES } from "@/lib/pricing";
+import { DEPOSIT, getVariant, getVariantByProgramme } from "@/lib/pricing";
 
 function formatDate(iso: string | null): string | null {
   if (!iso) return null;
@@ -20,8 +20,10 @@ interface BillingCardProps {
   billing: ClientEntitlementFields & { finalFeeDueAt?: string | null };
   /** "summary" = compact card on dashboard; "full" = detail view on /billing */
   variant?: "summary" | "full";
-  /** Programme key from clientProfile — drives automatic fee amounts */
+  /** Broad programme key — used as fallback when programmeVariant is not set */
   programme?: string | null;
+  /** Specific tier (sober-muse-3m, empowerment-6m, etc.) — takes precedence over programme */
+  programmeVariant?: string | null;
 }
 
 export function BillingCard({
@@ -29,6 +31,7 @@ export function BillingCard({
   billing,
   variant = "summary",
   programme,
+  programmeVariant,
 }: BillingCardProps) {
   const entitlement = deriveEntitlement(billing);
 
@@ -38,12 +41,14 @@ export function BillingCard({
   const finalFeeDate   = formatDate(billing.finalFeePaidAt ?? billing.manualFinalFeePaidAt ?? null);
   const finalFeeDueDate = formatDate(billing.finalFeeDueAt ?? null);
 
-  const fees = programme ? PROGRAMME_FEES[programme] : null;
-  const programmeTotal   = fees?.total ?? null;
-  const programmeLabel   = fees?.label ?? null;
+  // Prefer specific variant (set by Martina at onboarding) over broad programme key.
+  const resolvedVariant = getVariant(programmeVariant) ?? getVariantByProgramme(programme);
+  const programmeTotal   = resolvedVariant?.total ?? null;
+  const programmeLabel   = resolvedVariant?.label ?? null;
+  const programmeSublabel = resolvedVariant?.sublabel ?? null;
   // Balance = total − deposit (only relevant when total > deposit)
   const balance = programmeTotal && programmeTotal > DEPOSIT ? programmeTotal - DEPOSIT : null;
-  const isConsultationOnly = programme === "consultation" || (programmeTotal !== null && programmeTotal <= DEPOSIT);
+  const isConsultationOnly = resolvedVariant?.programme === "consultation" || (programmeTotal !== null && programmeTotal <= DEPOSIT);
 
   if (variant === "summary") {
     return (
@@ -53,6 +58,9 @@ export function BillingCard({
         {programmeLabel && (
           <p className="text-[13px] text-ink-soft mb-4 font-[family-name:var(--font-body)]">
             {programmeLabel}
+            {programmeSublabel && (
+              <span className="text-ink-quiet"> — {programmeSublabel}</span>
+            )}
           </p>
         )}
 
@@ -134,6 +142,11 @@ export function BillingCard({
           <p className="font-[family-name:var(--font-display)] text-[20px] text-ink leading-snug">
             {programmeLabel}
           </p>
+          {programmeSublabel && (
+            <p className="text-[13px] text-ink-quiet mt-0.5 font-[family-name:var(--font-body)]">
+              {programmeSublabel}
+            </p>
+          )}
         </div>
       )}
 

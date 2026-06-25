@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
     clientId: payload.clientId,
     firstName: client.firstName,
     programme: client.programme,
+    programmeVariant: client.programmeVariant ?? null,
     archetype: client.archetype,
     enrolledAt: client.enrolledAt ?? null,
     expectedCompletionAt: client.expectedCompletionAt ?? null,

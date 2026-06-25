@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { verifyPortalAccess } from "@/lib/members/portalAuth";
+import { deriveEntitlement } from "@/lib/members/entitlements";
 import { getWorkbookProgress } from "@/sanity/lib/membersQueries";
 import { groupedSections, WORKBOOK_TOTAL } from "@/lib/workbook/sections";
 
@@ -28,6 +29,28 @@ function Unavailable() {
   );
 }
 
+function GatedView({ token }: { token: string }) {
+  return (
+    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
+      <div className="max-w-lg text-center">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-4">Foundation workbook</p>
+        <p className="font-[family-name:var(--font-display)] text-[28px] text-ink leading-snug mb-4">
+          Your workbook is not yet available.
+        </p>
+        <p className="text-[15px] leading-[1.75] text-ink-soft mb-8">
+          The foundation workbook opens once your consultation deposit is confirmed.
+        </p>
+        <Link
+          href={`/members/${token}`}
+          className="text-[13px] text-plum hover:text-plum-deep transition-colors"
+        >
+          ← Back to your portal
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default async function WorkbookHubPage({ params }: PageProps) {
   const { token } = await params;
 
@@ -37,6 +60,9 @@ export default async function WorkbookHubPage({ params }: PageProps) {
   if (!access) return <Unavailable />;
 
   const { clientId, profile } = access;
+
+  const entitlement = deriveEntitlement(profile);
+  if (!entitlement.portalAccess) return <GatedView token={token} />;
   const { startedKeys } = await getWorkbookProgress(clientId);
   const started = new Set(startedKeys);
   const groups = groupedSections();
