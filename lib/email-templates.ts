@@ -826,6 +826,87 @@ export function needsSupportNotification(data: NeedsSupportEmailData): {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   INTERNAL — PAYMENT FAILED NOTIFICATION (to Martina only)
+   ═══════════════════════════════════════════════════════════════ */
+
+export interface PaymentFailedData {
+  customerEmail: string;
+  amountDue: string;       // pre-formatted, e.g. "€5,000.00"
+  invoiceId: string;
+  invoiceUrl: string | null;
+  failureReason: string | null;
+  attemptCount: number;
+}
+
+export function paymentFailedNotification(data: PaymentFailedData): {
+  subject: string;
+  html: string;
+} {
+  const { customerEmail, amountDue, invoiceId, invoiceUrl, failureReason, attemptCount } = data;
+
+  const subject = `Payment failed — ${customerEmail} — ${amountDue}`;
+
+  const html = wrap(`
+    <div style="${HEADER_CREAM}padding-bottom:24px;">
+      <span style="${PINK_RULE}"></span>
+      ${eyebrow("Payment alert")}
+      ${h1("Payment failed.", "#1E1B17")}
+    </div>
+
+    <div style="${BODY_SECTION}">
+      ${body(`A payment attempt failed for <strong style="color:#1E1B17;">${customerEmail}</strong>.`)}
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;">
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;width:40%;">
+            ${eyebrow("Amount due")}
+          </td>
+          <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;">
+            <p style="margin:0;font-size:15px;color:#1E1B17;font-family:Arial,sans-serif;font-weight:600;">${amountDue}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;">
+            ${eyebrow("Attempt")}
+          </td>
+          <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;">
+            <p style="margin:0;font-size:15px;color:#1E1B17;font-family:Arial,sans-serif;">#${attemptCount}</p>
+          </td>
+        </tr>
+        ${failureReason ? `
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;">
+            ${eyebrow("Reason")}
+          </td>
+          <td style="padding:10px 0;border-bottom:1px solid #C8B8A2;">
+            <p style="margin:0;font-size:15px;color:#4A3728;font-family:Arial,sans-serif;">${failureReason}</p>
+          </td>
+        </tr>` : ""}
+        <tr>
+          <td style="padding:10px 0;">
+            ${eyebrow("Invoice ID")}
+          </td>
+          <td style="padding:10px 0;">
+            <p style="margin:0;font-size:13px;color:#8A7F72;font-family:Arial,sans-serif;word-break:break-all;">${invoiceId}</p>
+          </td>
+        </tr>
+      </table>
+
+      ${body("No change has been made to the client's portal access. Review the invoice in Stripe and decide whether to follow up.")}
+
+      ${invoiceUrl
+        ? ctaButton("View invoice in Stripe &rarr;", invoiceUrl)
+        : small(`No hosted invoice URL available. Find it in the Stripe dashboard by searching invoice ID: ${invoiceId}`)}
+
+      <hr style="${HAIRLINE}">
+      ${small("Internal notification only. The client has not been notified of this failure.")}
+    </div>
+  `);
+
+  return { subject, html };
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SERVICE DESCRIPTION TEMPLATES
    Used in the inline contract form (accept-sent page + admin page).
    Martina selects a programme — this pre-fills as a professional

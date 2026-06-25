@@ -17,6 +17,7 @@ import Stripe from 'stripe'
 import { waitUntil } from '@vercel/functions'
 import { trackBrevoEvent, addBrevoContact } from '@/lib/brevo'
 import { writeClient, hasWriteClient } from '@/sanity/lib/writeClient'
+import { paymentFailedNotification } from '@/lib/email-templates'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -172,6 +173,47 @@ async function patchProgrammeBalancePaid(
   }
 }
 
+async function sendPaymentFailedNotification(
+  customerEmail: string,
+  amountDue: string,
+  invoiceId: string,
+  invoiceUrl: string | null,
+  failureReason: string | null,
+  attemptCount: number,
+): Promise<void> {
+  const resendKey = process.env.RESEND_API_KEY
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'contact@martinarink.com'
+  const notifyEmail = process.env.RESEND_NOTIFY_EMAIL || fromEmail
+  if (!resendKey) return
+
+  const { subject, html } = paymentFailedNotification({
+    customerEmail,
+    amountDue,
+    invoiceId,
+    invoiceUrl,
+    failureReason,
+    attemptCount,
+  })
+
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${resendKey}`,
+      },
+      body: JSON.stringify({
+        from: `Martina Rink <${fromEmail}>`,
+        to: [notifyEmail],
+        subject,
+        html,
+      }),
+    })
+  } catch (err) {
+    console.error('[stripe webhook] Payment-failed Resend notification error:', err)
+  }
+}
+
 export async function POST(req: NextRequest) {
   const stripeKey = process.env.STRIPE_SECRET_KEY
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
@@ -324,17 +366,36 @@ export async function POST(req: NextRequest) {
   }
 
   // ── invoice.payment_failed → notify Martina only ──────────────
-  // Never auto-suspend a client on a failed payment. Suspensions are a human
-  // decision. This event logs a warning so Martina can follow up manually.
+  // Never auto-suspend a client. Suspensions are a human decision.
+  // This fires one internal email to Martina so she can follow up.
   if (event.type === 'invoice.payment_failed') {
     const invoice = event.data.object as Stripe.Invoice
     const customerEmail = invoice.customer_email ?? 'unknown'
-    const amount = invoice.amount_due ? `€${(invoice.amount_due / 100).toFixed(2)}` : 'unknown amount'
+    const amountDue = invoice.amount_due
+      ? `€${(invoice.amount_due / 100).toLocaleString('en-DE', { minimumFractionDigits: 2 })}`
+      : 'unknown amount'
+    const failureReason =
+      (invoice as Stripe.Invoice & { last_finalization_error?: { message?: string } })
+        .last_finalization_error?.message ?? null
+    const invoiceUrl = invoice.hosted_invoice_url ?? null
+    const attemptCount = invoice.attempt_count ?? 1
+
     console.warn(
-      `[stripe webhook] invoice.payment_failed — ${customerEmail} — ${amount} — invoice ${invoice.id}`,
+      `[stripe webhook] invoice.payment_failed — ${customerEmail} — ${amountDue} — ${invoice.id}`,
     )
-    // TODO P3b: send Resend notification to contact@martinarink.com with invoice link.
-    // No portal change here — Martina decides next step.
+
+    waitUntil(
+      sendPaymentFailedNotification(
+        customerEmail,
+        amountDue,
+        invoice.id,
+        invoiceUrl,
+        failureReason,
+        attemptCount,
+      ).catch((err) =>
+        console.error('[stripe webhook] Payment-failed notification failed:', err),
+      ),
+    )
   }
 
   return NextResponse.json({ ok: true })

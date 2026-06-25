@@ -16,6 +16,7 @@ import {
 } from '@sanity/icons'
 import { schemaTypes } from './sanity/schema'
 import { analyticsPlugin } from './sanity/plugins/analytics'
+import { ClientNotesPane } from './sanity/components/ClientNotesPane'
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
@@ -210,7 +211,19 @@ export default defineConfig({
                       .child(
                         S.documentTypeList('clientProfile')
                           .title('Client Profiles')
-                          .defaultOrdering([{ field: 'enrolledAt', direction: 'desc' }]),
+                          .defaultOrdering([{ field: 'enrolledAt', direction: 'desc' }])
+                          .child((documentId) =>
+                            S.document()
+                              .documentId(documentId)
+                              .schemaType('clientProfile')
+                              .views([
+                                S.view.form().title('Profile'),
+                                S.view
+                                  .component(ClientNotesPane)
+                                  .title('Notes')
+                                  .icon(EditIcon),
+                              ]),
+                          ),
                       ),
                     S.listItem()
                       .title('Audio Drops')
