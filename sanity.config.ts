@@ -69,6 +69,8 @@ const EXPLICIT_TYPES = new Set([
   'programme',
   'programmeResource',
   'learnArticle',
+  // P6
+  'clientNote',
   // seoMeta is an object type, not a document — it won't appear anyway
 ])
 
@@ -283,6 +285,37 @@ export default defineConfig({
                       ),
 
                     // ── Operations: sessions, updates, recovery, audit ──
+                    // Consolidated request inbox — one date-sorted place for everything
+                    // a client sends. S.documentList() spans multiple _types via filter.
+                    S.listItem()
+                      .title('Client Requests')
+                      .icon(CalendarIcon)
+                      .child(
+                        S.list()
+                          .title('Client Requests')
+                          .items([
+                            S.listItem()
+                              .id('requests-needs-action')
+                              .title('Needs action')
+                              .icon(CalendarIcon)
+                              .child(
+                                S.documentList()
+                                  .title('Needs action')
+                                  .filter('_type == "sessionRequest" && status == "new"')
+                                  .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
+                              ),
+                            S.listItem()
+                              .id('requests-all')
+                              .title('All requests')
+                              .icon(DocumentTextIcon)
+                              .child(
+                                S.documentList()
+                                  .title('All requests')
+                                  .filter('_type in ["sessionRequest", "portalLinkRequest"]')
+                                  .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
+                              ),
+                          ]),
+                      ),
                     S.listItem()
                       .title('Session Requests')
                       .icon(CalendarIcon)
@@ -343,6 +376,16 @@ export default defineConfig({
                         S.documentTypeList('clientProfile')
                           .title('Recently Active')
                           .defaultOrdering([{ field: 'lastUsedAt', direction: 'desc' }]),
+                      ),
+                    // ── Client Notes (private CRM log) ──────────
+                    // Dated, sortable, Martina-only. Never shown to the client.
+                    S.listItem()
+                      .title('Client Notes')
+                      .icon(EditIcon)
+                      .child(
+                        S.documentTypeList('clientNote')
+                          .title('Client Notes')
+                          .defaultOrdering([{ field: 'createdAt', direction: 'desc' }]),
                       ),
                     // ── Foundation Workbook ────────────────────
                     // Privacy by design: only shared / needs-support entries shown.

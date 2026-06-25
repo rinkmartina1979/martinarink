@@ -47,6 +47,7 @@ import portalLinkRequest from './portalLinkRequest'
 import portalAuditEvent from './portalAuditEvent'
 import sessionRequest from './sessionRequest'
 import clientUpdate from './clientUpdate'
+import clientNote from './clientNote'
 
 // Documents — Portal P2: Programme + Care Team + Resources
 import careTeamMember from './careTeamMember'
@@ -102,6 +103,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   portalAuditEvent,
   sessionRequest,
   clientUpdate,
+  clientNote,
 
   // Documents — Portal P2: Programme + Care Team + Resources
   careTeamMember,

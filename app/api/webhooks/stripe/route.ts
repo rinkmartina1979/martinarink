@@ -4,8 +4,9 @@
  * Handles Stripe webhook events.
  *
  * Events handled:
- *   - checkout.session.completed → sets depositPaidAt + stripeCustomerId on clientProfile
- *   - invoice.paid              → sets finalFeePaidAt on clientProfile
+ *   - checkout.session.completed (deposit)           → sets depositPaidAt + stripeCustomerId
+ *   - checkout.session.completed (programme-balance) → sets finalFeePaidAt + programmeActiveAt + programmeVariant
+ *   - invoice.paid (type=final_fee)                  → sets finalFeePaidAt on clientProfile
  *
  * Pattern: fast 2xx immediately, then waitUntil for side effects (Brevo, Resend, Sanity).
  * All Sanity writes are idempotent (setIfMissing for paid timestamps).
@@ -135,6 +136,42 @@ async function patchFinalFeePaid(
   }
 }
 
+/**
+ * Programme balance paid via self-serve portal checkout
+ * (checkout.session.completed with metadata.type === "programme-balance").
+ *
+ * This is the ONLY place a client's self-selection turns into programme access:
+ * we set finalFeePaidAt + programmeActiveAt (idempotent via setIfMissing) and
+ * record the variant. Lookup is by clientId from the session metadata — the most
+ * reliable key, since the token-authed checkout route stamped it.
+ */
+async function patchProgrammeBalancePaid(
+  clientId: string,
+  variantKey: string | null,
+  stripeCustomerId: string | null,
+  paidAt: string,
+): Promise<void> {
+  if (!hasWriteClient(writeClient)) return
+  try {
+    const profile = await writeClient.fetch<{ _id: string } | null>(
+      `*[_type == "clientProfile" && clientId == $clientId][0] { _id }`,
+      { clientId },
+    )
+    if (!profile) {
+      console.warn('[stripe webhook] No clientProfile found for programme-balance clientId:', clientId)
+      return
+    }
+    const patch = writeClient
+      .patch(profile._id)
+      .setIfMissing({ finalFeePaidAt: paidAt, programmeActiveAt: paidAt })
+    if (variantKey) patch.set({ programmeVariant: variantKey })
+    if (stripeCustomerId) patch.setIfMissing({ stripeCustomerId })
+    await patch.commit()
+  } catch (err) {
+    console.error('[stripe webhook] Sanity programme-balance patch failed:', err)
+  }
+}
+
 export async function POST(req: NextRequest) {
   const stripeKey = process.env.STRIPE_SECRET_KEY
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
@@ -163,7 +200,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  // ── checkout.session.completed → deposit paid ─────────────────
+  // ── checkout.session.completed ────────────────────────────────
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
 
@@ -171,6 +208,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, skipped: 'not_paid' })
     }
 
+    // ── Programme balance (self-serve portal checkout) → grants programme access
+    if (session.metadata?.type === 'programme-balance') {
+      const clientId = session.metadata?.clientId ?? ''
+      const variantKey = session.metadata?.variantKey ?? null
+      const stripeCustomerId =
+        typeof session.customer === 'string' ? session.customer : null
+      const paidAt = new Date().toISOString()
+
+      if (!clientId) {
+        console.warn('[stripe webhook] programme-balance session missing clientId:', session.id)
+        return NextResponse.json({ ok: true, skipped: 'no_client_id' })
+      }
+
+      waitUntil(
+        patchProgrammeBalancePaid(clientId, variantKey, stripeCustomerId, paidAt).catch((err) =>
+          console.error('[stripe webhook] programme-balance patch failed:', err),
+        ),
+      )
+
+      return NextResponse.json({ ok: true, handled: 'programme-balance' })
+    }
+
+    // ── Otherwise: consultation deposit ───────────────────────────
     let email =
       session.customer_details?.email ??
       session.customer_email ??

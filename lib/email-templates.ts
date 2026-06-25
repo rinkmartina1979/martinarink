@@ -99,6 +99,16 @@ function ghostButton(label: string, href: string) {
   `.trim();
 }
 
+/**
+ * Standard salutation for ALL client-facing emails.
+ * Brand decision: every client-facing email opens "Dear Sober Muse,".
+ * Centralised here so the wording can be changed in one place. If empowerment
+ * clients should be addressed differently, branch on a programme argument.
+ */
+function clientGreeting() {
+  return body("Dear Sober Muse,");
+}
+
 function signature(name = "Martina") {
   return `
     <p style="margin:32px 0 0;font-family:Georgia,serif;font-style:italic;font-size:24px;color:#4A3728;">
@@ -158,7 +168,7 @@ export function applicationConfirmationEmail(data: ApplicationEmailData): {
   subject: string;
   html: string;
 } {
-  const { firstName, programmeLabel } = data;
+  const { programmeLabel } = data;
 
   const html = wrap(`
     <div style="${HEADER_DARK}">
@@ -171,7 +181,7 @@ export function applicationConfirmationEmail(data: ApplicationEmailData): {
     </div>
 
     <div style="${BODY_SECTION}">
-      ${body(`Dear ${firstName},`)}
+      ${clientGreeting()}
       ${body(`Thank you for applying. I read every application myself — not in a queue, not by an assistant. You will hear from me personally within 48 hours.`)}
       ${body(`What happens next: if the fit is right, I will write to you directly with a private link to book our first conversation. That call is 45 minutes, &euro;350, and it is credited in full to the programme if you proceed.`)}
       ${body(`In the meantime, if you would like to read more about the work — about how I think about these questions — three essays are below.`)}
@@ -335,12 +345,10 @@ export function applicationNotificationEmail(
       This template is for reference / Brevo editor parity.
    ═══════════════════════════════════════════════════════════════ */
 
-export function newsletterWelcomeEmail(firstName?: string): {
+export function newsletterWelcomeEmail(_firstName?: string): {
   subject: string;
   html: string;
 } {
-  const salutation = firstName ? `Dear ${firstName},` : "Dear reader,";
-
   const html = wrap(`
     <div style="${HEADER_DARK}">
       <span style="${PINK_RULE}"></span>
@@ -349,7 +357,7 @@ export function newsletterWelcomeEmail(firstName?: string): {
     </div>
 
     <div style="${BODY_SECTION}">
-      ${body(salutation)}
+      ${clientGreeting()}
       ${body(`Your first letter will arrive on Sunday. Every letter is written directly to you — not to an audience, not to a brand. To the woman who reads carefully and thinks carefully and is somewhere in the middle of figuring something out.`)}
       ${body(`You are on a small list. I keep it that way deliberately. What I write here does not live anywhere else.`)}
       ${body(`Until Sunday &mdash;`)}
@@ -394,14 +402,14 @@ export function acceptanceEmail(data: AcceptanceEmailData): {
   subject: string;
   html: string;
 } {
-  const { firstName, programmeLabel } = data;
+  const { programmeLabel } = data;
   const bookingLink = "https://martinarink.com/book?token=approved";
 
   const html = wrap(`
     <div style="${HEADER_DARK}">
       <span style="${PINK_RULE}"></span>
       ${eyebrow("Your application")}
-      ${h1(`Dear ${firstName}.`)}
+      ${h1(`Dear Sober Muse.`)}
     </div>
 
     <div style="${BODY_SECTION}">
@@ -528,7 +536,7 @@ export function contractInviteEmail(data: ContractInviteEmailData): {
     </div>
 
     <div style="${BODY_SECTION}">
-      ${body(`Dear ${firstName},`)}
+      ${clientGreeting()}
       ${body(`Before we begin, I send a short contract that sets out what we are building together &mdash; the programme, the format, the investment, and the terms I work under.`)}
       ${body(`It takes two minutes. You read it, type your name, and confirm. That is the whole process.`)}
 
@@ -621,7 +629,7 @@ export function contractSignedEmail(data: ContractSignedEmailData): {
 
     <div style="${BODY_SECTION}">
 
-      ${isInternal ? body(`${firstName} (${email}) has signed the coaching contract. A copy has been sent to them. The record below is your reference.`) : body(`Dear ${firstName}, your coaching contract is now signed and confirmed. A copy of the agreed terms is below for your records.`)}
+      ${isInternal ? body(`${firstName} (${email}) has signed the coaching contract. A copy has been sent to them. The record below is your reference.`) : body(`Dear Sober Muse, your coaching contract is now signed and confirmed. A copy of the agreed terms is below for your records.`)}
 
       <!-- Signed badge -->
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
@@ -693,7 +701,7 @@ export function intakeInviteEmail(data: IntakeInviteEmailData): {
   subject: string;
   html: string;
 } {
-  const { firstName, programmeLabel, intakeUrl } = data;
+  const { programmeLabel, intakeUrl } = data;
 
   const html = wrap(`
     <div style="${HEADER_DARK}">
@@ -706,7 +714,7 @@ export function intakeInviteEmail(data: IntakeInviteEmailData): {
     </div>
 
     <div style="${BODY_SECTION}">
-      ${body(`Dear ${firstName},`)}
+      ${clientGreeting()}
       ${body(`Your contract is signed. The next step is a short intake form — it is the last piece of administration before the work begins.`)}
       ${body(`The form takes about 20 minutes. There are no right answers. I ask what I ask because the honesty of your answers determines the quality of what we do together.`)}
       ${body(`Everything you share is read by me only. Nothing is shared with any third party.`)}
@@ -741,7 +749,7 @@ export function portalInvitationEmail(data: PortalInvitationEmailData): {
   subject: string;
   html: string;
 } {
-  const { firstName, programmeLabel, portalUrl } = data;
+  const { programmeLabel, portalUrl } = data;
 
   const html = wrap(`
     <div style="${HEADER_DARK}">
@@ -754,7 +762,7 @@ export function portalInvitationEmail(data: PortalInvitationEmailData): {
     </div>
 
     <div style="${BODY_SECTION}">
-      ${body(`Dear ${firstName},`)}
+      ${clientGreeting()}
       ${body(`Your intake form is received. I have everything I need to begin.`)}
       ${body(`The link below opens your private portal — it is where you will find session recordings, milestones, and everything that belongs to our work together. It is yours for the duration of the programme and beyond.`)}
       ${body(`The link is private. Please do not share it.`)}

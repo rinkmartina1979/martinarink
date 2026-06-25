@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { PlumButton } from "@/components/brand/PlumButton";
 import { MobileMenu } from "./MobileMenu";
 import { NavDropdown } from "./NavDropdown";
@@ -16,6 +17,7 @@ const NAV_LINKS_RIGHT = [
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -23,6 +25,12 @@ export function Nav() {
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // The private client portal supplies its own header (PortalNav) — the
+  // marketing chrome is hidden there for a clean, focused dashboard.
+  if (pathname?.startsWith("/members")) {
+    return null;
+  }
 
   return (
     <header

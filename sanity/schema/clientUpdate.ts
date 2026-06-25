@@ -1,6 +1,11 @@
 /**
  * Sanity schema: clientUpdate
  *
+ * DEPRECATED (P6): superseded by `clientNote` (private dated CRM log for Martina)
+ * and the consolidated "Client Requests" Studio inbox. This stub was never
+ * queried or rendered by the app. Kept registered to avoid orphaning any existing
+ * documents; do not build new features on it.
+ *
  * A two-way, lightweight updates feed (NOT chat).
  *  - source "martina": a note Martina writes for the client (shown in portal).
  *  - source "client": a lightweight signal the client sent from the portal.

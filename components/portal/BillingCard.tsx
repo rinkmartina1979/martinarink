@@ -126,7 +126,9 @@ export function BillingCard({
             href={`/members/${token}/billing`}
             className="text-[13px] text-plum hover:text-plum-deep transition-colors"
           >
-            View billing details →
+            {!isConsultationOnly && !finalFeePaid && !entitlement.programmeAccess
+              ? "Choose your programme & pay balance →"
+              : "View billing details →"}
           </Link>
         )}
       </div>

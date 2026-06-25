@@ -187,6 +187,14 @@
   @media (min-width: 1024px) {
     .section-pad { padding-block: var(--spacing-section-desktop); }  /* 160px desktop — DS v1 default */
   }
+  /* Horizontal nav scroll without a visible scrollbar (portal nav on mobile). */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* ── Section spacing variants — DS v1 §2.2 decision tree ─────

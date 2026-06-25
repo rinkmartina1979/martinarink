@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { BillingCard } from "@/components/portal/BillingCard";
 import { CustomerPortalButton } from "@/components/portal/CustomerPortalButton";
+import { ProgrammeSelector } from "@/components/portal/ProgrammeSelector";
 import { deriveEntitlement } from "@/lib/members/entitlements";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -138,7 +139,17 @@ export default async function BillingPage({ params }: BillingPageProps) {
 
       {/* Content */}
       <section className="py-12 px-6">
-        <div className="max-w-3xl mx-auto space-y-10">
+        <div className="max-w-3xl mx-auto space-y-12">
+          {/* Choose-and-pay shown until the programme balance is settled. */}
+          {!entitlement.programmeAccess &&
+            verify.programme &&
+            verify.programme !== "consultation" && (
+              <ProgrammeSelector
+                token={token}
+                programme={verify.programme}
+                currentVariant={verify.programmeVariant ?? null}
+              />
+            )}
           <BillingCard token={token} billing={billingFields} variant="full" programme={verify.programme ?? null} programmeVariant={verify.programmeVariant ?? null} />
           <CustomerPortalButton token={token} />
         </div>
