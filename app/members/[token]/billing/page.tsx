@@ -140,8 +140,11 @@ export default async function BillingPage({ params }: BillingPageProps) {
       {/* Content */}
       <section className="py-12 px-6">
         <div className="max-w-3xl mx-auto space-y-12">
-          {/* Choose-and-pay shown until the programme balance is settled. */}
-          {!entitlement.programmeAccess &&
+          {/* Choose-and-pay shown until the programme balance is settled.
+              Shown regardless of adminAccessOverride — paying the balance is
+              always available if it hasn't been received yet. */}
+          {!billingFields.finalFeePaidAt &&
+            !billingFields.manualFinalFeePaidAt &&
             verify.programme &&
             verify.programme !== "consultation" && (
               <ProgrammeSelector
