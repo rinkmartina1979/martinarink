@@ -12,6 +12,7 @@ import {
 import { WorkbookForm } from "@/components/workbook/WorkbookForm";
 import { NeedsSupportFlag } from "@/components/journal/NeedsSupportFlag";
 import { CRISIS_RESOURCES } from "@/lib/journal/prompts";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -19,28 +20,10 @@ interface PageProps {
   params: Promise<{ token: string; section: string }>;
 }
 
-function Unavailable() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active.{" "}
-          <Link href="/portal" className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors">
-            Request a fresh one.
-          </Link>
-        </p>
-      </div>
-    </section>
-  );
-}
-
 export default async function WorkbookSectionPage({ params }: PageProps) {
   const { token, section } = await params;
 
-  if (!process.env.MEMBERS_TOKEN_SECRET) return <Unavailable />;
+  if (!process.env.MEMBERS_TOKEN_SECRET) return <LinkExpiredView />;
 
   // Validate section key before any auth check.
   if (!(WORKBOOK_SECTION_KEYS as string[]).includes(section)) {
@@ -49,12 +32,12 @@ export default async function WorkbookSectionPage({ params }: PageProps) {
   const sectionKey = section as WorkbookSectionKey;
 
   const access = await verifyPortalAccess(token);
-  if (!access) return <Unavailable />;
+  if (!access) return <LinkExpiredView />;
 
   const { clientId, profile } = access;
 
   const entitlement = deriveEntitlement(profile);
-  if (!entitlement.portalAccess) return <Unavailable />;
+  if (!entitlement.portalAccess) return <LinkExpiredView />;
 
   const sectionDef = getWorkbookSectionDef(sectionKey);
   if (!sectionDef) notFound();

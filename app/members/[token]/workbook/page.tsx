@@ -4,29 +4,12 @@ import { verifyPortalAccess } from "@/lib/members/portalAuth";
 import { deriveEntitlement } from "@/lib/members/entitlements";
 import { getWorkbookProgress } from "@/sanity/lib/membersQueries";
 import { groupedSections, WORKBOOK_TOTAL } from "@/lib/workbook/sections";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
 interface PageProps {
   params: Promise<{ token: string }>;
-}
-
-function Unavailable() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active.{" "}
-          <Link href="/portal" className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors">
-            Request a fresh one.
-          </Link>
-        </p>
-      </div>
-    </section>
-  );
 }
 
 function GatedView({ token }: { token: string }) {
@@ -54,10 +37,10 @@ function GatedView({ token }: { token: string }) {
 export default async function WorkbookHubPage({ params }: PageProps) {
   const { token } = await params;
 
-  if (!process.env.MEMBERS_TOKEN_SECRET) return <Unavailable />;
+  if (!process.env.MEMBERS_TOKEN_SECRET) return <LinkExpiredView />;
 
   const access = await verifyPortalAccess(token);
-  if (!access) return <Unavailable />;
+  if (!access) return <LinkExpiredView />;
 
   const { clientId, profile } = access;
 

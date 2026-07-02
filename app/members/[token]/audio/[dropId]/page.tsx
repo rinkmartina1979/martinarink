@@ -6,6 +6,7 @@ import {
   getAudioDrop,
   getAudioDropsForClient,
 } from "@/sanity/lib/membersQueries";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -27,29 +28,6 @@ function formatDate(iso: string): string {
     month: "long",
     year: "numeric",
   });
-}
-
-function ExpiredPage() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active. If you believe this is an
-          error, please{" "}
-          <Link
-            href="/contact"
-            className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
-          >
-            get in touch
-          </Link>
-          .
-        </p>
-      </div>
-    </section>
-  );
 }
 
 function AccessDeniedPage({ token }: { token: string }) {
@@ -88,11 +66,11 @@ export default async function AudioDropPage({ params }: AudioDropPageProps) {
     });
     verify = await res.json();
   } catch {
-    return <ExpiredPage />;
+    return <LinkExpiredView />;
   }
 
   if (!verify.valid || !verify.clientId || !verify.programme) {
-    return <ExpiredPage />;
+    return <LinkExpiredView reason={verify.reason} />;
   }
 
   const { clientId, programme } = verify;

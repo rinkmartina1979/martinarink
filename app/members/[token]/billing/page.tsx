@@ -4,6 +4,7 @@ import { BillingCard } from "@/components/portal/BillingCard";
 import { CustomerPortalButton } from "@/components/portal/CustomerPortalButton";
 import { ProgrammeSelector } from "@/components/portal/ProgrammeSelector";
 import { deriveEntitlement } from "@/lib/members/entitlements";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -52,31 +53,11 @@ export default async function BillingPage({ params }: BillingPageProps) {
     });
     verify = await res.json();
   } catch {
-    return (
-      <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-        <p className="text-[15px] text-ink-soft">
-          This link is no longer active. Visit{" "}
-          <Link href="/portal" className="text-plum underline underline-offset-4">
-            the portal
-          </Link>{" "}
-          to request a fresh one.
-        </p>
-      </section>
-    );
+    return <LinkExpiredView />;
   }
 
   if (!verify.valid) {
-    return (
-      <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-        <p className="text-[15px] text-ink-soft">
-          This link is no longer active. Visit{" "}
-          <Link href="/portal" className="text-plum underline underline-offset-4">
-            the portal
-          </Link>{" "}
-          to request a fresh one.
-        </p>
-      </section>
-    );
+    return <LinkExpiredView reason={verify.reason} />;
   }
 
   const billingFields = {

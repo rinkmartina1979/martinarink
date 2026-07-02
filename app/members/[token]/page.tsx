@@ -23,6 +23,7 @@ import { ProgrammeCard } from "@/components/portal/ProgrammeCard";
 import { CareTeamBlock } from "@/components/portal/CareTeamBlock";
 import { SessionBootstrap } from "@/components/portal/SessionBootstrap";
 import { SuspendedAccessView } from "@/components/portal/SuspendedAccessView";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 import { deriveEntitlement } from "@/lib/members/entitlements";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -108,23 +109,6 @@ function PrivateBetaPage() {
   );
 }
 
-/* ── Error state ──────────────────────────────────────────────── */
-function ExpiredPage() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">Unavailable.</p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active. You can request a fresh one at{" "}
-          <Link href="/portal" className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors">
-            martinarink.com/portal
-          </Link>
-          .
-        </p>
-      </div>
-    </section>
-  );
-}
 
 /* ── Archived (completed) state ────────────────────────────────── */
 function ArchivedPage({ firstName, drops }: { firstName: string; drops: MemberAudioDrop[] | null }) {
@@ -183,14 +167,14 @@ export default async function MembersPage({ params }: MembersPageProps) {
     });
     verify = await res.json();
   } catch {
-    return <ExpiredPage />;
+    return <LinkExpiredView />;
   }
 
   if (!verify.valid && verify.reason === "archived") {
     return <ArchivedPage firstName={verify.firstName ?? ""} drops={null} />;
   }
   if (!verify.valid || !verify.clientId || !verify.firstName) {
-    return <ExpiredPage />;
+    return <LinkExpiredView reason={verify.reason} />;
   }
 
   const { clientId, firstName, programme, programmeVariant, enrolledAt, portalStage } = verify;

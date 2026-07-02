@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { getLearnArticles, type LearnArticle } from "@/sanity/lib/membersQueries";
 import { deriveEntitlement } from "@/lib/members/entitlements";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -11,6 +12,7 @@ interface LearnPageProps {
 
 interface VerifyResponse {
   valid: boolean;
+  reason?: string;
   programme?: string | null;
   firstName?: string;
   depositPaidAt?: string | null;
@@ -107,19 +109,6 @@ function GatedView({ token }: { token: string }) {
   );
 }
 
-function ExpiredView() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <p className="text-[15px] text-ink-soft">
-        This link is no longer active. Visit{" "}
-        <Link href="/portal" className="text-plum underline underline-offset-4">
-          the portal
-        </Link>{" "}
-        to request a fresh one.
-      </p>
-    </section>
-  );
-}
 
 export default async function LearnPage({ params }: LearnPageProps) {
   const { token } = await params;
@@ -145,10 +134,10 @@ export default async function LearnPage({ params }: LearnPageProps) {
     });
     verify = await res.json();
   } catch {
-    return <ExpiredView />;
+    return <LinkExpiredView />;
   }
 
-  if (!verify.valid) return <ExpiredView />;
+  if (!verify.valid) return <LinkExpiredView reason={verify.reason} />;
 
   const billingFields = {
     depositPaidAt: verify.depositPaidAt ?? null,

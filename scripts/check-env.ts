@@ -24,6 +24,11 @@ const REQUIRED: Record<string, string[]> = {
     'SANITY_API_DATASET',
     'SANITY_API_WRITE_TOKEN',
   ],
+  // sanity/lib/client.ts (the client-safe reader used by verifyPortalAccess and
+  // every membersQueries call) reads ONLY these NEXT_PUBLIC_ vars — it does not
+  // fall back to SANITY_API_PROJECT_ID. If these are blank, portal pages silently
+  // 404/expire even though the write-side vars above are fine. Caught 2026-07-02.
+  'Sanity (client-safe reader)': ['NEXT_PUBLIC_SANITY_PROJECT_ID', 'NEXT_PUBLIC_SANITY_DATASET'],
   'Members portal auth': ['MEMBERS_TOKEN_SECRET', 'MEMBERS_ADMIN_SECRET'],
   'Email (Resend transactional)': ['RESEND_API_KEY', 'RESEND_FROM_EMAIL', 'RESEND_NOTIFY_EMAIL'],
   'Email (Brevo drip)': ['BREVO_API_KEY', 'BREVO_LIST_ID_NEWSLETTER', 'BREVO_LIST_ID_ASSESSMENT'],

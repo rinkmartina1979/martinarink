@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { CalComEmbed } from "@/components/book/CalComEmbed";
 import { SessionRequestForm } from "@/components/portal/SessionRequestForm";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -9,38 +10,17 @@ interface SchedulePageProps {
   params: Promise<{ token: string }>;
 }
 
-function ExpiredPage() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active. You can request a fresh one at{" "}
-          <Link
-            href="/portal"
-            className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
-          >
-            martinarink.com/portal
-          </Link>
-          .
-        </p>
-      </div>
-    </section>
-  );
-}
-
 export default async function SchedulePage({ params }: SchedulePageProps) {
   const { token } = await params;
 
-  if (!process.env.MEMBERS_TOKEN_SECRET) return <ExpiredPage />;
+  if (!process.env.MEMBERS_TOKEN_SECRET) return <LinkExpiredView />;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
   let valid = false;
+  let reason: string | undefined;
   try {
     const res = await fetch(`${baseUrl}/api/members/verify`, {
       method: "POST",
@@ -50,11 +30,12 @@ export default async function SchedulePage({ params }: SchedulePageProps) {
     });
     const data = await res.json();
     valid = data.valid === true;
+    reason = data.reason;
   } catch {
-    return <ExpiredPage />;
+    return <LinkExpiredView />;
   }
 
-  if (!valid) return <ExpiredPage />;
+  if (!valid) return <LinkExpiredView reason={reason} />;
 
   const calcomUrl =
     process.env.NEXT_PUBLIC_CALCOM_URL ?? "https://cal.com/martinarink/30min";

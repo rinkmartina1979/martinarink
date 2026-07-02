@@ -9,6 +9,7 @@ import {
 import { MonthProgressCard } from "@/components/journal/MonthProgressCard";
 import { JournalTodayCard } from "@/components/journal/JournalTodayCard";
 import { toDateKey, monthIndexFor } from "@/lib/journal/prompts";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -16,32 +17,13 @@ interface PageProps {
   params: Promise<{ token: string }>;
 }
 
-function Unavailable() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active.{" "}
-          <Link href="/contact" className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors">
-            Get in touch
-          </Link>{" "}
-          if you believe this is an error.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 export default async function JournalHome({ params }: PageProps) {
   const { token } = await params;
 
-  if (!process.env.MEMBERS_TOKEN_SECRET) return <Unavailable />;
+  if (!process.env.MEMBERS_TOKEN_SECRET) return <LinkExpiredView />;
 
   const access = await verifyPortalAccess(token);
-  if (!access) return <Unavailable />;
+  if (!access) return <LinkExpiredView />;
 
   const { clientId, profile } = access;
   const today = toDateKey(new Date());

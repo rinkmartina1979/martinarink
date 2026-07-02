@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/metadata";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { verifyPortalAccess } from "@/lib/members/portalAuth";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 import { getJournalEntry } from "@/sanity/lib/membersQueries";
 import { MorningRitualForm } from "@/components/journal/MorningRitualForm";
 import { EveningReflectionForm } from "@/components/journal/EveningReflectionForm";
@@ -29,7 +30,7 @@ export default async function JournalDay({ params }: PageProps) {
   if (!process.env.MEMBERS_TOKEN_SECRET) notFound();
 
   const access = await verifyPortalAccess(token);
-  if (!access) notFound();
+  if (!access) return <LinkExpiredView />;
 
   const { clientId } = access;
 

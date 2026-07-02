@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { ResourceList } from "@/components/portal/ResourceList";
 import { deriveEntitlement } from "@/lib/members/entitlements";
+import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 import {
   getAudioDropsForClient,
   getProgrammeResources,
@@ -15,6 +16,7 @@ interface ResourcesPageProps {
 
 interface VerifyResponse {
   valid: boolean;
+  reason?: string;
   clientId?: string;
   programme?: string;
   portalStage?: string | null;
@@ -28,32 +30,10 @@ interface VerifyResponse {
   adminAccessOverride?: boolean | null;
 }
 
-function ExpiredPage() {
-  return (
-    <section className="bg-cream min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-lg text-center">
-        <p className="font-[family-name:var(--font-script)] text-[32px] text-pink leading-none mb-6">
-          Unavailable.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          This link has expired or is no longer active. You can request a fresh one at{" "}
-          <Link
-            href="/portal"
-            className="text-plum underline underline-offset-4 hover:text-plum-deep transition-colors"
-          >
-            martinarink.com/portal
-          </Link>
-          .
-        </p>
-      </div>
-    </section>
-  );
-}
-
 export default async function ResourcesPage({ params }: ResourcesPageProps) {
   const { token } = await params;
 
-  if (!process.env.MEMBERS_TOKEN_SECRET) return <ExpiredPage />;
+  if (!process.env.MEMBERS_TOKEN_SECRET) return <LinkExpiredView />;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
@@ -69,10 +49,10 @@ export default async function ResourcesPage({ params }: ResourcesPageProps) {
     });
     verify = await res.json();
   } catch {
-    return <ExpiredPage />;
+    return <LinkExpiredView />;
   }
 
-  if (!verify.valid || !verify.clientId) return <ExpiredPage />;
+  if (!verify.valid || !verify.clientId) return <LinkExpiredView reason={verify.reason} />;
 
   const entitlement = deriveEntitlement({
     depositPaidAt: verify.depositPaidAt ?? null,
