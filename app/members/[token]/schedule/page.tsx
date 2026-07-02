@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
-import { CalendlyEmbed } from "@/components/book/CalendlyEmbed";
+import { CalComEmbed } from "@/components/book/CalComEmbed";
 import { SessionRequestForm } from "@/components/portal/SessionRequestForm";
 
 export const metadata = buildMetadata({ noIndex: true });
@@ -56,8 +56,8 @@ export default async function SchedulePage({ params }: SchedulePageProps) {
 
   if (!valid) return <ExpiredPage />;
 
-  const calendlyUrl =
-    process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/martinarink";
+  const calcomUrl =
+    process.env.NEXT_PUBLIC_CALCOM_URL ?? "https://cal.com/martinarink/30min";
 
   return (
     <div className="bg-cream min-h-screen">
@@ -81,9 +81,9 @@ export default async function SchedulePage({ params }: SchedulePageProps) {
         </p>
       </section>
 
-      {/* Calendly embed */}
+      {/* Cal.com embed */}
       <section className="max-w-3xl mx-auto px-6 pb-12">
-        <CalendlyEmbed url={calendlyUrl} />
+        <CalComEmbed url={calcomUrl} />
       </section>
 
       {/* Hairline divider */}

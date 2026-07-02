@@ -5,7 +5,7 @@ import { GhostButton } from "@/components/brand/GhostButton";
 import { TestimonialCard } from "@/components/brand/TestimonialCard";
 import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { buildMetadata } from "@/lib/metadata";
-import { CalendlyEmbed } from "@/components/book/CalendlyEmbed";
+import { CalComEmbed } from "@/components/book/CalComEmbed";
 import { DepositCTA } from "@/components/book/DepositCTA";
 
 export const metadata = buildMetadata({
@@ -13,9 +13,8 @@ export const metadata = buildMetadata({
   noIndex: true,
 });
 
-const CALENDLY_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ||
-  "https://calendly.com/martinarink/let-s-make-a-change";
+const CALCOM_URL =
+  process.env.NEXT_PUBLIC_CALCOM_URL || "https://cal.com/martinarink/30min";
 
 interface BookPageProps {
   searchParams: Promise<{
@@ -316,7 +315,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
         </div>
       </section>
 
-      {/* ── CALENDLY — for rescheduling confirmed consultations only ── */}
+      {/* ── CAL.COM — for rescheduling confirmed consultations only ── */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
           <details open={showCalendar} className="text-center">
@@ -326,7 +325,7 @@ export default async function BookPage({ searchParams }: BookPageProps) {
               Schedule your consultation time →
             </summary>
             <div className="mt-8 bg-bone p-2">
-              <CalendlyEmbed url={CALENDLY_URL} />
+              <CalComEmbed url={CALCOM_URL} />
             </div>
           </details>
         </div>

@@ -21,8 +21,8 @@
 | `RESEND_NOTIFY_EMAIL` | `rinkmartina1979@gmail.com` |
 | `RESEND_REPLY_TO` | `rinkmartina1979@gmail.com` |
 | `NEXT_PUBLIC_SITE_URL` | `https://martinarink.com` |
-| `NEXT_PUBLIC_CALENDLY_URL` | `https://calendly.com/martinarink/let-s-make-a-change` |
-| `CALENDLY_PERSONAL_ACCESS_TOKEN` | Calendly PAT (eyJraWQi...) — used by embed route |
+| `NEXT_PUBLIC_CALCOM_URL` | `https://cal.com/martinarink/30min` |
+| `CALCOM_WEBHOOK_SECRET` | Signing secret from Cal.com → Settings → Developer → Webhooks — used by `/api/webhooks/calcom` |
 
 ---
 
@@ -53,8 +53,8 @@
 ### When upgrading from Vercel Blob → Hello Audio
 Replace `VERCEL_BLOB_READ_WRITE_TOKEN` usage in `/api/members/audio-upload` with the Hello Audio API key. The `audioUrl` field shape in Sanity stays the same — just the source changes.
 
-### When upgrading Calendly Free → Standard ($10/mo)
-Add `CALENDLY_WEBHOOK_SIGNING_KEY` after running the webhook registration script. The existing `/api/webhooks/calendly` handler is production-ready and will start receiving `consultation_canceled` and `consultation_no_show` events immediately.
+### Booking (Cal.com — replaced Calendly, 2026)
+Cal.com signs webhooks on every plan including free, so no paid upgrade is needed for booking automation. `/api/webhooks/calcom` handles `BOOKING_CREATED`, `BOOKING_RESCHEDULED`, `BOOKING_CANCELLED` and writes `clientProfile.nextSessionAt`. Webhook registered at Cal.com → Settings → Developer → Webhooks, pointing to `https://martinarink.com/api/webhooks/calcom`.
 
 ---
 

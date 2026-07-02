@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
     programmeCompletedAt: client.programmeCompletedAt ?? null,
     accessSuspendedAt: client.accessSuspendedAt ?? null,
     adminAccessOverride: client.adminAccessOverride ?? null,
+    nextSessionAt: client.nextSessionAt ?? null,
     // stripeCustomerId is NOT returned — used server-side only
   })
 }

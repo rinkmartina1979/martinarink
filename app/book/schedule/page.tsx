@@ -1,15 +1,15 @@
 import { redirect } from "next/navigation";
 import { buildMetadata } from "@/lib/metadata";
 import { Eyebrow } from "@/components/brand/Eyebrow";
-import { CalendlyEmbed } from "@/components/book/CalendlyEmbed";
+import { CalComEmbed } from "@/components/book/CalComEmbed";
 
 export const metadata = buildMetadata({ noIndex: true });
 
-interface CalendlyPageProps {
+interface SchedulePageProps {
   searchParams: Promise<{ session_id?: string }>;
 }
 
-export default async function BookCalendlyPage({ searchParams }: CalendlyPageProps) {
+export default async function BookSchedulePage({ searchParams }: SchedulePageProps) {
   const { session_id } = await searchParams;
 
   if (!session_id) {
@@ -48,9 +48,8 @@ export default async function BookCalendlyPage({ searchParams }: CalendlyPagePro
     redirect("/book?payment_error=1");
   }
 
-  const calendlyUrl =
-    process.env.NEXT_PUBLIC_CALENDLY_URL ||
-    "https://calendly.com/martinarink/let-s-make-a-change";
+  const calcomUrl =
+    process.env.NEXT_PUBLIC_CALCOM_URL || "https://cal.com/martinarink/30min";
 
   return (
     <>
@@ -70,11 +69,11 @@ export default async function BookCalendlyPage({ searchParams }: CalendlyPagePro
         </div>
       </section>
 
-      {/* ── Calendly embed ─────────────────────────────────────── */}
+      {/* ── Cal.com embed ─────────────────────────────────────── */}
       <section className="bg-cream pb-24">
         <div className="container-content max-w-3xl mx-auto">
           <div className="bg-bone p-2">
-            <CalendlyEmbed url={calendlyUrl} />
+            <CalComEmbed url={calcomUrl} />
           </div>
         </div>
       </section>

@@ -248,6 +248,20 @@ export default defineType({
       description: 'Set when the programme concludes. Portal moves to archived view.',
     }),
     defineField({
+      name: 'nextSessionAt',
+      title: 'Next session at',
+      type: 'datetime',
+      description: 'Set by the Cal.com booking webhook (BOOKING_CREATED/RESCHEDULED). Cleared on cancellation. Display only — never used for entitlement.',
+      readOnly: true,
+    }),
+    defineField({
+      name: 'calcomBookingUid',
+      title: 'Cal.com booking UID',
+      type: 'string',
+      description: 'Set by the Cal.com booking webhook. Used to match cancellation/reschedule events to the stored nextSessionAt.',
+      readOnly: true,
+    }),
+    defineField({
       name: 'accessSuspendedAt',
       title: 'Access suspended at',
       type: 'datetime',

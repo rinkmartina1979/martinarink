@@ -42,6 +42,7 @@ export interface MemberClientProfile {
   programmeCompletedAt: string | null
   accessSuspendedAt: string | null
   adminAccessOverride: boolean | null
+  nextSessionAt: string | null
 }
 
 export interface MemberAudioDrop {
@@ -115,7 +116,8 @@ export async function getClientByToken(
         programmeActiveAt,
         programmeCompletedAt,
         accessSuspendedAt,
-        adminAccessOverride
+        adminAccessOverride,
+        nextSessionAt
       }
       `,
       { clientId },

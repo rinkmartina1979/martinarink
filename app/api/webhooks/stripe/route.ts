@@ -40,9 +40,9 @@ async function sendDepositConfirmation(
         Your consultation deposit has been received.
       </p>
       <p style="font-size:17px;line-height:1.7;margin:0 0 24px;color:#4A3728;">
-        I'll send you a Calendly link by email within 24 hours so we can find a
-        time that works. The deposit will be credited toward your programme should
-        you choose to continue.
+        You can choose a time now from the confirmation page, or come back to
+        it whenever suits you. The deposit will be credited toward your
+        programme should you choose to continue.
       </p>
       <p style="font-size:17px;line-height:1.7;margin:0 0 40px;color:#4A3728;">
         If you have any questions before then, you can reach me at

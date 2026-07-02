@@ -44,26 +44,16 @@ async function checkResend(): Promise<{ ok: boolean; detail: string }> {
   }
 }
 
-// Validates the Calendly Personal Access Token used by the free-plan embed
-// booking automation (/api/webhooks/calendly-embed). A set-but-invalid token
-// fails silently in production, so we verify it against the live API here.
-async function checkCalendly(): Promise<{ ok: boolean; detail: string }> {
-  const pat = process.env.CALENDLY_PERSONAL_ACCESS_TOKEN;
-  if (!pat) return { ok: false, detail: "CALENDLY_PERSONAL_ACCESS_TOKEN not set — embed booking automation disabled (booking still works; Martina is notified by Calendly natively)" };
-  try {
-    const res = await fetch("https://api.calendly.com/users/me", {
-      headers: { Authorization: `Bearer ${pat}`, "Content-Type": "application/json" },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const r = data.resource ?? {};
-      return { ok: true, detail: `Authenticated as ${r.email ?? "unknown"}` };
-    }
-    if (res.status === 401) return { ok: false, detail: "Invalid token (401) — value is empty or wrong; regenerate at Calendly → Integrations & apps → API & webhooks" };
-    return { ok: false, detail: `HTTP ${res.status}` };
-  } catch (err) {
-    return { ok: false, detail: String(err) };
-  }
+// Cal.com is the booking source of truth. Unlike Calendly's free-tier embed
+// workaround, Cal.com signs webhooks on every plan — so all we need to verify
+// here is that the signing secret is configured (the route itself fails
+// closed with a 503 if it's missing, so this just surfaces that early).
+async function checkCalCom(): Promise<{ ok: boolean; detail: string }> {
+  const secret = process.env.CALCOM_WEBHOOK_SECRET;
+  const url = process.env.NEXT_PUBLIC_CALCOM_URL;
+  if (!secret) return { ok: false, detail: "CALCOM_WEBHOOK_SECRET not set — /api/webhooks/calcom rejects all events until configured" };
+  if (!url) return { ok: false, detail: "NEXT_PUBLIC_CALCOM_URL not set — booking pages fall back to a hardcoded URL" };
+  return { ok: true, detail: `Webhook secret configured, booking link: ${url}` };
 }
 
 function checkEnvVars() {
@@ -99,19 +89,14 @@ function checkEnvVars() {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     warnings.push("BLOB_READ_WRITE_TOKEN not set — accept/contract/intake flow cannot store contracts");
   }
-  // Booking is on free Calendly: webhooks are paid-only, so the site uses the
-  // embed postMessage → /api/webhooks/calendly-embed flow, which needs the PAT
-  // (validated live in checkCalendly above). The webhook signing key is NOT
-  // expected on the free plan, so its absence is not a warning.
-
   return { missing, warnings };
 }
 
 export async function GET() {
-  const [brevo, resend, calendly] = await Promise.all([checkBrevo(), checkResend(), checkCalendly()]);
+  const [brevo, resend, calcom] = await Promise.all([checkBrevo(), checkResend(), checkCalCom()]);
   const env = checkEnvVars();
 
-  const allOk = brevo.ok && resend.ok && calendly.ok && env.missing.length === 0 && env.warnings.length === 0;
+  const allOk = brevo.ok && resend.ok && calcom.ok && env.missing.length === 0 && env.warnings.length === 0;
 
   return NextResponse.json(
     {
@@ -119,7 +104,7 @@ export async function GET() {
       services: {
         brevo: { status: brevo.ok ? "ok" : "error", detail: brevo.detail },
         resend: { status: resend.ok ? "ok" : "error", detail: resend.detail },
-        calendly: { status: calendly.ok ? "ok" : "error", detail: calendly.detail },
+        calcom: { status: calcom.ok ? "ok" : "error", detail: calcom.detail },
       },
       env: {
         missing: env.missing,

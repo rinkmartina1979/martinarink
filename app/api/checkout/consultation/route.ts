@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/book/calendly?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/book/schedule?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/book?token=approved&cancelled=1`,
       ...(customerId ? { customer: customerId } : email ? { customer_email: email } : {}),
       metadata: {

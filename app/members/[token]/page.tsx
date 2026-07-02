@@ -68,6 +68,7 @@ interface VerifyResponse {
   finalFeePaidAt?: string | null;
   manualFinalFeePaidAt?: string | null;
   programmeActiveAt?: string | null;
+  nextSessionAt?: string | null;
   programmeCompletedAt?: string | null;
   accessSuspendedAt?: string | null;
   adminAccessOverride?: boolean | null;
@@ -282,7 +283,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
           />
         </div>
 
-        <SessionCard token={token} />
+        <SessionCard token={token} nextSessionAt={verify.nextSessionAt} />
 
         {entitlement.portalAccess && (
           <BillingCard
