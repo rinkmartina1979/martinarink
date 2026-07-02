@@ -46,6 +46,19 @@ When a deploy goes to production but cached content is suspected:
 2. Latest deployment → `···` → Redeploy
 3. Uncheck "Use existing build cache" → Deploy
 
+### Secret-rotation runbook (env-var drift)
+A local secret change is not real in production until it is also set in Vercel
+AND the project has been redeployed after the change. This mismatch caused a
+real incident (2026-07-02): `MEMBERS_TOKEN_SECRET` was rotated locally but not
+in Vercel, so every already-emailed portal link failed signature verification.
+- Run `npm run check:env` before assuming any secret is live — it compares
+  required key *names* (never values) between `.env.local` and Vercel Production.
+- Rotating `MEMBERS_TOKEN_SECRET` invalidates **every outstanding emailed portal
+  link** (and, once session cookies ship, every active session). Procedure:
+  rotate in Vercel → redeploy → same day, re-issue links for every client where
+  `portalStage != 'completed'` via `scripts/send-portal-link.ts`.
+- Never rotate `MEMBERS_TOKEN_SECRET` on a Friday.
+
 ### Verification before declaring complete
 A change is NOT done until:
 - [ ] `git push origin main` succeeded
@@ -113,22 +126,38 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 - Paragraphs under 100 words
 
 ## Brand colors — Tailwind class names map to these
-- `cream #F7F3EE` — primary surface (80% of pages, NEVER use #FFFFFF)
-- `bone #EDE8E0` — cards, elevated surfaces
-- `blush #F5E8EC` — testimonial cards (1 per page max)
-- `ink #1E1B17` — primary text + dark sections
-- `ink-soft #4A3728` — body, subheads
-- `ink-quiet #8A7F72` — captions, eyebrow labels
-- `sand #C8B8A2` — hairlines
-- `plum #5C2D8E` — PRIMARY CTA FILLS ONLY (Deep Amethyst — Vogue 2026 editorial purple, replaces wine; never text/headings)
-- `plum-deep #451F6B` — button hover only
-- `pink #F942AA` — script accent + 1px hairlines (<5% of page)
-- `pink-soft #FDBFE2` — soft tints
-- `violet-soft #F3EBF5` — section surfaces (from CI Farbe 3)
-- `violet-mid #E6C7EB` — testimonial cards, soft highlights (from CI Farbe 3)
-- `mint #C9EADE` — ONE section per page max
-- `gold #C9A84C` — dark sections only
-- `navy #1A1A2E` — dark section bg
+**Source of truth: the live `@theme` block in `app/globals.css`.** This table is kept in
+sync with it manually — if the two ever disagree, trust `globals.css`, not this file.
+- `cream #F8F4F1` — primary surface (80% of pages, NEVER use #FFFFFF)
+- `bone #EDE8E0` — cards, alternating sections
+- `paper #FAFAF7` — highest elevation, subtle lift
+- `ink #1E1B17` — primary text + dark hero backgrounds
+- `ink-soft #4A3728` — body lead, sub-heads
+- `ink-quiet #636260` — captions, metadata (CI confirmed override)
+- `sand #C8B8A2` — hairlines, dividers
+- `plum #C4687D` — PRIMARY CTA FILLS ONLY (warm blush rose — replaces the earlier Deep Amethyst; never text/headings)
+- `plum-deep #A85268` — CTA hover only
+- `plum-soft #FAE8EC` — pale rose tint (investment/billing panels)
+- `rose-btn #C4687D` / `rose-btn-deep #A85268` — aliases of plum/plum-deep, same values
+- `aubergine #231727` — approved editorial dark section bg
+- `aubergine-soft #2A1B30` — hover / lighter aubergine tint
+- `aubergine-deep #17101B` — deepest aubergine, footer/extreme dark
+- `lilac-soft #F3EBF5` — quote blocks (CI Farbe 3)
+- `lilac-mid #EDDDF0`
+- `lilac-deep #E6C7EB` — testimonial cards, soft highlights
+- `blush #F5E8EC` — soft pink wash (testimonial cards, 1 per page max)
+- `rose #F5CFDC` — client testimonial card bg, warm rose
+- `mint-wash #C9EADE` — ONE section per page max (CI Farbe 2)
+- `pink #F942AA` — script accent + 1px hairlines (<5% of page, CI Farbe 5)
+- `pink-soft #FDBFE2` — soft pink wash
+- `teal #479EB9` — emergency accent, rare (CI Farbe 4)
+- `navy #1A1A2E` — dark CTA section bg
+- `gold #C9A84C` — gold accents on dark sections only
+
+**Deprecated aliases (still resolve, do not use in new code):** `violet-soft` →
+use `lilac-soft`; `violet-mid` → use `lilac-deep`; `mint` → use `mint-wash`.
+Per client feedback, avoid violet/lilac as a section *background* entirely —
+prefer `blush`, `bone`, or `pink-soft` instead.
 
 ## Typography (next/font)
 - **Display** = Playfair Display (substitute for Bodoni Moda) — 40px+ only

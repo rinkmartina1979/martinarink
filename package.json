@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "echo 'No test runner configured. See docs/ASSESSMENT_SYSTEM.md#testing' && exit 0",
     "seed:sanity": "tsx scripts/seed-sanity.ts",
-    "setup:db": "tsx scripts/setup-db.ts"
+    "setup:db": "tsx scripts/setup-db.ts",
+    "check:env": "tsx scripts/check-env.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

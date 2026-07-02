@@ -47,7 +47,11 @@ martinarink-next/
 # generated Brevo email previews
 scripts/brevo-preview/
 
+# one-off dev/debug scripts — not shipped, not operational tools
+scripts/dev/
+
 # Local backups of pre-optimisation source images (Week 3)
 _originals/
 
 .env*.local
+.env*
