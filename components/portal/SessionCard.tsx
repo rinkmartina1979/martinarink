@@ -7,8 +7,9 @@ export function SessionCard({
   token: string;
   nextSessionAt?: string | null;
 }) {
-  const nextSession = nextSessionAt
-    ? new Date(nextSessionAt).toLocaleString("en-GB", {
+  const isUpcoming = nextSessionAt ? new Date(nextSessionAt).getTime() > Date.now() : false;
+  const nextSession = isUpcoming
+    ? new Date(nextSessionAt!).toLocaleString("en-GB", {
         weekday: "long",
         day: "numeric",
         month: "long",
