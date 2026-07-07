@@ -124,6 +124,7 @@ function YesNoConditional({
   detailField,
   detailPlaceholder,
   register,
+  control,
   watch,
   errors,
 }: {
@@ -132,6 +133,7 @@ function YesNoConditional({
   detailField: keyof IntakeFormValues;
   detailPlaceholder?: string;
   register: ReturnType<typeof useForm<IntakeFormValues>>["register"];
+  control: ReturnType<typeof useForm<IntakeFormValues>>["control"];
   watch: ReturnType<typeof useForm<IntakeFormValues>>["watch"];
   errors: ReturnType<typeof useForm<IntakeFormValues>>["formState"]["errors"];
 }) {
@@ -139,24 +141,29 @@ function YesNoConditional({
   return (
     <div className="space-y-3">
       <FieldLabel>{label}</FieldLabel>
-      <div className="flex gap-6">
-        {(["true", "false"] as const).map((v) => (
-          <label key={v} className="flex items-center gap-2.5 cursor-pointer">
-            <input
-              type="radio"
-              value={v}
-              {...register(boolField, {
-                setValueAs: (v) => v === "true",
-              })}
-              className="w-4 h-4 accent-aubergine"
-            />
-            <span className="text-[13px] text-ink font-[family-name:var(--font-body)]">
-              {v === "true" ? "Yes" : "No"}
-            </span>
-          </label>
-        ))}
-      </div>
-      {(value === true || value === "true") && (
+      <Controller
+        name={boolField}
+        control={control}
+        render={({ field }) => (
+          <div className="flex gap-6">
+            {([true, false] as const).map((v) => (
+              <label key={String(v)} className="flex items-center gap-2.5 cursor-pointer">
+                <input
+                  type="radio"
+                  checked={field.value === v}
+                  onChange={() => field.onChange(v)}
+                  onBlur={field.onBlur}
+                  className="w-4 h-4 accent-aubergine"
+                />
+                <span className="text-[13px] text-ink font-[family-name:var(--font-body)]">
+                  {v ? "Yes" : "No"}
+                </span>
+              </label>
+            ))}
+          </div>
+        )}
+      />
+      {value === true && (
         <textarea
           rows={2}
           placeholder={detailPlaceholder ?? "Please describe…"}
@@ -441,6 +448,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="medicationsDetail"
           detailPlaceholder="Please name them and describe the dosage if comfortable doing so."
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
@@ -451,6 +459,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="recentTherapyDetail"
           detailPlaceholder="Please describe the type of support and how recently."
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
@@ -461,6 +470,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="sleepIssuesDetail"
           detailPlaceholder="How long has this been the case? How does it affect your day?"
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
@@ -471,6 +481,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="addictionsDetail"
           detailPlaceholder="Please describe as honestly as you can — this is a safe space."
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
@@ -481,6 +492,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="currentTherapistDetail"
           detailPlaceholder="Type and frequency — e.g. weekly psychotherapy, monthly psychiatry."
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
@@ -566,6 +578,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="exerciseDetail"
           detailPlaceholder="What do you do, and how often?"
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
@@ -576,6 +589,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
           detailField="hobbiesDetail"
           detailPlaceholder="What are they, and how often do you return to them?"
           register={register}
+          control={control}
           watch={watch}
           errors={errors}
         />
