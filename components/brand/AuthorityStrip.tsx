@@ -5,6 +5,7 @@ const ITEMS = [
   { label: "Author", credit: "Three books · Spiegel Bestseller" },
   { label: "Cultural work", credit: "Isabella Blow · London" },
   { label: "Perspective", credit: "Six years alcohol-free" },
+  { label: "Recognition", credit: "Miss Germany · Empowering Women" },
   ...(NURNBERGER_APPROVED
     ? [{ label: "Clinical partner", credit: "Mrs. Nürnberger · My Way Betty Ford" }]
     : []),

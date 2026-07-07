@@ -114,7 +114,7 @@ const FASHION_PRESS = [
 /* ─── Static content ─────────────────────────────────────────── */
 const AUTHORITY_OUTLETS = [
   "Der Spiegel", "Brigitte", "STERN", "Vogue Germany",
-  "ELLE Germany", "Die Zeit", "Manager Magazin",
+  "ELLE Germany", "Die Zeit", "Manager Magazin", "Miss Germany",
 ];
 
 const SPEAKING_TOPICS = [

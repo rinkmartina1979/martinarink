@@ -318,6 +318,35 @@ export default async function AboutPage() {
                 </>
               )}
             </div>
+
+            {/* Published-work teaser — full press gallery lives at /press */}
+            <div className="mt-8 flex gap-4">
+              {[
+                { src: "/images/books/isabella-blow-cover.png", alt: "Isabella Blow — book cover" },
+                { src: "/images/books/people-of-deutschland-cover.png", alt: "People of Deutschland — book cover" },
+                { src: "/images/books/fashion-germany-cover.png", alt: "Fashion Germany — book cover" },
+              ].map((book) => (
+                <div
+                  key={book.src}
+                  className="flex aspect-[4/5] w-20 md:w-24 flex-shrink-0 items-center justify-center bg-white p-2 shadow-[0_2px_16px_rgba(30,27,23,0.08)]"
+                >
+                  <Image
+                    src={book.src}
+                    alt={book.alt}
+                    width={300}
+                    height={400}
+                    className="h-full w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+              <Link
+                href="/press#books"
+                className="ml-1 self-center text-[12px] uppercase tracking-[0.16em] text-plum hover:text-plum-deep transition-colors whitespace-nowrap"
+              >
+                See press &amp; books →
+              </Link>
+            </div>
           </div>
           <div>
             <h3 className="font-[family-name:var(--font-display)] text-[28px] text-ink">
