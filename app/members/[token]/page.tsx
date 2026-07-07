@@ -10,6 +10,7 @@ import {
   type MemberAudioDrop,
 } from "@/sanity/lib/membersQueries";
 import { monthIndexFor, toDateKey } from "@/lib/journal/prompts";
+import { WORKBOOK_TOTAL } from "@/lib/workbook/sections";
 import { PortalDashboardHero } from "@/components/portal/PortalDashboardHero";
 import { CurrentStageTimeline } from "@/components/portal/CurrentStageTimeline";
 import { NextActionCard } from "@/components/portal/NextActionCard";
@@ -25,6 +26,7 @@ import { SessionBootstrap } from "@/components/portal/SessionBootstrap";
 import { SuspendedAccessView } from "@/components/portal/SuspendedAccessView";
 import { LinkExpiredView } from "@/components/portal/LinkExpiredView";
 import { deriveEntitlement } from "@/lib/members/entitlements";
+import { deriveJourney } from "@/lib/members/journey";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -210,7 +212,10 @@ export default async function MembersPage({ params }: MembersPageProps) {
   const monthIndex = enrolledAt ? monthIndexFor(enrolledAt, toDateKey(new Date())) : 1;
   const latestMilestones = (milestones ?? []).slice(0, 5);
 
-  // Single primary action — Martina's set next step, else a calm journal default.
+  // Single primary action. Martina's manual override wins when set; otherwise
+  // the journey is derived purely from verified payment/progress signals —
+  // see lib/members/journey.ts. This is what lets the funnel advance itself
+  // without Martina hand-editing nextStepTitle in Studio for every client.
   const next = verify.nextStepTitle
     ? {
         title: verify.nextStepTitle,
@@ -219,13 +224,20 @@ export default async function MembersPage({ params }: MembersPageProps) {
         ctaHref: verify.nextStepHref ?? journalHref,
         dueAt: verify.nextStepDueAt ?? null,
       }
-    : {
-        title: "Continue your journal",
-        description: "A few quiet minutes — morning or evening. Return whenever you're ready.",
-        ctaLabel: "Open your journal",
-        ctaHref: journalHref,
-        dueAt: null,
-      };
+    : deriveJourney(
+        {
+          depositPaidAt: billingFields.depositPaidAt,
+          manualDepositPaidAt: billingFields.manualDepositPaidAt,
+          programmeVariant: programmeVariant ?? null,
+          finalFeePaidAt: billingFields.finalFeePaidAt,
+          manualFinalFeePaidAt: billingFields.manualFinalFeePaidAt,
+          programmeActiveAt: billingFields.programmeActiveAt,
+          nextSessionAt: verify.nextSessionAt ?? null,
+          workbookStartedCount: workbookProgress.startedKeys.length,
+          workbookTotal: WORKBOOK_TOTAL,
+        },
+        token,
+      );
 
   return (
     <div className="bg-cream min-h-screen">
