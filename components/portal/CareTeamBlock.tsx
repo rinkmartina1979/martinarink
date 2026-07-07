@@ -11,48 +11,52 @@ export function CareTeamBlock({ members }: CareTeamBlockProps) {
 
   return (
     <section>
-      <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6">
+      <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-2">
         Your care team
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <p className="font-[family-name:var(--font-display)] text-[24px] md:text-[28px] text-ink leading-snug mb-8">
+        The two women behind your programme.
+      </p>
+
+      <div className="divide-y divide-sand/40 border-t border-b border-sand/40">
         {members.map((member) => (
           <div
             key={member._id}
-            className="bg-bone border border-sand/30 p-6 flex gap-5 items-start"
+            className="py-8 md:py-10 flex flex-col sm:flex-row gap-6 sm:gap-8"
           >
             {member.photo?.asset ? (
-              <div className="flex-shrink-0 w-14 h-14 relative overflow-hidden rounded-full">
+              <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 relative overflow-hidden rounded-full border border-sand/50">
                 <Image
-                  src={urlFor(member.photo).width(112).height(112).url()}
+                  src={urlFor(member.photo).width(192).height(192).url()}
                   alt={member.photo.alt ?? member.name}
-                  width={56}
-                  height={56}
+                  width={96}
+                  height={96}
                   className="object-cover w-full h-full"
                 />
               </div>
             ) : (
               <div
-                className="flex-shrink-0 w-14 h-14 rounded-full bg-sand/40 flex items-center justify-center"
+                className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-bone border border-sand/50 flex items-center justify-center"
                 aria-hidden
               >
-                <span className="font-[family-name:var(--font-display)] text-[20px] text-ink-quiet">
+                <span className="font-[family-name:var(--font-display)] text-[28px] text-plum">
                   {member.name.charAt(0)}
                 </span>
               </div>
             )}
 
             <div className="min-w-0">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-ink-quiet mb-1">
-                {member.role}
-              </p>
-              <p className="font-[family-name:var(--font-display)] text-[18px] text-ink leading-snug mb-2">
+              <p className="font-[family-name:var(--font-display)] text-[22px] md:text-[24px] text-ink leading-snug">
                 {member.name}
               </p>
-              <p className="text-[14px] leading-[1.7] text-ink-soft">
+              <p className="mt-1 text-[12px] uppercase tracking-[0.16em] text-plum">
+                {member.role}
+              </p>
+              <p className="mt-4 text-[15px] leading-[1.8] text-ink-soft max-w-xl">
                 {member.bio}
               </p>
               {member.availability && (
-                <p className="mt-3 text-[12px] text-ink-quiet tracking-[0.04em]">
+                <p className="mt-4 text-[12px] uppercase tracking-[0.1em] text-ink-quiet">
                   {member.availability}
                 </p>
               )}
