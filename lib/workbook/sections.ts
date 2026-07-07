@@ -236,7 +236,7 @@ export const WORKBOOK_SECTIONS: WorkbookSection[] = [
     de: "Kreiere deine neue Realität",
     group: "commitment",
     intro:
-      "Write in the past tense, beginning with gratitude — as if you have already received it.",
+      "Affirmations in past tense — first, be grateful; second, state your desire, as if you have already received it. — Formuliere einen Satz, der mit Gratitude anfängt und danach dein Ziel in die Vergangenheit setzt, so als ob du es schon empfangen hast.",
     prompts: [
       { key: "affirmations", en: "My affirmations", de: "Meine Affirmationen", type: "long" },
     ],
