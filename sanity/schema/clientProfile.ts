@@ -87,6 +87,7 @@ export default defineType({
       options: {
         list: [
           { title: 'Sober Muse — 3 months (€5,000)', value: 'sober-muse-3m' },
+          { title: 'Sober Muse — 3 months · 7 days (€6,500)', value: 'sober-muse-3m-7days' },
           { title: 'Sober Muse — 6 months · Weekdays (€10,000)', value: 'sober-muse-6m-weekdays' },
           { title: 'Sober Muse — 6 months · 7 days (€13,000)', value: 'sober-muse-6m-7days' },
           { title: 'Empowerment — 3 months (€7,000)', value: 'empowerment-3m' },

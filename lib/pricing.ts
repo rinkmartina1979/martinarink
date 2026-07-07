@@ -21,6 +21,14 @@ export const PROGRAMME_VARIANTS = {
     total: 5_000,
     durationMonths: 3,
   },
+  "sober-muse-3m-7days": {
+    stripeProductId: "prod_UkL9QHFndFZH8z",
+    programme: "sober-muse" as const,
+    label: "The Sober Muse Method",
+    sublabel: "3 months · 7 days",
+    total: 6_500,
+    durationMonths: 3,
+  },
   "sober-muse-6m-weekdays": {
     stripeProductId: "prod_UkL6o1RqoNWPP1",
     programme: "sober-muse" as const,
