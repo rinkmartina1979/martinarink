@@ -23,6 +23,7 @@ export interface JourneySignals {
   nextSessionAt: string | null;
   workbookStartedCount: number;
   workbookTotal: number;
+  journalEntryCount: number;
 }
 
 export interface JourneyStep {
@@ -104,8 +105,10 @@ export function deriveJourney(signals: JourneySignals, token: string): JourneySt
     };
   }
 
+  const isFirstJournalVisit = signals.journalEntryCount === 0;
+
   return {
-    title: "Continue your journal.",
+    title: isFirstJournalVisit ? "Begin your journal." : "Continue your journal.",
     description: "A few quiet minutes — morning or evening. Return whenever you're ready.",
     ctaLabel: "Open your journal",
     ctaHref: `/members/${token}/journal`,

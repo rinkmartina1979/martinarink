@@ -235,6 +235,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
           nextSessionAt: verify.nextSessionAt ?? null,
           workbookStartedCount: workbookProgress.startedKeys.length,
           workbookTotal: WORKBOOK_TOTAL,
+          journalEntryCount: progress.mornings + progress.evenings,
         },
         token,
       );
