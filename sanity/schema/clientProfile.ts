@@ -237,6 +237,28 @@ export default defineType({
       description: 'Confirmed kickoff date.',
     }),
     defineField({
+      name: 'instalmentsPaid',
+      title: 'Instalments paid',
+      type: 'number',
+      description: 'Set by Stripe webhook when a client pays the balance in 3 instalments instead of in full. Never set manually.',
+      readOnly: true,
+    }),
+    defineField({
+      name: 'instalmentInvoiceIds',
+      title: 'Instalment invoice IDs',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Stripe invoice IDs already processed, for webhook replay-safety. Never set manually.',
+      readOnly: true,
+    }),
+    defineField({
+      name: 'stripeSubscriptionId',
+      title: 'Stripe subscription ID',
+      type: 'string',
+      description: 'Set when a client chooses the instalment plan — the subscription is cancelled server-side after the final instalment. Never set manually.',
+      readOnly: true,
+    }),
+    defineField({
       name: 'programmeActiveAt',
       title: 'Programme active at',
       type: 'datetime',
