@@ -126,22 +126,22 @@ export const INSTALMENT_COUNT = 3;
 
 export interface InstalmentPlan {
   count: number;
-  /** Cents charged per instalment, instalments 2..N. */
+  /** Cents charged per instalment — identical every month. */
   perCents: number;
-  /** Cents charged on instalment 1 — absorbs the rounding remainder. */
-  firstCents: number;
 }
 
 /**
- * Splits the balance into INSTALMENT_COUNT monthly charges using integer cents
- * throughout (no float drift). The first instalment absorbs whatever remainder
- * doesn't divide evenly, so per-instalment amounts never differ by more than 1 cent.
+ * Splits the balance into INSTALMENT_COUNT equal monthly charges, ceiling-rounded
+ * to the cent so 3 × perCents is always >= the balance (never short). Uniform
+ * amount by design — Stripe subscription-mode Checkout applies one recurring
+ * price to every cycle, so a differing first payment would need fragile
+ * add_invoice_items workarounds and would look inconsistent on the client's
+ * own Stripe receipts. At most a couple of cents rounds in the business's favor.
  */
 export function getInstalmentPlan(variant: ProgrammeVariant): InstalmentPlan {
   const balanceCents = Math.round(getBalance(variant) * 100);
-  const perCents = Math.floor(balanceCents / INSTALMENT_COUNT);
-  const firstCents = balanceCents - perCents * (INSTALMENT_COUNT - 1);
-  return { count: INSTALMENT_COUNT, perCents, firstCents };
+  const perCents = Math.ceil(balanceCents / INSTALMENT_COUNT);
+  return { count: INSTALMENT_COUNT, perCents };
 }
 
 /** Formats a cents amount using the same German-locale euro format as formatEur. */
