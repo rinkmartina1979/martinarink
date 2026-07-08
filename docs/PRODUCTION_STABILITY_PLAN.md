@@ -67,49 +67,41 @@ when set.
 
 ---
 
-## Phase 3 — Instalment payments (2 days) · NEXT UP · REVENUE LEVER
+## Phase 3 — Instalment payments ✅ CODE DONE, ⚠️ NEEDS MANUAL LIVE VERIFICATION
+(commits `3700407`, `3c8f5c7`, `7dc109c`, `4f50d52`, `1c1e8f1`)
 
-**Goal:** Offer 3× alongside pay-in-full on the programme balance (now €4,650–€12,650+ across
-6 variants). Higher close rate without discounting.
+**Shipped:** `getInstalmentPlan()` in `lib/pricing.ts` (uniform monthly amount, ceiling-rounded —
+not the asymmetric first/subsequent split originally sketched here, which doesn't fit Stripe
+subscription-mode Checkout cleanly). Checkout route accepts `paymentMode: 'full' | 'instalments'`,
+creates a subscription-mode session with metadata on `subscription_data` for instalments.
+Webhook handles `invoice.paid` for `programme-instalment` subscriptions — grants
+`programmeActiveAt` on instalment 1, increments `instalmentsPaid`, dedupes by invoice ID,
+cancels the subscription server-side after the final instalment. `ProgrammeSelector` UI ships
+the two-radio choice, verified rendering + math correctly in preview.
 
-**Files:**
-- `lib/pricing.ts` (EDIT) — per variant `instalments: { count: 3, perCents, firstCents }` where
-  `per = Math.floor(balanceCents/3)`, `first = balanceCents - 2*per` (remainder in first charge —
-  integer cents, no float drift). Add a `getInstalmentPlan(variant)` helper. Works across all 6
-  current variants automatically once added generically.
-- `app/api/checkout/programme/route.ts` (EDIT) — accept `paymentMode: 'full' | 'instalments'`.
-  Instalments → Stripe Checkout `mode: 'subscription'`, monthly `unit_amount: perCents`,
-  `subscription_data.metadata: { clientId, variantKey, type: 'programme-instalment', totalInstalments: '3' }`.
-  Attach existing `stripeCustomerId`. **Persist the chosen variant first** (never trust body for access).
-- `app/api/webhooks/stripe/route.ts` (EDIT) — branch on `invoice.paid` with
-  `subscription metadata.type === 'programme-instalment'`:
-  - Dedupe by `invoice.id` (store in `instalmentInvoiceIds[]`, skip if present — **replay-safe**).
-  - First paid invoice → `setIfMissing({ programmeActiveAt })` + `set({ programmeVariant })` + `instalmentsPaid = 1`.
-  - Subsequent → increment `instalmentsPaid`.
-  - Final (`instalmentsPaid === totalInstalments`) → `setIfMissing({ finalFeePaidAt })` +
-    `stripe.subscriptions.update(id, { cancel_at_period_end: true })` (server-side, never client).
-  - `invoice.payment_failed` → extend existing Martina email (commit `aa09ce0`) with which instalment
-    failed. **Do NOT auto-suspend** — Stripe smart-retries ~2 weeks; `accessSuspendedAt` stays manual.
-- `sanity/schema/clientProfile.ts` (EDIT) — add `instalmentsPaid` (number), `instalmentInvoiceIds`
-  (array of string), `stripeSubscriptionId` (string). All webhook-written, `readOnly` in Studio.
-- `components/portal/ProgrammeSelector.tsx` (EDIT) — under the chosen tier, two quiet radio lines
-  ("€X today" / "3 monthly payments of €Y"), then ONE CTA. One decision per screen.
+**Two real bugs caught and fixed before shipping** (see commit `4f50d52` for detail):
+1. Initial `subscription_details` metadata extraction used a fabricated top-level `Invoice`
+   field that doesn't exist in the installed Stripe SDK — masked by a type-widening cast, would
+   have made the entire instalment branch permanently dead code despite `tsc` passing clean.
+   Fixed using the real typed path (`invoice.parent.subscription_details`), verified against the
+   actual `.d.ts` source, no casts needed after the fix.
+2. `checkout.session.completed` fires for subscription-mode sessions too, and instalment
+   metadata lives on `subscription_data`, not `session.metadata` — without a guard, an
+   instalment purchase would have fallen through into the one-time deposit branch and fired
+   incorrect deposit-paid side effects.
 
-**Entitlement invariant (enforce in review):** `programmeAccess` from instalment 1 (that's what
-makes instalments convert — she's in immediately); `finalFeePaidAt` only when fully paid.
-`deriveEntitlement` needs no change (`programmeActiveAt` already grants). `deriveJourney`
-(Phase 2) shows "enrolled" automatically — no extra wiring needed.
+**What was NOT possible this session:** a live Stripe test-mode round-trip. The auto-mode
+classifier correctly blocks any access to the live `STRIPE_SECRET_KEY`, including read-only
+inspection, and this codebase has no separate test-mode key configured. Verified instead via:
+cent-math unit tests (all 6 variants sum exactly), `tsc` against the real Stripe SDK types, and
+a synthetic simulation of the full 3-payment lifecycle plus duplicate-event replays (idempotency
+confirmed mechanically). **Pushed to production with explicit user authorization**, on the
+understanding that a manual click-through test (real tier selection → instalments → Stripe
+Checkout) happens before any real client is told the feature exists.
 
-**Steps:**
-1. Pricing math + helper + tsc. Commit.
-2. Checkout route instalment branch. Test-mode: create a subscription checkout, confirm cents.
-3. Webhook branch + dedupe. **Replay the test `invoice.paid` twice — confirm idempotent.**
-4. ProgrammeSelector UI. Preview.
-5. Full test-mode run: select tier → instalments → 3 test invoices → access on #1, finalFeePaid on #3,
-   subscription cancelled. Confirm cheapest-tier selection alone grants NOTHING. Commit per step.
-
-**Gate:** Stripe test-mode end-to-end + double-fire idempotency. **Rollback:** revert;
-`paymentMode` defaults to `full`, existing single-charge path untouched. Webhook branch is additive.
+**Outstanding for a future session, not urgent:** `invoice.payment_failed` still only fires the
+existing generic Martina notification — it doesn't yet say *which* instalment failed. Low
+priority since Stripe's smart retries run ~2 weeks before this matters.
 
 ---
 
@@ -225,14 +217,15 @@ this is why it stays additive and last.
 | 0 | Pre-flight | 0.5 | ✅ Done |
 | 1 | Dead-link recovery | 0.5 | ✅ Done |
 | 2 | Automation spine | 2 | ✅ Done |
-| 3 | Instalments | 2 | **Next** — direct revenue, plugs into the spine |
-| 4 | Welcome moment | 1 | Trivial once instalments exist; protects refund-risk minute |
+| 3 | Instalments | 2 | ✅ Code done — ⚠️ needs manual live-payment verification |
+| 4 | Welcome moment | 1 | **Next** — trivial now instalments exist; protects refund-risk minute |
 | 5 | Design source-of-truth | 1 | Guardrail before more UI is built |
 | 6 | Funnel events | 0.5 | Measurement |
 | 7 | Session cookies | 0.5–1 (revised down) | Blocked on one Vercel dashboard check, then Phase B build |
 
-**Remaining core work ≈ 4.5–5 days** (was 9–10 before Phases 0–2 landed and Phase 7 was found
-to be half-built already).
+**Remaining core work ≈ 2.5–3 days** (was 9–10 before Phases 0–3 landed and Phase 7 was found
+to be half-built already). **Before anything else:** manually click through the instalment flow
+once on production to close Phase 3's one open gap.
 
 ## Out of scope (later)
 Client-facing messaging threads; field-level journal/workbook encryption (DPIA); Postgres
