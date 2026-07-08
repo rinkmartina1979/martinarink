@@ -4,9 +4,12 @@
  * Handles Stripe webhook events.
  *
  * Events handled:
- *   - checkout.session.completed (deposit)           → sets depositPaidAt + stripeCustomerId
- *   - checkout.session.completed (programme-balance) → sets finalFeePaidAt + programmeActiveAt + programmeVariant
- *   - invoice.paid (type=final_fee)                  → sets finalFeePaidAt on clientProfile
+ *   - checkout.session.completed (deposit)              → sets depositPaidAt + stripeCustomerId
+ *   - checkout.session.completed (programme-balance)    → sets finalFeePaidAt + programmeActiveAt + programmeVariant
+ *   - checkout.session.completed (subscription mode)    → no-op, handled via invoice.paid below
+ *   - invoice.paid (subscription metadata=instalment)   → increments instalmentsPaid; programmeActiveAt
+ *                                                          on 1st, finalFeePaidAt + subscription cancel on last
+ *   - invoice.paid (type=final_fee)                     → sets finalFeePaidAt on clientProfile
  *
  * Pattern: fast 2xx immediately, then waitUntil for side effects (Brevo, Resend, Sanity).
  * All Sanity writes are idempotent (setIfMissing for paid timestamps).
@@ -18,6 +21,7 @@ import { waitUntil } from '@vercel/functions'
 import { trackBrevoEvent, addBrevoContact } from '@/lib/brevo'
 import { writeClient, hasWriteClient } from '@/sanity/lib/writeClient'
 import { paymentFailedNotification } from '@/lib/email-templates'
+import { stripe as stripeSingleton, hasStripe } from '@/lib/stripe'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -173,6 +177,80 @@ async function patchProgrammeBalancePaid(
   }
 }
 
+/**
+ * Programme balance paid in 3 monthly instalments via Stripe subscription
+ * (invoice.paid with subscription metadata.type === "programme-instalment").
+ *
+ * Grants programmeActiveAt on the FIRST paid instalment (that immediacy is
+ * what makes instalments convert). Sets finalFeePaidAt only once the last
+ * instalment lands, then cancels the subscription server-side so it never
+ * attempts a 4th charge. Idempotent by invoice ID — Stripe may retry the
+ * same invoice.paid event, and a replayed final invoice must not re-cancel
+ * an already-cancelled subscription or double-count instalmentsPaid.
+ */
+async function patchInstalmentPaid(
+  clientId: string,
+  variantKey: string | null,
+  subscriptionId: string,
+  invoiceId: string,
+  totalInstalments: number,
+  paidAt: string,
+): Promise<void> {
+  if (!hasWriteClient(writeClient)) return
+  try {
+    const profile = await writeClient.fetch<{
+      _id: string
+      instalmentsPaid: number | null
+      instalmentInvoiceIds: string[] | null
+    } | null>(
+      `*[_type == "clientProfile" && clientId == $clientId][0] {
+        _id, instalmentsPaid, instalmentInvoiceIds
+      }`,
+      { clientId },
+    )
+    if (!profile) {
+      console.warn('[stripe webhook] No clientProfile found for instalment clientId:', clientId)
+      return
+    }
+
+    // Idempotency — Stripe may retry the same invoice.paid event.
+    if ((profile.instalmentInvoiceIds ?? []).includes(invoiceId)) {
+      return
+    }
+
+    const paidCountAfterThis = (profile.instalmentsPaid ?? 0) + 1
+    const isFirst = paidCountAfterThis === 1
+    const isFinal = paidCountAfterThis >= totalInstalments
+
+    let patch = writeClient
+      .patch(profile._id)
+      .setIfMissing({ instalmentsPaid: 0, instalmentInvoiceIds: [] })
+      .inc({ instalmentsPaid: 1 })
+      .insert('after', 'instalmentInvoiceIds[-1]', [invoiceId])
+      .set({ stripeSubscriptionId: subscriptionId })
+
+    if (isFirst) {
+      patch = patch.setIfMissing({ programmeActiveAt: paidAt })
+      if (variantKey) patch = patch.set({ programmeVariant: variantKey })
+    }
+    if (isFinal) {
+      patch = patch.setIfMissing({ finalFeePaidAt: paidAt })
+    }
+
+    await patch.commit()
+
+    if (isFinal && hasStripe(stripeSingleton)) {
+      try {
+        await stripeSingleton.subscriptions.update(subscriptionId, { cancel_at_period_end: true })
+      } catch (err) {
+        console.error('[stripe webhook] Failed to cancel completed instalment subscription:', err)
+      }
+    }
+  } catch (err) {
+    console.error('[stripe webhook] Sanity instalment patch failed:', err)
+  }
+}
+
 async function sendPaymentFailedNotification(
   customerEmail: string,
   amountDue: string,
@@ -245,6 +323,16 @@ export async function POST(req: NextRequest) {
   // ── checkout.session.completed ────────────────────────────────
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
+
+    // Subscription-mode sessions (the instalment plan) are handled entirely via
+    // invoice.paid events below — the instalment metadata lives on
+    // subscription_data.metadata, not session.metadata, and there is no deposit
+    // to record here. Without this guard, an instalment purchase would fall
+    // through into the one-time "consultation deposit" branch and incorrectly
+    // fire deposit-paid side effects for what is actually a programme balance.
+    if (session.mode === 'subscription') {
+      return NextResponse.json({ ok: true, skipped: 'subscription_mode_handled_via_invoice_paid' })
+    }
 
     if (session.payment_status !== 'paid') {
       return NextResponse.json({ ok: true, skipped: 'not_paid' })
@@ -341,12 +429,47 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // ── invoice.paid → final fee paid ────────────────────────────
-  // Only process invoices explicitly tagged type=final_fee in Stripe metadata.
-  // Martina must set this when creating the final-fee invoice in the Stripe dashboard.
+  // ── invoice.paid → instalment or final fee ────────────────────
   if (event.type === 'invoice.paid') {
     const invoice = event.data.object as Stripe.Invoice
 
+    // Instalment plan — subscription metadata was stamped at checkout creation
+    // (see app/api/checkout/programme/route.ts). Stripe snapshots subscription
+    // metadata onto invoice.parent.subscription_details as of invoice finalization
+    // (confirmed against the installed SDK's Invoice.Parent.SubscriptionDetails type —
+    // there is no top-level invoice.subscription_details field).
+    const subscriptionDetails = invoice.parent?.subscription_details
+    const subscriptionMeta = subscriptionDetails?.metadata as
+      | { type?: string; clientId?: string; variantKey?: string; totalInstalments?: string }
+      | null
+      | undefined
+
+    if (subscriptionMeta?.type === 'programme-instalment') {
+      const subscriptionId =
+        typeof subscriptionDetails?.subscription === 'string'
+          ? subscriptionDetails.subscription
+          : subscriptionDetails?.subscription?.id ?? null
+      const clientId = subscriptionMeta.clientId ?? ''
+      const variantKey = subscriptionMeta.variantKey ?? null
+      const totalInstalments = parseInt(subscriptionMeta.totalInstalments ?? '3', 10)
+      const paidAt = new Date().toISOString()
+
+      if (!clientId || !subscriptionId) {
+        console.warn('[stripe webhook] instalment invoice missing clientId/subscriptionId:', invoice.id)
+        return NextResponse.json({ ok: true, skipped: 'no_client_or_subscription' })
+      }
+
+      waitUntil(
+        patchInstalmentPaid(clientId, variantKey, subscriptionId, invoice.id, totalInstalments, paidAt).catch(
+          (err) => console.error('[stripe webhook] instalment patch failed:', err),
+        ),
+      )
+
+      return NextResponse.json({ ok: true, handled: 'programme-instalment' })
+    }
+
+    // Only process invoices explicitly tagged type=final_fee in Stripe metadata.
+    // Martina must set this when creating the final-fee invoice in the Stripe dashboard.
     if ((invoice.metadata as Record<string, string> | null)?.type !== 'final_fee') {
       return NextResponse.json({ ok: true, skipped: 'not_final_fee' })
     }

@@ -17,7 +17,7 @@ import { z } from "zod";
 import { stripe, hasStripe } from "@/lib/stripe";
 import { verifyMemberToken } from "@/lib/members/token";
 import { writeClient, hasWriteClient } from "@/sanity/lib/writeClient";
-import { getVariant, getBalance } from "@/lib/pricing";
+import { getVariant, getBalance, getInstalmentPlan, INSTALMENT_COUNT } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,6 +27,7 @@ const BodySchema = z.object({
   // Optional — if supplied, we persist it before checkout; otherwise we use the
   // variant already stored on the profile.
   variantKey: z.string().min(1).optional(),
+  paymentMode: z.enum(["full", "instalments"]).optional().default("full"),
 });
 
 interface ProfileForCheckout {
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Validation failed" }, { status: 422 });
   }
-  const { token, variantKey: bodyVariantKey } = parsed.data;
+  const { token, variantKey: bodyVariantKey, paymentMode } = parsed.data;
 
   // ── Authorise via token ──
   const payload = verifyMemberToken(token);
@@ -115,32 +116,62 @@ export async function POST(req: NextRequest) {
     "https://martinarink.com";
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "eur",
-            product: variant.stripeProductId,
-            unit_amount: balance * 100,
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: `${origin}/members/${token}/billing?paid=1`,
-      cancel_url: `${origin}/members/${token}/billing?cancelled=1`,
-      ...(profile.stripeCustomerId
-        ? { customer: profile.stripeCustomerId }
-        : profile.email
-        ? { customer_email: profile.email }
-        : {}),
-      metadata: {
-        clientId,
-        variantKey,
-        type: "programme-balance",
-      },
-      allow_promotion_codes: false,
-    });
+    const customerFields = profile.stripeCustomerId
+      ? { customer: profile.stripeCustomerId }
+      : profile.email
+      ? { customer_email: profile.email }
+      : {};
+
+    const session =
+      paymentMode === "instalments"
+        ? await stripe.checkout.sessions.create({
+            mode: "subscription",
+            line_items: [
+              {
+                price_data: {
+                  currency: "eur",
+                  product: variant.stripeProductId,
+                  unit_amount: getInstalmentPlan(variant).perCents,
+                  recurring: { interval: "month" },
+                },
+                quantity: 1,
+              },
+            ],
+            success_url: `${origin}/members/${token}/billing?paid=1`,
+            cancel_url: `${origin}/members/${token}/billing?cancelled=1`,
+            ...customerFields,
+            subscription_data: {
+              metadata: {
+                clientId,
+                variantKey,
+                type: "programme-instalment",
+                totalInstalments: String(INSTALMENT_COUNT),
+              },
+            },
+            allow_promotion_codes: false,
+          })
+        : await stripe.checkout.sessions.create({
+            mode: "payment",
+            line_items: [
+              {
+                price_data: {
+                  currency: "eur",
+                  product: variant.stripeProductId,
+                  unit_amount: balance * 100,
+                },
+                quantity: 1,
+              },
+            ],
+            success_url: `${origin}/members/${token}/billing?paid=1`,
+            cancel_url: `${origin}/members/${token}/billing?cancelled=1`,
+            ...customerFields,
+            metadata: {
+              clientId,
+              variantKey,
+              type: "programme-balance",
+            },
+            allow_promotion_codes: false,
+          });
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
