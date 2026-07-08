@@ -122,6 +122,33 @@ export function getBalance(variant: ProgrammeVariant): number {
   return Math.max(0, variant.total - DEPOSIT);
 }
 
+export const INSTALMENT_COUNT = 3;
+
+export interface InstalmentPlan {
+  count: number;
+  /** Cents charged per instalment, instalments 2..N. */
+  perCents: number;
+  /** Cents charged on instalment 1 — absorbs the rounding remainder. */
+  firstCents: number;
+}
+
+/**
+ * Splits the balance into INSTALMENT_COUNT monthly charges using integer cents
+ * throughout (no float drift). The first instalment absorbs whatever remainder
+ * doesn't divide evenly, so per-instalment amounts never differ by more than 1 cent.
+ */
+export function getInstalmentPlan(variant: ProgrammeVariant): InstalmentPlan {
+  const balanceCents = Math.round(getBalance(variant) * 100);
+  const perCents = Math.floor(balanceCents / INSTALMENT_COUNT);
+  const firstCents = balanceCents - perCents * (INSTALMENT_COUNT - 1);
+  return { count: INSTALMENT_COUNT, perCents, firstCents };
+}
+
+/** Formats a cents amount using the same German-locale euro format as formatEur. */
+export function formatEurCents(cents: number): string {
+  return formatEur(Math.round(cents / 100));
+}
+
 /** Formatted euro string in German locale (€5.000, €13.000). */
 export function formatEur(amount: number): string {
   return `€${amount.toLocaleString("de-DE")}`;
