@@ -6,12 +6,15 @@ import {
   PROGRAMME_VARIANTS,
   getBalance,
   formatEur,
+  formatEurCents,
+  getInstalmentPlan,
   DEPOSIT,
   type ProgrammeVariantKey,
   type ProgrammeVariant,
 } from "@/lib/pricing";
 
 type FlowState = "idle" | "saving" | "redirecting" | "error";
+type PaymentMode = "full" | "instalments";
 
 interface ProgrammeSelectorProps {
   token: string;
@@ -34,6 +37,7 @@ export function ProgrammeSelector({ token, programme, currentVariant }: Programm
     (currentVariant as ProgrammeVariantKey) ?? null,
   );
   const [state, setState] = useState<FlowState>("idle");
+  const [paymentMode, setPaymentMode] = useState<PaymentMode>("full");
 
   if (tiers.length === 0) {
     return (
@@ -65,7 +69,7 @@ export function ProgrammeSelector({ token, programme, currentVariant }: Programm
       const res = await fetch("/api/checkout/programme", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, variantKey: selected }),
+        body: JSON.stringify({ token, variantKey: selected, paymentMode }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (res.ok && data.url) {
@@ -134,13 +138,51 @@ export function ProgrammeSelector({ token, programme, currentVariant }: Programm
               {formatEur(balance)}
             </span>
           </div>
+
+          <div className="space-y-2 mb-6" role="radiogroup" aria-label="Payment option">
+            {(
+              [
+                { mode: "full" as const, label: `${formatEur(balance)} today` },
+                {
+                  mode: "instalments" as const,
+                  label: `3 monthly payments of ${formatEurCents(getInstalmentPlan(selectedVariant).perCents)}`,
+                },
+              ]
+            ).map(({ mode, label }) => (
+              <label
+                key={mode}
+                className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-[1px] border cursor-pointer transition-colors duration-200",
+                  paymentMode === mode
+                    ? "bg-cream border-plum"
+                    : "bg-cream border-sand hover:border-ink-soft",
+                )}
+              >
+                <input
+                  type="radio"
+                  name="payment-mode"
+                  checked={paymentMode === mode}
+                  onChange={() => setPaymentMode(mode)}
+                  className="w-4 h-4 accent-plum"
+                />
+                <span className="text-[14px] text-ink font-[family-name:var(--font-body)]">
+                  {label}
+                </span>
+              </label>
+            ))}
+          </div>
+
           <button
             type="button"
             onClick={() => void payBalance()}
             disabled={state === "redirecting"}
             className="px-8 py-3 bg-plum text-cream text-[12px] uppercase tracking-[0.18em] rounded-[1px] cursor-pointer hover:bg-plum-deep transition-colors duration-200 disabled:opacity-60"
           >
-            {state === "redirecting" ? "Opening checkout…" : `Pay balance — ${formatEur(balance)}`}
+            {state === "redirecting"
+              ? "Opening checkout…"
+              : paymentMode === "instalments"
+              ? `Begin instalments — ${formatEurCents(getInstalmentPlan(selectedVariant).perCents)}/month`
+              : `Pay balance — ${formatEur(balance)}`}
           </button>
           {state === "error" && (
             <p className="mt-3 text-[13px] text-pink font-[family-name:var(--font-body)]">
