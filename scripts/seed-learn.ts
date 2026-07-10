@@ -53,24 +53,30 @@ const articles: ArticleSeed[] = [
   {
     _id: "learn-physiological",
     _type: "learnArticle",
-    title: "How Alcohol Affects the Female Body",
-    titleDe: "Wie Alkohol den weiblichen Körper beeinflusst",
+    title: "Is there a difference between women and men in the effects of alcohol?",
+    titleDe: "Gibt es einen Unterschied zwischen Frauen und Männern in der Wirkung von Alkohol?",
     slug: { _type: "slug", current: "how-alcohol-affects-the-female-body" },
     category: "physiological",
-    bodyEn: `Women process alcohol differently from men — not just in degree, but in kind.
+    bodyEn: `Yes, there are differences in the effects of alcohol, tolerance development, and withdrawal symptoms between men and women. These differences are due to biological, hormonal, and social factors.
 
-The same drink hits a woman's bloodstream faster and at higher concentration. This is because women have a lower proportion of body water relative to total body weight, which means alcohol is diluted less before it reaches the bloodstream. Women also have lower levels of alcohol dehydrogenase (ADH) — the primary enzyme responsible for metabolising alcohol in the stomach — so more alcohol passes directly into the blood before the body can break it down.
+PHYSIOLOGICAL DIFFERENCES
 
-The result: a woman drinking the same amount as a man will reach a blood alcohol concentration 30–50% higher, even after adjusting for body weight. She will feel the effects sooner, more intensely, and for longer.
+• Women generally have a higher percentage of body fat and less body water than men.
+• Alcohol is distributed primarily in body water, so women reach a higher blood alcohol concentration (BAC) than men after drinking the same amount.
+• Alcohol breakdown by alcohol dehydrogenase (ADH) tends to be less efficient in the liver and stomach lining in women.
+• Women are often more sensitive to the toxic effects of alcohol on organs such as the liver.
+• The risk of alcohol-related liver damage (e.g. cirrhosis) is higher for women at the same level of consumption.
+• Brain mass is on average smaller in women, which is why alcohol can cause neurotoxic damage more quickly.`,
+    bodyDe: `Ja, es gibt Unterschiede in der Wirkung von Alkohol, der Toleranzentwicklung und den Entzugserscheinungen zwischen Männern und Frauen. Diese Unterschiede sind auf biologische, hormonelle und soziale Faktoren zurückzuführen:
 
-This is not a weakness. It is biology — and understanding it clearly is the first step to working with your body rather than against it.`,
-    bodyDe: `Frauen verarbeiten Alkohol anders als Männer — nicht nur in Ausmaß, sondern grundsätzlich anders.
+PHYSIOLOGISCHE UNTERSCHIEDE
 
-Derselbe Drink gelangt schneller und in höherer Konzentration in den Blutkreislauf einer Frau. Dies liegt daran, dass Frauen einen geringeren Anteil an Körperwasser im Verhältnis zum Gesamtkörpergewicht haben, was bedeutet, dass Alkohol weniger verdünnt wird, bevor er ins Blut gelangt. Frauen haben auch niedrigere Spiegel der Alkohol-Dehydrogenase (ADH) — dem primären Enzym, das für den Alkoholabbau im Magen verantwortlich ist — sodass mehr Alkohol direkt ins Blut gelangt, bevor der Körper ihn abbauen kann.
-
-Das Ergebnis: Eine Frau, die dieselbe Menge trinkt wie ein Mann, erreicht eine 30–50 % höhere Blutalkoholkonzentration, selbst nach Anpassung an das Körpergewicht. Sie spürt die Wirkung früher, intensiver und länger.
-
-Das ist keine Schwäche. Es ist Biologie — und dieses Wissen klar zu verstehen, ist der erste Schritt, um mit dem eigenen Körper zu arbeiten, anstatt gegen ihn.`,
+• Frauen haben in der Regel einen höheren Körperfettanteil und weniger Körperwasser als Männer.
+• Alkohol verteilt sich vor allem im Körperwasser, sodass Frauen bei gleicher Menge Alkohol eine höhere Blutalkoholkonzentration (BAK) erreichen.
+• Der Alkoholabbau durch die Alkoholdehydrogenase (ADH) ist bei Frauen in der Leber und Magenschleimhaut tendenziell weniger effizient.
+• Frauen sind oft empfindlicher gegenüber den toxischen Wirkungen von Alkohol auf Organe wie die Leber.
+• Das Risiko für alkoholbedingte Leberschäden (z. B. Zirrhose) ist bei Frauen bei gleichem Konsum höher.
+• Die Gehirnmasse ist bei Frauen im Durchschnitt geringer, weshalb Alkohol neurotoxische Schäden schneller hervorrufen kann.`,
     attribution: "Ruta Nürnberger",
     programme: "sober-muse",
     sortOrder: 10,
@@ -211,13 +217,13 @@ Brain health: women show greater alcohol-related cognitive impairment and brain 
 The body's capacity to repair is remarkable. Reduction and cessation have measurable benefits at any age.`,
     bodyDe: `Das langfristige Gesundheitsbild regelmäßigen Alkoholkonsums bei Frauen ist nicht subtil.
 
-Lebererkrankungen — einschließlich alkoholischer Fettleber, Hepatitis und Zirrhose — schreiten bei Frauen bei gleichem Konsumniveau schneller voran als bei Männern. Frauen entwickeln Zirrhose nach weniger Trinkvjahren und bei niedrigeren Tagesmengen.
+Lebererkrankungen — einschließlich alkoholischer Fettleber, Hepatitis und Zirrhose — schreiten bei Frauen bei gleichem Konsumniveau schneller voran als bei Männern. Frauen entwickeln Zirrhose nach weniger Trinkjahren und bei niedrigeren Tagesmengen.
 
 Das Brustkrebsrisiko steigt mit Alkoholkonsum in einer dosisabhängigen Beziehung: Für jeden zusätzlichen Drink pro Tag erhöht sich das Risiko um etwa 7–10 %. Diese Beziehung gilt auch bei niedrigem Konsum und ist unabhängig von anderen Risikofaktoren. Alkohol wird von der Internationalen Agentur für Krebsforschung als Karzinogen der Gruppe 1 eingestuft — der höchsten Risikokategorie.
 
 Kardiovaskuläre Auswirkungen sind gemischt. Leichter Konsum kann milde schützende Wirkungen auf das Herz haben. Schwererer Konsum ist jedoch mit Kardiomyopathie (geschwächtem Herzmuskel), Arrhythmie und erhöhtem Blutdruck verbunden. Frauen entwickeln alkoholbedingte Kardiomyopathie bei niedrigeren Konsumniveaus als Männer.
 
-Gehirngesundheit: Frauen zeigen bei niedrigeren Konsumniveaus und über kürzere Zeiträume stärkere alkoholbedingte kognitive Beeinträchtigungen und Hirnvolumsverlusst als Männer. Die Erholung der kognitiven Funktion nach dem Aufhören ist möglich — und ist eines der am häufigsten berichteten Vorteile, die Frauen innerhalb der ersten Wochen einer alkoholfreien Zeit bemerken.
+Gehirngesundheit: Frauen zeigen bei niedrigeren Konsumniveaus und über kürzere Zeiträume stärkere alkoholbedingte kognitive Beeinträchtigungen und Hirnvolumenverlust als Männer. Die Erholung der kognitiven Funktion nach dem Aufhören ist möglich — und ist eines der am häufigsten berichteten Vorteile, die Frauen innerhalb der ersten Wochen einer alkoholfreien Zeit bemerken.
 
 Die Fähigkeit des Körpers zur Reparatur ist bemerkenswert. Reduktion und Aufgabe haben messbare Vorteile in jedem Alter.`,
     attribution: "Ruta Nürnberger",
