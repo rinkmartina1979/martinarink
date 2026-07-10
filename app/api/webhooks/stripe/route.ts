@@ -5,10 +5,12 @@
  *
  * Events handled:
  *   - checkout.session.completed (deposit)              → sets depositPaidAt + stripeCustomerId
- *   - checkout.session.completed (programme-balance)    → sets finalFeePaidAt + programmeActiveAt + programmeVariant
+ *   - checkout.session.completed (programme-balance)    → sets finalFeePaidAt + programmeActiveAt + programmeVariant,
+ *                                                          sends "your programme begins" confirmation email
  *   - checkout.session.completed (subscription mode)    → no-op, handled via invoice.paid below
- *   - invoice.paid (subscription metadata=instalment)   → increments instalmentsPaid; programmeActiveAt
- *                                                          on 1st, finalFeePaidAt + subscription cancel on last
+ *   - invoice.paid (subscription metadata=instalment)   → increments instalmentsPaid; programmeActiveAt +
+ *                                                          confirmation email on 1st, finalFeePaidAt +
+ *                                                          subscription cancel on last
  *   - invoice.paid (type=final_fee)                     → sets finalFeePaidAt on clientProfile
  *
  * Pattern: fast 2xx immediately, then waitUntil for side effects (Brevo, Resend, Sanity).
@@ -22,6 +24,7 @@ import { trackBrevoEvent, addBrevoContact } from '@/lib/brevo'
 import { writeClient, hasWriteClient } from '@/sanity/lib/writeClient'
 import { paymentFailedNotification } from '@/lib/email-templates'
 import { stripe as stripeSingleton, hasStripe } from '@/lib/stripe'
+import { getVariant } from '@/lib/pricing'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -76,6 +79,60 @@ async function sendDepositConfirmation(
     })
   } catch (err) {
     console.error('[stripe webhook] Resend confirmation failed:', err)
+  }
+}
+
+async function sendProgrammeConfirmation(
+  email: string,
+  firstName: string,
+  variantLabel: string | null,
+): Promise<void> {
+  const resendKey = process.env.RESEND_API_KEY
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'contact@martinarink.com'
+  const archiveEmail = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO
+  if (!resendKey) return
+
+  const html = `
+    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#F7F3EE;padding:48px 40px;color:#1E1B17;">
+      <p style="font-size:17px;line-height:1.7;margin:0 0 24px;">
+        ${firstName || 'Hello'},
+      </p>
+      <p style="font-size:17px;line-height:1.7;margin:0 0 24px;color:#4A3728;">
+        Your payment${variantLabel ? ` for ${variantLabel}` : ''} has been received. Your programme begins now.
+      </p>
+      <p style="font-size:17px;line-height:1.7;margin:0 0 24px;color:#4A3728;">
+        You will hear from me directly within 48 hours with how our first weeks
+        together will run. In the meantime, your foundation workbook is open
+        in your portal whenever you are ready to begin.
+      </p>
+      <p style="font-size:17px;line-height:1.7;margin:0 0 40px;color:#4A3728;">
+        If you have any questions before then, you can reach me at
+        <a href="mailto:${fromEmail}" style="color:#5C2D8E;">${fromEmail}</a>.
+      </p>
+      <hr style="border:none;border-top:1px solid #C8B8A2;margin:32px 0;" />
+      <p style="font-size:13px;color:#8A7F72;margin:0;">
+        Martina Rink &nbsp;·&nbsp; martinarink.com
+      </p>
+    </div>
+  `
+
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${resendKey}`,
+      },
+      body: JSON.stringify({
+        from: `Martina Rink <${fromEmail}>`,
+        to: [email],
+        ...(archiveEmail && { bcc: [archiveEmail] }),
+        subject: 'Your programme begins',
+        html,
+      }),
+    })
+  } catch (err) {
+    console.error('[stripe webhook] Programme confirmation Resend failed:', err)
   }
 }
 
@@ -158,8 +215,8 @@ async function patchProgrammeBalancePaid(
 ): Promise<void> {
   if (!hasWriteClient(writeClient)) return
   try {
-    const profile = await writeClient.fetch<{ _id: string } | null>(
-      `*[_type == "clientProfile" && clientId == $clientId][0] { _id }`,
+    const profile = await writeClient.fetch<{ _id: string; email: string | null; firstName: string | null } | null>(
+      `*[_type == "clientProfile" && clientId == $clientId][0] { _id, email, firstName }`,
       { clientId },
     )
     if (!profile) {
@@ -172,6 +229,14 @@ async function patchProgrammeBalancePaid(
     if (variantKey) patch.set({ programmeVariant: variantKey })
     if (stripeCustomerId) patch.setIfMissing({ stripeCustomerId })
     await patch.commit()
+
+    if (profile.email) {
+      await sendProgrammeConfirmation(
+        profile.email,
+        profile.firstName ?? '',
+        getVariant(variantKey)?.label ?? null,
+      )
+    }
   } catch (err) {
     console.error('[stripe webhook] Sanity programme-balance patch failed:', err)
   }
@@ -202,9 +267,11 @@ async function patchInstalmentPaid(
       _id: string
       instalmentsPaid: number | null
       instalmentInvoiceIds: string[] | null
+      email: string | null
+      firstName: string | null
     } | null>(
       `*[_type == "clientProfile" && clientId == $clientId][0] {
-        _id, instalmentsPaid, instalmentInvoiceIds
+        _id, instalmentsPaid, instalmentInvoiceIds, email, firstName
       }`,
       { clientId },
     )
@@ -238,6 +305,14 @@ async function patchInstalmentPaid(
     }
 
     await patch.commit()
+
+    if (isFirst && profile.email) {
+      await sendProgrammeConfirmation(
+        profile.email,
+        profile.firstName ?? '',
+        getVariant(variantKey)?.label ?? null,
+      )
+    }
 
     if (isFinal && hasStripe(stripeSingleton)) {
       try {

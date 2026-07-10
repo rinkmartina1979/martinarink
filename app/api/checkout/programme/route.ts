@@ -137,7 +137,7 @@ export async function POST(req: NextRequest) {
                 quantity: 1,
               },
             ],
-            success_url: `${origin}/members/${token}/billing?paid=1`,
+            success_url: `${origin}/members/${token}/welcome?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/members/${token}/billing?cancelled=1`,
             ...customerFields,
             subscription_data: {
@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
                 quantity: 1,
               },
             ],
-            success_url: `${origin}/members/${token}/billing?paid=1`,
+            success_url: `${origin}/members/${token}/welcome?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/members/${token}/billing?cancelled=1`,
             ...customerFields,
             metadata: {
