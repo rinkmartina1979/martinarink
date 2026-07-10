@@ -111,14 +111,21 @@ export default defineType({
   ],
 
   preview: {
-    select: { entryDate: "entryDate", entryType: "entryType", visibility: "visibility" },
-    prepare({ entryDate, entryType, visibility }) {
+    select: {
+      entryDate: "entryDate",
+      entryType: "entryType",
+      visibility: "visibility",
+      firstName: "client.firstName",
+      lastName: "client.lastName",
+    },
+    prepare({ entryDate, entryType, visibility, firstName, lastName }) {
       const mark =
         visibility === "needs-support" ? "🆘 " : visibility === "shared" ? "👁 " : "🔒 ";
       const type = entryType === "morning" ? "Morning" : "Evening";
+      const name = [firstName, lastName].filter(Boolean).join(" ") || "Unknown client";
       return {
-        title: `${mark}${entryDate ?? "—"} · ${type}`,
-        subtitle: visibility,
+        title: `${name} — ${entryDate ?? "—"} · ${type}`,
+        subtitle: `${mark}${visibility}`,
       };
     },
   },

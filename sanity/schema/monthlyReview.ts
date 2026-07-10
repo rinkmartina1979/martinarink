@@ -68,13 +68,20 @@ export default defineType({
   ],
 
   preview: {
-    select: { monthIndex: "monthIndex", visibility: "visibility", reviewDate: "reviewDate" },
-    prepare({ monthIndex, visibility, reviewDate }) {
+    select: {
+      monthIndex: "monthIndex",
+      visibility: "visibility",
+      reviewDate: "reviewDate",
+      firstName: "client.firstName",
+      lastName: "client.lastName",
+    },
+    prepare({ monthIndex, visibility, reviewDate, firstName, lastName }) {
       const mark =
         visibility === "needs-support" ? "🆘 " : visibility === "shared" ? "👁 " : "🔒 ";
+      const name = [firstName, lastName].filter(Boolean).join(" ") || "Unknown client";
       return {
-        title: `${mark}Month ${monthIndex ?? "—"} review`,
-        subtitle: reviewDate ?? "",
+        title: `${name} — Month ${monthIndex ?? "—"} review`,
+        subtitle: `${mark}${reviewDate ?? ""}`,
       };
     },
   },

@@ -112,13 +112,21 @@ export default defineType({
   ],
 
   preview: {
-    select: { sectionKey: "sectionKey", visibility: "visibility" },
-    prepare({ sectionKey, visibility }) {
+    select: {
+      sectionKey: "sectionKey",
+      visibility: "visibility",
+      updatedAt: "updatedAt",
+      firstName: "client.firstName",
+      lastName: "client.lastName",
+    },
+    prepare({ sectionKey, visibility, updatedAt, firstName, lastName }) {
       const mark =
         visibility === "needs-support" ? "🆘 " : visibility === "shared" ? "👁 " : "🔒 ";
+      const name = [firstName, lastName].filter(Boolean).join(" ") || "Unknown client";
+      const date = updatedAt ? new Date(updatedAt).toISOString().slice(0, 10) : "—";
       return {
-        title: `${mark}${sectionKey ?? "—"}`,
-        subtitle: visibility,
+        title: `${name} — ${sectionKey ?? "—"}`,
+        subtitle: `${mark}${date}`,
       };
     },
   },
