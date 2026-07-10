@@ -1,6 +1,6 @@
 # Production Stability & Self-Closing Funnel — Execution Plan
 
-**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-02. **Updated:** 2026-07-10.
+**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-02. **Updated:** 2026-07-10 (Phase 5 shipped).
 **Principle:** Every step is independently revertable and passes its verification gate
 before the next step touches production. No step leaves money or access in a broken
 intermediate state.
@@ -143,17 +143,23 @@ renders (not a redirect to billing).
 
 ---
 
-## Phase 5 — Design system as source of truth (1 day) · VOGUE GUARDRAIL
+## Phase 5 — Design system as source of truth ✅ DONE (commit `15a6dcb`) · VOGUE GUARDRAIL
 
 **Goal:** Make "Vogue aesthetic" verifiable, not remembered — so no future component drifts.
 
-**Files:**
-- `app/style/page.tsx` (NEW, `noindex`) — live reference rendering every token, button variant, card
-  shell, and the Playfair/DM Sans/Dancing Script type ramp from the real `@theme`. The canonical
-  visual contract.
-- Confirm CLAUDE.md colour table still matches after any future token change.
+**Shipped:** `app/style/page.tsx` (NEW, `noindex`) — live reference rendering every color token
+(surfaces, ink, CTA, tints, accents, dark sections), the full type ramp (display XL/LG/MD, H3,
+body lg/base/sm, caption, overline, script), button variants, card shells, and the banned-word/
+voice guardrails — all via the real Tailwind utility classes (`bg-plum`, `text-ink-soft`, etc.),
+never a hardcoded hex. If `globals.css` changes, this page changes with it automatically.
 
-**Gate:** `/style` renders; screenshot review confirms rose (`#C4687D`), not amethyst, everywhere.
+**Verified:** `tsc --noEmit` clean; confirmed live in preview via `preview_inspect` on the
+primary CTA — computed `background-color: rgb(196, 104, 125)` = `#C4687D`, an exact match to
+`--color-plum` in `globals.css`, proving the token wiring (not just the class names) is correct.
+No console or server errors. Live on production: `/style` returns 200 with `noindex` present in
+the rendered `<meta>` tags.
+
+**Gate:** `/style` renders; CTA color inspected and matches `--color-plum` exactly. ✅
 **Rollback:** delete the page. Reference-only, no runtime dependency.
 
 ---
@@ -237,11 +243,11 @@ this is why it stays additive and last.
 | 2 | Automation spine | 2 | ✅ Done |
 | 3 | Instalments | 2 | ✅ Code done — ⚠️ needs manual live-payment verification |
 | 4 | Welcome moment | 1 | ✅ Code done — ⚠️ needs manual live-payment verification |
-| 5 | Design source-of-truth | 1 | **Next** — guardrail before more UI is built |
-| 6 | Funnel events | 0.5 | Measurement |
+| 5 | Design source-of-truth | 1 | ✅ Done |
+| 6 | Funnel events | 0.5 | **Next** — measurement |
 | 7 | Session cookies | 0.5–1 (revised down) | Blocked on one Vercel dashboard check, then Phase B build |
 
-**Remaining core work ≈ 2–2.5 days** (was 9–10 before Phases 0–3 landed and Phase 7 was found
+**Remaining core work ≈ 1.5–2 days** (was 9–10 before Phases 0–3 landed and Phase 7 was found
 to be half-built already). **Before anything else:** manually click through the instalment flow
 once on production — this single click-through closes both Phase 3's and Phase 4's open
 verification gap, since the welcome page is what that flow lands on after payment.
