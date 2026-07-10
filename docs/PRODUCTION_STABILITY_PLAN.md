@@ -1,6 +1,6 @@
 # Production Stability & Self-Closing Funnel — Execution Plan
 
-**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-02. **Updated:** 2026-07-08.
+**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-02. **Updated:** 2026-07-10.
 **Principle:** Every step is independently revertable and passes its verification gate
 before the next step touches production. No step leaves money or access in a broken
 intermediate state.
@@ -105,22 +105,40 @@ priority since Stripe's smart retries run ~2 weeks before this matters.
 
 ---
 
-## Phase 4 — Post-payment welcome moment (1 day)
+## Phase 4 — Post-payment welcome moment ✅ CODE DONE, ⚠️ NEEDS MANUAL LIVE VERIFICATION
+(commit `8a90aaa`)
 
-**Goal:** After the balance charge, land on "your programme begins," not a receipt. Protects the
-highest refund-risk minute.
+**Shipped:** `app/members/[token]/welcome/page.tsx` (NEW) — reads `session_id`, retrieves the
+Stripe Checkout Session server-side (`stripe.checkout.sessions.retrieve`, expanding
+`subscription` for instalment mode) and cross-checks `clientId` in the session/subscription
+metadata against the verified member token before rendering anything. Any mismatch, unpaid
+status, missing `session_id`, or invalid token redirects straight to `/billing` — the query
+string is never trusted alone, only what Stripe itself reports. Renders "Your programme
+begins." with one CTA into `/workbook/becoming`.
 
-**Files:**
-- `app/members/[token]/welcome/page.tsx` (NEW) — reads `session_id`, verifies against Stripe
-  (`checkout.sessions.retrieve`) server-side before showing paid copy. Renders `deriveJourney()`'s
-  "programme begins" state (trivial now — Phase 2 already computes it). One CTA → `/workbook/becoming`.
-- `app/api/checkout/programme/route.ts` (EDIT) — `success_url` → `/members/[token]/welcome?session_id=…`.
-- Confirmation email fires from the **webhook**, not the page (pages can be skipped; webhooks can't).
+`app/api/checkout/programme/route.ts` — `success_url` changed from
+`/members/[token]/billing?paid=1` (a silent no-op; confirmed via `grep` that `?paid=1` was
+never read anywhere) to `/members/[token]/welcome?session_id={CHECKOUT_SESSION_ID}`, for both
+`full` and `instalments` payment modes.
 
-**Race handling:** if webhook hasn't landed but Stripe session `payment_status === 'paid'`, show the
-welcome anyway — Stripe is truth, Sanity is mirror.
+`app/api/webhooks/stripe/route.ts` — added `sendProgrammeConfirmation()`, fired from the
+**webhook** (not the page, so it can't be skipped by a closed tab): once on
+`programme-balance` `checkout.session.completed`, and once on the *first* instalment's
+`invoice.paid` (not on every instalment).
 
-**Gate:** test-mode paid session renders welcome; unpaid/missing session redirects to billing.
+**Verified this session:** `tsc --noEmit` clean; confirmed in the dev preview that an invalid
+token on `/welcome` redirects to `/billing`, which correctly renders the expired-link
+recovery view (proves the "never trust the query string" guard fires before any paid-state
+copy renders); production `● Ready`, `/api/health` 200, live `/welcome` route responds
+(200 with the expected redirect payload for an invalid token, matching preview behavior).
+
+**What was NOT possible this session:** a real paid-session round-trip through `/welcome` —
+same live-Stripe-key constraint as Phase 3. The redirect-on-invalid path is proven; the
+render-on-paid path is not yet confirmed against a real session object shape from Stripe.
+Verify by paying a real instalment or balance on production and confirming the welcome copy
+renders (not a redirect to billing).
+
+**Gate:** paid session renders welcome; unpaid/missing/mismatched session redirects to billing. ✅ redirect path verified live; ⚠️ paid-render path needs one manual click-through.
 **Rollback:** revert `success_url` to `/billing?paid=1`.
 
 ---
@@ -218,14 +236,15 @@ this is why it stays additive and last.
 | 1 | Dead-link recovery | 0.5 | ✅ Done |
 | 2 | Automation spine | 2 | ✅ Done |
 | 3 | Instalments | 2 | ✅ Code done — ⚠️ needs manual live-payment verification |
-| 4 | Welcome moment | 1 | **Next** — trivial now instalments exist; protects refund-risk minute |
-| 5 | Design source-of-truth | 1 | Guardrail before more UI is built |
+| 4 | Welcome moment | 1 | ✅ Code done — ⚠️ needs manual live-payment verification |
+| 5 | Design source-of-truth | 1 | **Next** — guardrail before more UI is built |
 | 6 | Funnel events | 0.5 | Measurement |
 | 7 | Session cookies | 0.5–1 (revised down) | Blocked on one Vercel dashboard check, then Phase B build |
 
-**Remaining core work ≈ 2.5–3 days** (was 9–10 before Phases 0–3 landed and Phase 7 was found
+**Remaining core work ≈ 2–2.5 days** (was 9–10 before Phases 0–3 landed and Phase 7 was found
 to be half-built already). **Before anything else:** manually click through the instalment flow
-once on production to close Phase 3's one open gap.
+once on production — this single click-through closes both Phase 3's and Phase 4's open
+verification gap, since the welcome page is what that flow lands on after payment.
 
 ## Out of scope (later)
 Client-facing messaging threads; field-level journal/workbook encryption (DPIA); Postgres
