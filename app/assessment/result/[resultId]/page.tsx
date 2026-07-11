@@ -168,7 +168,7 @@ export default async function AssessmentResultPage({ params }: Props) {
           <p className="text-[13px] tracking-[0.14em] uppercase text-ink-quiet mb-8 font-[family-name:var(--font-body)]">
             {isLowReadiness
               ? "One letter, each week. No pressure."
-              : "Five questions. Six minutes. I read every one personally."}
+              : "Five questions. Ten minutes. I read every one personally."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-start gap-4">

@@ -35,7 +35,7 @@ export function WhatHappensNext({ readinessLevel }: Props) {
         {
           n: "01",
           title: "Submit your application",
-          body: "Five honest questions. Takes about six minutes. I read every one personally.",
+          body: "Five honest questions. Takes about ten minutes. I read every one personally.",
         },
         {
           n: "02",

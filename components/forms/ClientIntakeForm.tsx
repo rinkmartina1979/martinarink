@@ -221,7 +221,7 @@ export function ClientIntakeForm({ programme }: { programme?: "sober-muse" | "em
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.error ?? "Something went wrong. Please try again.");
       }
-      router.push("/thank-you/application");
+      router.push("/thank-you/intake");
     } catch (err: unknown) {
       setServerError(err instanceof Error ? err.message : "Something went wrong.");
     }
