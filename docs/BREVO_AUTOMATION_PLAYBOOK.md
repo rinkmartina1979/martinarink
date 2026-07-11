@@ -380,7 +380,7 @@ What it is, I have come to think, is mentoring in the older sense. One person, o
 
 I work with a small number of women at any time. Between fifteen and twenty across both programmes in a given year. Not more, because the depth required for the work to produce real outcomes is only available when the practice is small.
 
-The way into the work is the application — five questions, ten minutes, answered honestly. If we are a fit, I invite you to a private consultation. The consultation is €450 and the right place to understand, from the inside, what this work is.
+The way into the work is the application — five questions, ten minutes, answered honestly. If we are a fit, I invite you to a private consultation. The consultation is €350 and the right place to understand, from the inside, what this work is.
 
 The assessment, if you have not yet taken it, is the right place to start.
 

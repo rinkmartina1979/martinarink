@@ -129,7 +129,7 @@ future pass: add `/intake` to `SUPPRESSED_PATH_PREFIXES`.
 
 ---
 
-## Phase 3 — Verify consultation price in live Brevo campaigns (MANUAL — human action)
+## Phase 3 — Verify consultation price in live Brevo campaigns (MANUAL — human action) ✅ DONE
 
 **Goal:** Confirm the live Brevo email sequences charge the same €350 the site
 and Stripe checkout actually charge — not the €450 quoted in
@@ -151,6 +151,12 @@ is actually configured inside Brevo's dashboard from this repo.
 matches €350 everywhere.
 **Rollback:** n/a — this phase only reads and corrects Brevo, no site code
 touched.
+
+**Confirmed 2026-07-11:** Martina checked the live Brevo campaigns directly —
+€350 everywhere, matching the site and Stripe checkout. No mismatch in
+production email copy. The €450 figure was stale/incorrect only inside
+`docs/BREVO_AUTOMATION_PLAYBOOK.md:383` (a reference doc, never live), fixed
+in the same pass so it doesn't mislead a future read of that playbook.
 
 ---
 
@@ -194,12 +200,13 @@ event data exists.
 |---|-------|------------------|--------|--------|
 | 1 | Intake thank-you fix | Ongoing — every paying client sees acceptance-anxiety copy today | 30 min | ✅ Done |
 | 2 | Time-estimate consistency | New trust wobble each time a lead notices the mismatch | 10 min | ✅ Done |
-| 3 | Brevo price verification | Possible price confusion between email and checkout | 5 min (manual) | **Next — needs Martina** |
-| 4 | Featured-tier treatment | Missed conversion lift, not a bug | 20 min | Not started |
+| 3 | Brevo price verification | Possible price confusion between email and checkout | 5 min (manual) | ✅ Done — confirmed €350 |
+| 4 | Featured-tier treatment | Missed conversion lift, not a bug | 20 min | **Next** — optional |
 
-Phases 1–2 are live on production, verified against the deployed site (not
-just preview). Phase 3 requires a human to check the actual Brevo dashboard —
-no code path exists to verify it automatically.
+Phases 1–3 are closed. The whole application → intake → consultation price
+chain is now consistent end to end: site copy, Stripe checkout, live Brevo
+campaigns, and reference docs all say €350 / ten minutes. Only Phase 4
+(optional visual polish) remains.
 
 ## Out of scope (tracked separately)
 Homepage hero CTA prioritization — blocked on GA4 data (see
