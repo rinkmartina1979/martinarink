@@ -1,6 +1,6 @@
 # Funnel CRO/UX Fix Plan — Execution Plan
 
-**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-11.
+**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-11. **Updated:** 2026-07-11 (Phases 1–2 shipped).
 **Source:** CRO/UX audit of the conversion funnel (assessment → result → apply →
 consultation → intake), conducted this session. Full findings in chat history;
 this doc tracks execution only.
@@ -42,7 +42,7 @@ wrong word in this funnel costs a €5,000+ enrolment, not a typo.
 
 ---
 
-## Phase 1 — Fix intake-form thank-you page (CRITICAL)
+## Phase 1 — Fix intake-form thank-you page (CRITICAL) ✅ DONE (commit `2c15c08`)
 
 **Goal:** Stop telling already-accepted, already-paid clients that their
 "application" is still under review. This is live, ongoing client-facing harm —
@@ -76,9 +76,17 @@ page matching its actual funnel stage.
 **Rollback:** revert the one-line redirect change; delete the new page. Zero
 risk to any other route — this is fully isolated to one form's success path.
 
+**Shipped:** `app/thank-you/intake/page.tsx` created (confirms receipt,
+confidentiality, and the already-known booking link — no acceptance-pending
+language). `ClientIntakeForm.tsx:224` redirect updated. Verified live in
+preview and on production: `curl` of the live page confirmed no occurrence of
+"48 hours" or "read every application" on the new page, and `/thank-you/application`
+was confirmed unchanged (still correct for genuine first-time applicants —
+`ApplicationForm.tsx` is its only remaining caller).
+
 ---
 
-## Phase 2 — Standardize the application-form time estimate
+## Phase 2 — Standardize the application-form time estimate ✅ DONE (commit `2c15c08`)
 
 **Goal:** One claim, everywhere: "about ten minutes" (matches the real
 `apply/sober-muse` page copy and the majority of existing docs/email copy).
@@ -102,6 +110,22 @@ Currently two spots say "six minutes" for the same form.
 **Gate:** grep for the old strings is clean; both call sites render "ten
 minutes" correctly across all readiness branches.
 **Rollback:** two-line text revert, no structural risk.
+
+**Shipped:** both strings changed. Verified live in preview by generating a
+valid signed `resultId` (medium-readiness branch, the one that renders both
+changed strings on one page) and confirming the rendered page reads "Takes
+about ten minutes" (`WhatHappensNext`) and "FIVE QUESTIONS. TEN MINUTES."
+(CTA subline) simultaneously. `grep -rn "six minutes"` across `app/` and
+`components/` returns nothing.
+
+**Found in passing, not fixed (separate, pre-existing, low-priority):**
+`components/brand/NewsletterPopup.tsx`'s `SUPPRESSED_PATH_PREFIXES` list does
+not include `/intake` — the newsletter popup could technically interrupt a
+client mid-way through the sensitive medical intake form. A stale comment in
+`app/layout.tsx:52` suggests this suppression was intended but never added to
+the actual array. Low risk in practice (popup triggers require 25s dwell / 50%
+scroll / exit-intent, all unlikely mid-form), but worth a one-line fix in a
+future pass: add `/intake` to `SUPPRESSED_PATH_PREFIXES`.
 
 ---
 
@@ -166,15 +190,16 @@ event data exists.
 
 ## Sequencing & why
 
-| # | Phase | Risk if skipped | Effort |
-|---|-------|------------------|--------|
-| 1 | Intake thank-you fix | Ongoing — every paying client sees acceptance-anxiety copy today | 30 min |
-| 2 | Time-estimate consistency | New trust wobble each time a lead notices the mismatch | 10 min |
-| 3 | Brevo price verification | Possible price confusion between email and checkout | 5 min (manual) |
-| 4 | Featured-tier treatment | Missed conversion lift, not a bug | 20 min |
+| # | Phase | Risk if skipped | Effort | Status |
+|---|-------|------------------|--------|--------|
+| 1 | Intake thank-you fix | Ongoing — every paying client sees acceptance-anxiety copy today | 30 min | ✅ Done |
+| 2 | Time-estimate consistency | New trust wobble each time a lead notices the mismatch | 10 min | ✅ Done |
+| 3 | Brevo price verification | Possible price confusion between email and checkout | 5 min (manual) | **Next — needs Martina** |
+| 4 | Featured-tier treatment | Missed conversion lift, not a bug | 20 min | Not started |
 
-**Do Phase 1 first regardless of anything else on the roster this week** — it
-is the only item in this plan with confirmed, present-tense client harm.
+Phases 1–2 are live on production, verified against the deployed site (not
+just preview). Phase 3 requires a human to check the actual Brevo dashboard —
+no code path exists to verify it automatically.
 
 ## Out of scope (tracked separately)
 Homepage hero CTA prioritization — blocked on GA4 data (see
