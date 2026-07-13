@@ -26,17 +26,6 @@ export interface Review {
 
 export const REVIEWS: Review[] = [
   {
-    id: "rebecca",
-    name: "Rebecca",
-    role: "Travel Agent & Entrepreneur",
-    quote:
-      "A dear friend introduced me to Martina's Dry January Challenge. What began as an experiment quickly became one of the most significant months of my life. With Martina's support I not only completed the challenge but gained a much deeper understanding of my relationship with myself. Challenge accomplished.",
-    nda: false,
-    photoPath: "/images/portraits/portrait-rebecca.avif",
-    programme: "sober-muse",
-    featuredHome: true,
-  },
-  {
     id: "harita",
     name: "Harita",
     role: "Manager · Automotive industry",
@@ -99,6 +88,17 @@ export const REVIEWS: Review[] = [
     nda: false,
     photoPath: "/images/portraits/portrait-armina.avif",
     programme: "empowerment",
+  },
+  {
+    id: "rebecca",
+    name: "Rebecca",
+    role: "Travel Agent & Entrepreneur",
+    quote:
+      "A dear friend introduced me to Martina's Dry January Challenge. What began as an experiment quickly became one of the most significant months of my life. With Martina's support I not only completed the challenge but gained a much deeper understanding of my relationship with myself. Challenge accomplished.",
+    nda: false,
+    photoPath: "/images/portraits/portrait-rebecca.avif",
+    programme: "sober-muse",
+    featuredHome: true,
   },
   {
     // Used on /about — Anja's empowerment-specific reflection.
