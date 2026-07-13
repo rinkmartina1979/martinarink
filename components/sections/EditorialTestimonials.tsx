@@ -80,16 +80,16 @@ export function EditorialTestimonials({ testimonials }: Props) {
             exit="exit"
             transition={{ duration: 0.38, ease: [0.32, 0, 0.2, 1] }}
           >
-            <div className="grid sm:grid-cols-[168px_1fr] bg-cream shadow-[0_1px_24px_rgba(30,27,23,0.05)]">
+            <div className="grid sm:grid-cols-[190px_1fr] bg-cream shadow-[0_1px_24px_rgba(30,27,23,0.05)]">
               {/* Portrait — B&W, fills left column */}
-              <div className="relative aspect-[4/5] sm:aspect-auto sm:min-h-[220px] overflow-hidden">
+              <div className="relative aspect-[3/4] sm:aspect-auto sm:min-h-[240px] overflow-hidden">
                 {item.photoPath && !item.nda ? (
                   <Image
                     src={item.photoPath}
                     alt={item.name}
                     fill
-                    sizes="(max-width: 640px) 100vw, 168px"
-                    className="object-cover object-top grayscale"
+                    sizes="(max-width: 640px) 100vw, 190px"
+                    className="object-cover object-center grayscale"
                     priority={idx === 0}
                   />
                 ) : (
