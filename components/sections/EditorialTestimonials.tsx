@@ -81,15 +81,17 @@ export function EditorialTestimonials({ testimonials }: Props) {
             transition={{ duration: 0.38, ease: [0.32, 0, 0.2, 1] }}
           >
             <div className="grid sm:grid-cols-[190px_1fr] bg-cream shadow-[0_1px_24px_rgba(30,27,23,0.05)]">
-              {/* Portrait — B&W, fills left column */}
-              <div className="relative aspect-[3/4] sm:aspect-auto sm:min-h-[240px] overflow-hidden">
+              {/* Portrait — B&W, fills left column. object-contain (not cover) so the
+                  whole photo — and therefore the whole face — is always visible,
+                  never cropped, regardless of the source photo's aspect ratio. */}
+              <div className="relative aspect-[3/4] sm:aspect-auto sm:min-h-[240px] overflow-hidden bg-ink/5">
                 {item.photoPath && !item.nda ? (
                   <Image
                     src={item.photoPath}
                     alt={item.name}
                     fill
                     sizes="(max-width: 640px) 100vw, 190px"
-                    className="object-cover object-center grayscale"
+                    className="object-contain object-center grayscale"
                     priority={idx === 0}
                   />
                 ) : (
