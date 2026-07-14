@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { trackFunnel } from "@/lib/analytics/events";
 
 // ── Shared schema ─────────────────────────────────────────────
 
@@ -131,6 +132,7 @@ function ApplicationFormShell({
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.error ?? "Something went wrong. Please try again.");
       }
+      trackFunnel("application_submitted", { programme });
       router.push("/thank-you/application");
     } catch (err: unknown) {
       setServerError(

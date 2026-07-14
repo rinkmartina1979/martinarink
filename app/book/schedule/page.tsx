@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { buildMetadata } from "@/lib/metadata";
 import { Eyebrow } from "@/components/brand/Eyebrow";
 import { CalComEmbed } from "@/components/book/CalComEmbed";
+import { DepositPaidTracker } from "@/components/book/DepositPaidTracker";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -53,6 +54,8 @@ export default async function BookSchedulePage({ searchParams }: SchedulePagePro
 
   return (
     <>
+      <DepositPaidTracker />
+
       {/* ── Header ─────────────────────────────────────────────── */}
       <section className="bg-cream pt-32 md:pt-40 pb-12">
         <div className="container-content max-w-2xl mx-auto text-center">

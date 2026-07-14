@@ -15,6 +15,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { verifyMemberToken } from "@/lib/members/token";
 import { stripe, hasStripe } from "@/lib/stripe";
 import { getVariant } from "@/lib/pricing";
+import { WelcomePaidTracker } from "@/components/portal/WelcomePaidTracker";
 
 export const metadata = buildMetadata({ noIndex: true });
 
@@ -62,6 +63,7 @@ export default async function WelcomePage({ params, searchParams }: WelcomePageP
 
   return (
     <div className="bg-cream min-h-screen flex items-center">
+      <WelcomePaidTracker variantKey={variantKey} />
       <section className="w-full py-28 px-6">
         <div className="max-w-lg mx-auto text-center">
           <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-6">

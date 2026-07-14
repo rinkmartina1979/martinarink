@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackFunnel } from "@/lib/analytics/events";
 
 export function DepositCTA() {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ export function DepositCTA() {
         return;
       }
 
+      trackFunnel("deposit_checkout_opened");
       window.location.href = data.url;
     } catch {
       setError("Network error. Please try again.");

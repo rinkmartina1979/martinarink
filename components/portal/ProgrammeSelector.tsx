@@ -12,6 +12,7 @@ import {
   type ProgrammeVariantKey,
   type ProgrammeVariant,
 } from "@/lib/pricing";
+import { trackFunnel } from "@/lib/analytics/events";
 
 type FlowState = "idle" | "saving" | "redirecting" | "error";
 type PaymentMode = "full" | "instalments";
@@ -56,6 +57,7 @@ export function ProgrammeSelector({ token, programme, currentVariant }: Programm
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, variantKey: key }),
       });
+      if (res.ok) trackFunnel("tier_selected", { variantKey: key });
       setState(res.ok ? "idle" : "error");
     } catch {
       setState("error");
@@ -73,6 +75,7 @@ export function ProgrammeSelector({ token, programme, currentVariant }: Programm
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (res.ok && data.url) {
+        trackFunnel("balance_checkout_opened", { variantKey: selected, paymentMode });
         window.location.href = data.url;
         return;
       }

@@ -5,6 +5,8 @@ import { deriveRouting } from "@/lib/assessment/scoring";
 import { verifyAndDecodeResultId } from "@/lib/assessment/resultId";
 import { getAssessmentResult } from "@/sanity/lib/queries";
 import { InlineLetterCapture } from "@/components/assessment/InlineLetterCapture";
+import { ResultViewedTracker } from "@/components/assessment/ResultViewedTracker";
+import { ResultCTAButtons } from "@/components/assessment/ResultCTAButtons";
 import { FunnelProgress } from "@/components/funnel/FunnelProgress";
 import { WhatHappensNext } from "@/components/funnel/WhatHappensNext";
 import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed, ScoringResult } from "@/lib/assessment/types";
@@ -73,6 +75,13 @@ export default async function AssessmentResultPage({ params }: Props) {
 
   return (
     <>
+      <ResultViewedTracker
+        archetype={archetype}
+        serviceIntent={serviceIntent}
+        readinessLevel={readinessLevel}
+        privacyNeed={privacyNeed}
+      />
+
       {/* ── FUNNEL PROGRESS ──────────────────────────────────────── */}
       <FunnelProgress activeStep={2} variant="dark" />
 
@@ -171,23 +180,15 @@ export default async function AssessmentResultPage({ params }: Props) {
               : "Five questions. Ten minutes. I read every one personally."}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-start gap-4">
-            <a
-              href={routing.primaryHref}
-              className="inline-flex items-center justify-center bg-plum text-cream uppercase tracking-[0.18em] text-[12px] font-medium px-10 py-4 rounded-[1px] hover:bg-plum-deep transition-colors duration-200"
-            >
-              {routing.primaryLabel}
-            </a>
-
-            {routing.secondaryHref && (
-              <a
-                href={routing.secondaryHref}
-                className="inline-flex items-center justify-center border border-sand text-ink-soft uppercase tracking-[0.15em] text-[12px] font-medium px-8 py-4 rounded-[1px] hover:border-ink-quiet hover:text-ink transition-colors duration-200"
-              >
-                {routing.secondaryLabel}
-              </a>
-            )}
-          </div>
+          <ResultCTAButtons
+            primaryHref={routing.primaryHref}
+            primaryLabel={routing.primaryLabel}
+            secondaryHref={routing.secondaryHref}
+            secondaryLabel={routing.secondaryLabel}
+            archetype={archetype}
+            serviceIntent={serviceIntent}
+            readinessLevel={readinessLevel}
+          />
 
           {/* Reassurance — split by readiness level */}
           {isHighReadiness && (
