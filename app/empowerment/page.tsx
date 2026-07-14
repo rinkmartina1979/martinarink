@@ -151,7 +151,9 @@ export default async function EmpowermentPage() {
 
       {/* EDITORIAL PULL-QUOTE — a breath before the work */}
       <PullQuote>
-        The question is not how to do more. It is who all of this was ever for.
+        The question is not how to do more.
+        <br />
+        It is who all of this was ever for<span className="text-pink">.</span>
       </PullQuote>
 
       {/* THE WORK — 2 column */}
@@ -214,9 +216,22 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS — DARK */}
+      {/* HOW IT WORKS — DARK, with portrait (matches Sober Muse's Investment layout) */}
       <section className="bg-aubergine section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-4">
+            <div className="relative aspect-[3/4] bg-ink/30 overflow-hidden">
+              <Image
+                src="/images/portraits/martina-hero-empowerment.jpg"
+                alt="Martina Rink"
+                fill
+                sizes="(max-width: 768px) 100vw, 28vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-8">
+        <div className="max-w-2xl mx-auto text-center">
           <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-cream">
             An open-ended private engagement.
           </h2>
@@ -248,6 +263,8 @@ export default async function EmpowermentPage() {
                 </p>
               </>
             )}
+          </div>
+        </div>
           </div>
         </div>
       </section>
