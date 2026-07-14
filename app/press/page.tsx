@@ -760,7 +760,7 @@ export default async function PressPage() {
                 className="mt-5 font-[family-name:var(--font-display)] italic leading-tight text-ink"
                 style={{ fontSize: "clamp(1.65rem, 4.5vw, 3rem)" }}
               >
-                For entrepreneurs, founders, and creatives.
+                For female entrepreneurs, founders, and creatives.
               </h2>
               <p className="mt-5 text-[17px] leading-[1.8] text-ink-soft max-w-xl font-[family-name:var(--font-body)]">
                 Martina speaks at events, conferences, retreats. Her talks are

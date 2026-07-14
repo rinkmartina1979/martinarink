@@ -360,6 +360,15 @@ export default async function AboutPage() {
               become a trusted advisor to this work.
             </p>
             <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
+              For Female Empowerment &amp; Leadership clients, I work closely
+              with Dr Tim Ojo, a Consultant Psychiatrist with over
+              thirty-one years&rsquo; experience in mental health, practising
+              in Brighton &amp; Hove and on Harley Street, London. He is
+              Director of EKO Consulting, and where his authority on
+              leadership, conflict, and workplace wellbeing serves the work,
+              I bring him in.
+            </p>
+            <p className="mt-4 text-[17px] leading-[1.75] text-ink-soft">
               The methods I use were shaped through that experience. What I
               bring is not theory — it is a framework I have lived, tested,
               and refined over six years of practice with women navigating
