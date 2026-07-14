@@ -1,6 +1,6 @@
 # Production Stability & Self-Closing Funnel — Execution Plan
 
-**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-02. **Updated:** 2026-07-10 (Phase 5 shipped).
+**Status:** Living document. **Owner:** engineering. **Created:** 2026-07-02. **Updated:** 2026-07-14 (Phase 6 planned — revised, not a blank slate).
 **Principle:** Every step is independently revertable and passes its verification gate
 before the next step touches production. No step leaves money or access in a broken
 intermediate state.
@@ -164,19 +164,49 @@ the rendered `<meta>` tags.
 
 ---
 
-## Phase 6 — Funnel instrumentation (0.5 day)
+## Phase 6 — Funnel instrumentation (revised — not a blank slate)
 
 **Goal:** Turn the funnel from invisible to measurable.
 
-**Files:**
-- `lib/analytics.ts` (NEW) — `track(event, params?)` guarded on `window.gtag`.
-- Fire from existing client components only: `assessment_completed`, `application_submitted`,
-  `deposit_checkout_opened`, `deposit_paid` (thank-you), `tier_selected` (variantKey),
-  `balance_checkout_opened` (paymentMode), `balance_paid` (welcome).
-- **Never** send email/name/token — event name + variant key only. GDPR-clean.
+**Revised finding (2026-07-14):** this is not a from-scratch build. `lib/analytics/events.ts`
+already exists — a GDPR-clean event abstraction (`trackAssessment()`) that pushes to both
+`@vercel/analytics` and the GA4 `dataLayer`, fails silently if tracking isn't configured, and
+never sends PII. The **entire assessment funnel is already instrumented**: `assessment_started`,
+`assessment_question_answered`, `assessment_email_submitted`, `assessment_completed` all fire
+today from `components/assessment/AssessmentShell.tsx`. GA4 itself is wired in
+`app/layout.tsx:58` via `@next/third-parties/google` (`gaId="G-RBXW7LFCD5"`).
 
-**Gate:** GA4 DebugView shows events with correct params, no PII. Server-side webhook payments remain
-the revenue source of truth; GA is the drop-off map only. **Rollback:** revert; no-op without gtag.
+**What's actually missing** — the rest of the funnel, past the assessment, has zero tracking:
+
+| Event | Fires from | Trigger point |
+|---|---|---|
+| `assessment_result_viewed` | `app/assessment/result/[resultId]/page.tsx` | on mount — type already exists in `AssessmentEventName`, just never called |
+| `assessment_cta_clicked` | same result page | on the primary/secondary CTA click — `trackAssessment` + `trackHighIntentLead` helper already exist, unused |
+| `application_submitted` | `components/forms/ApplicationForm.tsx:134` | right before `router.push("/thank-you/application")` — `programme` prop already in scope |
+| `deposit_checkout_opened` | `components/book/DepositCTA.tsx:37` | right before `window.location.href = data.url` |
+| `deposit_paid` | `app/book/schedule/page.tsx` (NEW tiny client component) | Server Component already verifies `payment_status === 'paid'` before rendering `CalComEmbed` — add a `<DepositPaidTracker />` (fires once on mount, renders null) inside that already-verified branch only |
+| `tier_selected` | `components/portal/ProgrammeSelector.tsx` `choose()` | on successful `/api/members/select-programme` response — `variantKey` already in scope |
+| `balance_checkout_opened` | same file, `payBalance()` | right before `window.location.href = data.url` — `paymentMode` already in scope |
+| `balance_paid` | `app/members/[token]/welcome/page.tsx` (NEW tiny client component) | same pattern as deposit_paid — page already verifies the Stripe session server-side before rendering; add a client tracker inside the verified branch only |
+
+**Files:**
+- `lib/analytics/events.ts` (EDIT, not new) — factor the shared push logic in `trackAssessment`
+  into a private `pushEvent(name, props)`, keep `trackAssessment` as a thin typed wrapper so its
+  existing call sites in `AssessmentShell.tsx` don't change. Add a second typed wrapper,
+  `trackFunnel(name: FunnelEventName, props?)`, for the eight non-assessment events above.
+- `components/book/DepositPaidTracker.tsx` (NEW) — one-shot client tracker, same shape as
+  `SessionBootstrap.tsx`'s "fires once, renders nothing" pattern already used elsewhere in this
+  codebase.
+- `components/portal/WelcomePaidTracker.tsx` (NEW) — same pattern, for `balance_paid`.
+- Five existing files edited to call `trackAssessment`/`trackFunnel` at the trigger points above.
+- **Never** send email, name, token, or answer content — event name + variant key/programme only.
+
+**Gate:** GA4 DebugView (or Vercel Analytics dashboard) shows all 8 new events firing with correct
+params and zero PII, verified in preview before deploy. Server-side webhook payments remain the
+revenue source of truth — analytics is the drop-off map only, never authoritative.
+**Rollback:** each touchpoint is a 1–2 line addition; revert any file independently with no
+effect on the surrounding logic. The two new tracker components are additive and can be deleted
+outright with zero blast radius.
 
 ---
 
