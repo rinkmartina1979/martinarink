@@ -266,6 +266,36 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
+      {/* WHO THIS IS NOT FOR — premium qualifier. Placed before the CTA on
+          purpose: the honest filter should be the last thing someone reads
+          before being asked to commit, not an afterthought below Apply. */}
+      <section className="bg-bone section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>An honest filter</Eyebrow>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
+            Who this is not for.
+          </h2>
+          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
+            This work is precise. It is not the right fit for every woman, and
+            saying so honestly is part of how I begin.
+          </p>
+          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
+            {[
+              "The woman who wants frameworks, formulas, or productivity systems. There are none here.",
+              "The woman in early career. This work assumes you have already arrived somewhere — and are now reckoning with what that arrival means.",
+              "The woman who wants someone to validate her current direction. The work begins with the questions she has been avoiding.",
+              "The woman who is not ready to be honest with herself about what she actually wants. That honesty is the work.",
+              "The woman looking for a fixed timeline. This is open-ended. It runs until it is done — usually six months to two years.",
+            ].map((item) => (
+              <li key={item} className="flex gap-4">
+                <span className="text-plum mt-2 select-none">—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* CTA SECTION */}
       <section className="bg-rose section-pad">
         <div className="container-content max-w-2xl mx-auto text-center">
@@ -311,34 +341,6 @@ export default async function EmpowermentPage() {
             </h2>
           </div>
           <PackageTiers surface="cream" />
-        </div>
-      </section>
-
-      {/* WHO THIS IS NOT FOR — premium qualifier */}
-      <section className="bg-bone section-pad">
-        <div className="container-content max-w-3xl mx-auto">
-          <Eyebrow>An honest filter</Eyebrow>
-          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
-            Who this is not for.
-          </h2>
-          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
-            This work is precise. It is not the right fit for every woman, and
-            saying so honestly is part of how I begin.
-          </p>
-          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
-            {[
-              "The woman who wants frameworks, formulas, or productivity systems. There are none here.",
-              "The woman in early career. This work assumes you have already arrived somewhere — and are now reckoning with what that arrival means.",
-              "The woman who wants someone to validate her current direction. The work begins with the questions she has been avoiding.",
-              "The woman who is not ready to be honest with herself about what she actually wants. That honesty is the work.",
-              "The woman looking for a fixed timeline. This is open-ended. It runs until it is done — usually six months to two years.",
-            ].map((item) => (
-              <li key={item} className="flex gap-4">
-                <span className="text-plum mt-2 select-none">—</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
