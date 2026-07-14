@@ -838,23 +838,20 @@ export default async function PressPage() {
             </p>
           </div>
 
-          {/* Video — centred single column until video 02 URL is supplied */}
+          {/* Video — centred single column until video 02 URL is supplied.
+              IMPORTANT: the previous video 02 YouTube ID (fqqH5TDdzec) found
+              in git history does NOT belong to Martina — it resolves to an
+              unrelated Lady Gaga / Tony Bennett Barnes & Noble ad. Do not
+              restore that ID. Replace src below once Martina uploads the
+              real appearance and sends the YouTube link, then also restore
+              className="grid md:grid-cols-2 gap-6 lg:gap-10" on the wrapper. */}
           <div className="max-w-2xl">
             <VideoEmbed
               number="01"
-              src="https://player.vimeo.com/video/1200866417?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
+              src="https://player.vimeo.com/video/25253824?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
               title="Martina Rink — Vimeo interview"
               caption="Vimeo · Interview"
             />
-            {/* Video 02 — awaiting real URL from Martina; restore when provided:
-            <VideoEmbed
-              number="02"
-              src="REPLACE_WITH_REAL_URL"
-              title="Martina Rink — appearance"
-              caption="Feature"
-            />
-            Also restore grid: className="grid md:grid-cols-2 gap-6 lg:gap-10"
-            */}
           </div>
 
         </div>

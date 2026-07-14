@@ -22,6 +22,11 @@ function extractVimeoId(url: string): number | null {
   return match ? parseInt(match[1], 10) : null;
 }
 
+/** True for youtube.com / youtube-nocookie.com / youtu.be URLs. */
+function isYouTubeUrl(url: string): boolean {
+  return /youtube(-nocookie)?\.com|youtu\.be/.test(url);
+}
+
 /**
  * VideoEmbed — 2026 Vimeo SDK integration.
  *
@@ -34,12 +39,24 @@ function extractVimeoId(url: string): number | null {
 export function VideoEmbed({ src, title, number, caption, className }: VideoEmbedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player | null>(null);
+  const youtube = isYouTubeUrl(src);
 
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // YouTube — plain privacy-safe iframe. No Vimeo SDK involved, so its
+  // custom play/pause/stop controls below don't apply; the iframe's own
+  // native YouTube controls are used instead.
   useEffect(() => {
+    if (!youtube) return;
+    setReady(false);
+    setError(null);
+  }, [src, youtube]);
+
+  // Vimeo — official SDK for real controls + proper error reporting.
+  useEffect(() => {
+    if (youtube) return;
     if (!containerRef.current) return;
 
     const videoId = extractVimeoId(src);
@@ -74,7 +91,7 @@ export function VideoEmbed({ src, title, number, caption, className }: VideoEmbe
 
     playerRef.current = player;
     return () => { player.destroy(); };
-  }, [src]);
+  }, [src, youtube]);
 
   const handlePlay = useCallback(async () => {
     if (!playerRef.current) return;
@@ -137,15 +154,37 @@ export function VideoEmbed({ src, title, number, caption, className }: VideoEmbe
           </div>
         )}
 
+        {/* ── YouTube — plain iframe ── */}
+        {youtube && !error && (
+          <div
+            className={cn(
+              "relative aspect-video transition-opacity duration-500",
+              ready ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none",
+            )}
+          >
+            <iframe
+              src={src}
+              title={title}
+              allow="autoplay; fullscreen; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+              onLoad={() => setReady(true)}
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        )}
+
         {/* ── Vimeo SDK player mount point ── */}
-        <div
-          ref={containerRef}
-          className={cn(
-            "transition-opacity duration-500",
-            ready && !error ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none",
-          )}
-          aria-label={title}
-        />
+        {!youtube && (
+          <div
+            ref={containerRef}
+            className={cn(
+              "transition-opacity duration-500",
+              ready && !error ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none",
+            )}
+            aria-label={title}
+          />
+        )}
 
         {/* Caption strip */}
         {caption && (
@@ -157,8 +196,9 @@ export function VideoEmbed({ src, title, number, caption, className }: VideoEmbe
         )}
       </div>
 
-      {/* ── Custom editorial controls (play / pause / stop) ── */}
-      {ready && !error && (
+      {/* ── Custom editorial controls (play / pause / stop) — Vimeo SDK only;
+            YouTube's iframe ships its own native controls. ── */}
+      {ready && !error && !youtube && (
         <div className="mt-4 flex items-center gap-3">
           {/* Play / Pause toggle */}
           <button
@@ -218,7 +258,7 @@ export function VideoEmbed({ src, title, number, caption, className }: VideoEmbe
       )}
 
       {/* Number badge when controls not shown */}
-      {(!ready || error) && (
+      {(!ready || error || youtube) && (
         <p className="mt-3.5 font-[family-name:var(--font-body)] text-[0.5625rem] uppercase tracking-[0.32em] text-cream/25 select-none">
           {number}
         </p>
