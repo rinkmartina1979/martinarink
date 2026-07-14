@@ -266,6 +266,22 @@ export default async function EmpowermentPage() {
         </div>
       </section>
 
+      {/* HOW WE MEET — shown before the honest filter so the reader has the
+          concrete formats in mind while reading who this isn't for. */}
+      <section className="bg-bone section-pad border-t border-sand/30">
+        <div className="container-content max-w-5xl">
+          <div className="mb-12">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
+              How we meet
+            </p>
+            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
+              The format is chosen to fit the work.
+            </h2>
+          </div>
+          <PackageTiers surface="cream" />
+        </div>
+      </section>
+
       {/* WHO THIS IS NOT FOR — premium qualifier. Placed before the CTA on
           purpose: the honest filter should be the last thing someone reads
           before being asked to commit, not an afterthought below Apply. */}
@@ -325,22 +341,6 @@ export default async function EmpowermentPage() {
               Complete your confidential intake form
             </a>
           </p>
-        </div>
-      </section>
-
-
-      {/* HOW WE MEET */}
-      <section className="bg-bone section-pad border-t border-sand/30">
-        <div className="container-content max-w-5xl">
-          <div className="mb-12">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
-              How we meet
-            </p>
-            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
-              The format is chosen to fit the work.
-            </h2>
-          </div>
-          <PackageTiers surface="cream" />
         </div>
       </section>
 
