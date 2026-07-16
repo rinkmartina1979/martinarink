@@ -196,6 +196,16 @@ export default async function NewsletterPage() {
                         It never tries to sell you anything until the moment it makes sense
                         to. Which sometimes never happens. That is also fine.
                       </p>
+                      <p>
+                        If something in these themes already feels close, the{" "}
+                        <Link
+                          href="/assessment"
+                          className="text-plum underline decoration-pink decoration-1 underline-offset-4 hover:text-plum-deep transition-colors"
+                        >
+                          private assessment
+                        </Link>{" "}
+                        is five minutes — no pressure, just a clearer read on where you stand.
+                      </p>
                     </>
                   )}
                 </div>
