@@ -1,5 +1,7 @@
 // NURNBERGER_APPROVED — written permission from Mrs. Nürnberger confirmed (client-verified 2026-06-15).
 const NURNBERGER_APPROVED = true;
+// OJO_APPROVED — Dr. Tim Ojo named as Empowerment clinical partner, added directly by Martina.
+const OJO_APPROVED = true;
 
 const ITEMS = [
   { label: "Author", credit: "Three books · Spiegel Bestseller" },
@@ -8,6 +10,9 @@ const ITEMS = [
   { label: "Recognition", credit: "Miss Germany · Empowering Women" },
   ...(NURNBERGER_APPROVED
     ? [{ label: "Clinical partner", credit: "Mrs. Nürnberger · My Way Betty Ford" }]
+    : []),
+  ...(OJO_APPROVED
+    ? [{ label: "Clinical partner", credit: "Dr. Tim Ojo · EKO Consulting" }]
     : []),
 ];
 
