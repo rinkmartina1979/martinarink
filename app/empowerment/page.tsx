@@ -199,7 +199,7 @@ export default async function EmpowermentPage() {
           <div className="md:col-span-4">
             <div className="relative aspect-[3/4] bg-bone overflow-hidden">
               <Image
-                src="/images/portraits/martina-glam-portrait.jpg"
+                src="/images/portraits/Effective strategies for women's mentorship.png"
                 alt="Martina Rink"
                 fill
                 sizes="(max-width: 768px) 100vw, 28vw"
