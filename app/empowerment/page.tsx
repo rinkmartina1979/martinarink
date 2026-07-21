@@ -115,6 +115,82 @@ export default async function EmpowermentPage() {
         variant="dark"
       />
 
+      {/* HOW WE MEET — first content section after the hero, per direct request */}
+      <section className="bg-bone section-pad border-t border-sand/30">
+        <div className="container-content max-w-5xl">
+          <div className="mb-12">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
+              How we meet
+            </p>
+            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
+              The format is chosen to fit the work.
+            </h2>
+          </div>
+          <PackageTiers surface="cream" />
+        </div>
+      </section>
+
+      {/* WHO THIS IS NOT FOR — premium qualifier, step 2 in the sequence
+          per direct request. */}
+      <section className="bg-bone section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>An honest filter</Eyebrow>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
+            Who this is not for.
+          </h2>
+          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
+            This work is precise. It is not the right fit for every woman, and
+            saying so honestly is part of how I begin.
+          </p>
+          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
+            {[
+              "The woman who wants frameworks, formulas, or productivity systems. There are none here.",
+              "The woman in early career. This work assumes you have already arrived somewhere — and are now reckoning with what that arrival means.",
+              "The woman who wants someone to validate her current direction. The work begins with the questions she has been avoiding.",
+              "The woman who is not ready to be honest with herself about what she actually wants. That honesty is the work.",
+              "The woman looking for a fixed timeline. This is open-ended. It runs until it is done — usually six months to two years.",
+            ].map((item) => (
+              <li key={item} className="flex gap-4">
+                <span className="text-plum mt-2 select-none">—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* CTA SECTION — step 3 in the sequence per direct request. */}
+      <section className="bg-rose section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
+            come home to yourself
+          </ScriptAccent>
+          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-ink">
+            When you&rsquo;re ready.
+          </h2>
+          <p className="mt-6 text-[17px] text-ink-soft">
+            The conversation begins with a request. I read every application
+            personally and respond within three working days.
+          </p>
+          <div className="mt-10 pt-8 border-t border-sand/30">
+            <CredentialBadges variant="strip" />
+          </div>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <PlumButton href="/apply/empowerment">Apply &rarr;</PlumButton>
+            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
+          </div>
+          <p className="mt-8 text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+            Already accepted?{" "}
+            <a
+              href="/intake?programme=empowerment"
+              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
+            >
+              Complete your confidential intake form
+            </a>
+          </p>
+        </div>
+      </section>
+
       {/* WHO THIS IS FOR */}
       <section className="bg-bone section-pad">
         <div className="container-content max-w-3xl mx-auto text-center">
@@ -280,84 +356,6 @@ export default async function EmpowermentPage() {
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-ink/40" />
-        </div>
-      </section>
-
-      {/* HOW WE MEET — shown before the honest filter so the reader has the
-          concrete formats in mind while reading who this isn't for. */}
-      <section className="bg-bone section-pad border-t border-sand/30">
-        <div className="container-content max-w-5xl">
-          <div className="mb-12">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
-              How we meet
-            </p>
-            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
-              The format is chosen to fit the work.
-            </h2>
-          </div>
-          <PackageTiers surface="cream" />
-        </div>
-      </section>
-
-      {/* WHO THIS IS NOT FOR — premium qualifier. Placed before the CTA on
-          purpose: the honest filter should be the last thing someone reads
-          before being asked to commit, not an afterthought below Apply. */}
-      <section className="bg-bone section-pad">
-        <div className="container-content max-w-3xl mx-auto">
-          <Eyebrow>An honest filter</Eyebrow>
-          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
-            Who this is not for.
-          </h2>
-          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
-            This work is precise. It is not the right fit for every woman, and
-            saying so honestly is part of how I begin.
-          </p>
-          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
-            {[
-              "The woman who wants frameworks, formulas, or productivity systems. There are none here.",
-              "The woman in early career. This work assumes you have already arrived somewhere — and are now reckoning with what that arrival means.",
-              "The woman who wants someone to validate her current direction. The work begins with the questions she has been avoiding.",
-              "The woman who is not ready to be honest with herself about what she actually wants. That honesty is the work.",
-              "The woman looking for a fixed timeline. This is open-ended. It runs until it is done — usually six months to two years.",
-            ].map((item) => (
-              <li key={item} className="flex gap-4">
-                <span className="text-plum mt-2 select-none">—</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* CTA SECTION */}
-      <section className="bg-rose section-pad">
-        <div className="container-content max-w-2xl mx-auto text-center">
-          <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
-            come home to yourself
-          </ScriptAccent>
-          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-ink">
-            When you&rsquo;re ready.
-          </h2>
-          <p className="mt-6 text-[17px] text-ink-soft">
-            The conversation begins with a request. I read every application
-            personally and respond within three working days.
-          </p>
-          <div className="mt-10 pt-8 border-t border-sand/30">
-            <CredentialBadges variant="strip" />
-          </div>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <PlumButton href="/apply/empowerment">Apply &rarr;</PlumButton>
-            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
-          </div>
-          <p className="mt-8 text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
-            Already accepted?{" "}
-            <a
-              href="/intake?programme=empowerment"
-              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
-            >
-              Complete your confidential intake form
-            </a>
-          </p>
         </div>
       </section>
 
