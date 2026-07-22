@@ -187,6 +187,35 @@ export default async function SoberMusePage() {
         </div>
       </section>
 
+      {/* WHO THIS IS NOT FOR — third content section, per direct request. */}
+      <section className="bg-rose section-pad">
+        <div className="container-content max-w-3xl mx-auto">
+          <Eyebrow>An honest filter</Eyebrow>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
+            Who this is not for.
+          </h2>
+          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
+            I would rather be specific than universal. The Sober Muse Method is
+            not the right work for every woman, and naming who it is not for is
+            part of how I respect your time.
+          </p>
+          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
+            {[
+              "The woman in active crisis. If your situation is medically dangerous, you need clinical care first. I will say so, kindly, in our consultation.",
+              "The woman looking for a programme to graduate from. This is not certification, and you are not a project.",
+              "The woman who wants to be told what to do. The work begins with your own thinking — not mine.",
+              "The woman who is not yet ready to invest financially. The investment matters; pretending otherwise is unkind to both of us.",
+              "The woman who wants group support. There is none here. If group is what you need, I will recommend where to find it.",
+            ].map((item) => (
+              <li key={item} className="flex gap-4">
+                <span className="text-plum mt-2 select-none">—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* WHAT IS / WHAT IS NOT */}
       <section className="bg-cream section-pad">
         <div className="container-content grid md:grid-cols-2 gap-12 md:gap-20">
@@ -272,37 +301,6 @@ export default async function SoberMusePage() {
           <p className="mt-8 text-[13px] uppercase tracking-[0.15em] text-cream/60">
             — Founder · London
           </p>
-        </div>
-      </section>
-
-      {/* WHO THIS IS NOT FOR — premium qualifier. Placed before Investment/Apply
-          on purpose: the honest filter should be the last thing someone reads
-          before being asked to commit, not an afterthought below the CTA. */}
-      <section className="bg-rose section-pad">
-        <div className="container-content max-w-3xl mx-auto">
-          <Eyebrow>An honest filter</Eyebrow>
-          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[34px] md:text-[40px] leading-tight text-ink">
-            Who this is not for.
-          </h2>
-          <p className="mt-6 text-[16px] leading-[1.75] text-ink-soft">
-            I would rather be specific than universal. The Sober Muse Method is
-            not the right work for every woman, and naming who it is not for is
-            part of how I respect your time.
-          </p>
-          <ul className="mt-10 space-y-5 text-[16px] leading-[1.75] text-ink-soft">
-            {[
-              "The woman in active crisis. If your situation is medically dangerous, you need clinical care first. I will say so, kindly, in our consultation.",
-              "The woman looking for a programme to graduate from. This is not certification, and you are not a project.",
-              "The woman who wants to be told what to do. The work begins with your own thinking — not mine.",
-              "The woman who is not yet ready to invest financially. The investment matters; pretending otherwise is unkind to both of us.",
-              "The woman who wants group support. There is none here. If group is what you need, I will recommend where to find it.",
-            ].map((item) => (
-              <li key={item} className="flex gap-4">
-                <span className="text-plum mt-2 select-none">—</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
