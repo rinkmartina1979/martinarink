@@ -216,6 +216,78 @@ export default async function SoberMusePage() {
         </div>
       </section>
 
+      {/* INVESTMENT — fourth content section, per direct request. */}
+      <section className="bg-bone section-pad">
+        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-4">
+            <div className="relative aspect-[3/4] bg-cream overflow-hidden">
+              <Image
+                src="/images/portraits/martina-event-plum.png"
+                alt="Martina Rink"
+                fill
+                sizes="(max-width: 768px) 100vw, 28vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-8">
+        <div className="max-w-2xl text-center mx-auto">
+          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
+            The investment.
+          </h2>
+          <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-ink-soft">
+            <p>
+              The Sober Muse Method begins{" "}
+              <strong className="text-ink">{investmentText}</strong>{" "}
+              for the 90-day engagement — by application.
+            </p>
+            {data?.privacyCopy ? (
+              data.privacyCopy.split("\n").filter(Boolean).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))
+            ) : (
+              <>
+                <p>
+                  Four sessions per month. Daily correspondence. A final
+                  integration session. Payment by instalment available.
+                </p>
+                <p>
+                  A private consultation — €350, applied toward the programme
+                  if you enrol — is the correct place to begin.
+                </p>
+              </>
+            )}
+          </div>
+          <div className="mt-10 pt-8 border-t border-sand/30">
+            <CredentialBadges variant="strip" />
+          </div>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <PlumButton href="/apply/sober-muse">Apply &rarr;</PlumButton>
+            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
+          </div>
+          <p className="mt-5 text-center text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+            Not sure yet?{" "}
+            <a
+              href="/assessment"
+              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
+            >
+              Begin with the assessment
+            </a>
+          </p>
+          <p className="mt-8 text-center text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+            Already accepted?{" "}
+            <a
+              href="/intake?programme=sober-muse"
+              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
+            >
+              Complete your confidential intake form
+            </a>
+          </p>
+        </div>
+          </div>
+        </div>
+      </section>
+
       {/* WHAT IS / WHAT IS NOT */}
       <section className="bg-cream section-pad">
         <div className="container-content grid md:grid-cols-2 gap-12 md:gap-20">
@@ -301,78 +373,6 @@ export default async function SoberMusePage() {
           <p className="mt-8 text-[13px] uppercase tracking-[0.15em] text-cream/60">
             — Founder · London
           </p>
-        </div>
-      </section>
-
-      {/* INVESTMENT */}
-      <section className="bg-cream section-pad">
-        <div className="container-content grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div className="md:col-span-4">
-            <div className="relative aspect-[3/4] bg-bone overflow-hidden">
-              <Image
-                src="/images/portraits/martina-event-plum.png"
-                alt="Martina Rink"
-                fill
-                sizes="(max-width: 768px) 100vw, 28vw"
-                className="object-cover object-top"
-              />
-            </div>
-          </div>
-          <div className="md:col-span-8">
-        <div className="max-w-2xl text-center mx-auto">
-          <h2 className="font-[family-name:var(--font-display)] text-[36px] md:text-[44px] leading-tight text-ink">
-            The investment.
-          </h2>
-          <div className="mt-8 space-y-5 text-[17px] leading-[1.75] text-ink-soft">
-            <p>
-              The Sober Muse Method begins{" "}
-              <strong className="text-ink">{investmentText}</strong>{" "}
-              for the 90-day engagement — by application.
-            </p>
-            {data?.privacyCopy ? (
-              data.privacyCopy.split("\n").filter(Boolean).map((para, i) => (
-                <p key={i}>{para}</p>
-              ))
-            ) : (
-              <>
-                <p>
-                  Four sessions per month. Daily correspondence. A final
-                  integration session. Payment by instalment available.
-                </p>
-                <p>
-                  A private consultation — €350, applied toward the programme
-                  if you enrol — is the correct place to begin.
-                </p>
-              </>
-            )}
-          </div>
-          <div className="mt-10 pt-8 border-t border-sand/30">
-            <CredentialBadges variant="strip" />
-          </div>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <PlumButton href="/apply/sober-muse">Apply &rarr;</PlumButton>
-            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
-          </div>
-          <p className="mt-5 text-center text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
-            Not sure yet?{" "}
-            <a
-              href="/assessment"
-              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
-            >
-              Begin with the assessment
-            </a>
-          </p>
-          <p className="mt-8 text-center text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
-            Already accepted?{" "}
-            <a
-              href="/intake?programme=sober-muse"
-              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
-            >
-              Complete your confidential intake form
-            </a>
-          </p>
-        </div>
-          </div>
         </div>
       </section>
 
