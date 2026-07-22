@@ -117,8 +117,78 @@ export default async function SoberMusePage() {
         variant="dark"
       />
 
+      {/* THE METHOD — 3 PHASES — first content section after the hero,
+          per direct request. */}
+      <section className="bg-cream section-pad">
+        <div className="container-content">
+          <div className="text-center max-w-2xl mx-auto">
+            <Eyebrow className="justify-center">The method</Eyebrow>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[40px] md:text-[48px] leading-tight text-ink">
+              Three phases. Ninety days.
+            </h2>
+            {data?.methodCopy && (
+              <div className="mt-6 space-y-4 text-[17px] leading-[1.75] text-ink-soft text-left">
+                {data.methodCopy.split("\n").filter(Boolean).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-16 grid md:grid-cols-3 gap-8">
+            {[
+              {
+                phase: "Phase one — weeks 1–3",
+                title: "Naming.",
+                body: "Before we can work with a thing, we have to be able to say what it actually is. The first phase is dedicated entirely to precision — naming the drink, naming what it is managing, naming the original question with as much accuracy as the work allows.",
+              },
+              {
+                phase: "Phase two — weeks 4–9",
+                title: "Clearing.",
+                body: "The middle phase is the work itself. We address what the drink was managing — directly, methodically, without the softening. This is where the original question gets examined, not as a symptom but as information about the life that is possible.",
+              },
+              {
+                phase: "Phase three — weeks 10–12",
+                title: "Return.",
+                body: "The final phase is about building. Not a new identity, not a story about yourself. A return to a version of yourself that has its own position — its own preferences, its own way of occupying space — that doesn't need to be softened before it can be tolerated.",
+              },
+            ].map((p) => (
+              <div
+                key={p.title}
+                className="bg-bone p-8 md:p-10 border-l-[3px] border-l-sand/50 hover:border-l-pink shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_32px_rgba(61,26,92,0.10)] transition-all duration-300 group"
+              >
+                <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet">
+                  {p.phase}
+                </p>
+                <h3 className="mt-4 font-[family-name:var(--font-display)] italic text-[28px] text-ink group-hover:text-plum transition-colors duration-300">
+                  {p.title}
+                </h3>
+                <p className="mt-5 text-[15px] leading-[1.7] text-ink-soft">
+                  {p.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW WE MEET — second content section, per direct request. */}
+      <section className="bg-bone section-pad border-t border-sand/30">
+        <div className="container-content max-w-5xl">
+          <div className="mb-12">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
+              How we meet
+            </p>
+            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
+              The format is chosen to fit the work.
+            </h2>
+          </div>
+          <PackageTiers surface="cream" />
+        </div>
+      </section>
+
       {/* WHAT IS / WHAT IS NOT */}
-      <section className="bg-bone section-pad">
+      <section className="bg-cream section-pad">
         <div className="container-content grid md:grid-cols-2 gap-12 md:gap-20">
           <div>
             <h2 className="font-[family-name:var(--font-display)] italic text-[32px] text-ink">
@@ -179,65 +249,11 @@ export default async function SoberMusePage() {
         </div>
       </section>
 
-      {/* EDITORIAL PULL-QUOTE — a breath before the method */}
+      {/* EDITORIAL PULL-QUOTE — a breath before the testimonial */}
       <PullQuote>
         Sobriety was never the point. Clarity was &mdash; and the drink had been
         standing quietly in its place.
       </PullQuote>
-
-      {/* THE METHOD — 3 PHASES */}
-      <section className="bg-cream section-pad">
-        <div className="container-content">
-          <div className="text-center max-w-2xl mx-auto">
-            <Eyebrow className="justify-center">The method</Eyebrow>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[40px] md:text-[48px] leading-tight text-ink">
-              Three phases. Ninety days.
-            </h2>
-            {data?.methodCopy && (
-              <div className="mt-6 space-y-4 text-[17px] leading-[1.75] text-ink-soft text-left">
-                {data.methodCopy.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="mt-16 grid md:grid-cols-3 gap-8">
-            {[
-              {
-                phase: "Phase one — weeks 1–3",
-                title: "Naming.",
-                body: "Before we can work with a thing, we have to be able to say what it actually is. The first phase is dedicated entirely to precision — naming the drink, naming what it is managing, naming the original question with as much accuracy as the work allows.",
-              },
-              {
-                phase: "Phase two — weeks 4–9",
-                title: "Clearing.",
-                body: "The middle phase is the work itself. We address what the drink was managing — directly, methodically, without the softening. This is where the original question gets examined, not as a symptom but as information about the life that is possible.",
-              },
-              {
-                phase: "Phase three — weeks 10–12",
-                title: "Return.",
-                body: "The final phase is about building. Not a new identity, not a story about yourself. A return to a version of yourself that has its own position — its own preferences, its own way of occupying space — that doesn't need to be softened before it can be tolerated.",
-              },
-            ].map((p) => (
-              <div
-                key={p.title}
-                className="bg-bone p-8 md:p-10 border-l-[3px] border-l-sand/50 hover:border-l-pink shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_32px_rgba(61,26,92,0.10)] transition-all duration-300 group"
-              >
-                <p className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet">
-                  {p.phase}
-                </p>
-                <h3 className="mt-4 font-[family-name:var(--font-display)] italic text-[28px] text-ink group-hover:text-plum transition-colors duration-300">
-                  {p.title}
-                </h3>
-                <p className="mt-5 text-[15px] leading-[1.7] text-ink-soft">
-                  {p.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* TESTIMONIAL — DARK PLUM */}
       <section className="bg-aubergine section-pad">
@@ -359,21 +375,6 @@ export default async function SoberMusePage() {
           </p>
         </div>
           </div>
-        </div>
-      </section>
-
-      {/* HOW WE MEET */}
-      <section className="bg-bone section-pad border-t border-sand/30">
-        <div className="container-content max-w-5xl">
-          <div className="mb-12">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-quiet mb-5 font-[family-name:var(--font-body)]">
-              How we meet
-            </p>
-            <h2 className="font-[family-name:var(--font-display)] text-[28px] md:text-[34px] text-ink leading-tight">
-              The format is chosen to fit the work.
-            </h2>
-          </div>
-          <PackageTiers surface="cream" />
         </div>
       </section>
 
