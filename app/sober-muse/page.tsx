@@ -13,6 +13,7 @@ import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
 import { CredentialBadges } from "@/components/brand/CredentialBadges";
 import { PackageTiers } from "@/components/brand/PackageTiers";
 import { PullQuote } from "@/components/brand/PullQuote";
+import { ScriptAccent } from "@/components/brand/ScriptAccent";
 import { SITE } from "@/lib/utils";
 
 const FAQS = [
@@ -285,6 +286,38 @@ export default async function SoberMusePage() {
           </p>
         </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION — fifth content section, per direct request. */}
+      <section className="bg-rose section-pad">
+        <div className="container-content max-w-2xl mx-auto text-center">
+          <ScriptAccent className="block text-[44px] md:text-[52px] text-ink">
+            come home to yourself
+          </ScriptAccent>
+          <h2 className="mt-6 font-[family-name:var(--font-display)] text-[36px] md:text-[44px] text-ink">
+            When you&rsquo;re ready.
+          </h2>
+          <p className="mt-6 text-[17px] text-ink-soft">
+            The conversation begins with a request. I read every application
+            personally and respond within three working days.
+          </p>
+          <div className="mt-10 pt-8 border-t border-sand/30">
+            <CredentialBadges variant="strip" />
+          </div>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <PlumButton href="/apply/sober-muse">Apply &rarr;</PlumButton>
+            <GhostButton href={ctaUrl}>{ctaLabel}</GhostButton>
+          </div>
+          <p className="mt-8 text-[12px] tracking-[0.14em] text-ink-quiet font-[family-name:var(--font-body)]">
+            Already accepted?{" "}
+            <a
+              href="/intake?programme=sober-muse"
+              className="underline underline-offset-4 decoration-sand hover:text-ink hover:decoration-plum transition-colors duration-200"
+            >
+              Complete your confidential intake form
+            </a>
+          </p>
         </div>
       </section>
 
