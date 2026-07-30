@@ -29,6 +29,10 @@ interface BrevoResult {
   success: boolean;
   error?: string;
   contactId?: number;
+  /** True when Brevo created a brand-new contact (HTTP 201). False when the
+   *  contact already existed and was updated (HTTP 204) — use this to avoid
+   *  re-sending welcome emails / re-firing "first touch" automations. */
+  created?: boolean;
 }
 
 export async function addBrevoContact({
@@ -81,7 +85,7 @@ export async function addBrevoContact({
       } catch {
         // 204 returns no body — that's fine
       }
-      return { success: true, contactId };
+      return { success: true, contactId, created: res.status === 201 };
     }
 
     const errorBody = await res.text();
@@ -195,25 +199,29 @@ export async function subscribeNewsletter({
     attributes: { SOURCE: source },
   });
 
-  // Fire-and-forget events — never block the contact creation result.
-  // Always fire newsletter_subscribed; if the signup came from the popup,
-  // ALSO fire popup_email_captured so the popup-specific welcome runs.
-  trackBrevoEvent({
-    email,
-    eventName: "newsletter_subscribed",
-    properties: { source },
-  }).catch((err) =>
-    console.error("[Brevo] newsletter_subscribed event failed:", err),
-  );
-
-  if (source === "popup") {
+  // Only fire the welcome-triggering events for brand-new contacts. If this
+  // email already exists in Brevo, firing these again would re-send the
+  // welcome automation — the exact bug that caused repeat "Welcome to The
+  // Sober Muse Letter" emails when someone subscribed from more than one
+  // form (popup, footer, /newsletter page) on the same address.
+  if (contactResult.success && contactResult.created) {
     trackBrevoEvent({
       email,
-      eventName: "popup_email_captured",
+      eventName: "newsletter_subscribed",
       properties: { source },
     }).catch((err) =>
-      console.error("[Brevo] popup_email_captured event failed:", err),
+      console.error("[Brevo] newsletter_subscribed event failed:", err),
     );
+
+    if (source === "popup") {
+      trackBrevoEvent({
+        email,
+        eventName: "popup_email_captured",
+        properties: { source },
+      }).catch((err) =>
+        console.error("[Brevo] popup_email_captured event failed:", err),
+      );
+    }
   }
 
   return contactResult;

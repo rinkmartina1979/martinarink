@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -107,6 +107,9 @@ function ApplicationFormShell({
 }) {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
+  // Anti-bot: capture form-load time; honeypot ref (bots fill it, humans don't see it)
+  const loadTime = useRef(Date.now());
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -126,7 +129,12 @@ function ApplicationFormShell({
       const res = await fetch("/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, programme }),
+        body: JSON.stringify({
+          ...data,
+          programme,
+          _hp: honeypotRef.current?.value ?? "",
+          _ts: loadTime.current,
+        }),
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -143,6 +151,16 @@ function ApplicationFormShell({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-8">
+      {/* Honeypot — invisible to real users, bots fill it in → rejected server-side */}
+      <input
+        ref={honeypotRef}
+        type="text"
+        name="website"
+        autoComplete="off"
+        aria-hidden="true"
+        tabIndex={-1}
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+      />
       {fields.map((field) => (
         <div key={field.id}>
           {field.type !== "checkbox" && (

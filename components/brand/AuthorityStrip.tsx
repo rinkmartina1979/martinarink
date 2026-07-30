@@ -35,7 +35,7 @@ export function AuthorityStrip() {
         <ul className="grid grid-cols-2 gap-y-10 lg:grid-cols-4">
           {ITEMS.map((item) => (
             <li
-              key={item.label}
+              key={item.credit}
               className="border-l border-sand/50 px-5 text-center max-lg:[&:nth-child(odd)]:border-l-0 md:px-8 lg:[&:nth-child(4n+1)]:border-l-0"
             >
               <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-ink-quiet">

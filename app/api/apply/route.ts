@@ -15,6 +15,16 @@ import {
   applicationConfirmationEmail,
   applicationNotificationEmail,
 } from "@/lib/email-templates";
+import {
+  BLOCKED_DOMAINS,
+  isBotName,
+  isGibberishText,
+  isRateLimited,
+  getClientIp,
+} from "@/lib/bot-detection";
+
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 
 const ApplySchema = z.object({
   firstName: z.string().min(1),
@@ -27,6 +37,9 @@ const ApplySchema = z.object({
   q5: z.string().min(1),
   consent: z.literal(true),
   programme: z.enum(["sober-muse", "empowerment"]),
+  // Bot detection fields — sent by the form, never by real CRM callers
+  _hp: z.string().optional(), // honeypot — must be empty
+  _ts: z.number().optional(), // form-load timestamp — submission must be ≥5 s later
 });
 
 export async function POST(req: NextRequest) {
@@ -45,7 +58,50 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { firstName, email, tier, q1, q2, q3, q4, q5, programme } = parsed.data;
+  const { firstName, email, tier, q1, q2, q3, q4, q5, programme, _hp, _ts } = parsed.data;
+
+  // ── Bot check 1: honeypot filled ─────────────────────────────────────────
+  if (_hp && _hp.length > 0) {
+    return NextResponse.json({ success: true });
+  }
+
+  // ── Bot check 2: submission too fast (<5 s from page load) ───────────────
+  // Applications take longer to fill honestly than a newsletter signup, so
+  // the floor is higher than the newsletter form's 3 s.
+  if (_ts && Date.now() - _ts < 5000) {
+    return NextResponse.json({ success: true });
+  }
+
+  // ── Bot check 3: blocked domain ──────────────────────────────────────────
+  const domain = email.split("@")[1]?.toLowerCase() ?? "";
+  if (BLOCKED_DOMAINS.has(domain)) {
+    console.warn(`[Apply] Blocked domain: ${domain}`);
+    return NextResponse.json({ success: true });
+  }
+
+  // ── Bot check 4: random-string name ──────────────────────────────────────
+  if (isBotName(firstName)) {
+    console.warn(`[Apply] Bot name detected: ${firstName} <${email}>`);
+    return NextResponse.json({ success: true });
+  }
+
+  // ── Bot check 5: gibberish free-text answers ──────────────────────────────
+  // Real applicants write sentences. Fuzzers send random character strings
+  // like "ACGcDCpbCEXCGhFgiQMPeqc" into the long-form questions.
+  if (isGibberishText(q1) || isGibberishText(q2) || isGibberishText(q4)) {
+    console.warn(`[Apply] Gibberish answer detected from: ${email}`);
+    return NextResponse.json({ success: true });
+  }
+
+  // ── Bot check 6: IP rate limiting ────────────────────────────────────────
+  const ip = getClientIp(req);
+  if (isRateLimited("apply", ip, RATE_LIMIT, RATE_WINDOW_MS)) {
+    console.warn(`[Apply] Rate limited: ${ip}`);
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment." },
+      { status: 429 }
+    );
+  }
 
   // Derive a quick-glance budget tag for the notification
   const budgetTag = q5.startsWith("Yes —")
