@@ -19,7 +19,6 @@ import { getVisibleCaseStudies } from "@/sanity/lib/membersQueries";
 import { CaseStudyCard } from "@/components/press/CaseStudyCard";
 import { FALLBACK_CASE_STUDIES } from "@/lib/fallback-content";
 import { CopyButton } from "@/components/press/CopyButton";
-import { VideoEmbed } from "@/components/media/VideoEmbed";
 import { SelfHostedVideo } from "@/components/media/SelfHostedVideo";
 
 /* ─── Metadata ──────────────────────────────────────────────── */
@@ -839,17 +838,21 @@ export default async function PressPage() {
             </p>
           </div>
 
-          {/* Video 01 = Vimeo (external). Video 02 = self-hosted via Vercel
-              Blob — no third-party embed permissions to break.
+          {/* All three videos now self-hosted via Vercel Blob — no
+              third-party embed permissions to break.
               NOTE: a previous video 02 YouTube ID (fqqH5TDdzec) found in git
               history did NOT belong to Martina — it resolved to an unrelated
-              Lady Gaga / Tony Bennett Barnes & Noble ad. Do not restore it. */}
+              Lady Gaga / Tony Bennett Barnes & Noble ad. Do not restore it.
+              Video 01 was the Vimeo embed of this same "Isabella Blow —
+              The Corner Berlin" video (id 25253824), which was blocked by
+              Vimeo's own domain-embedding privacy setting — replaced here
+              with the self-hosted copy Martina supplied directly. */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
-            <VideoEmbed
+            <SelfHostedVideo
               number="01"
-              src="https://player.vimeo.com/video/25253824?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
-              title="Martina Rink — Vimeo interview"
-              caption="Vimeo · Interview"
+              src="https://lcaylx9nwikuphmb.public.blob.vercel-storage.com/press/isabella-blow-corner-berlin.mp4"
+              title="Martina Rink — Isabella Blow, The Corner Berlin"
+              caption="Isabella Blow · The Corner Berlin"
             />
             <SelfHostedVideo
               number="02"
