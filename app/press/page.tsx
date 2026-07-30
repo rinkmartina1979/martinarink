@@ -844,7 +844,7 @@ export default async function PressPage() {
               NOTE: a previous video 02 YouTube ID (fqqH5TDdzec) found in git
               history did NOT belong to Martina — it resolved to an unrelated
               Lady Gaga / Tony Bennett Barnes & Noble ad. Do not restore it. */}
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
             <VideoEmbed
               number="01"
               src="https://player.vimeo.com/video/25253824?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
@@ -856,6 +856,12 @@ export default async function PressPage() {
               src="https://lcaylx9nwikuphmb.public.blob.vercel-storage.com/press/martina-reel.mp4"
               title="Martina Rink — reel"
               caption="On Screen"
+            />
+            <SelfHostedVideo
+              number="03"
+              src="https://lcaylx9nwikuphmb.public.blob.vercel-storage.com/press/rooted-folge-5.mp4"
+              title="Martina Rink — Rooted, Folge 5"
+              caption="Rooted · Folge 5"
             />
           </div>
 
