@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { QUESTIONS, INTRO_QUESTIONS } from "@/lib/assessment/questions";
 import { AssessmentIntro } from "./AssessmentIntro";
@@ -32,6 +32,10 @@ export function AssessmentShell() {
   const [email, setEmail]         = useState("");
   const [firstName, setFirstName] = useState<string | undefined>();
   const [pendingIndex, setPendingIndex] = useState<number | null>(null);
+  // Ref-based lock — React state is batched/async, so checking `stage` inside
+  // the same click handler can't reliably catch a rapid double-click before
+  // the re-render removes the button. A ref updates synchronously.
+  const submittingRef = useRef(false);
 
   /* Current 0-based question index */
   const currentQuestionIndex =
@@ -101,6 +105,10 @@ export function AssessmentShell() {
 
   const handleSubmit = useCallback(
     async (finalAnswers: AnswerMap, finalEmail: string, finalFirstName?: string) => {
+      // Guard against double-click / double-tap firing this twice before
+      // the "submitting" stage re-render removes the button from the DOM.
+      if (submittingRef.current) return;
+      submittingRef.current = true;
       setStage({ kind: "submitting" });
       try {
         const res = await fetch("/api/assessment", {
@@ -126,6 +134,7 @@ export function AssessmentShell() {
         });
         router.push(`/assessment/result/${data.resultId}`);
       } catch (err: unknown) {
+        submittingRef.current = false; // allow retry after a failed submission
         const message = err instanceof Error ? err.message : "Something went wrong.";
         setStage({ kind: "error", message });
       }

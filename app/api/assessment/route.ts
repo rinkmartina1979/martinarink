@@ -18,7 +18,15 @@ import { makeResultId } from "@/lib/assessment/resultId";
 import { subscribeAssessmentLead } from "@/lib/brevo";
 import { storeSubmission } from "@/lib/assessment/storage";
 import { notifyHighIntentLead } from "@/lib/assessment/notify";
+import { isDuplicateSubmission } from "@/lib/bot-detection";
 import type { Archetype, ServiceIntent, ReadinessLevel, PrivacyNeed } from "@/lib/assessment/types";
+
+// A double-click or network retry re-POSTs the identical answers within
+// milliseconds, producing the same resultId (it's a deterministic HMAC over
+// the scored result). A genuine retake — different answers, different
+// resultId — is never caught by this. 60s is long enough to absorb a retry,
+// short enough to never suppress a real second completion later.
+const DEDUP_WINDOW_MS = 60_000;
 
 // (Brevo handles segmentation via contact attributes — no tag builder needed)
 
@@ -85,11 +93,25 @@ export async function POST(req: NextRequest) {
 
   const submittedAt = new Date().toISOString();
 
+  // ── DUPLICATE-SUBMISSION GUARD ───────────────────────────────
+  // Catches a double-click or network retry re-sending the identical
+  // answers within the same short window — not a genuine retake.
+  const isDuplicate = isDuplicateSubmission(
+    "assessment",
+    `${email.toLowerCase()}|${resultId}`,
+    DEDUP_WINDOW_MS,
+  );
+
   // ── BACKGROUND TASKS ─────────────────────────────────────────
   let brevoStatus: "success" | "skipped" | "failed" = "skipped";
   let brevoError: string | undefined;
 
   const background = async () => {
+    if (isDuplicate) {
+      console.warn(`[Assessment] Duplicate submission suppressed: ${email} / ${resultId}`);
+      return;
+    }
+
     // 1. Brevo contact creation + list add
     try {
       const brevoResult = await subscribeAssessmentLead({

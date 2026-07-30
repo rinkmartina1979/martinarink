@@ -83,6 +83,32 @@ export function isRateLimited(
   return record.count > limit;
 }
 
+/**
+ * Detect a near-duplicate submission of the same idempotency key within a
+ * short window (e.g. a double-click or a network-retry re-POST). Returns
+ * true and does NOT record the key if it's a repeat within the window —
+ * callers should skip side effects (emails, notifications) but can still
+ * respond normally. A genuinely new submission (or the same key again after
+ * the window elapses) returns false and records the key.
+ */
+const dedupMaps = new Map<string, Map<string, number>>();
+
+export function isDuplicateSubmission(
+  bucket: string,
+  key: string,
+  windowMs: number,
+): boolean {
+  if (!dedupMaps.has(bucket)) dedupMaps.set(bucket, new Map());
+  const map = dedupMaps.get(bucket)!;
+  const now = Date.now();
+  const lastSeen = map.get(key);
+  if (lastSeen && now - lastSeen < windowMs) {
+    return true;
+  }
+  map.set(key, now);
+  return false;
+}
+
 export function getClientIp(req: { headers: { get(name: string): string | null } }): string {
   return (
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
