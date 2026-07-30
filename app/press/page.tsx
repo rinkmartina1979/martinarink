@@ -20,6 +20,7 @@ import { CaseStudyCard } from "@/components/press/CaseStudyCard";
 import { FALLBACK_CASE_STUDIES } from "@/lib/fallback-content";
 import { CopyButton } from "@/components/press/CopyButton";
 import { VideoEmbed } from "@/components/media/VideoEmbed";
+import { SelfHostedVideo } from "@/components/media/SelfHostedVideo";
 
 /* ─── Metadata ──────────────────────────────────────────────── */
 export async function generateMetadata(): Promise<Metadata> {
@@ -838,19 +839,23 @@ export default async function PressPage() {
             </p>
           </div>
 
-          {/* Video — centred single column until video 02 URL is supplied.
-              IMPORTANT: the previous video 02 YouTube ID (fqqH5TDdzec) found
-              in git history does NOT belong to Martina — it resolves to an
-              unrelated Lady Gaga / Tony Bennett Barnes & Noble ad. Do not
-              restore that ID. Replace src below once Martina uploads the
-              real appearance and sends the YouTube link, then also restore
-              className="grid md:grid-cols-2 gap-6 lg:gap-10" on the wrapper. */}
-          <div className="max-w-2xl">
+          {/* Video 01 = Vimeo (external). Video 02 = self-hosted via Vercel
+              Blob — no third-party embed permissions to break.
+              NOTE: a previous video 02 YouTube ID (fqqH5TDdzec) found in git
+              history did NOT belong to Martina — it resolved to an unrelated
+              Lady Gaga / Tony Bennett Barnes & Noble ad. Do not restore it. */}
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
             <VideoEmbed
               number="01"
               src="https://player.vimeo.com/video/25253824?color=F942AA&title=0&byline=0&portrait=0&dnt=1"
               title="Martina Rink — Vimeo interview"
               caption="Vimeo · Interview"
+            />
+            <SelfHostedVideo
+              number="02"
+              src="https://lcaylx9nwikuphmb.public.blob.vercel-storage.com/press/martina-reel.mp4"
+              title="Martina Rink — reel"
+              caption="On Screen"
             />
           </div>
 
