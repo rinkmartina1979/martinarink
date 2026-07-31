@@ -857,8 +857,8 @@ export default async function PressPage() {
             <SelfHostedVideo
               number="02"
               src="https://lcaylx9nwikuphmb.public.blob.vercel-storage.com/press/martina-reel.mp4"
-              title="Martina Rink — client review"
-              caption="Client review"
+              title="Martina Rink — client review, Victoria"
+              caption="Client review · Victoria"
             />
             <SelfHostedVideo
               number="03"
