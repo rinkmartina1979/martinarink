@@ -863,8 +863,8 @@ export default async function PressPage() {
             <SelfHostedVideo
               number="03"
               src="https://lcaylx9nwikuphmb.public.blob.vercel-storage.com/press/rooted-folge-5.mp4"
-              title="Martina Rink — Rooted, Folge 5"
-              caption="Rooted · Folge 5"
+              title="Rooted & Unmuted — Interview mit Martina Rink"
+              caption="Rooted & Unmuted · Interview mit Martina Rink"
             />
           </div>
 
